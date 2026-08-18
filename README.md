@@ -1,3 +1,5 @@
+[![badge-labs](https://user-images.githubusercontent.com/327285/230928932-7c75f8ed-e57b-41db-9fb7-a292a13a1e58.svg)](https://community.finos.org/docs/governance/lifecycle-stages/labs)
+
 # konspekt
 
 An open standard — and reference implementation — for a portable, human-readable record of a project's evolving state across generative-AI conversations and platforms.
@@ -66,5 +68,16 @@ Pre–first-external-adopter. Schema and serialization are at **v1**. The format
 
 ## Open decisions
 
-- **License** — not yet chosen. A permissive license (Apache-2.0 or MIT) is the likely fit; Apache-2.0 adds an explicit patent grant. Deferred.
 - **Second implementer** — who, and the smallest thing to put in front of them. Deferred, but the central milestone.
+
+## Contributing
+
+All contributions must follow the process and guideliness described in the [CONTRIBUTING.md](./CONTRIBUTING.md) file. 
+
+## License
+
+Copyright 2026 FINOS
+
+Distributed under the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0).
+
+SPDX-License-Identifier: [Apache-2.0](https://spdx.org/licenses/Apache-2.0)
