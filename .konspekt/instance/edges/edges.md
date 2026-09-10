@@ -192,3 +192,4 @@ proposal.
 | e-rel-report-fleet | relates | node:task-accountability-report | node:task-agent-fleet | 0.5 | proposed |
 | e-rel-report-observ | relates | node:task-accountability-report | node:goal-observability | 0.5 | proposed |
 | e-rel-signed-multiauthor | relates | node:task-signed-accepts | node:task-multi-author-review | 0.5 | proposed |
+| e-not-provenance-checkerbytes | notes | node:task-provenance-model | noteworthy:nw-checker-hashes-raw-disk-bytes |  |  |
