@@ -161,3 +161,35 @@ proposal.
 | e-sup-statustransitions-birthstate | supersedes | noteworthy:nw-node-status-does-transition | noteworthy:nw-state-written-at-birth-not-transitioned |  | proposed |
 | e-sup-payloadenums-payloadref | supersedes | noteworthy:nw-payload-reference-only-admits-enums | noteworthy:nw-notification-payload-is-reference-only |  | proposed |
 | e-drv-asrlayering-adrengineer | drives | concept:concept-asr-persona-layering | waypoint:wp-adr-engineer-layer |  |  |
+
+<!-- === roadmap changeset (held commit; nodes verified, ready to push) === -->
+| e-dec-collab-multiauthor | decomposes | node:goal-collaboration | node:task-multi-author-review |  | proposed |
+| e-dec-collab-fleet | decomposes | node:goal-collaboration | node:task-agent-fleet |  | proposed |
+| e-dec-obs-analytics | decomposes | node:goal-observability | node:task-graph-analytics |  | proposed |
+| e-dec-obs-monitoring | decomposes | node:goal-observability | node:task-realtime-monitoring |  | proposed |
+| e-dec-port-enterprise | decomposes | node:goal-portability | node:task-enterprise-persistence |  | proposed |
+| e-men-multiauthor-sep | mentions | node:task-multi-author-review | concept:concept-propose-accept-separation |  | proposed |
+| e-men-fleet-sep | mentions | node:task-agent-fleet | concept:concept-propose-accept-separation |  | proposed |
+| e-men-enterprise-caprov | mentions | node:task-enterprise-persistence | concept:concept-content-addressed-provenance |  | proposed |
+| e-men-enterprise-contract | mentions | node:task-enterprise-persistence | concept:concept-transport-contract |  | proposed |
+| e-not-enterprise-reupload | notes | node:task-enterprise-persistence | noteworthy:nw-manual-reupload-probe |  | proposed |
+| e-not-enterprise-neutral | notes | node:task-enterprise-persistence | noteworthy:nw-mcp-binding-needs-neutral-read |  | proposed |
+| e-rel-multiauthor-fleet | relates | node:task-multi-author-review | node:task-agent-fleet | 0.5 | proposed |
+| e-rel-multiauthor-review | relates | node:task-multi-author-review | node:task-review-ergonomics | 0.5 | proposed |
+| e-rel-fleet-review | relates | node:task-agent-fleet | node:task-review-ergonomics | 0.5 | proposed |
+| e-rel-enterprise-provenance | relates | node:task-enterprise-persistence | node:task-provenance-model | 0.5 | proposed |
+| e-rel-enterprise-central | relates | node:task-enterprise-persistence | node:task-central-service-binding | 0.5 | proposed |
+| e-rel-analytics-validation | relates | node:task-graph-analytics | node:investigation-validation | 0.5 | proposed |
+| e-rel-monitoring-notifications | relates | node:task-realtime-monitoring | node:task-portable-notifications | 0.5 | proposed |
+| e-rel-monitoring-enterprise | relates | node:task-realtime-monitoring | node:task-enterprise-persistence | 0.5 | proposed |
+
+<!-- === accountability draft (first draft, unreviewed; one open item) === -->
+| e-dec-account-report | decomposes | node:goal-accountability | node:task-accountability-report |  | proposed |
+| e-dec-account-signed | decomposes | node:goal-accountability | node:task-signed-accepts |  | proposed |
+| e-dec-account-gate | decomposes | node:goal-accountability | node:task-persona-change-gate |  | proposed |
+| e-men-report-caprov | mentions | node:task-accountability-report | concept:concept-content-addressed-provenance |  | proposed |
+| e-men-signed-sep | mentions | node:task-signed-accepts | concept:concept-propose-accept-separation |  | proposed |
+| e-rel-report-fleet | relates | node:task-accountability-report | node:task-agent-fleet | 0.5 | proposed |
+| e-rel-report-observ | relates | node:task-accountability-report | node:goal-observability | 0.5 | proposed |
+| e-rel-signed-multiauthor | relates | node:task-signed-accepts | node:task-multi-author-review | 0.5 | proposed |
+| e-not-provenance-checkerbytes | notes | node:task-provenance-model | noteworthy:nw-checker-hashes-raw-disk-bytes |  |  |
