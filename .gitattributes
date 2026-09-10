@@ -4,3 +4,9 @@
 # on every platform and core.autocrlf cannot introduce false content-hash
 # mismatches on a Windows checkout. See nw-checker-hashes-raw-disk-bytes.
 .konspekt/instance/**/*.md text eol=lf
+
+# ROADMAP.md is a generated projection round-tripped by the roadmap freshness
+# gate (tools/roadmap.mjs --check), which emits LF and diffs it against the file
+# on disk. Pin it to LF so core.autocrlf cannot make a fresh file read as stale
+# on a Windows checkout. See nw-checker-hashes-raw-disk-bytes.
+/ROADMAP.md text eol=lf
