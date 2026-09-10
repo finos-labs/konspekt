@@ -2,7 +2,7 @@
 id: task-roadmap-generator
 type: task
 title: Generate ROADMAP.md as a graph projection with a conformance freshness gate
-status: open
+status: resolved
 summary:
   origin: machine
   pinned: false
