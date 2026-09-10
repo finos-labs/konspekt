@@ -1,7 +1,7 @@
 ```yaml
 id: nw-roadmap-generation-coupled-to-authority
 kind: decision
-review: proposed
+review: accepted
 provenance:
   sourceRef: 1adaaa49660f2708f0467c8caf0b971677a5144b
   contentHash: 1adaaa49660f2708f0467c8caf0b971677a5144b

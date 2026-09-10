@@ -7,7 +7,7 @@ summary:
   origin: machine
   pinned: false
   updatedAt: 2026-09-10T22:30:00Z
-review: proposed
+review: accepted
 provenance:
   sourceRef: 1adaaa49660f2708f0467c8caf0b971677a5144b
   contentHash: 1adaaa49660f2708f0467c8caf0b971677a5144b
