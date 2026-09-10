@@ -193,3 +193,10 @@ proposal.
 | e-rel-report-observ | relates | node:task-accountability-report | node:goal-observability | 0.5 | proposed |
 | e-rel-signed-multiauthor | relates | node:task-signed-accepts | node:task-multi-author-review | 0.5 | proposed |
 | e-not-provenance-checkerbytes | notes | node:task-provenance-model | noteworthy:nw-checker-hashes-raw-disk-bytes |  |  |
+| e-dec-obs-roadmap-gen | decomposes | node:goal-observability | node:task-roadmap-generator |  | proposed |
+| e-dec-obs-roadmap-wf | decomposes | node:goal-observability | node:task-roadmap-generation-workflow |  | proposed |
+| e-not-roadmap-gate-authority | notes | node:task-roadmap-generator | noteworthy:nw-roadmap-generation-coupled-to-authority |  | proposed |
+| e-not-roadmap-wf-authority | notes | node:task-roadmap-generation-workflow | noteworthy:nw-roadmap-generation-coupled-to-authority |  | proposed |
+| e-dec-obs-roadmap-poster | decomposes | node:goal-observability | node:task-roadmap-poster-generated |  | proposed |
+| e-not-poster-derive | notes | node:task-roadmap-poster-generated | noteworthy:nw-derive-not-copy |  | proposed |
+| e-not-collab-issueintake | notes | node:goal-collaboration | noteworthy:nw-inbound-issue-needs-consensus-intake |  | proposed |
