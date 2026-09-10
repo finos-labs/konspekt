@@ -182,3 +182,13 @@ proposal.
 | e-rel-analytics-validation | relates | node:task-graph-analytics | node:investigation-validation | 0.5 | proposed |
 | e-rel-monitoring-notifications | relates | node:task-realtime-monitoring | node:task-portable-notifications | 0.5 | proposed |
 | e-rel-monitoring-enterprise | relates | node:task-realtime-monitoring | node:task-enterprise-persistence | 0.5 | proposed |
+
+<!-- === accountability draft (first draft, unreviewed; one open item) === -->
+| e-dec-account-report | decomposes | node:goal-accountability | node:task-accountability-report |  | proposed |
+| e-dec-account-signed | decomposes | node:goal-accountability | node:task-signed-accepts |  | proposed |
+| e-dec-account-gate | decomposes | node:goal-accountability | node:task-persona-change-gate |  | proposed |
+| e-men-report-caprov | mentions | node:task-accountability-report | concept:concept-content-addressed-provenance |  | proposed |
+| e-men-signed-sep | mentions | node:task-signed-accepts | concept:concept-propose-accept-separation |  | proposed |
+| e-rel-report-fleet | relates | node:task-accountability-report | node:task-agent-fleet | 0.5 | proposed |
+| e-rel-report-observ | relates | node:task-accountability-report | node:goal-observability | 0.5 | proposed |
+| e-rel-signed-multiauthor | relates | node:task-signed-accepts | node:task-multi-author-review | 0.5 | proposed |
