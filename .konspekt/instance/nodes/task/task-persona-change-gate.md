@@ -7,12 +7,11 @@ summary:
   origin: machine
   pinned: false
   updatedAt: 2026-09-10T09:00:00Z
-review: proposed
+review: accepted
 provenance:
-  sourceRef: 679628fa02a009b6f129ff8805300eedefc5b699
-  contentHash: 679628fa02a009b6f129ff8805300eedefc5b699
-  timestamp: 2026-09-08T11:45:54Z
-  confidence: 0.8
+  sourceRef: 10000dc6cf43580546027c0144107f81cd402bb9
+  contentHash: 10000dc6cf43580546027c0144107f81cd402bb9
+  timestamp: 2026-09-10T09:00:00Z
 createdAt: 2026-09-08T11:45:54Z
 updatedAt: 2026-09-10T09:00:00Z
 ```
