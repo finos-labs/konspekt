@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>konspekt — how it works</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0b1424;--ink-2:#111e35;--line:#26395c;--line-soft:#182740;
+    --paper:#eef3fb;--paper-dim:#c6d2e6;--paper-faint:#96a7c5;
+    --collab:#f2b45c;--observ:#54c7d8;--portab:#87d7a3;--account:#e78cb2;
+    --accepted:#87d7a3;--steel:#c2cfe6;
+    --sans:"IBM Plex Sans",system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+    --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%;font-size:18px}
+  body{margin:0;background:var(--ink);color:var(--paper);font-family:var(--sans);line-height:1.5;-webkit-font-smoothing:antialiased}
+  .poster{
+    max-width:1040px;margin:0 auto;padding:56px 52px 40px;position:relative;overflow:hidden;
+    background:
+      radial-gradient(1200px 720px at 50% -10%, rgba(84,199,216,.10), transparent 60%),
+      radial-gradient(900px 620px at 92% 108%, rgba(135,215,163,.08), transparent 62%),
+      radial-gradient(760px 560px at 4% 106%, rgba(231,140,178,.06), transparent 60%),
+      linear-gradient(180deg,#0b1424,#0c1730 60%,#0b1526);
+  }
+  .poster::before{
+    content:"";position:absolute;inset:0;
+    background-image:linear-gradient(var(--line-soft) 1px,transparent 1px),linear-gradient(90deg,var(--line-soft) 1px,transparent 1px);
+    background-size:34px 34px;opacity:.34;pointer-events:none;
+    mask-image:radial-gradient(130% 100% at 50% 35%,#000 58%,transparent 100%);
+  }
+  .poster > *{position:relative;z-index:1}
+
+  header{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;border-bottom:1px solid var(--line);padding-bottom:22px}
+  .brand .mark{font-family:var(--mono);font-weight:500;font-size:1.05rem;letter-spacing:.02em;color:var(--steel)}
+  .brand .mark b{color:var(--paper)}
+  h1{font-weight:700;font-size:clamp(2.9rem,7vw,4.6rem);line-height:.94;letter-spacing:-.02em;margin:.18em 0 .3em}
+  .lede{font-size:clamp(1rem,2.05vw,1.16rem);color:var(--paper-dim);max-width:52ch;font-weight:400}
+  .status{flex:none;text-align:right;font-family:var(--mono);font-size:.72rem;color:var(--paper-dim);line-height:1.7}
+  .status .dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--steel);margin-right:7px;vertical-align:middle;box-shadow:0 0 0 4px rgba(194,207,230,.14)}
+  .status b{color:var(--paper);font-weight:500}
+
+  .diagram{margin:26px 0 4px}
+  .diagram svg{display:block;width:100%;height:auto}
+  .d-title{font-family:var(--sans);font-weight:600;font-size:16px;fill:var(--paper)}
+  .d-sub{font-family:var(--mono);font-size:12px;fill:var(--paper-faint)}
+  .d-anno{font-family:var(--mono);font-size:12.5px;fill:var(--steel)}
+  .d-numlabel{font-family:var(--sans);font-size:14.5px;font-weight:600;fill:var(--paper)}
+  .d-key{font-family:var(--mono);font-size:13px;fill:var(--paper-dim)}
+  .d-head{font-family:var(--sans);font-size:14.5px;font-weight:700;fill:var(--paper);letter-spacing:.01em}
+  .d-verb{font-family:var(--mono);font-size:13.5px;fill:var(--accepted)}
+  .d-gloss{font-family:var(--sans);font-size:13px;fill:var(--paper-dim)}
+
+  /* flow walkthrough */
+  .flow{display:grid;grid-template-columns:repeat(5,1fr);gap:26px;margin-top:24px;border-top:1px solid var(--line);padding-top:22px}
+  .step .n{font-family:var(--mono);font-size:.78rem;color:var(--accepted);font-weight:600}
+  .step h3{font-size:1.02rem;margin:.25em 0 .35em;letter-spacing:-.01em}
+  .step p{font-size:.83rem;color:var(--paper-dim);margin:0;line-height:1.42}
+
+  footer{margin-top:28px;padding-top:18px;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap}
+  .tags{display:flex;gap:10px;flex-wrap:wrap}
+  .tags span{font-family:var(--mono);font-size:.72rem;color:var(--paper-dim);border:1px solid var(--line);border-radius:2px;padding:4px 10px}
+  .colophon{font-family:var(--mono);font-size:.72rem;color:var(--paper-faint);text-align:right;line-height:1.7}
+  .colophon b{color:var(--paper-dim);font-weight:500}
+
+  @media (max-width:760px){
+    .poster{padding:34px 22px}
+    .flow{grid-template-columns:1fr 1fr;gap:18px}
+    header{flex-direction:column;align-items:flex-start;gap:16px}.status{text-align:left}
+  }
+  @media (max-width:460px){ .flow{grid-template-columns:1fr} }
+  @media print{
+    @page{size:A2 landscape;margin:14mm}
+    body{background:#fff}.poster{max-width:none;padding:0}.poster::before{opacity:.5}
+    *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    .flow{break-inside:avoid}
+  }
+</style>
+</head>
+<body>
+<div class="poster">
+
+  <header>
+    <div class="brand">
+      <div class="mark"><b>konspekt</b> · typed knowledge graph for AI project state</div>
+      <h1>How it works</h1>
+      <p class="lede">konspekt keeps the state of an AI project — decisions, context, open questions, provenance — as a portable, human-readable graph. The whole shape of it, on one page.</p>
+    </div>
+    <div class="status">
+      <div><span class="dot"></span><b>Open standard</b></div>
+      <div>+ reference impl</div>
+      <div>Apache-2.0 · FINOS Labs</div>
+    </div>
+  </header>
+
+  <!-- THE STRUCTURE -->
+  <section class="diagram" aria-label="konspekt system structure">
+    <svg viewBox="0 0 1000 500" role="img" aria-label="A conversation is captured verbatim and hashed into a source, becomes a proposed atom, is accepted by a named maintainer, and joins a typed graph that authority verbs act on.">
+      <defs>
+        <marker id="arw" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9" fill="none" stroke="#4a6089" stroke-width="1.5"/></marker>
+        <marker id="arwg" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9" fill="none" stroke="#87d7a3" stroke-width="1.7"/></marker>
+      </defs>
+
+      <!-- stage numbers across the top -->
+      <g>
+        <circle cx="100" cy="26" r="11" fill="none" stroke="#54c7d8" stroke-width="1.4"/><text x="100" y="30" text-anchor="middle" class="d-anno" fill="#54c7d8">1</text>
+        <text x="120" y="30" class="d-numlabel">Interact</text>
+        <circle cx="360" cy="26" r="11" fill="none" stroke="#c2cfe6" stroke-width="1.4"/><text x="360" y="30" text-anchor="middle" class="d-anno">2</text>
+        <text x="380" y="30" class="d-numlabel">Capture</text>
+        <circle cx="590" cy="26" r="11" fill="none" stroke="#f2b45c" stroke-width="1.4"/><text x="590" y="30" text-anchor="middle" class="d-anno" fill="#f2b45c">3</text>
+        <text x="610" y="30" class="d-numlabel">Propose</text>
+        <circle cx="710" cy="26" r="11" fill="none" stroke="#87d7a3" stroke-width="1.4"/><text x="710" y="30" text-anchor="middle" class="d-anno" fill="#87d7a3">4</text>
+        <text x="730" y="30" class="d-numlabel">Accept</text>
+        <circle cx="858" cy="26" r="11" fill="none" stroke="#87d7a3" stroke-width="1.4"/><text x="858" y="30" text-anchor="middle" class="d-anno" fill="#87d7a3">5</text>
+        <text x="878" y="30" class="d-numlabel">Graph</text>
+      </g>
+
+      <!-- spine arrows -->
+      <g stroke-width="1.6" fill="none">
+        <path d="M132,200 L205,200" stroke="#3a537d" marker-end="url(#arw)"/>
+        <path d="M292,200 L336,200" stroke="#3a537d" marker-end="url(#arw)"/>
+        <path d="M382,200 L420,200" stroke="#3a537d" marker-end="url(#arw)"/>
+        <path d="M506,200 L562,200" stroke="#3a537d" marker-end="url(#arw)"/>
+        <path d="M615,200 L683,200" stroke="#3a537d" marker-end="url(#arw)"/>
+        <path d="M735,200 L832,200" stroke="#87d7a3" marker-end="url(#arwg)"/>
+      </g>
+
+      <!-- 1 interact: human + LLM -->
+      <g>
+        <circle cx="100" cy="178" r="15" fill="#0b1424" stroke="#54c7d8" stroke-width="1.6"/>
+        <circle cx="100" cy="222" r="15" fill="#0b1424" stroke="#54c7d8" stroke-width="1.6"/>
+        <text x="100" y="182" text-anchor="middle" class="d-sub" fill="#c9d4e8">you</text>
+        <text x="100" y="226" text-anchor="middle" class="d-sub" fill="#c9d4e8">LLM</text>
+        <path d="M118,186 C132,196 132,204 118,214" fill="none" stroke="#54c7d8" stroke-width="1.3" marker-end="url(#arw)"/>
+        <path d="M118,214 C104,204 104,196 118,186" fill="none" stroke="#54c7d8" stroke-width="1.3" opacity="0"/>
+        <text x="100" y="262" text-anchor="middle" class="d-sub">conversation</text>
+      </g>
+
+      <!-- 2 capture: verbatim -> hash -> source -->
+      <g>
+        <rect x="222" y="176" width="66" height="48" rx="3" fill="#111e35" stroke="#2d436a"/>
+        <line x1="234" y1="190" x2="276" y2="190" stroke="#54c7d8" stroke-width="1.4"/>
+        <line x1="234" y1="200" x2="268" y2="200" stroke="#3d557f" stroke-width="1.2"/>
+        <line x1="234" y1="210" x2="276" y2="210" stroke="#54c7d8" stroke-width="1.4"/>
+        <text x="255" y="248" text-anchor="middle" class="d-sub">verbatim, both sides</text>
+
+        <circle cx="360" cy="200" r="20" fill="#111e35" stroke="#2d436a"/>
+        <text x="360" y="205" text-anchor="middle" class="d-anno" fill="#c2cfe6">#</text>
+        <text x="360" y="248" text-anchor="middle" class="d-sub">hash</text>
+
+        <rect x="424" y="180" width="80" height="40" rx="3" fill="#111e35" stroke="#2d436a"/>
+        <text x="464" y="197" text-anchor="middle" class="d-title" font-size="14">source</text>
+        <text x="464" y="212" text-anchor="middle" class="d-sub">sources/&lt;sha&gt;</text>
+        <text x="464" y="248" text-anchor="middle" class="d-sub" fill="#96a7c5">content-addressed</text>
+      </g>
+
+      <!-- 3 proposed -->
+      <circle cx="590" cy="200" r="23" fill="#0b1424" stroke="#f2b45c" stroke-width="1.7" stroke-dasharray="3 4"/>
+      <circle cx="590" cy="200" r="5" fill="#f2b45c"/>
+      <text x="590" y="240" text-anchor="middle" class="d-title" font-size="14.5">proposed</text>
+      <text x="590" y="254" text-anchor="middle" class="d-sub">an atom</text>
+
+      <!-- 4 accept gate -->
+      <rect x="687" y="177" width="46" height="46" rx="3" fill="#0b1424" stroke="#87d7a3" stroke-width="1.7"/>
+      <path d="M700,201 l7,7 l14,-16" fill="none" stroke="#87d7a3" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="710" y="240" text-anchor="middle" class="d-title" font-size="14.5" fill="#87d7a3">accept</text>
+      <text x="710" y="254" text-anchor="middle" class="d-sub" fill="#87d7a3">named human</text>
+      <text x="710" y="268" text-anchor="middle" class="d-sub" fill="#96a7c5">responsibility attaches</text>
+
+      <!-- 5 accepted + graph (data model) -->
+      <g stroke="#2f4a6f" stroke-width="1.3">
+        <line x1="858" y1="200" x2="905" y2="126"/>
+        <line x1="858" y1="200" x2="936" y2="192"/>
+        <line x1="858" y1="200" x2="905" y2="271"/>
+        <line x1="858" y1="200" x2="812" y2="264"/>
+        <line x1="858" y1="200" x2="806" y2="146"/>
+        <line x1="905" y1="126" x2="806" y2="146"/>
+        <line x1="905" y1="271" x2="812" y2="264"/>
+      </g>
+      <circle cx="858" cy="200" r="22" fill="#87d7a3"/>
+      <circle cx="858" cy="200" r="22" fill="none" stroke="#b7ecc9" stroke-width="1"/>
+      <circle cx="806" cy="146" r="6" fill="#87d7a3"/>
+      <circle cx="905" cy="126" r="6" fill="#e78cb2"/>
+      <circle cx="936" cy="192" r="6" fill="#54c7d8"/>
+      <circle cx="905" cy="271" r="6" fill="#f2b45c"/>
+      <circle cx="812" cy="264" r="6" fill="#e78cb2"/>
+      <text x="858" y="315" text-anchor="middle" class="d-sub">one typed edge table</text>
+
+      <!-- divider -->
+      <line x1="50" y1="352" x2="950" y2="352" stroke="#22344f" stroke-width="1"/>
+
+      <!-- bottom-left: data model key -->
+      <text x="54" y="382" class="d-head">The data model</text>
+      <g>
+        <circle cx="62" cy="404" r="5.5" fill="#54c7d8"/><text x="78" y="408" class="d-key">concept — an idea or definition</text>
+        <circle cx="62" cy="426" r="5.5" fill="#f2b45c"/><text x="78" y="430" class="d-key">noteworthy — a finding worth keeping</text>
+        <circle cx="62" cy="448" r="5.5" fill="#87d7a3"/><text x="78" y="452" class="d-key">artifact — a produced output</text>
+        <circle cx="62" cy="470" r="5.5" fill="#e78cb2"/><text x="78" y="474" class="d-key">goal · investigation · task — the work</text>
+      </g>
+      <text x="54" y="496" class="d-sub" fill="#96a7c5">edges are one table · inventories are queries · every entity carries a hash to its source</text>
+
+      <!-- bottom-right: authority verbs -->
+      <text x="560" y="382" class="d-head">Authority verbs <tspan fill="#96a7c5" font-family="IBM Plex Mono" font-weight="400" font-size="13">— first-class operations on the graph</tspan></text>
+      <g>
+        <text x="560" y="408" class="d-verb">pin</text><text x="628" y="408" class="d-gloss">fix as settled</text>
+        <text x="560" y="430" class="d-verb">validate</text><text x="628" y="430" class="d-gloss">confirm it holds</text>
+        <text x="560" y="452" class="d-verb">refute</text><text x="628" y="452" class="d-gloss">mark disproven</text>
+        <text x="770" y="408" class="d-verb">resolve</text><text x="842" y="408" class="d-gloss">close a question</text>
+        <text x="770" y="430" class="d-verb">abandon</text><text x="842" y="430" class="d-gloss">drop, on record</text>
+        <text x="770" y="452" class="d-verb">lift</text><text x="842" y="452" class="d-gloss">raise its standing</text>
+      </g>
+    </svg>
+  </section>
+
+  <!-- FLOW WALKTHROUGH -->
+  <section class="flow">
+    <div class="step"><div class="n">01 · interact</div><h3>You and the model</h3><p>Work happens in conversation between a person and an LLM.</p></div>
+    <div class="step"><div class="n">02 · capture</div><h3>Verbatim, hashed</h3><p>The exchange is stored word for word, both sides, and addressed by a hash of its bytes.</p></div>
+    <div class="step"><div class="n">03 · propose</div><h3>A typed atom</h3><p>From the source, the model proposes an entity: a concept, finding, artifact, or work node.</p></div>
+    <div class="step"><div class="n">04 · accept</div><h3>A named human</h3><p>Nothing counts until a named maintainer accepts it. That is where responsibility attaches.</p></div>
+    <div class="step"><div class="n">05 · graph</div><h3>Into the record</h3><p>Accepted atoms join one typed edge table, and the authority verbs act on them from there.</p></div>
+  </section>
+
+  <footer>
+    <div class="tags">
+      <span>portable</span><span>human-readable</span><span>content-addressed</span><span>propose → accept</span>
+    </div>
+    <div class="colophon">
+      <div><b>FINOS Labs</b> · Apache-2.0 · github.com/finos-labs/konspekt</div>
+      <div>an introduction · companion to the current-state &amp; roadmap sheets</div>
+    </div>
+  </footer>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,382 @@
+#!/usr/bin/env node
+// konspekt state-poster — current-state poster builder
+//
+// Emits docs/visuals/posters/konspekt-current-state-poster.html as a
+// regenerated projection: the hand-authored design is preserved, but the
+// figures that would otherwise drift are spliced from the instance graph at
+// build time (task-roadmap-poster-generated, nw-derive-not-copy). The graph
+// stays the single source of truth; the poster is a query over it.
+//
+// The graph reader, YAML-subset parser, and every conformance rule live in
+// ../lib/conformance.mjs — the same neutral module validate.mjs and the roadmap
+// builder import. This file adds no second parser (nw-derive-not-copy).
+//
+// Design commitments (mirroring tools/roadmap.mjs):
+//   - Zero dependencies. Node only.
+//   - Pure function of the instance. No wall-clock timestamp and no source
+//     commit are baked in, so re-running on an unchanged instance produces a
+//     byte-identical file, which is what makes --check a meaningful
+//     regenerate-and-diff.
+//
+// Usage:
+//   node tools/state-poster.mjs [instanceDir] [outFile]   write the poster
+//   node tools/state-poster.mjs --check [instanceDir] [outFile]
+//                                                    regenerate in memory and
+//                                                    diff against the committed
+//                                                    file; exit 1 if stale.
+//
+//   defaults: instanceDir = ../.konspekt/instance (resolved from repo root)
+//             outFile     = ../docs/visuals/posters/konspekt-current-state-poster.html
+
+import { readFileSync, writeFileSync, existsSync } from "node:fs";
+import { join, dirname, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
+import { createHash } from "node:crypto";
+import { loadInstance, summarize } from "../lib/conformance.mjs";
+import { loadActivePersonas } from "../lib/load-personas.mjs";
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const REPO_ROOT = resolve(__dirname, "..");
+
+const args = process.argv.slice(2);
+const check = args.includes("--check");
+const positional = args.filter((a) => !a.startsWith("--"));
+
+const instanceDir = resolve(positional[0] || join(REPO_ROOT, ".konspekt", "instance"));
+const outFile = resolve(
+  positional[1] ||
+    join(REPO_ROOT, "docs", "visuals", "posters", "konspekt-current-state-poster.html"),
+);
+const FILENAME_RULE = process.env.KONSPEKT_FILENAME_RULE || "strict";
+
+// External ecosystem fact, not derivable from the instance graph: how many
+// agent tools read AGENTS.md. Kept as one named, commented constant rather than
+// buried as a hand-typed HTML literal in two places, so it has a single home.
+// Update it here when the ecosystem count changes.
+const EXTERNAL_TOOLS_READING_AGENTS = "28+";
+
+// ---- load the graph and derive conformance figures ----
+
+const personas = await loadActivePersonas(instanceDir, join(REPO_ROOT, "spec", "personas"), {
+  warn: (m) => console.error(`warning: ${m}`),
+});
+
+// checkSources:false skips provenance-file re-hashing on purpose. That check
+// hashes raw disk bytes, so on a CRLF working tree it reports spurious
+// content-hash-mismatch errors that do not exist on an LF checkout
+// (nw-checker-hashes-raw-disk-bytes). Disabling it makes the derived count a
+// pure reflection of the GRAPH RULES, identical on Windows and in CI, so the
+// poster regenerates byte-identically on every platform. As a second guard we
+// also drop any content-hash-mismatch problem before counting.
+const g = loadInstance(instanceDir, { filenameRule: FILENAME_RULE, personas, checkSources: false });
+const graphProblems = g.problems.filter((p) => p.code !== "content-hash-mismatch");
+const { error: errorCount, warning: warningCount } = summarize(graphProblems);
+
+// ---- render ----
+// The document below is the hand-authored poster, verbatim, with exactly three
+// figures spliced from the values derived above:
+//   - errorCount / warningCount   (conformance metric + the prose that states it)
+//   - EXTERNAL_TOOLS_READING_AGENTS (the external tools figure, in two places)
+// Everything else — CSS, layout, SVG, editorial prose — is preserved as-is.
+
+const htmlBody = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>konspekt — current state</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0b1424;
+    --ink-2:#111e35;
+    --line:#26395c;
+    --line-soft:#182740;
+    --paper:#eef3fb;
+    --paper-dim:#c6d2e6;
+    --paper-faint:#96a7c5;
+    --collab:#f2b45c;
+    --observ:#54c7d8;
+    --portab:#87d7a3;
+    --account:#e78cb2;
+    --accepted:#87d7a3;
+    --steel:#c2cfe6;
+    --sans:"IBM Plex Sans",system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+    --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%;font-size:18px}
+  body{margin:0;background:var(--ink);color:var(--paper);font-family:var(--sans);line-height:1.5;-webkit-font-smoothing:antialiased}
+  .poster{
+    max-width:1040px;margin:0 auto;padding:56px 52px 40px;position:relative;overflow:hidden;
+    background:
+      radial-gradient(1200px 700px at 80% -8%, rgba(135,215,163,.11), transparent 60%),
+      radial-gradient(900px 620px at 6% 110%, rgba(84,199,216,.07), transparent 62%),
+      linear-gradient(180deg,#0b1424,#0c1730 60%,#0b1526);
+  }
+  .poster::before{
+    content:"";position:absolute;inset:0;
+    background-image:linear-gradient(var(--line-soft) 1px,transparent 1px),linear-gradient(90deg,var(--line-soft) 1px,transparent 1px);
+    background-size:34px 34px;opacity:.34;pointer-events:none;
+    mask-image:radial-gradient(120% 100% at 50% 30%,#000 55%,transparent 100%);
+  }
+  .poster > *{position:relative;z-index:1}
+
+  header{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;border-bottom:1px solid var(--line);padding-bottom:22px}
+  .brand .mark{font-family:var(--mono);font-weight:500;font-size:1.05rem;letter-spacing:.02em;color:var(--steel)}
+  .brand .mark b{color:var(--paper)}
+  h1{font-weight:700;font-size:clamp(2.9rem,7vw,4.6rem);line-height:.94;letter-spacing:-.02em;margin:.18em 0 .28em}
+  .lede{font-size:clamp(1rem,2.1vw,1.18rem);color:var(--paper-dim);max-width:36ch;font-weight:400}
+  .status{flex:none;text-align:right;font-family:var(--mono);font-size:.72rem;color:var(--paper-dim);line-height:1.7}
+  .status .dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--accepted);margin-right:7px;vertical-align:middle;box-shadow:0 0 0 4px rgba(135,215,163,.16)}
+  .status b{color:var(--paper);font-weight:500}
+
+  /* hero: propose -> accept pipeline */
+  .hero{margin:30px 0 6px}
+  .hero svg{display:block;width:100%;height:auto}
+  .stage-t{font-family:var(--sans);font-weight:600;font-size:17px;fill:var(--paper)}
+  .stage-s{font-family:var(--mono);font-size:12.5px;fill:var(--paper-faint)}
+  .anno{font-family:var(--mono);font-size:13px;fill:var(--steel)}
+  .hero-cap{font-family:var(--mono);font-size:.72rem;color:var(--paper-faint);text-align:center;margin-top:2px}
+
+  .themes{display:grid;grid-template-columns:1fr 1fr;gap:2px 40px;margin-top:26px}
+  .theme{padding:22px 0 18px;border-top:1px solid var(--line)}
+  .theme-head{display:flex;align-items:baseline;gap:12px;margin-bottom:.5em}
+  .theme-head .node{width:12px;height:12px;border-radius:50%;flex:none;transform:translateY(1px);background:var(--accepted)}
+  .theme h2{font-size:1.32rem;font-weight:700;margin:0;letter-spacing:-.01em;color:var(--paper)}
+  .theme .tag{font-family:var(--mono);font-size:.7rem;color:var(--paper-faint);margin-left:auto}
+  .item{display:grid;grid-template-columns:auto 1fr;gap:0 14px;margin:0 0 .8em}
+  .item .tick{font-family:var(--mono);font-size:.7rem;color:var(--accepted);padding-top:.28em;white-space:nowrap}
+  .item .t-title{font-weight:600;font-size:.96rem;color:var(--paper)}
+  .item .t-desc{color:var(--paper-dim);font-size:.86rem;line-height:1.45}
+
+  /* model entity chips */
+  .entities{display:flex;flex-wrap:wrap;gap:7px;margin:.2em 0 1em}
+  .chip{font-family:var(--mono);font-size:.72rem;color:var(--paper);border:1px solid var(--line);border-radius:2px;padding:3px 9px;display:inline-flex;align-items:center;gap:7px}
+  .chip i{width:7px;height:7px;border-radius:50%}
+  .chip.c1 i{background:var(--observ)} .chip.c2 i{background:var(--collab)} .chip.c3 i{background:var(--portab)} .chip.c4 i{background:var(--account)} .chip.c5 i{background:var(--steel)}
+
+  /* authority verbs */
+  .verbs{display:grid;grid-template-columns:1fr 1fr;gap:.55em 22px}
+  .verb{display:flex;gap:9px;font-size:.85rem;color:var(--paper-dim)}
+  .verb b{font-family:var(--mono);font-weight:500;color:var(--accepted);font-size:.82rem;min-width:66px}
+
+  .band{margin-top:8px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:20px 0;display:grid;grid-template-columns:auto 1fr;gap:0 26px;align-items:start}
+  .band .tag{font-family:var(--mono);font-size:.74rem;color:var(--steel);padding-top:2px;max-width:15ch}
+  .band .tag b{display:block;color:var(--paper);font-size:.98rem;font-family:var(--sans);font-weight:700;margin-bottom:.3em}
+  .band ul{margin:0;padding:0;list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:14px 34px}
+  .band li{font-size:.87rem;color:var(--paper-dim);position:relative;padding-left:16px}
+  .band li::before{content:"";position:absolute;left:0;top:.55em;width:7px;height:7px;border:1px solid var(--steel);border-radius:50%}
+  .band li b{color:var(--paper);font-weight:600}
+
+  footer{margin-top:26px;padding-top:18px;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap}
+  .metrics{display:flex;gap:30px;flex-wrap:wrap}
+  .metric{line-height:1.15}
+  .metric b{display:block;font-size:1.5rem;font-weight:700;color:var(--accepted);letter-spacing:-.01em}
+  .metric span{font-family:var(--mono);font-size:.68rem;color:var(--paper-faint)}
+  .colophon{font-family:var(--mono);font-size:.72rem;color:var(--paper-faint);text-align:right;line-height:1.7}
+  .colophon b{color:var(--paper-dim);font-weight:500}
+
+  @media (max-width:720px){
+    .poster{padding:34px 22px}
+    .themes{grid-template-columns:1fr;gap:0}
+    .band{grid-template-columns:1fr;gap:14px}.band ul{grid-template-columns:1fr}
+    .verbs{grid-template-columns:1fr}
+    header{flex-direction:column;align-items:flex-start;gap:16px}.status{text-align:left}
+    .metrics{gap:20px}
+  }
+  @media print{
+    @page{size:A2 portrait;margin:14mm}
+    body{background:#fff}.poster{max-width:none;padding:0}.poster::before{opacity:.5}
+    *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    .theme,.band{break-inside:avoid}
+  }
+</style>
+</head>
+<body>
+<div class="poster">
+
+  <header>
+    <div class="brand">
+      <div class="mark"><b>konspekt</b> · typed knowledge graph for AI project state</div>
+      <h1>Current state</h1>
+      <p class="lede">An open standard and reference implementation, working today and dogfooded against its own development.</p>
+    </div>
+    <div class="status">
+      <div><span class="dot"></span><b>Accepted</b></div>
+      <div>in the graph</div>
+      <div>&amp; shipping</div>
+    </div>
+  </header>
+
+  <!-- HERO: propose -> accept + provenance loop -->
+  <section class="hero" aria-label="How a decision enters the graph">
+    <svg viewBox="0 0 1000 300" role="img" aria-label="A verbatim exchange is hashed into a source, becomes a proposed atom, and a named maintainer accepts it into the graph.">
+      <!-- flow line -->
+      <g stroke="#2d436a" stroke-width="1.6" fill="none">
+        <path d="M150,120 L250,120" marker-end="url(#arw)"/>
+        <path d="M360,120 L460,120" marker-end="url(#arw)"/>
+        <path d="M570,120 L670,120" marker-end="url(#arw)"/>
+        <path d="M780,120 L860,120" marker-end="url(#arwg)"/>
+      </g>
+      <defs>
+        <marker id="arw" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9" fill="none" stroke="#4a6089" stroke-width="1.4"/></marker>
+        <marker id="arwg" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9" fill="none" stroke="#87d7a3" stroke-width="1.6"/></marker>
+      </defs>
+
+      <!-- stage 1: verbatim exchange -->
+      <rect x="40" y="92" width="106" height="56" rx="3" fill="#111e35" stroke="#2d436a"/>
+      <line x1="54" y1="108" x2="132" y2="108" stroke="#54c7d8" stroke-width="1.4"/>
+      <line x1="54" y1="120" x2="124" y2="120" stroke="#3d557f" stroke-width="1.2"/>
+      <line x1="54" y1="131" x2="132" y2="131" stroke="#54c7d8" stroke-width="1.4"/>
+      <text x="93" y="172" text-anchor="middle" class="stage-t">Verbatim</text>
+      <text x="93" y="188" text-anchor="middle" class="stage-s">both sides</text>
+
+      <!-- stage 2: content hash -->
+      <circle cx="305" cy="120" r="30" fill="#111e35" stroke="#2d436a"/>
+      <text x="305" y="116" text-anchor="middle" class="anno" fill="#c2cfe6">#</text>
+      <text x="305" y="132" text-anchor="middle" class="stage-s">sha</text>
+      <text x="305" y="172" text-anchor="middle" class="stage-t">Content hash</text>
+      <text x="305" y="188" text-anchor="middle" class="stage-s">sources/&lt;sha&gt;</text>
+
+      <!-- stage 3: proposed atom -->
+      <circle cx="515" cy="120" r="26" fill="#0b1424" stroke="#f2b45c" stroke-width="1.7" stroke-dasharray="3 4"/>
+      <circle cx="515" cy="120" r="5" fill="#f2b45c"/>
+      <text x="515" y="172" text-anchor="middle" class="stage-t">Proposed</text>
+      <text x="515" y="188" text-anchor="middle" class="stage-s">review: proposed</text>
+
+      <!-- stage 4: accept gate (named maintainer) -->
+      <g>
+        <rect x="695" y="94" width="50" height="52" rx="3" fill="#0b1424" stroke="#87d7a3" stroke-width="1.7"/>
+        <path d="M709,120 l7,7 l14,-16" fill="none" stroke="#87d7a3" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+        <text x="720" y="172" text-anchor="middle" class="stage-t">Accept</text>
+        <text x="720" y="188" text-anchor="middle" class="stage-s">named maintainer</text>
+      </g>
+
+      <!-- stage 5: accepted graph node -->
+      <circle cx="905" cy="120" r="26" fill="#87d7a3"/>
+      <circle cx="905" cy="120" r="26" fill="none" stroke="#b7ecc9" stroke-width="1"/>
+      <!-- little graph tethers -->
+      <g stroke="#3f6b52" stroke-width="1.3"><line x1="905" y1="94" x2="905" y2="70"/><line x1="931" y1="120" x2="958" y2="120"/><line x1="887" y1="139" x2="868" y2="162"/></g>
+      <circle cx="905" cy="66" r="3" fill="#87d7a3"/><circle cx="962" cy="120" r="3" fill="#87d7a3"/><circle cx="864" cy="166" r="3" fill="#87d7a3"/>
+      <text x="905" y="222" text-anchor="middle" class="stage-t">Accepted</text>
+      <text x="905" y="238" text-anchor="middle" class="stage-s">in the graph</text>
+
+      <!-- annotations under the pipeline -->
+      <text x="200" y="270" text-anchor="middle" class="anno" fill="#96a7c5">the store stays dumb — no adjudication</text>
+      <text x="720" y="270" text-anchor="middle" class="anno" fill="#96a7c5">responsibility attaches to a human here</text>
+    </svg>
+    <p class="hero-cap">an AI proposes · only a named maintainer accepts · every atom traces to a verbatim, content-addressed source</p>
+  </section>
+
+  <section class="themes">
+
+    <div class="theme">
+      <div class="theme-head"><span class="node"></span><h2>The model</h2><span class="tag">serialization v1</span></div>
+      <div class="entities">
+        <span class="chip c1"><i></i>concept</span>
+        <span class="chip c2"><i></i>noteworthy</span>
+        <span class="chip c3"><i></i>artifact</span>
+        <span class="chip c4"><i></i>goal · investigation · task</span>
+        <span class="chip c5"><i></i>waypoint</span>
+      </div>
+      <div class="item"><span class="tick">one</span><div><div class="t-title">Single typed edge table</div><div class="t-desc">Every relationship is a row in one table. Inventories are queries over edges, never stored lists that can drift.</div></div></div>
+      <div class="item"><span class="tick">every</span><div><div class="t-title">Content-addressed provenance</div><div class="t-desc">Each entity traces to a verbatim source excerpt, both sides of the exchange, addressed by a hash that changes if a byte does.</div></div></div>
+    </div>
+
+    <div class="theme">
+      <div class="theme-head"><span class="node"></span><h2>Shipping</h2><span class="tag">in CI</span></div>
+      <div class="item"><span class="tick">check</span><div><div class="t-title">Conformance checker + CLI</div><div class="t-desc">Runs on every change; the project's own instance sits at ${errorCount} errors and ${warningCount} warnings under the graph checker.</div></div></div>
+      <div class="item"><span class="tick">read</span><div><div class="t-title">AGENTS.md, read by ${EXTERNAL_TOOLS_READING_AGENTS} tools</div><div class="t-desc">One instruction file the ecosystem already reads; CLAUDE.md and GEMINI.md are thin pointers to it.</div></div></div>
+      <div class="item"><span class="tick">role</span><div><div class="t-title">Persona layers</div><div class="t-desc">The engineer persona is live as the pilot: a role with rules attached on the shared AGENTS.md, adding ADRs and ASRs (decision and requirement records) and a session record with commands, per instance.</div></div></div>
+      <div class="item"><span class="tick">init</span><div><div class="t-title">Setup kit + notifier</div><div class="t-desc">One command scaffolds an instance into any repo, and a notifier reports when a review status changes.</div></div></div>
+    </div>
+
+    <div class="theme">
+      <div class="theme-head"><span class="node"></span><h2>Authority verbs</h2><span class="tag">first-class</span></div>
+      <div class="verbs">
+        <div class="verb"><b>pin</b><span>fix an entity as settled</span></div>
+        <div class="verb"><b>validate</b><span>confirm it holds up</span></div>
+        <div class="verb"><b>refute</b><span>mark it disproven</span></div>
+        <div class="verb"><b>resolve</b><span>close an open question</span></div>
+        <div class="verb"><b>abandon</b><span>drop it, on the record</span></div>
+        <div class="verb"><b>lift</b><span>promote it in standing</span></div>
+      </div>
+    </div>
+
+    <div class="theme">
+      <div class="theme-head"><span class="node"></span><h2>Adoption &amp; proof</h2><span class="tag">public</span></div>
+      <div class="item"><span class="tick">home</span><div><div class="t-title">Contributed to FINOS Labs</div><div class="t-desc">Under the FINOS AI program, Apache-2.0, with a public blog announcing the contribution.</div></div></div>
+      <div class="item"><span class="tick">use</span><div><div class="t-title">First external adopter</div><div class="t-desc">code_tracer runs a konspekt instance, the first project beyond konspekt itself.</div></div></div>
+      <div class="item"><span class="tick">self</span><div><div class="t-title">Dogfooded</div><div class="t-desc">konspekt records its own design decisions in konspekt, so the standard is tested by the work that builds it.</div></div></div>
+    </div>
+
+  </section>
+
+  <section class="band">
+    <div class="tag"><b>Principles</b>the invariants everything rests on</div>
+    <ul>
+      <li><b>The store stays dumb.</b> The backing store reads and writes; it never adjudicates a proposal. Review lives in the conversation.</li>
+      <li><b>The read path is neutral.</b> Any instance is plain files anyone can re-read without an API, so nothing becomes lock-in.</li>
+      <li><b>Distribution is a projection.</b> Anything published is regenerated from the graph, never a second copy that can drift from it.</li>
+      <li><b>Convergent merge, asymmetric accept.</b> Anyone may propose and it all merges; a named authority decides what is accepted.</li>
+    </ul>
+  </section>
+
+  <footer>
+    <div class="metrics">
+      <div class="metric"><b>${errorCount} / ${warningCount}</b><span>errors / warnings</span></div>
+      <div class="metric"><b>${EXTERNAL_TOOLS_READING_AGENTS}</b><span>tools read AGENTS.md</span></div>
+      <div class="metric"><b>Apache-2.0</b><span>FINOS Labs</span></div>
+    </div>
+    <div class="colophon">
+      <div><b>FINOS Labs</b> · github.com/finos-labs/konspekt</div>
+      <div>current state · companion to the roadmap sheet</div>
+    </div>
+  </footer>
+
+</div>
+</body>
+</html>
+`;
+
+const contentHash =
+  "sha256:" + createHash("sha256").update(htmlBody).digest("hex").slice(0, 16);
+
+const banner =
+  "<!-- AUTOGENERATED by tools/state-poster.mjs — do not edit by hand.\n" +
+  "     Regenerate with:      node tools/state-poster.mjs\n" +
+  "     Check freshness with: node tools/state-poster.mjs --check\n" +
+  "     This file is a pure function of .konspekt/instance/ (no timestamps baked in).\n" +
+  "     Conformance figures are derived from the graph; the tools count is an\n" +
+  "     external constant declared in the generator.\n" +
+  `     contentHash: ${contentHash} -->\n`;
+
+// Insert the banner just inside <head> rather than before <!DOCTYPE>, so the
+// document does not fall into quirks mode.
+const fileText = htmlBody.replace("<head>\n", "<head>\n" + banner);
+
+// ---- write or check ----
+
+if (check) {
+  if (!existsSync(outFile)) {
+    console.error(`state-poster --check: ${outFile} does not exist. Run: node tools/state-poster.mjs`);
+    process.exit(1);
+  }
+  const committed = readFileSync(outFile, "utf8");
+  if (committed === fileText) {
+    console.log(`state-poster --check: ${outFile} is up to date (${contentHash}).`);
+    process.exit(0);
+  }
+  console.error(
+    `state-poster --check: ${outFile} is stale — it does not match the current graph.\n` +
+    "Regenerate and commit it:  node tools/state-poster.mjs",
+  );
+  process.exit(1);
+}
+
+writeFileSync(outFile, fileText);
+console.log(`wrote ${outFile}`);
+console.log(`  errors: ${errorCount}  warnings: ${warningCount}  tools: ${EXTERNAL_TOOLS_READING_AGENTS}  ${contentHash}`);
