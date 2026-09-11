@@ -3,7 +3,7 @@
      Check freshness with: node tools/roadmap.mjs --check
      This file is a pure function of .konspekt/instance/ (no timestamps baked in).
      Goals and tasks are graph nodes; the horizon is derived from node status/review.
-     contentHash: sha256:ef638add8cce8baf -->
+     contentHash: sha256:68cebe0186ba9b00 -->
 
 # konspekt roadmap
 
@@ -51,32 +51,6 @@ Help people process gen-AI outputs and follow long conversations by externalizin
 - Review ergonomics
 - Trigger + transport
 
-## Port across platforms
-
-Provide a platform-neutral representation of a project so it can move between gen-AI tools without losing the connective tissue: instructions, accumulated context, conventions. The structurally defensible goal — no single vendor is incentivized to build it well.
-
-**Now** — _in progress_
-
-- Build the adoption path
-
-**Next** — _accepted and planned_
-
-- Decide whether instance/ directory layout should be regularized
-- Choose a license
-- Consider an "outcome" node type for testable controls
-- Make notifications portable
-- Find the second implementer
-
-**Later** — _proposed, not yet committed_
-
-- A durable store other than git
-
-**Shipped** — _resolved_
-
-- Re-serialize the instance to the reconciled spec
-- Reconcile canonical schema into spec/
-- Lock the serialization format
-
 ## Answer who is responsible _(proposed)_
 
 Make the facts a responsibility question needs answerable with evidence. The law decides who is responsible; konspekt records, verbatim and unaltered, what an AI proposed and which named human accepted it, so the underlying account is not in dispute. Responsibility attaches to a human by construction: an AI proposes, and only a named maintainer accepts.
@@ -101,7 +75,7 @@ Let several participants — people and agents — propose into and review one s
 
 ## Make the graph observable _(proposed)_
 
-Make the state and history of an instance legible through queries over the typed graph — edge density, provenance depth, proposal and acceptance counts, unaccepted-proposal age — run as projections outside the store and, at the limit, continuously. These measures are the same ones the effectiveness research needs, so the capability is general and the research is its first consumer. It runs entirely as regenerable projections and adds nothing back to the graph.
+Make the state and history of an instance legible enough to act on. Read as queries over the typed graph — what has been proposed and accepted, how long proposals wait unanswered, how the work is progressing — the record becomes the basis for analysing the efficiency of the work, monitoring and controlling it while it runs, intervening when it goes off course, and drawing lessons from what happened afterwards. Every measure is a regenerable projection over the graph and adds nothing back to it.
 
 **Next** — _accepted and planned_
 
@@ -116,6 +90,32 @@ Make the state and history of an instance legible through queries over the typed
 **Shipped** — _resolved_
 
 - Generate ROADMAP.md as a graph projection with a conformance freshness gate
+
+## Port across platforms _(proposed)_
+
+Keep a project's working context — its instructions, accumulated decisions, and conventions — in a platform-neutral form, so it moves freely between gen-AI tools and can be deployed inside an enterprise on the organization's own terms. Portability runs in two directions: no lock-in to a single vendor's assistant, and no dependence on a vendor's hosted service, so an enterprise can run konspekt on its own infrastructure, against its own storage, identity, and controls.
+
+**Now** — _in progress_
+
+- Build the adoption path
+
+**Next** — _accepted and planned_
+
+- Decide whether instance/ directory layout should be regularized
+- Choose a license
+- Consider an "outcome" node type for testable controls
+- Make notifications portable
+- Find the second implementer
+
+**Later** — _proposed, not yet committed_
+
+- A durable store other than git
+
+**Shipped** — _resolved_
+
+- Re-serialize the instance to the reconciled spec
+- Reconcile canonical schema into spec/
+- Lock the serialization format
 
 ---
 
