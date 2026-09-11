@@ -10,3 +10,17 @@
 # on disk. Pin it to LF so core.autocrlf cannot make a fresh file read as stale
 # on a Windows checkout. See nw-checker-hashes-raw-disk-bytes.
 /ROADMAP.md text eol=lf
+
+# The generated posters are round-tripped by their freshness gates
+# (tools/roadmap-poster.mjs --check, tools/state-poster.mjs --check), which emit
+# LF and diff against the on-disk file. Same reason as ROADMAP.md: pin to LF so
+# core.autocrlf cannot make a fresh file read as stale on a Windows checkout.
+/docs/visuals/posters/konspekt-roadmap-poster.html text eol=lf
+/docs/visuals/posters/konspekt-current-state-poster.html text eol=lf
+
+# The roadmap and poster generators embed their output as LF template literals
+# and hash those bytes; pin them to LF so the emitted contentHash is identical
+# on every platform and the freshness gates round-trip cleanly.
+/tools/roadmap.mjs text eol=lf
+/tools/roadmap-poster.mjs text eol=lf
+/tools/state-poster.mjs text eol=lf
