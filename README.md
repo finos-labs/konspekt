@@ -70,6 +70,12 @@ Pre–first-external-adopter. Schema and serialization are at **v1**. The format
 
 - **Second implementer** — who, and the smallest thing to put in front of them. Deferred, but the central milestone.
 
+## Get Involved
+
+Join the Konspekt general mailing list by sending an email to konspekt-general+subscribe@lists.finos.org.
+
+Join the [#konspekt](https://app.slack.com/client/T01E7QRQH97/C0BSX90T7UL) Slack Channel in the FINOS workspace. If you are not a member of the FINOS Slack workspace email help@finos.org to be added.
+
 ## Contributing
 
 All contributions must follow the process and guideliness described in the [CONTRIBUTING.md](./CONTRIBUTING.md) file. 
