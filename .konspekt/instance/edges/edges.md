@@ -207,3 +207,7 @@ proposal.
 | e-not-authority-roadmapauth | notes | node:task-authority-mechanism | noteworthy:nw-roadmap-generation-coupled-to-authority |  | proposed |
 | e-prod-poster-roadmapgen | produces | node:task-roadmap-poster-generated | artifact:artifact-roadmap-poster-generator |  | proposed |
 | e-prod-poster-stategen | produces | node:task-roadmap-poster-generated | artifact:artifact-state-poster-generator |  | proposed |
+| e-not-ingestion-carrier | notes | node:task-ingestion-mode | noteworthy:nw-convention-carrier |  | proposed |
+| e-not-central-carrier | notes | node:task-central-service-binding | noteworthy:nw-convention-carrier |  | proposed |
+| e-not-adoption-carrier | notes | node:task-adoption-path | noteworthy:nw-convention-carrier |  | proposed |
+| e-not-portability-carrier | notes | node:goal-portability | noteworthy:nw-convention-carrier |  | proposed |
