@@ -41,6 +41,28 @@ This instance runs the **synchronous-review** posture defined in
 The store only ever sees `read` and `write`. `load` / `sync` / `persist` /
 `sync_persist` are orchestration above the store, identical on every binding.
 
+## Accept authority
+
+This instance runs **single-individual** accept authority: one human is the sole
+maintainer and the only holder of accept authority. That human proposes (with
+the LLM maintainer) and accepts; accepted state is written to `main` directly, as
+the operating loop above describes. The scope is one human being a sole
+contributor to a project. This is the simplest shape in the accept-authority
+coupling recorded as `nw-roadmap-generation-coupled-to-authority`, and it is why
+`ROADMAP.md` automation may use the simplest trigger (see Roadmap regeneration
+below).
+
+This shape is host policy for this instance, not the konspekt standard —
+`spec/architecture/REVIEW.md` keeps who-accepts out of the standard. It is
+recorded here in the envelope, not in the portable `project.md`, because no
+spec-defined config field for it exists yet. A second adopter carries
+`.konspekt/instance/` and sets its own accept authority.
+
+Richer shapes — a designated approver, a consensus syndicate, or non-human
+acceptors — and a spec-defined field to declare the shape per instance are
+deferred to `task-authority-mechanism` under `goal-accountability`. Recorded in
+the instance as `nw-instance-single-individual-authority`.
+
 ## Human vocabulary
 
 Not duplicated here — single source of truth:

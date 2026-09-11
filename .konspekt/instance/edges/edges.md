@@ -200,3 +200,8 @@ proposal.
 | e-dec-obs-roadmap-poster | decomposes | node:goal-observability | node:task-roadmap-poster-generated |  | proposed |
 | e-not-poster-derive | notes | node:task-roadmap-poster-generated | noteworthy:nw-derive-not-copy |  |  |
 | e-not-collab-issueintake | notes | node:goal-collaboration | noteworthy:nw-inbound-issue-needs-consensus-intake |  | proposed |
+| e-dec-account-authority | decomposes | node:goal-accountability | node:task-authority-mechanism |  | proposed |
+| e-rel-authority-gate | relates | node:task-authority-mechanism | node:task-persona-change-gate | 0.7 | proposed |
+| e-rel-authority-signed | relates | node:task-authority-mechanism | node:task-signed-accepts | 0.6 | proposed |
+| e-not-authority-single | notes | node:task-authority-mechanism | noteworthy:nw-instance-single-individual-authority |  | proposed |
+| e-not-authority-roadmapauth | notes | node:task-authority-mechanism | noteworthy:nw-roadmap-generation-coupled-to-authority |  | proposed |
