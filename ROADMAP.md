@@ -3,7 +3,7 @@
      Check freshness with: node tools/roadmap.mjs --check
      This file is a pure function of .konspekt/instance/ (no timestamps baked in).
      Goals and tasks are graph nodes; the horizon is derived from node status/review.
-     contentHash: sha256:6733fc145a5b2beb -->
+     contentHash: sha256:ef39c380c50640c4 -->
 
 # konspekt roadmap
 
@@ -51,37 +51,13 @@ Help people process gen-AI outputs and follow long conversations by externalizin
 - Review ergonomics
 - Trigger + transport
 
-## Answer who is responsible _(proposed)_
-
-Make the facts a responsibility question needs answerable with evidence. The law decides who is responsible; konspekt records, verbatim and unaltered, what an AI proposed and which named human accepted it, so the underlying account is not in dispute. Responsibility attaches to a human by construction: an AI proposes, and only a named maintainer accepts.
-
-**Next** — _accepted and planned_
-
-- Design a richer accept-authority mechanism
-- Protect changes to who carries legal weight
-
-**Later** — _proposed, not yet committed_
-
-- The responsibility report
-- Signed accepts via a legally-bound persona
-
-## Share authorship across a team _(proposed)_
-
-Let several participants — people and agents — propose into and review one shared instance without weakening propose→accept, with accept authority named in config so it survives a change of backing store. Platforms build collaboration into their own closed state; the version that works across a neutral, portable record is the one no single vendor is incentivized to build. The hardest open part is concurrency control on the single edge table, unresolved and shared by both the human and the agent case.
-
-**Later** — _proposed, not yet committed_
-
-- One reviewer over a fleet of agents
-- Support multiple human authors on one instance
-
-## Make the graph observable _(proposed)_
+## Make the graph observable
 
 Make the state and history of an instance legible enough to act on. Read as queries over the typed graph — what has been proposed and accepted, how long proposals wait unanswered, how the work is progressing — the record becomes the basis for analysing the efficiency of the work, monitoring and controlling it while it runs, intervening when it goes off course, and drawing lessons from what happened afterwards. Every measure is a regenerable projection over the graph and adds nothing back to it.
 
 **Next** — _accepted and planned_
 
 - Automate ROADMAP.md regeneration on accepted graph change
-- Regenerate the roadmap poster from the graph
 
 **Later** — _proposed, not yet committed_
 
@@ -91,8 +67,9 @@ Make the state and history of an instance legible enough to act on. Read as quer
 **Shipped** — _resolved_
 
 - Generate ROADMAP.md as a graph projection with a conformance freshness gate
+- Regenerate the roadmap poster from the graph
 
-## Port across platforms _(proposed)_
+## Port across platforms
 
 Keep a project's working context — its instructions, accumulated decisions, and conventions — in a platform-neutral form, so it moves freely between gen-AI tools and can be deployed inside an enterprise on the organization's own terms. Portability runs in two directions: no lock-in to a single vendor's assistant, and no dependence on a vendor's hosted service, so an enterprise can run konspekt on its own infrastructure, against its own storage, identity, and controls.
 
@@ -117,6 +94,29 @@ Keep a project's working context — its instructions, accumulated decisions, an
 - Re-serialize the instance to the reconciled spec
 - Reconcile canonical schema into spec/
 - Lock the serialization format
+
+## Answer who is responsible _(proposed)_
+
+Make the facts a responsibility question needs answerable with evidence. The law decides who is responsible; konspekt records, verbatim and unaltered, what an AI proposed and which named human accepted it, so the underlying account is not in dispute. Responsibility attaches to a human by construction: an AI proposes, and only a named maintainer accepts.
+
+**Next** — _accepted and planned_
+
+- Design a richer accept-authority mechanism
+- Protect changes to who carries legal weight
+
+**Later** — _proposed, not yet committed_
+
+- The responsibility report
+- Signed accepts via a legally-bound persona
+
+## Share authorship across a team _(proposed)_
+
+Let several participants — people and agents — propose into and review one shared instance without weakening propose→accept, with accept authority named in config so it survives a change of backing store. Platforms build collaboration into their own closed state; the version that works across a neutral, portable record is the one no single vendor is incentivized to build. The hardest open part is concurrency control on the single edge table, unresolved and shared by both the human and the agent case.
+
+**Later** — _proposed, not yet committed_
+
+- One reviewer over a fleet of agents
+- Support multiple human authors on one instance
 
 ---
 

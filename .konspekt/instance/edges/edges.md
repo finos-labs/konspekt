@@ -205,3 +205,5 @@ proposal.
 | e-rel-authority-signed | relates | node:task-authority-mechanism | node:task-signed-accepts | 0.6 | proposed |
 | e-not-authority-single | notes | node:task-authority-mechanism | noteworthy:nw-instance-single-individual-authority |  | proposed |
 | e-not-authority-roadmapauth | notes | node:task-authority-mechanism | noteworthy:nw-roadmap-generation-coupled-to-authority |  | proposed |
+| e-prod-poster-roadmapgen | produces | node:task-roadmap-poster-generated | artifact:artifact-roadmap-poster-generator |  | proposed |
+| e-prod-poster-stategen | produces | node:task-roadmap-poster-generated | artifact:artifact-state-poster-generator |  | proposed |

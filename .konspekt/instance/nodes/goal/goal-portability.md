@@ -7,12 +7,12 @@ summary:
   origin: machine
   pinned: false
   updatedAt: 2026-06-21T13:00:00Z
-review: proposed
+review: accepted
 provenance:
   conversationId: goals-and-motivation
   timestamp: 2026-06-21T13:00:00Z
 createdAt: 2026-06-21T13:00:00Z
-updatedAt: 2026-09-10T23:15:00Z
+updatedAt: 2026-09-11T18:00:00Z
 ```
 # Goal: Port across platforms
 

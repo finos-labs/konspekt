@@ -2,7 +2,7 @@
 id: task-roadmap-poster-generated
 type: task
 title: Regenerate the roadmap poster from the graph
-status: open
+status: resolved
 summary:
   origin: machine
   pinned: false
@@ -15,7 +15,7 @@ provenance:
   timestamp: 2026-09-10T22:30:00Z
   confidence: 0.8
 createdAt: 2026-09-10T22:30:00Z
-updatedAt: 2026-09-10T22:30:00Z
+updatedAt: 2026-09-11T18:00:00Z
 ```
 # Task: Regenerate the roadmap poster from the graph
 
