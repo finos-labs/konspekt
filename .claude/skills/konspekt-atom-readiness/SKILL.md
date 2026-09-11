@@ -37,6 +37,17 @@ unless the human accepted the content itself.
 mechanical back-and-forth. A turn that decided something, named something,
 finished something, or changed the status of something is substantive.
 
+## Print the task text before working it
+
+Before you act on a task node — implementing it, investigating it, or venturing
+a status change to it — print the task's text to the human: its id, title,
+current `status` and `review`, and its body. Read it from the file on disk, not
+from memory. Work on a task is grounded in the persisted node, and the human who
+will accept or reject a resulting change needs the same source in view rather
+than a paraphrase. Do this whenever a task becomes the focus of the exchange —
+including when the human names it — and again when you return to it after other
+work.
+
 ## What a "ready atom" is
 
 An atom is ready when something durable has **settled** — not when it is merely
