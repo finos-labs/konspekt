@@ -30,11 +30,12 @@ One underlying decision, up to three representations, with a single rule for eac
 
 ## Edges
 
-One typed table; `from` / `to` are `EntityRef`s — or, for a persona layer that defines one, a content-addressed provenance ref such as `command:<hash>` (see `../personas/`); `weight` is meaningful only for `relates`.
+One typed table; `from` / `to` are `EntityRef`s — or, for a persona layer that defines one, a content-addressed provenance ref such as `command:<hash>` (see `../personas/`); `weight` is meaningful only for `relates` and `links`.
 
 - `decomposes` — node → node (goal tree)
 - `mentions` — node → concept
 - `relates` — concept → concept (untyped association; optional `weight` for strength)
+- `links` — node → node (generic "linked to"; untyped association, symmetric in meaning but stored directed; optional `weight` for strength). The node-level counterpart to concept `relates`. Domain-flavored typed links (`blocks`, `depends-on`, …) are left to persona layers, not core.
 - `produces` — node → artifact
 - `notes` — node → noteworthy
 - `marks` — waypoint → node (the branch the waypoint sits on / opened)
@@ -74,7 +75,7 @@ These are **authority verbs** — the override/guarantee moments, and precisely 
 
 ## Note on concept relationships
 
-Concept-to-concept edges exist but are **untyped** (kind `relates`), carrying an optional numeric `weight` instead of a relationship ontology — deliberately avoiding a philosophical rabbit hole. `supersedes` is the one *truth-changing* relation promoted to its own kind; evidential relations ("supports") are deliberately **not** typed, for the same reason.
+Concept-to-concept edges exist but are **untyped** (kind `relates`), carrying an optional numeric `weight` instead of a relationship ontology — deliberately avoiding a philosophical rabbit hole. Node-to-node associations get the same treatment under kind `links`: a generic "linked to" with an optional `weight`, deliberately untyped. Typing the node links (`blocks`, `depends-on`, `duplicates`, …) is a persona-layer concern, so core stays domain-agnostic. `supersedes` is the one *truth-changing* relation promoted to its own kind; evidential relations ("supports") are deliberately **not** typed, for the same reason.
 
 
 ## Extension: persona layers

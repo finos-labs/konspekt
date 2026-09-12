@@ -49,6 +49,10 @@ export type EdgeKind =
   | "decomposes" // node -> node (goal tree)
   | "mentions"   // node -> concept
   | "relates"    // concept -> concept (untyped; optional weight)
+  | "links"      // node -> node (generic "linked to"; untyped, symmetric in
+                 // meaning but stored directed; optional weight). The node-level
+                 // counterpart to concept `relates`. Domain-flavored typed links
+                 // (blocks, depends-on, ...) are left to persona layers, not core.
   | "produces"   // node -> artifact
   | "notes"      // node -> noteworthy
   | "marks"      // waypoint -> node (the branch it sits on / opened)
@@ -172,7 +176,7 @@ export interface Edge extends Base {
   kind: EdgeKind;
   from: EdgeEndpoint;
   to: EdgeEndpoint;
-  weight?: number;     // only meaningful for "relates" — link strength
+  weight?: number;     // only meaningful for "relates"/"links" — link strength
 }
 
 // ---------- Derived views (never stored) ----------

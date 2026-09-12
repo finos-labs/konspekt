@@ -176,7 +176,7 @@
     noteworthy:    { ink: "#be123c", bg: "#fdecef" },
     artifact:      { ink: "#1d4ed8", bg: "#e8effc" },
     apex:          { ink: "#34322e", bg: "#34322e" },
-    edge: "#c4c0b8", apexedge: "#cfccc5", relates: "#9b8cc0", sel: "#b4530a",
+    edge: "#c4c0b8", apexedge: "#cfccc5", relates: "#9b8cc0", links: "#5b9bb0", sel: "#b4530a",
   };
 
   // ---------- index everything by id ----------
@@ -202,6 +202,7 @@
   }
   for (const arr of satByOwner.values()) arr.sort((a,b) => a.id < b.id ? -1 : 1);
   const relates = edges.filter(e => e.kind === "relates" && satIds.has(e.from.id) && satIds.has(e.to.id));
+  const links = edges.filter(e => e.kind === "links" && nodeIds.has(e.from.id) && nodeIds.has(e.to.id));
 
   // ---------- decomposes structure: parents/children + longest-path rank (for visibility) ----------
   const parents = new Map(), children = new Map();
@@ -247,6 +248,7 @@
   for (const [owner, arr] of satByOwner)
     for (const t of arr) elements.push({ data: { id: "teth>" + owner + ">" + t.id, source: owner, target: t.id }, classes: "tether " + t.kind });
   for (const e of relates) elements.push({ data: { id: "rel>" + e.from.id + ">" + e.to.id, source: e.from.id, target: e.to.id }, classes: "relates" });
+  for (const e of links) elements.push({ data: { id: "lnk>" + e.from.id + ">" + e.to.id, source: e.from.id, target: e.to.id }, classes: "links" });
 
   // ---------- cytoscape ----------
   const cy = cytoscape({
@@ -286,6 +288,7 @@
       { selector: ".tether.notes",    style: { "line-color": C.noteworthy.ink } },
       { selector: ".tether.produces", style: { "line-color": C.artifact.ink } },
       { selector: ".relates", style: { "curve-style": "unbundled-bezier", "control-point-distances": [-32], "line-color": C.relates, "line-style": "dotted", "width": 1.4 } },
+      { selector: ".links", style: { "curve-style": "unbundled-bezier", "control-point-distances": [-40], "line-color": C.links, "line-style": "dashed", "width": 1.4 } },
       { selector: ".sel", style: { "border-width": 3, "border-color": C.sel } },
       { selector: ".faded", style: { "opacity": 0.18 } },
     ],

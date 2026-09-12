@@ -20,7 +20,9 @@ hand-rolled SVG/pan/zoom/layout is gone. What stays deliberately small:
   Expanding a node reveals its `decomposes` children and its `mentions` /
   `notes` / `produces` targets; a shared satellite is a single node with
   multiple tethers — identity is singular, matching the store. `relates` arcs
-  draw between two concepts that are both currently shown.
+  draw between two concepts that are both currently shown; `links` arcs
+  (generic node "linked to") draw between two nodes that are both currently
+  shown.
 - **All nodes, all statuses.** Status, review state, supersession, and time are
   *not* encoded as visual channels in v1; any node can be shown regardless.
   Those become filters in a later pass.
