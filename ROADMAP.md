@@ -3,7 +3,7 @@
      Check freshness with: node tools/roadmap.mjs --check
      This file is a pure function of .konspekt/instance/ (no timestamps baked in).
      Goals and tasks are graph nodes; the horizon is derived from node status/review.
-     contentHash: sha256:ef39c380c50640c4 -->
+     contentHash: sha256:cd0e4ed7cba42f7d -->
 
 # konspekt roadmap
 
@@ -95,6 +95,16 @@ Keep a project's working context — its instructions, accumulated decisions, an
 - Reconcile canonical schema into spec/
 - Lock the serialization format
 
+## Operate konspekt through a human interface
+
+Make a konspekt instance operable by a human through a visual interface, not only readable: select a goal, see its open tasks, and work through them — reviewing, dispositioning, accepting, and resolving from the interface rather than by hand- editing files. Where [[goal-observability]] makes the graph legible (read-only projections and metrics), this goal makes it operable (navigate and act).
+
+**Next** — _accepted and planned_
+
+- Navigate from a goal to its open tasks
+- Work through and disposition tasks in the interface
+- Encode status and review as visual channels and filters
+
 ## Answer who is responsible _(proposed)_
 
 Make the facts a responsibility question needs answerable with evidence. The law decides who is responsible; konspekt records, verbatim and unaltered, what an AI proposed and which named human accepted it, so the underlying account is not in dispute. Responsibility attaches to a human by construction: an AI proposes, and only a named maintainer accepts.
@@ -120,4 +130,4 @@ Let several participants — people and agents — propose into and review one s
 
 ---
 
-Generated from 6 goal(s) and 35 task-listing(s) over the instance graph.
+Generated from 7 goal(s) and 38 task-listing(s) over the instance graph.

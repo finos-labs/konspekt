@@ -211,3 +211,8 @@ proposal.
 | e-not-central-carrier | notes | node:task-central-service-binding | noteworthy:nw-convention-carrier |  | proposed |
 | e-not-adoption-carrier | notes | node:task-adoption-path | noteworthy:nw-convention-carrier |  | proposed |
 | e-not-portability-carrier | notes | node:goal-portability | noteworthy:nw-convention-carrier |  | proposed |
+| e-dec-usability-filters | decomposes | node:goal-usability | node:task-visual-status-filters |  |  |
+| e-dec-usability-nav | decomposes | node:goal-usability | node:task-goal-task-navigation |  |  |
+| e-dec-usability-workthrough | decomposes | node:goal-usability | node:task-task-workthrough-ui |  |  |
+| e-prod-filters-explorer | produces | node:task-visual-status-filters | artifact:artifact-visual-explorer |  |  |
+| e-prod-nav-explorer | produces | node:task-goal-task-navigation | artifact:artifact-visual-explorer |  |  |
