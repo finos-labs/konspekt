@@ -8,7 +8,8 @@ review: accepted
 
 Single typed edge table (konspekt serialization v1). `from` / `to` are
 `type:id`. `provenance` and `review` are the file-level defaults above.
-`weight` is meaningful only for `relates`. `review` is a per-row **override**:
+`weight` is meaningful only for `relates` (concept↔concept) and `links`
+(node↔node, generic "linked to"). `review` is a per-row **override**:
 leave it empty to inherit the file-level default above; set it (e.g. `proposed`)
 on an edge that is not yet accepted — typically one whose endpoint is itself a
 proposal.
@@ -146,6 +147,7 @@ proposal.
 | e-mark-setupkit | marks | waypoint:wp-setup-kit | node:task-adoption-path |  |  |
 | e-mark-conformance-layout | marks | waypoint:wp-conformance-checker | node:task-instance-layout-regularity |  | proposed |
 | e-mark-conformance-adoption | marks | waypoint:wp-conformance-checker | node:task-adoption-path |  | proposed |
+| e-mark-links-serial | marks | waypoint:wp-links-edge-kind | node:task-serialization-format |  | proposed |
 | e-rel-conv-extstate | relates | concept:concept-goals-convergence | concept:concept-externalized-state | 0.6 |  |
 | e-rel-conv-conn | relates | concept:concept-goals-convergence | concept:concept-connective-tissue | 0.6 |  |
 | e-rel-legible-gap | relates | concept:concept-legible-over-defensible | concept:concept-second-implementer-gap | 0.5 |  |
@@ -174,14 +176,14 @@ proposal.
 | e-men-enterprise-contract | mentions | node:task-enterprise-persistence | concept:concept-transport-contract |  | proposed |
 | e-not-enterprise-reupload | notes | node:task-enterprise-persistence | noteworthy:nw-manual-reupload-probe |  | proposed |
 | e-not-enterprise-neutral | notes | node:task-enterprise-persistence | noteworthy:nw-mcp-binding-needs-neutral-read |  | proposed |
-| e-rel-multiauthor-fleet | relates | node:task-multi-author-review | node:task-agent-fleet | 0.5 | proposed |
-| e-rel-multiauthor-review | relates | node:task-multi-author-review | node:task-review-ergonomics | 0.5 | proposed |
-| e-rel-fleet-review | relates | node:task-agent-fleet | node:task-review-ergonomics | 0.5 | proposed |
-| e-rel-enterprise-provenance | relates | node:task-enterprise-persistence | node:task-provenance-model | 0.5 | proposed |
-| e-rel-enterprise-central | relates | node:task-enterprise-persistence | node:task-central-service-binding | 0.5 | proposed |
-| e-rel-analytics-validation | relates | node:task-graph-analytics | node:investigation-validation | 0.5 | proposed |
-| e-rel-monitoring-notifications | relates | node:task-realtime-monitoring | node:task-portable-notifications | 0.5 | proposed |
-| e-rel-monitoring-enterprise | relates | node:task-realtime-monitoring | node:task-enterprise-persistence | 0.5 | proposed |
+| e-link-multiauthor-fleet | links | node:task-multi-author-review | node:task-agent-fleet | 0.5 | proposed |
+| e-link-multiauthor-review | links | node:task-multi-author-review | node:task-review-ergonomics | 0.5 | proposed |
+| e-link-fleet-review | links | node:task-agent-fleet | node:task-review-ergonomics | 0.5 | proposed |
+| e-link-enterprise-provenance | links | node:task-enterprise-persistence | node:task-provenance-model | 0.5 | proposed |
+| e-link-enterprise-central | links | node:task-enterprise-persistence | node:task-central-service-binding | 0.5 | proposed |
+| e-link-analytics-validation | links | node:task-graph-analytics | node:investigation-validation | 0.5 | proposed |
+| e-link-monitoring-notifications | links | node:task-realtime-monitoring | node:task-portable-notifications | 0.5 | proposed |
+| e-link-monitoring-enterprise | links | node:task-realtime-monitoring | node:task-enterprise-persistence | 0.5 | proposed |
 
 <!-- === accountability draft (first draft, unreviewed; one open item) === -->
 | e-dec-account-report | decomposes | node:goal-accountability | node:task-accountability-report |  | proposed |
@@ -189,9 +191,9 @@ proposal.
 | e-dec-account-gate | decomposes | node:goal-accountability | node:task-persona-change-gate |  | proposed |
 | e-men-report-caprov | mentions | node:task-accountability-report | concept:concept-content-addressed-provenance |  | proposed |
 | e-men-signed-sep | mentions | node:task-signed-accepts | concept:concept-propose-accept-separation |  | proposed |
-| e-rel-report-fleet | relates | node:task-accountability-report | node:task-agent-fleet | 0.5 | proposed |
-| e-rel-report-observ | relates | node:task-accountability-report | node:goal-observability | 0.5 | proposed |
-| e-rel-signed-multiauthor | relates | node:task-signed-accepts | node:task-multi-author-review | 0.5 | proposed |
+| e-link-report-fleet | links | node:task-accountability-report | node:task-agent-fleet | 0.5 | proposed |
+| e-link-report-observ | links | node:task-accountability-report | node:goal-observability | 0.5 | proposed |
+| e-link-signed-multiauthor | links | node:task-signed-accepts | node:task-multi-author-review | 0.5 | proposed |
 | e-not-provenance-checkerbytes | notes | node:task-provenance-model | noteworthy:nw-checker-hashes-raw-disk-bytes |  |  |
 | e-dec-obs-roadmap-gen | decomposes | node:goal-observability | node:task-roadmap-generator |  | proposed |
 | e-dec-obs-roadmap-wf | decomposes | node:goal-observability | node:task-roadmap-generation-workflow |  | proposed |
@@ -201,8 +203,8 @@ proposal.
 | e-not-poster-derive | notes | node:task-roadmap-poster-generated | noteworthy:nw-derive-not-copy |  |  |
 | e-not-collab-issueintake | notes | node:goal-collaboration | noteworthy:nw-inbound-issue-needs-consensus-intake |  | proposed |
 | e-dec-account-authority | decomposes | node:goal-accountability | node:task-authority-mechanism |  | proposed |
-| e-rel-authority-gate | relates | node:task-authority-mechanism | node:task-persona-change-gate | 0.7 | proposed |
-| e-rel-authority-signed | relates | node:task-authority-mechanism | node:task-signed-accepts | 0.6 | proposed |
+| e-link-authority-gate | links | node:task-authority-mechanism | node:task-persona-change-gate | 0.7 | proposed |
+| e-link-authority-signed | links | node:task-authority-mechanism | node:task-signed-accepts | 0.6 | proposed |
 | e-not-authority-single | notes | node:task-authority-mechanism | noteworthy:nw-instance-single-individual-authority |  | proposed |
 | e-not-authority-roadmapauth | notes | node:task-authority-mechanism | noteworthy:nw-roadmap-generation-coupled-to-authority |  | proposed |
 | e-prod-poster-roadmapgen | produces | node:task-roadmap-poster-generated | artifact:artifact-roadmap-poster-generator |  | proposed |
