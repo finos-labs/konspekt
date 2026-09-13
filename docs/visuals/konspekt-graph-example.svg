@@ -1,0 +1,141 @@
+<svg viewBox="0 0 1220 880" xmlns="http://www.w3.org/2000/svg" font-family="IBM Plex Sans, sans-serif">
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0b1424"/><stop offset="0.6" stop-color="#0c1730"/><stop offset="1" stop-color="#0b1526"/></linearGradient>
+  <radialGradient id="gc" cx="0.18" cy="0.12" r="0.6"><stop offset="0" stop-color="rgba(84,199,216,0.10)"/><stop offset="1" stop-color="rgba(84,199,216,0)"/></radialGradient>
+  <radialGradient id="gp" cx="0.92" cy="1.05" r="0.6"><stop offset="0" stop-color="rgba(231,140,178,0.08)"/><stop offset="1" stop-color="rgba(231,140,178,0)"/></radialGradient>
+  <pattern id="grid" width="34" height="34" patternUnits="userSpaceOnUse"><path d="M34 0 H0 V34" fill="none" stroke="#182740" stroke-width="1" opacity="0.34"/></pattern>
+  <marker id="a" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9" fill="none" stroke="#4a6089" stroke-width="1.5"/></marker>
+  <marker id="asup" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L9,5 L0,10" fill="none" stroke="#e78cb2" stroke-width="1.8"/></marker>
+  <marker id="aw" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9" fill="none" stroke="#c2cfe6" stroke-width="1.3" opacity="0.7"/></marker>
+</defs>
+<rect width="1220" height="880" fill="url(#bg)"/><rect width="1220" height="880" fill="url(#grid)"/>
+<rect width="1220" height="880" fill="url(#gc)"/><rect width="1220" height="880" fill="url(#gp)"/>
+<text x="52" y="56" font-family="IBM Plex Mono, monospace" font-size="18" fill="#c2cfe6"><tspan fill="#eef3fb" font-weight="600">konspekt</tspan> · a project, as a typed graph</text>
+<text x="52" y="90" font-size="30" font-weight="700" fill="#eef3fb" letter-spacing="-0.5">One goal, worked in the open</text>
+<text x="52" y="116" font-size="15" fill="#c6d2e6">A retrieval-quality project. Every box is a typed atom; every line is one edge in a single table.</text>
+<line x1="52" y1="138" x2="1168" y2="138" stroke="#26395c" stroke-width="1"/>
+<text x="930" y="150" font-family="IBM Plex Mono, monospace" font-size="12" fill="#96a7c5">timeline · waypoints</text>
+<rect x="646" y="610" width="258" height="54" rx="4" fill="rgba(194,207,230,0.06)" stroke="#c2cfe6" stroke-width="1" stroke-dasharray="3 3"/>
+<text x="658" y="631" font-size="12" font-weight="600" fill="#c2cfe6">the decision rule, live</text>
+<text x="658" y="650" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="#c6d2e6">one decision -> a Noteworthy + a Waypoint</text>
+<line x1="52" y1="792" x2="1168" y2="792" stroke="#26395c" stroke-width="1"/>
+<rect x="54" y="807" width="11" height="11" rx="2" fill="#e78cb2"/>
+<text x="72" y="818" font-family="IBM Plex Mono, monospace" font-size="12" fill="#c6d2e6">work node</text>
+<rect x="178" y="807" width="11" height="11" rx="2" fill="#f2b45c"/>
+<text x="196" y="818" font-family="IBM Plex Mono, monospace" font-size="12" fill="#c6d2e6">noteworthy</text>
+<rect x="310" y="807" width="11" height="11" rx="2" fill="#c2cfe6"/>
+<text x="328" y="818" font-family="IBM Plex Mono, monospace" font-size="12" fill="#c6d2e6">waypoint</text>
+<rect x="426" y="807" width="11" height="11" rx="2" fill="#54c7d8"/>
+<text x="444" y="818" font-family="IBM Plex Mono, monospace" font-size="12" fill="#c6d2e6">concept</text>
+<rect x="535" y="807" width="11" height="11" rx="2" fill="#87d7a3"/>
+<text x="553" y="818" font-family="IBM Plex Mono, monospace" font-size="12" fill="#c6d2e6">artifact</text>
+<text x="1168" y="804" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="#96a7c5">solid = decomposes / mentions / notes / produces  |  dotted = marks  |  dashed = supersedes</text>
+<text x="1168" y="822" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="#96a7c5">FINOS Labs · Apache-2.0 · github.com/finos-labs/konspekt</text>
+<path d="M195.0,214 L195.0,258" fill="none" stroke="#3a537d" stroke-width="1.5"  marker-end="url(#a)" opacity="1.0"/>
+<text x="239.0" y="240" font-family="IBM Plex Mono, monospace" font-size="10" fill="#96a7c5" text-anchor="middle">decomposes</text>
+<path d="M195.0,312 L195.0,352" fill="none" stroke="#3a537d" stroke-width="1.5"  marker-end="url(#a)" opacity="1.0"/>
+<text x="239.0" y="338" font-family="IBM Plex Mono, monospace" font-size="10" fill="#96a7c5" text-anchor="middle">decomposes</text>
+<path d="M195.0,416 L195.0,470" fill="none" stroke="#3a537d" stroke-width="1.5"  marker-end="url(#a)" opacity="1.0"/>
+<text x="239.0" y="448" font-family="IBM Plex Mono, monospace" font-size="10" fill="#96a7c5" text-anchor="middle">decomposes</text>
+<path d="M88,214 Q48.0,386.0 88,558" fill="none" stroke="#3a537d" stroke-width="1.5"  marker-end="url(#a)" opacity="1.0"/>
+<text x="16" y="400" font-family="IBM Plex Mono, monospace" font-size="10" fill="#96a7c5" transform="rotate(-90 16 400)">decomposes</text>
+<path d="M116,690 Q92,703 116,716" fill="none" stroke="#54c7d8" stroke-width="1.1" stroke-dasharray="2 3"/>
+<text x="58" y="707" font-family="IBM Plex Mono, monospace" font-size="9.5" fill="#96a7c5">relates</text>
+<path d="M120,416 Q109.0,550.0 150,684" fill="none" stroke="#3a537d" stroke-width="1.5"  marker-end="url(#a)" opacity="1.0"/>
+<text x="118" y="600" font-family="IBM Plex Mono, monospace" font-size="10" fill="#96a7c5" text-anchor="middle">mentions</text>
+<path d="M150,416 Q150.0,564.0 166,712" fill="none" stroke="#3a537d" stroke-width="1.5"  marker-end="url(#a)" opacity="1.0"/>
+<path d="M160,612 Q148.0,677.0 168,742" fill="none" stroke="#3a537d" stroke-width="1.5"  marker-end="url(#a)" opacity="1.0"/>
+<path d="M320,182 L380,189" fill="none" stroke="#3a537d" stroke-width="1.5"  marker-end="url(#a)" opacity="1.0"/>
+<text x="353" y="181" font-family="IBM Plex Mono, monospace" font-size="10" fill="#96a7c5" text-anchor="middle">notes</text>
+<path d="M320,280 L380,283" fill="none" stroke="#3a537d" stroke-width="1.5"  marker-end="url(#a)" opacity="1.0"/>
+<text x="353" y="278" font-family="IBM Plex Mono, monospace" font-size="10" fill="#96a7c5" text-anchor="middle">notes</text>
+<path d="M320,378 L380,381" fill="none" stroke="#3a537d" stroke-width="1.5"  marker-end="url(#a)" opacity="1.0"/>
+<text x="353" y="376" font-family="IBM Plex Mono, monospace" font-size="10" fill="#96a7c5" text-anchor="middle">notes</text>
+<path d="M320,576 Q368.0,517.5 380,459" fill="none" stroke="#3a537d" stroke-width="1.5"  marker-end="url(#a)" opacity="1.0"/>
+<text x="350" y="505" font-family="IBM Plex Mono, monospace" font-size="10" fill="#96a7c5" text-anchor="middle">notes</text>
+<path d="M320,586 L380,581" fill="none" stroke="#3a537d" stroke-width="1.5"  marker-end="url(#a)" opacity="1.0"/>
+<text x="353" y="579" font-family="IBM Plex Mono, monospace" font-size="10" fill="#96a7c5" text-anchor="middle">notes</text>
+<path d="M612,671 Q670.0,477.0 612,283" fill="none" stroke="#e78cb2" stroke-width="1.8" stroke-dasharray="5 4" marker-end="url(#asup)" opacity="1.0"/>
+<text x="664" y="548" font-family="IBM Plex Mono, monospace" font-size="10" fill="#96a7c5" text-anchor="middle">supersedes</text>
+<path d="M320,486 Q502.0,472.5 700,459" fill="none" stroke="#3a537d" stroke-width="1.5"  marker-end="url(#a)" opacity="1.0"/>
+<text x="628" y="508" font-family="IBM Plex Mono, monospace" font-size="10" fill="#96a7c5" text-anchor="middle">produces</text>
+<line x1="914" y1="176" x2="914" y2="556" stroke="#c2cfe6" stroke-width="1.1" stroke-dasharray="2 5" opacity="0.7"/>
+<circle cx="914" cy="283" r="3.5" fill="#c2cfe6"/>
+<circle cx="914" cy="413" r="3.5" fill="#c2cfe6"/>
+<circle cx="914" cy="523" r="3.5" fill="#c2cfe6"/>
+<path d="M930,283 Q801.0,428.5 612,574" fill="none" stroke="#c2cfe6" stroke-width="1.2" stroke-dasharray="1 5" marker-end="url(#aw)" opacity="0.5"/>
+<path d="M930,413 L890,459" fill="none" stroke="#c2cfe6" stroke-width="1.2" stroke-dasharray="1 5" marker-end="url(#aw)" opacity="0.5"/>
+<path d="M930,523 Q862.0,403.0 614,283" fill="none" stroke="#c2cfe6" stroke-width="1.2" stroke-dasharray="1 5" marker-end="url(#aw)" opacity="0.45"/>
+<path d="M612,581 C 642,581 900,300 930,287" fill="none" stroke="#c2cfe6" stroke-width="1.1" stroke-dasharray="1 4" opacity="0.5"/>
+<rect x="70" y="160" width="250" height="54" rx="4" fill="rgba(231,140,178,0.08)" stroke="#e78cb2" stroke-width="1.5"/>
+<rect x="70" y="160" width="4" height="54" rx="2" fill="#e78cb2"/>
+<text x="86" y="181" font-family="IBM Plex Mono, monospace" font-size="12.5" fill="#e78cb2">goal</text>
+<text x="86" y="199" font-size="13.5" font-weight="600" fill="#eef3fb">Cut support first-response time</text>
+<text x="308" y="181" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="#96a7c5">active</text>
+<rect x="70" y="258" width="250" height="54" rx="4" fill="rgba(231,140,178,0.08)" stroke="#e78cb2" stroke-width="1.5"/>
+<rect x="70" y="258" width="4" height="54" rx="2" fill="#e78cb2"/>
+<text x="86" y="279" font-family="IBM Plex Mono, monospace" font-size="12.5" fill="#e78cb2">investigation</text>
+<text x="86" y="297" font-size="13.5" font-weight="600" fill="#eef3fb">Which retrieval approach?</text>
+<text x="308" y="279" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="#96a7c5">resolved</text>
+<rect x="70" y="352" width="250" height="64" rx="4" fill="rgba(231,140,178,0.08)" stroke="#e78cb2" stroke-width="1.5"/>
+<rect x="70" y="352" width="4" height="64" rx="2" fill="#e78cb2"/>
+<text x="86" y="373" font-family="IBM Plex Mono, monospace" font-size="12.5" fill="#e78cb2">experiment</text>
+<text x="86" y="391" font-size="13.5" font-weight="600" fill="#eef3fb">Reranking vs vector search</text>
+<text x="308" y="373" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="#96a7c5">active</text>
+<text x="86" y="407" font-size="11.5" fill="#96a7c5" font-family="IBM Plex Mono, monospace">expect +15% answer relevance</text>
+<rect x="70" y="470" width="250" height="54" rx="4" fill="rgba(231,140,178,0.08)" stroke="#e78cb2" stroke-width="1.5"/>
+<rect x="70" y="470" width="4" height="54" rx="2" fill="#e78cb2"/>
+<text x="86" y="491" font-family="IBM Plex Mono, monospace" font-size="12.5" fill="#e78cb2">task</text>
+<text x="86" y="509" font-size="13.5" font-weight="600" fill="#eef3fb">Build eval harness</text>
+<text x="308" y="491" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="#96a7c5">resolved</text>
+<rect x="70" y="558" width="250" height="54" rx="4" fill="rgba(231,140,178,0.08)" stroke="#e78cb2" stroke-width="1.5"/>
+<rect x="70" y="558" width="4" height="54" rx="2" fill="#e78cb2"/>
+<text x="86" y="579" font-family="IBM Plex Mono, monospace" font-size="12.5" fill="#e78cb2">task</text>
+<text x="86" y="597" font-size="13.5" font-weight="600" fill="#eef3fb">Ship embeddings pipeline</text>
+<text x="308" y="579" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="#96a7c5">open</text>
+<circle cx="120" cy="690" r="7" fill="#54c7d8"/><text x="132" y="694" font-family="IBM Plex Mono, monospace" font-size="11.5" fill="#c6d2e6">vector search</text>
+<circle cx="120" cy="716" r="7" fill="#54c7d8"/><text x="132" y="720" font-family="IBM Plex Mono, monospace" font-size="11.5" fill="#c6d2e6">reranking</text>
+<circle cx="120" cy="742" r="7" fill="#54c7d8"/><text x="132" y="746" font-family="IBM Plex Mono, monospace" font-size="11.5" fill="#c6d2e6">embeddings</text>
+<rect x="380" y="168" width="232" height="42" rx="3" fill="rgba(17,30,53,0.6)" stroke="#f2b45c" stroke-width="1.2"/>
+<rect x="380" y="168" width="3" height="42" fill="#f2b45c"/>
+<text x="392" y="185" font-family="IBM Plex Mono, monospace" font-size="11" fill="#f2b45c">fact</text>
+<text x="392" y="201" font-size="11.5" fill="#eef3fb">Baseline first-response 6.2h</text>
+<rect x="380" y="262" width="232" height="42" rx="3" fill="rgba(17,30,53,0.6)" stroke="#f2b45c" stroke-width="1.2"/>
+<rect x="380" y="262" width="3" height="42" fill="#f2b45c"/>
+<text x="392" y="279" font-family="IBM Plex Mono, monospace" font-size="11" fill="#f2b45c">assumption</text>
+<text x="392" y="295" font-size="11.5" fill="#96a7c5" text-decoration="line-through">Tickets English-dominant</text>
+<text x="602" y="279" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="9.5" fill="#96a7c5">refuted</text>
+<rect x="380" y="360" width="232" height="42" rx="3" fill="rgba(17,30,53,0.6)" stroke="#f2b45c" stroke-width="1.2"/>
+<rect x="380" y="360" width="3" height="42" fill="#f2b45c"/>
+<text x="392" y="377" font-family="IBM Plex Mono, monospace" font-size="11" fill="#f2b45c">statement</text>
+<text x="392" y="393" font-size="11.5" fill="#eef3fb">Vendor: reranker +20% relevance</text>
+<rect x="380" y="438" width="232" height="42" rx="3" fill="rgba(17,30,53,0.6)" stroke="#f2b45c" stroke-width="1.2"/>
+<rect x="380" y="438" width="3" height="42" fill="#f2b45c"/>
+<text x="392" y="455" font-family="IBM Plex Mono, monospace" font-size="11" fill="#f2b45c">constraint</text>
+<text x="392" y="471" font-size="11.5" fill="#eef3fb">Ticket text stays in-VPC</text>
+<text x="602" y="455" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="9.5" fill="#96a7c5">active</text>
+<rect x="380" y="560" width="232" height="42" rx="3" fill="rgba(17,30,53,0.6)" stroke="#f2b45c" stroke-width="1.2"/>
+<rect x="380" y="560" width="3" height="42" fill="#f2b45c"/>
+<text x="392" y="577" font-family="IBM Plex Mono, monospace" font-size="11" fill="#f2b45c">decision</text>
+<text x="392" y="593" font-size="11.5" fill="#eef3fb">Use open-weights embeddings</text>
+<rect x="380" y="650" width="232" height="42" rx="3" fill="rgba(17,30,53,0.6)" stroke="#f2b45c" stroke-width="1.2"/>
+<rect x="380" y="650" width="3" height="42" fill="#f2b45c"/>
+<text x="392" y="667" font-family="IBM Plex Mono, monospace" font-size="11" fill="#f2b45c">fact</text>
+<text x="392" y="683" font-size="11.5" fill="#eef3fb">~30% of tickets non-English</text>
+<rect x="700" y="438" width="190" height="42" rx="3" fill="rgba(17,30,53,0.6)" stroke="#87d7a3" stroke-width="1.2"/>
+<rect x="700" y="438" width="3" height="42" fill="#87d7a3"/>
+<text x="712" y="455" font-family="IBM Plex Mono, monospace" font-size="11" fill="#87d7a3">artifact</text>
+<text x="712" y="471" font-size="11.5" fill="#eef3fb">eval-harness</text>
+<rect x="930" y="262" width="250" height="42" rx="3" fill="rgba(17,30,53,0.6)" stroke="#c2cfe6" stroke-width="1.2"/>
+<rect x="930" y="262" width="3" height="42" fill="#c2cfe6"/>
+<text x="942" y="279" font-family="IBM Plex Mono, monospace" font-size="11" fill="#c2cfe6">decision</text>
+<text x="942" y="295" font-size="11.5" fill="#eef3fb">Chose open-weights embeddings</text>
+<rect x="930" y="392" width="250" height="42" rx="3" fill="rgba(17,30,53,0.6)" stroke="#c2cfe6" stroke-width="1.2"/>
+<rect x="930" y="392" width="3" height="42" fill="#c2cfe6"/>
+<text x="942" y="409" font-family="IBM Plex Mono, monospace" font-size="11" fill="#c2cfe6">milestone</text>
+<text x="942" y="425" font-size="11.5" fill="#eef3fb">Eval harness live</text>
+<rect x="930" y="502" width="250" height="42" rx="3" fill="rgba(17,30,53,0.6)" stroke="#c2cfe6" stroke-width="1.2"/>
+<rect x="930" y="502" width="3" height="42" fill="#c2cfe6"/>
+<text x="942" y="519" font-family="IBM Plex Mono, monospace" font-size="11" fill="#c2cfe6">pivot</text>
+<text x="942" y="535" font-size="11.5" fill="#eef3fb">Add multilingual</text>
+</svg>
