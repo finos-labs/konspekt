@@ -1,0 +1,73 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>konspekt: a visual guide to the type system, and a more proactive LLM maintainer</title>
+<!--
+  PASTE-READY COPY of article.md for LinkedIn's Article editor.
+  LinkedIn has no Markdown/HTML/file import; it is a WYSIWYG editor. Pasting
+  rich text (this rendered page) carries headings, bold, links and bullet
+  lists across; pasting Markdown does not.
+
+  How to use:
+    1. Open this file in a browser.
+    2. Select all (Ctrl+A), copy (Ctrl+C).
+    3. In LinkedIn "Write article", paste into the body. The <h1> becomes the
+       article title (or move it into the title field).
+    4. Insert the two images at the [IMAGE ...] markers using LinkedIn's image
+       button, and type each caption underneath. Pasted images are stripped by
+       LinkedIn, so they must be inserted this way (also gives caption + alt).
+    5. Cover image: images/graph-example.png
+  Verify formatting after pasting — LinkedIn sanitizes pasted markup.
+-->
+<style>
+  body{max-width:720px;margin:2rem auto;padding:0 1rem;font:17px/1.6 Georgia,serif;color:#1a1a1a}
+  h1{font-size:2rem;line-height:1.2}
+  h2{font-size:1.35rem;margin-top:2rem}
+  figure{margin:1.5rem 0}
+  figure img{width:100%;border:1px solid #ddd}
+  figcaption{font:14px/1.4 system-ui,sans-serif;color:#666;margin-top:.4rem}
+  .marker{font:13px/1.4 system-ui,sans-serif;color:#a00}
+</style>
+
+<h1>konspekt: a visual guide to the type system, and a more proactive LLM maintainer</h1>
+
+<p>Last week we reposted our <a href="https://lnkd.in/p/gspJNgc7">FINOS Labs blog introducing konspekt</a>: a portable, git-backed typed knowledge graph for AI project state.</p>
+
+<p>Since then, we have shaped up the roadmap: accountability, collaboration, curated context, following the thread, observability, portability, and usability. We have focused on adoption through usability and took two steps toward that.</p>
+
+<h2>1. A visual guide to the data model</h2>
+
+<p>The data model itself has not changed; what was missing was a way to teach it. Every atom in the graph is one of a small, closed set of types, and each type answers one question:</p>
+
+<ul>
+  <li>Is it work (goal, investigation, experiment, topic, task, note)?</li>
+  <li>A finding (fact, statement, decision, assumption, constraint)?</li>
+  <li>A moment on the timeline (decision, milestone, pivot)?</li>
+</ul>
+
+<p>There is now one sheet that lays this out:</p>
+
+<p class="marker">[IMAGE images/type-system-poster.png — insert here via LinkedIn's image button]</p>
+<figure>
+  <img src="images/type-system-poster.png" alt="konspekt type-system poster">
+  <figcaption>The konspekt type system — the one question that selects each type.</figcaption>
+</figure>
+
+<p>— plus a worked example: a small project where every box is a typed atom and every line is one edge in a single table.</p>
+
+<p class="marker">[IMAGE images/graph-example.png — insert here via LinkedIn's image button]</p>
+<figure>
+  <img src="images/graph-example.png" alt="konspekt example graph">
+  <figcaption>One goal, worked in the open — every box a typed atom, every line one edge.</figcaption>
+</figure>
+
+<h2>2. A more proactive LLM maintainer</h2>
+
+<p>The LLM that watches a session got sharper rules for when something has settled enough to capture, and which type to reach for. That second part matters more than it looks. With no rule separating an experiment from an investigation, or a constraint from a fact, the LLM never proposes the rarer types, so they sit empty and the data model loses half its vocabulary in practice. The new rules close that gap. The human still accepts every atom; the LLM only proposes.</p>
+
+<h2>Two new queries over the graph</h2>
+
+<p>We also added two queries over the graph, run from the command line for now with a proper interface still ahead: goal state (the sub-graph under a goal, every node with its status) and provenance chain (for any atom, the source it came from and everything it replaced, each hop checked by re-hashing the source against its recorded hash).</p>
+
+<p>All of it is on main: <a href="https://github.com/finos-labs/konspekt">github.com/finos-labs/konspekt</a></p>
+
+<p>#AI #KnowledgeGraphs #OpenSource #FINOS #konspekt</p>
