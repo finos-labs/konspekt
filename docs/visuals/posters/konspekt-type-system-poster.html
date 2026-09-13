@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>konspekt — the type system</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0b1424;--ink-2:#111e35;--line:#26395c;--line-soft:#182740;
+    --paper:#eef3fb;--paper-dim:#c6d2e6;--paper-faint:#96a7c5;
+    --concept:#54c7d8;--note:#f2b45c;--artifact:#87d7a3;--work:#e78cb2;--waypoint:#c2cfe6;
+    --accepted:#87d7a3;--steel:#c2cfe6;
+    --sans:"IBM Plex Sans",system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+    --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%;font-size:18px}
+  body{margin:0;background:var(--ink);color:var(--paper);font-family:var(--sans);line-height:1.5;-webkit-font-smoothing:antialiased}
+  .poster{
+    max-width:1040px;margin:0 auto;padding:56px 52px 40px;position:relative;overflow:hidden;
+    background:
+      radial-gradient(1200px 720px at 50% -10%, rgba(84,199,216,.10), transparent 60%),
+      radial-gradient(900px 620px at 92% 108%, rgba(231,140,178,.08), transparent 62%),
+      radial-gradient(760px 560px at 4% 106%, rgba(135,215,163,.06), transparent 60%),
+      linear-gradient(180deg,#0b1424,#0c1730 60%,#0b1526);
+  }
+  .poster::before{
+    content:"";position:absolute;inset:0;
+    background-image:linear-gradient(var(--line-soft) 1px,transparent 1px),linear-gradient(90deg,var(--line-soft) 1px,transparent 1px);
+    background-size:34px 34px;opacity:.34;pointer-events:none;
+    mask-image:radial-gradient(130% 100% at 50% 35%,#000 58%,transparent 100%);
+  }
+  .poster > *{position:relative;z-index:1}
+
+  header{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;border-bottom:1px solid var(--line);padding-bottom:22px}
+  .brand .mark{font-family:var(--mono);font-weight:500;font-size:1.05rem;letter-spacing:.02em;color:var(--steel)}
+  .brand .mark b{color:var(--paper)}
+  h1{font-weight:700;font-size:clamp(2.9rem,7vw,4.6rem);line-height:.94;letter-spacing:-.02em;margin:.18em 0 .3em}
+  .lede{font-size:clamp(1rem,2.05vw,1.16rem);color:var(--paper-dim);max-width:56ch;font-weight:400}
+  .status{flex:none;text-align:right;font-family:var(--mono);font-size:.72rem;color:var(--paper-dim);line-height:1.7}
+  .status .dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--steel);margin-right:7px;vertical-align:middle;box-shadow:0 0 0 4px rgba(194,207,230,.14)}
+  .status b{color:var(--paper);font-weight:500}
+
+  /* section scaffolding */
+  .row{border-top:1px solid var(--line);margin-top:26px;padding-top:20px}
+  .row-head{display:flex;align-items:baseline;gap:14px;margin-bottom:16px}
+  .row-head h2{font-size:1.16rem;font-weight:700;letter-spacing:-.01em;margin:0}
+  .row-head .q{font-family:var(--mono);font-size:.8rem;color:var(--paper-faint)}
+  .swatch{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:2px;vertical-align:baseline}
+
+  /* type cards */
+  .cards{display:grid;gap:16px}
+  .cards.n6{grid-template-columns:repeat(3,1fr)}
+  .cards.n5{grid-template-columns:repeat(5,1fr)}
+  .cards.n3{grid-template-columns:repeat(3,1fr)}
+  .card{border:1px solid var(--line);border-left-width:3px;border-radius:3px;padding:13px 15px 14px;background:rgba(17,30,53,.42)}
+  .card .name{font-family:var(--mono);font-weight:500;font-size:1rem;letter-spacing:.01em}
+  .card .disc{font-size:.86rem;color:var(--paper-dim);margin:.45em 0 .55em;line-height:1.42}
+  .card .meta{font-family:var(--mono);font-size:.7rem;color:var(--paper-faint);line-height:1.55}
+  .card .meta b{color:var(--steel);font-weight:500}
+  .card.work{border-left-color:var(--work)}
+  .card.note{border-left-color:var(--note)}
+  .card.waypoint{border-left-color:var(--waypoint)}
+  .card .name.work{color:var(--work)}
+  .card .name.note{color:var(--note)}
+  .card .name.waypoint{color:var(--waypoint)}
+  .pills{font-family:var(--mono);font-size:.68rem;color:var(--paper-faint);margin-top:6px}
+  .pills b{color:var(--paper-dim);font-weight:500}
+
+  /* two-column band: decision rule + concept/artifact */
+  .band{display:grid;grid-template-columns:1.15fr 1fr;gap:30px}
+  .rule{border:1px solid var(--line);border-radius:3px;padding:18px 20px;background:rgba(17,30,53,.42)}
+  .rule h3{font-size:1.02rem;margin:0 0 4px;font-weight:600}
+  .rule .sub{font-family:var(--mono);font-size:.74rem;color:var(--paper-faint);margin-bottom:14px}
+  .rule ul{list-style:none;margin:0;padding:0}
+  .rule li{display:flex;gap:12px;align-items:baseline;padding:7px 0;border-top:1px solid var(--line-soft)}
+  .rule li:first-child{border-top:0}
+  .rule .tag{font-family:var(--mono);font-size:.72rem;flex:none;width:64px;color:var(--accepted)}
+  .rule .cond{font-size:.87rem;color:var(--paper-dim);line-height:1.4}
+  .rule .cond b{color:var(--paper);font-weight:600}
+
+  .pair{display:grid;gap:16px}
+  .pair .card .disc{margin-bottom:.5em}
+
+  /* edges + views strips */
+  .strips{display:grid;grid-template-columns:1.25fr 1fr;gap:30px}
+  .edgelist,.viewlist{font-family:var(--mono);font-size:.78rem;line-height:1.5}
+  .edgelist .e,.viewlist .v{display:flex;gap:10px;padding:5px 0;border-top:1px solid var(--line-soft)}
+  .edgelist .e:first-child,.viewlist .v:first-child{border-top:0}
+  .edgelist .k{flex:none;width:112px;color:var(--paper)}
+  .edgelist .d{color:var(--paper-dim)}
+  .edgelist .k.truth{color:var(--work)}
+  .viewlist .q{flex:none;width:152px;color:var(--concept)}
+  .viewlist .d{color:var(--paper-dim)}
+
+  footer{margin-top:28px;padding-top:18px;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap}
+  .tags{display:flex;gap:10px;flex-wrap:wrap}
+  .tags span{font-family:var(--mono);font-size:.72rem;color:var(--paper-dim);border:1px solid var(--line);border-radius:2px;padding:4px 10px}
+  .colophon{font-family:var(--mono);font-size:.72rem;color:var(--paper-faint);text-align:right;line-height:1.7}
+  .colophon b{color:var(--paper-dim);font-weight:500}
+
+  @media (max-width:900px){
+    .cards.n6,.cards.n5{grid-template-columns:1fr 1fr}
+    .cards.n3{grid-template-columns:1fr}
+    .band,.strips{grid-template-columns:1fr;gap:20px}
+  }
+  @media (max-width:760px){
+    .poster{padding:34px 22px}
+    header{flex-direction:column;align-items:flex-start;gap:16px}.status{text-align:left}
+    .cards.n6,.cards.n5{grid-template-columns:1fr}
+  }
+  @media print{
+    @page{size:A2 landscape;margin:14mm}
+    body{background:#fff}.poster{max-width:none;padding:0}.poster::before{opacity:.5}
+    *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    .card,.rule,.row{break-inside:avoid}
+  }
+</style>
+</head>
+<body>
+<div class="poster">
+
+  <header>
+    <div class="brand">
+      <div class="mark"><b>konspekt</b> · typed knowledge graph for AI project state</div>
+      <h1>The type system</h1>
+      <p class="lede">Every atom in a konspekt graph is one of a small, closed set of types. This sheet gives the one question that selects each type, so the right one gets reached for and none goes unused.</p>
+    </div>
+    <div class="status">
+      <div><span class="dot"></span><b>Data model</b></div>
+      <div>spec/data-model</div>
+      <div>Apache-2.0 · FINOS Labs</div>
+    </div>
+  </header>
+
+  <!-- WORK NODES -->
+  <section class="row">
+    <div class="row-head">
+      <span class="swatch" style="background:var(--work)"></span>
+      <h2>Work nodes</h2>
+      <span class="q">GraphNode.type — what kind of work is this?</span>
+    </div>
+    <div class="cards n6">
+      <div class="card work">
+        <div class="name work">goal</div>
+        <div class="disc">An outcome you are driving toward, with a condition that says when it is reached.</div>
+        <div class="meta">feeds <b>goal tree</b> · child of <b>decomposes</b></div>
+      </div>
+      <div class="card work">
+        <div class="name work">investigation</div>
+        <div class="disc">Open-ended inquiry. You do not yet know the answer, or what would settle it.</div>
+        <div class="meta">vs experiment: <b>no stated expectation</b></div>
+      </div>
+      <div class="card work">
+        <div class="name work">experiment</div>
+        <div class="disc">A designed test with the expected result stated before you run it. The outcome confirms or refutes.</div>
+        <div class="meta">the discriminator: <b>expectation up front</b></div>
+      </div>
+      <div class="card work">
+        <div class="name work">topic</div>
+        <div class="disc">A standing area of attention that never completes. Things attach to it over time.</div>
+        <div class="meta">vs goal: <b>no completion condition</b></div>
+      </div>
+      <div class="card work">
+        <div class="name work">task</div>
+        <div class="disc">A concrete, bounded unit of work with a clear done state.</div>
+        <div class="meta">vs goal: <b>bounded, not decomposed</b></div>
+      </div>
+      <div class="card work">
+        <div class="name work">note</div>
+        <div class="disc">A lightweight marker on the work tree. Not a Noteworthy atom, and not the NOTES.md scratchpad.</div>
+        <div class="meta">a node, <b>not a finding</b></div>
+      </div>
+    </div>
+    <div class="pills"><b>status</b> &nbsp; open · active · resolved · abandoned &nbsp;&nbsp;—&nbsp;&nbsp; a node can sit under more than one parent; hierarchy lives in edges</div>
+  </section>
+
+  <!-- NOTEWORTHY -->
+  <section class="row">
+    <div class="row-head">
+      <span class="swatch" style="background:var(--note)"></span>
+      <h2>Noteworthy</h2>
+      <span class="q">Noteworthy.kind — what kind of finding is this? · arrives on a notes edge</span>
+    </div>
+    <div class="cards n5">
+      <div class="card note">
+        <div class="name note">fact</div>
+        <div class="disc">Established. Holds independent of who said it.</div>
+      </div>
+      <div class="card note">
+        <div class="name note">statement</div>
+        <div class="disc">Asserted by a source, not yet established.</div>
+      </div>
+      <div class="card note">
+        <div class="name note">decision</div>
+        <div class="disc">A choice made. See the decision rule below.</div>
+      </div>
+      <div class="card note">
+        <div class="name note">assumption</div>
+        <div class="disc">Taken as true, unvalidated. validate / refute moves it.</div>
+        <div class="pills"><b>status</b> unvalidated · validated · refuted</div>
+      </div>
+      <div class="card note">
+        <div class="name note">constraint</div>
+        <div class="disc">A limit that holds until lifted.</div>
+        <div class="pills"><b>status</b> active · lifted</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WAYPOINTS + DECISION RULE + CONCEPT/ARTIFACT -->
+  <section class="row">
+    <div class="band">
+      <div>
+        <div class="row-head">
+          <span class="swatch" style="background:var(--waypoint)"></span>
+          <h2>Waypoints</h2>
+          <span class="q">the timeline axis — not part of the goal tree · arrives on marks</span>
+        </div>
+        <div class="cards n3">
+          <div class="card waypoint">
+            <div class="name waypoint">decision</div>
+            <div class="disc">An inflection choice worth seeing on the timeline.</div>
+          </div>
+          <div class="card waypoint">
+            <div class="name waypoint">milestone</div>
+            <div class="disc">A point reached.</div>
+          </div>
+          <div class="card waypoint">
+            <div class="name waypoint">pivot</div>
+            <div class="disc">A change of direction.</div>
+          </div>
+        </div>
+        <div class="rule" style="margin-top:16px">
+          <h3>The decision rule</h3>
+          <div class="sub">one decision, up to three representations — one rule for each</div>
+          <ul>
+            <li><span class="tag">always</span><span class="cond">a <b>Noteworthy</b> (kind: decision) — the atomic, always-true record</span></li>
+            <li><span class="tag">+ if</span><span class="cond">a <b>Waypoint</b>, when it is an inflection worth seeing on the timeline</span></li>
+            <li><span class="tag">+ if</span><span class="cond">a <b>Node</b>, only when it opens a branch of work to track</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div>
+        <div class="row-head">
+          <span class="swatch" style="background:var(--concept)"></span><span class="swatch" style="background:var(--artifact)"></span>
+          <h2>Concept &amp; Artifact</h2>
+        </div>
+        <div class="pair">
+          <div class="card" style="border-left-color:var(--concept)">
+            <div class="name" style="color:var(--concept)">concept</div>
+            <div class="disc">An idea with a label, definition, and aliases for dedup. Referenced through mentions, never copied — so cross-linking is automatic and the project inventory is free.</div>
+            <div class="meta">referenced by <b>mentions</b> · associates via <b>relates</b></div>
+          </div>
+          <div class="card" style="border-left-color:var(--artifact)">
+            <div class="name" style="color:var(--artifact)">artifact</div>
+            <div class="disc">A produced output: name, kind, location, version.</div>
+            <div class="meta">arrives on <b>produces</b></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EDGES + VIEWS -->
+  <section class="row">
+    <div class="strips">
+      <div>
+        <div class="row-head"><h2>One edge table</h2><span class="q">from / to are entity refs · kind distinguishes them</span></div>
+        <div class="edgelist">
+          <div class="e"><span class="k">decomposes</span><span class="d">node → node · the goal tree</span></div>
+          <div class="e"><span class="k">mentions</span><span class="d">node → concept</span></div>
+          <div class="e"><span class="k">notes</span><span class="d">node → noteworthy</span></div>
+          <div class="e"><span class="k">produces</span><span class="d">node → artifact</span></div>
+          <div class="e"><span class="k">marks</span><span class="d">waypoint → node · the branch it sits on</span></div>
+          <div class="e"><span class="k">relates</span><span class="d">concept → concept · untyped, weighted</span></div>
+          <div class="e"><span class="k">links</span><span class="d">node → node · untyped, weighted</span></div>
+          <div class="e"><span class="k truth">supersedes</span><span class="d">entity → entity · the one truth-changing edge. proposed = flagged contradiction; accepted = confirmed replacement. Both stay — append over rewrite.</span></div>
+        </div>
+      </div>
+      <div>
+        <div class="row-head"><h2>Derived views</h2><span class="q">queries over edges, never stored</span></div>
+        <div class="viewlist">
+          <div class="v"><span class="q">project concepts</span><span class="d">concepts with any inbound mentions</span></div>
+          <div class="v"><span class="q">goal tree</span><span class="d">edges where kind = decomposes</span></div>
+          <div class="v"><span class="q">timeline</span><span class="d">waypoints ordered by timestamp</span></div>
+          <div class="v"><span class="q">open assumptions</span><span class="d">kind = assumption, status = unvalidated</span></div>
+          <div class="v"><span class="q">current items</span><span class="d">no inbound supersedes edge</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="tags">
+      <span>closed enums</span><span>store once</span><span>inventories are queries</span><span>persona-agnostic core</span>
+    </div>
+    <div class="colophon">
+      <div><b>FINOS Labs</b> · Apache-2.0 · github.com/finos-labs/konspekt</div>
+      <div>the data model · companion to how-it-works, current-state &amp; roadmap</div>
+    </div>
+  </footer>
+
+</div>
+</body>
+</html>
