@@ -55,17 +55,23 @@ being discussed. Map the settled thing to an entity type:
 
 | What just settled | Propose |
 |---|---|
-| A decision was made and is stable | Noteworthy (`kind: decision`); add a Waypoint if it is an inflection (reversal, milestone, pivot) |
+| A decision was made and is stable | Noteworthy (`kind: decision`); add a Waypoint if it is an inflection — a `decision`, `milestone`, or `pivot` on the timeline |
 | A concept, principle, or coined term is now in use | Concept node |
-| A durable observation, assumption, or constraint was asserted | Noteworthy (matching `kind`) |
-| A task or investigation started, resolved, was abandoned, or superseded | Node **status transition**, via the authority verb |
+| A durable finding settled — fact, statement, assumption, or constraint | Noteworthy; pick the `kind` by *Choosing a type* in `spec/data-model/SPEC.md` |
+| A node started, resolved, was abandoned, or superseded | Node **status transition**, via the authority verb |
 | A deliverable was produced (doc, script, spec, dataset) | Artifact node + a `produces` edge from the owning task |
-| A new branch of work opened | New Node, `decomposes` from its parent |
+| A new branch of work opened | New Node, `decomposes` from its parent; pick the node type (`goal`, `investigation`, `experiment`, `topic`, `task`, `note`) by *Choosing a type* in `spec/data-model/SPEC.md` |
 | A relationship between existing entities became clear | Edge (`mentions`, `relates`, `notes`, `marks`) |
 | New state contradicts or replaces prior state | `supersedes` edge + a status flip on the affected entity |
 
 If the settled thing maps to nothing here, it is probably not a graph atom —
 hold.
+
+Choosing the type *within* a family — node type, Noteworthy `kind`, Waypoint
+`kind` — is governed by *Choosing a type* in `spec/data-model/SPEC.md`. Do not
+reach for a more specific type than the evidence supports: an `investigation`
+with no stated expected result is not an `experiment`, and a source's claim is a
+`statement`, not a `fact`.
 
 ## The readiness bar — when to HOLD
 

@@ -16,6 +16,10 @@ as a **Concept** with `subtype: asr`. Its prose is the definition body. Its
 significance is carried by a `drives` edge to each ADR the requirement shapes,
 never a stored flag. In v1, `drives` originates only from an ASR.
 
+An architectural force is an ASR only when it will drive ADRs through `drives`. A
+limit that merely bounds the work, with no ADR to shape, is a core `constraint`
+Noteworthy; do not record the same force as both.
+
 ## ADR — architecture decision record
 
 When an architectural decision is made, propose it as a **Waypoint** of

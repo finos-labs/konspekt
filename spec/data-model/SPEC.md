@@ -28,6 +28,64 @@ One underlying decision, up to three representations, with a single rule for eac
 - Additionally a **Waypoint** *if* it's an inflection point worth seeing on the timeline.
 - Additionally a **Node** *only if* it opens a branch of work to track.
 
+## Choosing a type
+
+The type set is small and closed, so most capture is choosing among a few
+near-neighbours. Each choice below is one question. Reach for the more specific
+type only when the evidence supports it: an atom dressed in a type its evidence
+has not earned is worse than a plainer one that is true.
+
+**Node type — what kind of work opened?**
+
+- **goal** — an outcome with a condition that says when it is reached. If you
+  cannot state that condition, it is a `topic`.
+- **investigation** — an open question with no predefined answer and no stated
+  expected result.
+- **experiment** — a designed test whose expected result is stated *before* it is
+  run; the outcome confirms or refutes. The line against `investigation` is that
+  stated expectation, recorded in the node body. An open-ended inquiry with no
+  expectation stays an `investigation`.
+- **topic** — a standing area of attention with no completion condition; work and
+  findings attach to it over time. The line against `goal` is the absence of a
+  done state.
+- **task** — an atomic unit of work: carried out and resolved as a whole, not
+  decomposed into children. The line against `goal` is that you resolve a task
+  and decompose a goal.
+- **note** — a lightweight marker on the work tree that carries no bearing on
+  project state: it opens no work, produces nothing, and feeds no derived view.
+  Reach for it only when a spot on the tree needs a marker that is not itself
+  work, a finding, or a concept. It is neither a `Noteworthy` (a finding, reached
+  through a `notes` edge) nor the `note:` scratchpad (which writes to a human
+  NOTES.md and never enters the graph). When the choice is between `note` and
+  `Noteworthy`, it is almost always `Noteworthy`.
+
+**Noteworthy kind — what kind of finding settled?**
+
+- **fact** — established; holds independent of who asserted it.
+- **statement** — asserted by a source and not yet established. The line against
+  `fact` is that attribution matters and truth is unsettled: a vendor claim, a
+  third-party assertion, or a person's stated position is a `statement`.
+- **decision** — a choice was made (see *The decision rule* above).
+- **assumption** — taken as true so work can proceed, but unvalidated; its
+  `status` moves through `validate` / `refute`. The line against `fact` is that you
+  are relying on it without having confirmed it.
+- **constraint** — a limit that bounds the work and holds until `lift`. The line
+  against `fact` is that it forecloses choices ("must", "cannot", "only") and you
+  expect to lift it rather than to learn it was false.
+
+**Waypoint kind — what belongs on the timeline?** Add a Waypoint only when the
+moment is an inflection worth seeing on the timeline; not every decision earns
+one.
+
+- **decision** — an inflection choice.
+- **milestone** — a point reached: a deliverable shipped, a phase completed.
+- **pivot** — a change of direction. A reversal is a `pivot` together with a
+  `supersedes` on the entity it overturns.
+
+The rule across all three axes: never reach for a more specific type than the
+evidence supports. It is what keeps a rarely-used type (an `experiment`, say)
+honestly empty until real instances of it occur, rather than padded to look used.
+
 ## Edges
 
 One typed table; `from` / `to` are `EntityRef`s — or, for a persona layer that defines one, a content-addressed provenance ref such as `command:<hash>` (see `../personas/`); `weight` is meaningful only for `relates` and `links`.
@@ -49,6 +107,29 @@ One typed table; `from` / `to` are `EntityRef`s — or, for a persona layer that
 - timeline = waypoints ordered by `timestamp`
 - open assumptions = noteworthy where `kind = "assumption"` and `status = "unvalidated"`
 - current items = entities with no inbound `supersedes` edge (e.g. the live decision among superseded ones)
+
+### Composite views
+
+Two traversals over the same edges, derived like the rest — no stored list. The
+reference implementation is `lib/views.mjs`; the CLI is `tools/views.mjs`.
+
+- **goal state** — for a goal node, the sub-graph reachable by `decomposes`, with
+  each node's `type`, `status`, and `review`. Because hierarchy lives in edges and
+  a node may sit under more than one parent, the reachable set is a DAG: each node
+  appears once, at its minimum depth, carrying its full parent list, and renders
+  as a dependency-driven table. A roll-up (counts by `status` and `type`, the
+  proposed count, the open-assumption count) and cheap per-node attachment counts
+  (`produces`, `notes`) fall out of the same edge pass and feed the
+  "under-worked goal" question.
+- **provenance chain** — for any entity, its own provenance plus its supersession
+  ancestry: walk `supersedes` from the entity (`from` = new, `to` = old) to
+  recover older versions, newest first. It is a DAG, since a merge may supersede
+  several. Each hop reports its content-addressed source and verifies iff
+  re-hashing `sourceRef` reproduces `contentHash` (§ Principles 3); a legacy
+  entity carrying only a `conversationId` is reported unverifiable rather than
+  failed. Under an active persona layer the chain extends along that layer's
+  provenance edges — for `engineer`, the `executed` commands bound to the entity
+  (who-did-what) and the ASRs that `drives` it.
 
 ## Human vocabulary (v1)
 
