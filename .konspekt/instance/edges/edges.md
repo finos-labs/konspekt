@@ -251,3 +251,6 @@ proposal.
 | e-not-enterprise-appendonly | notes | node:task-enterprise-persistence | noteworthy:nw-db-backend-needs-append-only-record |  | proposed |
 | e-not-provenance-appendonly | notes | node:task-provenance-model | noteworthy:nw-db-backend-needs-append-only-record |  | proposed |
 | e-not-mcpapp-cardv1 | notes | node:task-mcp-app-surface | noteworthy:nw-card-v1-is-last-ten-changed |  | proposed |
+| e-dec-usability-atomvocab | decomposes | node:goal-usability | node:task-atom-vocabulary |  | proposed |
+| e-link-atomvocab-serial | links | node:task-atom-vocabulary | node:task-serialization-format | 0.6 | proposed |
+| e-link-atomvocab-reconcile | links | node:task-atom-vocabulary | node:task-reconcile-schema | 0.6 | proposed |
