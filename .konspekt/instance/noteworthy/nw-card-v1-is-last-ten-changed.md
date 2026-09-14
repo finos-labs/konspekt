@@ -8,18 +8,24 @@ provenance:
   timestamp: 2026-09-14T17:00:00Z
   conversationId: app-design-101
 createdAt: 2026-09-14T17:00:00Z
-updatedAt: 2026-09-14T17:00:00Z
+updatedAt: 2026-09-14T17:30:00Z
 ```
 # Noteworthy: The first card is ten rows, read-only
 
-The embedded card starts as a small table of the ten most recently changed atoms
-— atom id, state, timestamp — and nothing more. Read-only: it shows what moved
-and takes no disposition, so no write leaves the card and the text fallback and
-the rendered card cannot diverge in behaviour.
+The embedded card starts as a small table of the ten most recently changed
+entities — entity id, state, timestamp — and nothing more. Read-only: it shows
+what moved and takes no disposition, so no write leaves the card and the text
+fallback and the rendered card cannot diverge in behaviour.
 
-Configurable contents and the one-hop sub-graph around changed atoms remain the
-intended direction, along with how far that hop extends for a large changeset;
-both are deferred rather than dropped.
+Entity is the right noun here, not node: `nodes/` holds only goals,
+investigations and tasks, while a change feed has to carry concepts, noteworthy
+items, artifacts and waypoints too. "Atom" is used informally throughout the
+spec but names no schema construct; "entity" is the term the serialization and
+reconciliation documents use.
+
+Configurable contents and the one-hop sub-graph around changed entities remain
+the intended direction, along with how far that hop extends for a large
+changeset; both are deferred rather than dropped.
 
 This is a presentation decision with no effect on the architecture. The tool
 call, the `ui://` resource, the transport and the store are unchanged by it,
