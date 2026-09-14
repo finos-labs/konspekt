@@ -250,3 +250,4 @@ proposal.
 | e-not-enterprise-backends | notes | node:task-enterprise-persistence | noteworthy:nw-mongo-enterprise-postgres-oss |  | proposed |
 | e-not-enterprise-appendonly | notes | node:task-enterprise-persistence | noteworthy:nw-db-backend-needs-append-only-record |  | proposed |
 | e-not-provenance-appendonly | notes | node:task-provenance-model | noteworthy:nw-db-backend-needs-append-only-record |  | proposed |
+| e-not-mcpapp-cardv1 | notes | node:task-mcp-app-surface | noteworthy:nw-card-v1-is-last-ten-changed |  | proposed |
