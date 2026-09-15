@@ -254,3 +254,7 @@ proposal.
 | e-dec-usability-atomvocab | decomposes | node:goal-usability | node:task-atom-vocabulary |  | proposed |
 | e-link-atomvocab-serial | links | node:task-atom-vocabulary | node:task-serialization-format | 0.6 | proposed |
 | e-link-atomvocab-reconcile | links | node:task-atom-vocabulary | node:task-reconcile-schema | 0.6 | proposed |
+| e-not-trigger-pollfloor | notes | node:task-trigger-transport | noteworthy:nw-poll-is-the-floor-push-is-optional |  | proposed |
+| e-not-cas-pollfloor | notes | node:task-atom-versioning-cas | noteworthy:nw-poll-is-the-floor-push-is-optional |  | proposed |
+| e-not-uiapp-pollfloor | notes | node:task-konspekt-ui-app | noteworthy:nw-poll-is-the-floor-push-is-optional |  | proposed |
+| e-not-enterprise-pollfloor | notes | node:task-enterprise-persistence | noteworthy:nw-poll-is-the-floor-push-is-optional |  | proposed |
