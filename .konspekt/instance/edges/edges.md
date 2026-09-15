@@ -258,3 +258,7 @@ proposal.
 | e-not-cas-pollfloor | notes | node:task-atom-versioning-cas | noteworthy:nw-poll-is-the-floor-push-is-optional |  | proposed |
 | e-not-uiapp-pollfloor | notes | node:task-konspekt-ui-app | noteworthy:nw-poll-is-the-floor-push-is-optional |  | proposed |
 | e-not-enterprise-pollfloor | notes | node:task-enterprise-persistence | noteworthy:nw-poll-is-the-floor-push-is-optional |  | proposed |
+| e-prod-uiapp-uidesign | produces | node:task-konspekt-ui-app | artifact:artifact-ui-design |  | proposed |
+| e-prod-mcpapp-uidesign | produces | node:task-mcp-app-surface | artifact:artifact-ui-design |  | proposed |
+| e-prod-cas-uidesign | produces | node:task-atom-versioning-cas | artifact:artifact-ui-design |  | proposed |
+| e-prod-enterprise-uidesign | produces | node:task-enterprise-persistence | artifact:artifact-ui-design |  | proposed |
