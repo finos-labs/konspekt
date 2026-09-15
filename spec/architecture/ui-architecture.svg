@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 1010" width="680" height="1010" font-family="Helvetica, Arial, sans-serif" role="img" aria-label="konspekt UI architecture: today solid, target dotted">
+<title>konspekt UI architecture — today (solid) and target (dotted)</title>
+<style>
+.t{font-size:14px;font-weight:500;fill:#1A1A18}
+.s{font-size:12px;fill:#6B6B66}
+.f{font-size:12px;fill:#6B6B66}
+.ln{stroke:#8A8A82;stroke-width:1.4;fill:none}
+.dt{stroke:#8A8A82;stroke-width:1.4;fill:none;stroke-dasharray:4 4}
+</style>
+<defs><marker id="a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#8A8A82" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+
+<rect x="250" y="40" width="180" height="44" rx="8" fill="#F1F1EF" stroke="#C9C9C2"/>
+<text class="t" x="340" y="67" text-anchor="middle">Human</text>
+<line x1="340" y1="84" x2="340" y2="116" class="ln" marker-end="url(#a)"/>
+<path d="M430 62 L550 62 L550 116" class="ln" marker-end="url(#a)"/>
+<path d="M250 62 L130 62 L130 116" class="dt" marker-end="url(#a)"/>
+
+<rect x="40" y="120" width="180" height="56" rx="12" fill="#E6F2F1" stroke="#7FB8B4"/>
+<text class="t" x="130" y="145" text-anchor="middle">Konspekt UI app</text>
+<text class="s" x="130" y="164" text-anchor="middle">renderer, HTML UI</text>
+<rect x="250" y="120" width="180" height="56" rx="12" fill="#E6F2F1" stroke="#7FB8B4"/>
+<text class="t" x="340" y="145" text-anchor="middle">Claude web UI</text>
+<text class="s" x="340" y="164" text-anchor="middle">chat, renders card</text>
+<rect x="460" y="120" width="180" height="56" rx="12" fill="#E6F2F1" stroke="#7FB8B4"/>
+<text class="t" x="550" y="145" text-anchor="middle">IntelliJ plugin</text>
+<text class="s" x="550" y="164" text-anchor="middle">Claude in the IDE</text>
+
+<line x1="340" y1="176" x2="340" y2="211" class="ln" marker-start="url(#a)" marker-end="url(#a)"/>
+<path d="M550 176 L550 243 L434 243" class="ln" marker-start="url(#a)" marker-end="url(#a)"/>
+<line x1="600" y1="176" x2="600" y2="306" class="ln" marker-start="url(#a)" marker-end="url(#a)"/>
+
+<rect x="250" y="215" width="180" height="56" rx="12" fill="#FBEDE7" stroke="#D9A98F"/>
+<text class="t" x="340" y="240" text-anchor="middle">Claude backend</text>
+<text class="s" x="340" y="259" text-anchor="middle">MCP client on web</text>
+<line x1="300" y1="271" x2="300" y2="306" class="ln" marker-start="url(#a)" marker-end="url(#a)"/>
+
+<rect x="250" y="310" width="180" height="56" rx="12" fill="#FBEDE7" stroke="#D9A98F"/>
+<text class="t" x="340" y="335" text-anchor="middle">Claude GitHub MCP</text>
+<text class="s" x="340" y="354" text-anchor="middle">remote R/W today</text>
+<rect x="460" y="310" width="180" height="56" rx="12" fill="#F1F1EF" stroke="#C9C9C2"/>
+<text class="t" x="550" y="335" text-anchor="middle">Git CLI</text>
+<text class="s" x="550" y="354" text-anchor="middle">local R/W today</text>
+
+<path d="M410 271 L448 271 L448 425 L434 425" class="dt" marker-start="url(#a)" marker-end="url(#a)"/>
+<path d="M640 148 L656 148 L656 449 L434 449" class="dt" marker-start="url(#a)" marker-end="url(#a)"/>
+
+<rect x="250" y="405" width="180" height="56" rx="12" fill="#EFEDFB" stroke="#A79DE0"/>
+<text class="t" x="340" y="430" text-anchor="middle">Konspekt MCP server</text>
+<text class="s" x="340" y="449" text-anchor="middle">tools and ui:// reads</text>
+<line x1="340" y1="461" x2="340" y2="496" class="dt" marker-start="url(#a)" marker-end="url(#a)"/>
+<path d="M130 176 L130 528 L246 528" class="dt" marker-start="url(#a)" marker-end="url(#a)"/>
+
+<rect x="250" y="500" width="180" height="56" rx="12" fill="#EFEDFB" stroke="#A79DE0"/>
+<text class="t" x="340" y="525" text-anchor="middle">Konspekt R/W API</text>
+<text class="s" x="340" y="544" text-anchor="middle">read, write, CAS</text>
+<line x1="340" y1="556" x2="340" y2="591" class="dt" marker-start="url(#a)" marker-end="url(#a)"/>
+
+<rect x="40" y="595" width="180" height="56" rx="12" fill="#F1F1EF" stroke="#C9C9C2"/>
+<text class="t" x="130" y="620" text-anchor="middle">Push interface</text>
+<text class="s" x="130" y="639" text-anchor="middle">optional accelerator</text>
+<line x1="246" y1="623" x2="224" y2="623" class="dt" marker-end="url(#a)"/>
+<path d="M90 591 L90 180" class="dt" marker-end="url(#a)"/>
+
+<rect x="250" y="595" width="390" height="56" rx="12" fill="#EFEDFB" stroke="#A79DE0"/>
+<text class="t" x="445" y="620" text-anchor="middle">Storage interface</text>
+<text class="s" x="445" y="639" text-anchor="middle">entity read, CAS write, cursor, changes-since</text>
+
+<path d="M290 651 L290 670 L130 670 L130 686" class="dt" marker-start="url(#a)" marker-end="url(#a)"/>
+<line x1="340" y1="651" x2="340" y2="686" class="dt" marker-start="url(#a)" marker-end="url(#a)"/>
+<line x1="550" y1="651" x2="550" y2="686" class="dt" marker-start="url(#a)" marker-end="url(#a)"/>
+
+<rect x="40" y="690" width="180" height="56" rx="12" fill="#F1F1EF" stroke="#C9C9C2"/>
+<text class="t" x="130" y="715" text-anchor="middle">Git backend</text>
+<text class="s" x="130" y="734" text-anchor="middle">reference impl.</text>
+<rect x="250" y="690" width="180" height="56" rx="12" fill="#F1F1EF" stroke="#C9C9C2"/>
+<text class="t" x="340" y="715" text-anchor="middle">MongoDB backend</text>
+<text class="s" x="340" y="734" text-anchor="middle">enterprise</text>
+<rect x="460" y="690" width="180" height="56" rx="12" fill="#F1F1EF" stroke="#C9C9C2"/>
+<text class="t" x="550" y="715" text-anchor="middle">Postgres backend</text>
+<text class="s" x="550" y="734" text-anchor="middle">open source</text>
+
+<line x1="130" y1="746" x2="130" y2="786" class="ln" marker-start="url(#a)" marker-end="url(#a)"/>
+<rect x="55" y="790" width="150" height="50" rx="10" fill="#FFFFFF" stroke="#C9C9C2"/>
+<text class="t" x="130" y="812" text-anchor="middle">Working tree</text>
+<text class="s" x="130" y="830" text-anchor="middle">local files</text>
+<line x1="130" y1="840" x2="130" y2="866" class="ln" marker-start="url(#a)" marker-end="url(#a)"/>
+<rect x="55" y="870" width="150" height="50" rx="10" fill="#FFFFFF" stroke="#C9C9C2"/>
+<text class="t" x="130" y="892" text-anchor="middle">GitHub remote</text>
+<text class="s" x="130" y="910" text-anchor="middle">push and pull</text>
+
+<path d="M600 366 L600 500 L656 500 L656 815 L209 815" class="ln" marker-start="url(#a)" marker-end="url(#a)"/>
+<path d="M250 338 L234 338 L234 895 L209 895" class="ln" marker-start="url(#a)" marker-end="url(#a)"/>
+
+<line x1="40" y1="950" x2="70" y2="950" class="ln"/>
+<text class="f" x="78" y="954">today</text>
+<line x1="130" y1="950" x2="160" y2="950" class="dt"/>
+<text class="f" x="168" y="954">target</text>
+<text class="f" x="40" y="978">Non-normative. Snapshot of the app design session, 2026-09-14. Redraw rather than patch.</text>
+</svg>
