@@ -218,3 +218,47 @@ proposal.
 | e-dec-usability-workthrough | decomposes | node:goal-usability | node:task-task-workthrough-ui |  |  |
 | e-prod-filters-explorer | produces | node:task-visual-status-filters | artifact:artifact-visual-explorer |  |  |
 | e-prod-nav-explorer | produces | node:task-goal-task-navigation | artifact:artifact-visual-explorer |  |  |
+
+<!-- === app design 101 changeset (proposed; konspekt UI application) === -->
+| e-dec-usability-uiapp | decomposes | node:goal-usability | node:task-konspekt-ui-app |  | proposed |
+| e-dec-usability-mcpapp | decomposes | node:goal-usability | node:task-mcp-app-surface |  | proposed |
+| e-dec-collab-cas | decomposes | node:goal-collaboration | node:task-atom-versioning-cas |  | proposed |
+| e-link-uiapp-workthrough | links | node:task-konspekt-ui-app | node:task-task-workthrough-ui | 0.8 | proposed |
+| e-link-uiapp-nav | links | node:task-konspekt-ui-app | node:task-goal-task-navigation | 0.7 | proposed |
+| e-link-uiapp-filters | links | node:task-konspekt-ui-app | node:task-visual-status-filters | 0.7 | proposed |
+| e-link-uiapp-mcpapp | links | node:task-konspekt-ui-app | node:task-mcp-app-surface | 0.7 | proposed |
+| e-link-mcpapp-central | links | node:task-mcp-app-surface | node:task-central-service-binding | 0.6 | proposed |
+| e-link-cas-enterprise | links | node:task-atom-versioning-cas | node:task-enterprise-persistence | 0.7 | proposed |
+| e-link-cas-multiauthor | links | node:task-atom-versioning-cas | node:task-multi-author-review | 0.6 | proposed |
+| e-link-cas-reconciliation | links | node:task-atom-versioning-cas | node:task-reconciliation | 0.6 | proposed |
+| e-men-uiapp-companion | mentions | node:task-konspekt-ui-app | concept:concept-companion-surface |  | proposed |
+| e-men-mcpapp-companion | mentions | node:task-mcp-app-surface | concept:concept-companion-surface |  | proposed |
+| e-men-uiapp-sep | mentions | node:task-konspekt-ui-app | concept:concept-propose-accept-separation |  | proposed |
+| e-men-cas-sep | mentions | node:task-atom-versioning-cas | concept:concept-propose-accept-separation |  | proposed |
+| e-men-mcpapp-contract | mentions | node:task-mcp-app-surface | concept:concept-transport-contract |  | proposed |
+| e-rel-companion-memorylayer | relates | concept:concept-companion-surface | concept:concept-konspekt-vs-memory-layer | 0.6 | proposed |
+| e-not-mcpapp-nowake | notes | node:task-mcp-app-surface | noteworthy:nw-server-cannot-wake-a-session |  | proposed |
+| e-not-trigger-nowake | notes | node:task-trigger-transport | noteworthy:nw-server-cannot-wake-a-session |  | proposed |
+| e-not-mcpapp-backendclient | notes | node:task-mcp-app-surface | noteworthy:nw-backend-is-mcp-client-on-web |  | proposed |
+| e-not-uiapp-mobile | notes | node:task-konspekt-ui-app | noteworthy:nw-claude-mobile-not-a-target |  | proposed |
+| e-not-uiapp-oneview | notes | node:task-konspekt-ui-app | noteworthy:nw-one-view-two-transports |  | proposed |
+| e-not-mcpapp-oneview | notes | node:task-mcp-app-surface | noteworthy:nw-one-view-two-transports |  | proposed |
+| e-not-cas-versioning | notes | node:task-atom-versioning-cas | noteworthy:nw-versioning-not-write-scope |  | proposed |
+| e-not-cas-cursor | notes | node:task-atom-versioning-cas | noteworthy:nw-cursor-is-opaque-store-token |  | proposed |
+| e-not-cas-multifilepush | notes | node:task-atom-versioning-cas | noteworthy:nw-multifile-push-clobbers-silently |  | proposed |
+| e-not-cas-edgecontention | notes | node:task-atom-versioning-cas | noteworthy:nw-edge-table-contends-under-cas |  | proposed |
+| e-not-enterprise-backends | notes | node:task-enterprise-persistence | noteworthy:nw-mongo-enterprise-postgres-oss |  | proposed |
+| e-not-enterprise-appendonly | notes | node:task-enterprise-persistence | noteworthy:nw-db-backend-needs-append-only-record |  | proposed |
+| e-not-provenance-appendonly | notes | node:task-provenance-model | noteworthy:nw-db-backend-needs-append-only-record |  | proposed |
+| e-not-mcpapp-cardv1 | notes | node:task-mcp-app-surface | noteworthy:nw-card-v1-is-last-ten-changed |  | proposed |
+| e-dec-usability-atomvocab | decomposes | node:goal-usability | node:task-atom-vocabulary |  | proposed |
+| e-link-atomvocab-serial | links | node:task-atom-vocabulary | node:task-serialization-format | 0.6 | proposed |
+| e-link-atomvocab-reconcile | links | node:task-atom-vocabulary | node:task-reconcile-schema | 0.6 | proposed |
+| e-not-trigger-pollfloor | notes | node:task-trigger-transport | noteworthy:nw-poll-is-the-floor-push-is-optional |  | proposed |
+| e-not-cas-pollfloor | notes | node:task-atom-versioning-cas | noteworthy:nw-poll-is-the-floor-push-is-optional |  | proposed |
+| e-not-uiapp-pollfloor | notes | node:task-konspekt-ui-app | noteworthy:nw-poll-is-the-floor-push-is-optional |  | proposed |
+| e-not-enterprise-pollfloor | notes | node:task-enterprise-persistence | noteworthy:nw-poll-is-the-floor-push-is-optional |  | proposed |
+| e-prod-uiapp-uidesign | produces | node:task-konspekt-ui-app | artifact:artifact-ui-design |  | proposed |
+| e-prod-mcpapp-uidesign | produces | node:task-mcp-app-surface | artifact:artifact-ui-design |  | proposed |
+| e-prod-cas-uidesign | produces | node:task-atom-versioning-cas | artifact:artifact-ui-design |  | proposed |
+| e-prod-enterprise-uidesign | produces | node:task-enterprise-persistence | artifact:artifact-ui-design |  | proposed |
