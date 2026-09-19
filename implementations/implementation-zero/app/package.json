@@ -1,0 +1,15 @@
+{
+  "name": "konspekt-implementation-zero",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Local watcher and always-on-top read-only view over a konspekt instance.",
+  "main": "electron-main.mjs",
+  "scripts": {
+    "start": "node server.mjs",
+    "shell": "electron ."
+  },
+  "devDependencies": {
+    "electron": "^33.0.0"
+  }
+}

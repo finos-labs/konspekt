@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>konspekt — Changes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    --ground:#eef1f5; --surface:#fff; --surface-2:#f4f6f9; --ink:#1b1e26; --ink-2:#59616f; --ink-3:#8b93a1;
+    --line:#dde2e9; --line-2:#eceff3; --accent:#4a4fb0; --accent-soft:rgba(74,79,176,.12); --focus:#4a4fb0;
+    --st-open:#2f6feb; --st-resolved:#2e9e6b; --st-abandoned:#9aa2b0; --st-active:#c67c1e;
+    --rev-proposed-ink:#a8641a; --rev-proposed-bg:rgba(198,124,30,.12); --rev-proposed-line:rgba(198,124,30,.5);
+    --rev-accepted-ink:#fff; --rev-accepted-bg:#3a4152; --changed:#4a4fb0;
+    --bad:#c0392b; --row-h:46px;
+    --shadow:0 1px 2px rgba(20,24,34,.06),0 6px 20px rgba(20,24,34,.05);
+  }
+  :root[data-theme="dark"], :root:not([data-theme="light"]) {
+    @media (prefers-color-scheme: dark) {
+      --ground:#0f1116; --surface:#171a21; --surface-2:#1d2129; --ink:#e7eaf0; --ink-2:#a6adba; --ink-3:#737b8a;
+      --line:#2a2f39; --line-2:#21252e; --accent:#9aa0f0; --accent-soft:rgba(154,160,240,.16); --focus:#9aa0f0;
+      --st-open:#6ea0ff; --st-resolved:#52c48d; --st-abandoned:#6c7482; --st-active:#e6a558;
+      --rev-proposed-ink:#e6a558; --rev-proposed-bg:rgba(230,165,88,.14); --rev-proposed-line:rgba(230,165,88,.45);
+      --rev-accepted-ink:#0f1116; --rev-accepted-bg:#c2c8d6; --changed:#9aa0f0; --bad:#e8776a;
+      --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.35);
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground:#0f1116; --surface:#171a21; --surface-2:#1d2129; --ink:#e7eaf0; --ink-2:#a6adba; --ink-3:#737b8a;
+    --line:#2a2f39; --line-2:#21252e; --accent:#9aa0f0; --accent-soft:rgba(154,160,240,.16); --focus:#9aa0f0;
+    --st-open:#6ea0ff; --st-resolved:#52c48d; --st-abandoned:#6c7482; --st-active:#e6a558;
+    --rev-proposed-ink:#e6a558; --rev-proposed-bg:rgba(230,165,88,.14); --rev-proposed-line:rgba(230,165,88,.45);
+    --rev-accepted-ink:#0f1116; --rev-accepted-bg:#c2c8d6; --changed:#9aa0f0; --bad:#e8776a;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.35);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--ground);color:var(--ink);font-family:"IBM Plex Sans",system-ui,-apple-system,sans-serif;line-height:1.45;-webkit-font-smoothing:antialiased}
+  .mono{font-family:"IBM Plex Mono",ui-monospace,"SFMono-Regular",monospace}
+  .wrap{max-width:940px;margin:0 auto;padding-inline:16px;padding-block:22px 34px}
+  .app{background:var(--surface);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);overflow:hidden}
+  .topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:12px 18px 0;border-bottom:1px solid var(--line)}
+  .brand{display:flex;align-items:baseline;gap:10px;padding-bottom:11px}
+  .brand b{font-weight:600;font-size:15px;letter-spacing:-.01em}
+  .brand span{font-size:12px;color:var(--ink-3)}
+  .tabs{display:flex;gap:2px;align-self:flex-end}
+  .tab{appearance:none;border:0;background:none;cursor:pointer;font:inherit;font-size:13px;font-weight:500;color:var(--ink-2);padding:9px 14px 12px;border-bottom:2px solid transparent;border-radius:6px 6px 0 0}
+  .tab:hover{color:var(--ink);background:var(--surface-2)}
+  .tab[aria-selected="true"]{color:var(--accent);border-bottom-color:var(--accent)}
+  .tab[disabled]{color:var(--ink-3);cursor:not-allowed;opacity:.7}
+  .tab .soon{font-size:9px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);margin-left:6px;vertical-align:1px}
+  .filters{padding:14px 18px;border-bottom:1px solid var(--line);display:grid;gap:12px}
+  .frow{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .flabel{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);min-width:54px;font-weight:500}
+  .chips{display:flex;gap:6px;flex-wrap:wrap}
+  .chip{appearance:none;cursor:pointer;font:inherit;font-size:12px;padding:4px 11px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink-2);display:inline-flex;align-items:center;gap:6px}
+  .chip:hover{border-color:var(--ink-3);color:var(--ink)}
+  .chip[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent);color:var(--accent);font-weight:500}
+  .chip .dot{width:8px;height:8px;border-radius:50%}
+  .preset{appearance:none;cursor:pointer;font:inherit;font-size:12px;font-weight:500;padding:5px 12px;border-radius:7px;border:1px dashed var(--line);background:var(--surface-2);color:var(--ink-2)}
+  .preset:hover{border-color:var(--accent);color:var(--accent)}
+  .preset[aria-pressed="true"]{border-style:solid;border-color:var(--accent);background:var(--accent-soft);color:var(--accent)}
+  .spacer{flex:1 1 auto}
+  .search{display:flex;align-items:center;gap:7px;border:1px solid var(--line);border-radius:7px;padding:5px 10px;background:var(--surface);min-width:180px}
+  .search input{border:0;background:none;outline:none;font:inherit;font-size:13px;color:var(--ink);width:100%}
+  .search input::placeholder{color:var(--ink-3)}
+  .search svg{flex:none;color:var(--ink-3)}
+  .clearall{appearance:none;border:0;background:none;cursor:pointer;font:inherit;font-size:12px;color:var(--ink-3);text-decoration:underline;text-underline-offset:2px;padding:4px}
+  .clearall:hover{color:var(--ink)}
+  .err{margin:0;padding:8px 18px;background:rgba(192,57,43,.1);color:var(--bad);font-size:12px;border-bottom:1px solid var(--line)}
+  .tablescroll{max-height:calc(var(--row-h) * 10 + 40px);overflow:auto}
+  table{width:100%;border-collapse:collapse;min-width:620px;table-layout:fixed}
+  col.c-kind{width:96px}col.c-status{width:132px}col.c-review{width:106px}col.c-upd{width:100px}
+  thead th{position:sticky;top:0;z-index:2;background:var(--surface-2);text-align:left;font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3);font-weight:600;padding:9px 14px;border-bottom:1px solid var(--line);white-space:nowrap}
+  tbody tr{height:var(--row-h);border-bottom:1px solid var(--line-2);border-left:2px solid transparent}
+  tbody tr:hover{background:var(--surface-2)}
+  tbody tr.changed{border-left-color:var(--changed);background:var(--accent-soft)}
+  tbody tr.st-abandoned{opacity:.55}
+  tbody td{padding:0 14px;font-size:13px;vertical-align:middle}
+  td.id{overflow:hidden}
+  td.id .idcell{display:flex;align-items:center;gap:8px;min-width:0}
+  td.id .txt{font-size:12.5px;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  tr.st-abandoned td.id .txt{text-decoration:line-through}
+  .newdot{width:6px;height:6px;border-radius:50%;background:var(--changed);flex:none}
+  .kind{font-size:11px;color:var(--ink-2);text-transform:lowercase;background:var(--line-2);border:1px solid var(--line);border-radius:5px;padding:2px 7px;white-space:nowrap}
+  .status{display:inline-flex;align-items:center;gap:7px;white-space:nowrap;font-size:12.5px;color:var(--ink)}
+  .status .dot{width:9px;height:9px;border-radius:50%;flex:none}
+  .status.none{color:var(--ink-3)}
+  .rev{display:inline-flex;align-items:center;font-size:11px;font-weight:500;padding:2px 9px;border-radius:999px;white-space:nowrap}
+  .rev.proposed{color:var(--rev-proposed-ink);background:var(--rev-proposed-bg);border:1px solid var(--rev-proposed-line)}
+  .rev.accepted{color:var(--rev-accepted-ink);background:var(--rev-accepted-bg);border:1px solid transparent}
+  td.upd{color:var(--ink-2);font-size:12px;white-space:nowrap}
+  .empty{padding:40px 14px;text-align:center;color:var(--ink-3);font-size:13px}
+  .foot{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;padding:11px 18px;border-top:1px solid var(--line);background:var(--surface-2);font-size:12px;color:var(--ink-2)}
+  .window b{color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums}
+  .sync{display:inline-flex;align-items:center;gap:8px}
+  .pulse{width:8px;height:8px;border-radius:50%;background:var(--st-resolved)}
+  .pulse.off{background:var(--ink-3)}
+  .legend{margin-top:16px;display:flex;gap:22px;flex-wrap:wrap;font-size:12px;color:var(--ink-2)}
+  .legend h4{margin:0 0 7px;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);font-weight:600}
+  .legend .lg{display:flex;align-items:center;gap:8px;margin-bottom:5px}
+  .legend .swatch{width:10px;height:10px;border-radius:50%;flex:none}
+  .note{margin-top:14px;font-size:12px;color:var(--ink-3);max-width:64ch}
+  :focus-visible{outline:2px solid var(--focus);outline-offset:2px;border-radius:4px}
+  @media (max-width:560px){.flabel{min-width:0;width:100%}.search{min-width:0;width:100%}table{min-width:0}thead th.upd,td.upd{display:none}col.c-upd{width:0}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="app">
+    <header class="topbar">
+      <div class="brand"><b>konspekt</b><span id="scope">local · read-only</span></div>
+      <nav class="tabs" role="tablist" aria-label="Views">
+        <button class="tab" role="tab" aria-selected="true">Changes</button>
+        <button class="tab" role="tab" disabled aria-selected="false">Stats<span class="soon">later</span></button>
+        <button class="tab" role="tab" disabled aria-selected="false">Goals<span class="soon">later</span></button>
+      </nav>
+    </header>
+
+    <div class="filters">
+      <div class="frow">
+        <span class="flabel">Presets</span>
+        <div class="chips">
+          <button class="preset" data-preset="work" aria-pressed="false">Open + accepted work</button>
+          <button class="preset" data-preset="queue" aria-pressed="false">Proposed review queue</button>
+        </div>
+        <span class="spacer"></span>
+        <label class="search">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          <input id="q" type="search" placeholder="Filter by id…" autocomplete="off">
+        </label>
+      </div>
+      <div class="frow"><span class="flabel">Kind</span><div class="chips" id="kindChips"></div></div>
+      <div class="frow">
+        <span class="flabel">Status</span><div class="chips" id="statusChips"></div>
+        <span class="flabel" style="min-width:auto;margin-left:8px">Review</span><div class="chips" id="reviewChips"></div>
+        <span class="spacer"></span><button class="clearall" id="clearAll" hidden>Clear filters</button>
+      </div>
+    </div>
+
+    <p class="err" id="err" hidden></p>
+
+    <div class="tablescroll" id="tbodyWrap">
+      <table>
+        <colgroup><col class="c-id"><col class="c-kind"><col class="c-status"><col class="c-review"><col class="c-upd"></colgroup>
+        <thead><tr><th>Entity id</th><th>Kind</th><th>Status</th><th>Review</th><th class="upd">Updated</th></tr></thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </div>
+
+    <div class="foot">
+      <div class="window">Showing <b id="visN">0</b> of <b id="totN">0</b> entities · window of 10, scroll for the rest</div>
+      <div class="sync"><span class="pulse" id="pulse"></span><span id="syncTxt">connecting…</span></div>
+    </div>
+  </div>
+
+  <div class="legend">
+    <div>
+      <h4>Status</h4>
+      <div class="lg"><span class="swatch" style="background:var(--st-open)"></span> open</div>
+      <div class="lg"><span class="swatch" style="background:var(--st-active)"></span> active</div>
+      <div class="lg"><span class="swatch" style="background:var(--st-resolved)"></span> resolved</div>
+      <div class="lg"><span class="swatch" style="background:var(--st-abandoned)"></span> abandoned — dimmed + struck</div>
+      <div class="lg"><span class="swatch" style="background:var(--line);border:1px solid var(--ink-3)"></span> — no node status</div>
+    </div>
+    <div>
+      <h4>Review</h4>
+      <div class="lg"><span class="rev proposed">proposed</span> awaiting a human disposition</div>
+      <div class="lg"><span class="rev accepted">accepted</span> human-accepted</div>
+    </div>
+    <div>
+      <h4>Poll</h4>
+      <div class="lg"><span class="swatch" style="background:var(--changed)"></span> changed since last reload — left edge + dot</div>
+    </div>
+  </div>
+
+  <p class="note">Read-only feed over the local working tree, refreshed by a filesystem watcher over Server-Sent Events. Disposition and the authority verbs are a later layer; nothing here writes to the instance.</p>
+</div>
+
+<script>
+  const KINDS=["goal","investigation","experiment","topic","task","note","concept","noteworthy","artifact","waypoint"];
+  const STATUSES=["open","active","resolved","abandoned"];
+  const REVIEWS=["proposed","accepted"];
+  const stDot={open:"var(--st-open)",active:"var(--st-active)",resolved:"var(--st-resolved)",abandoned:"var(--st-abandoned)"};
+
+  const state={kinds:new Set(),statuses:new Set(),reviews:new Set(),q:"",preset:null};
+  let rows=[]; let prevTs={}; let changedIds=new Set(); let lastCursor="";
+
+  const $=(id)=>document.getElementById(id);
+
+  function chip(label,on,dotVar){
+    const b=document.createElement("button");
+    b.className="chip";b.type="button";b.setAttribute("aria-pressed","false");b.textContent=label;
+    if(dotVar){const d=document.createElement("span");d.className="dot";d.style.background=dotVar;b.prepend(d);}
+    b.addEventListener("click",()=>{on(b);render();});
+    return b;
+  }
+  const kindWrap=$("kindChips"),statusWrap=$("statusChips"),reviewWrap=$("reviewChips");
+  KINDS.forEach(k=>kindWrap.appendChild(chip(k,(b)=>toggle(state.kinds,k,b))));
+  STATUSES.forEach(s=>statusWrap.appendChild(chip(s,(b)=>toggle(state.statuses,s,b),stDot[s])));
+  REVIEWS.forEach(r=>reviewWrap.appendChild(chip(r,(b)=>toggle(state.reviews,r,b))));
+
+  function toggle(set,val,btn){
+    if(set.has(val)){set.delete(val);btn.setAttribute("aria-pressed","false");}
+    else{set.add(val);btn.setAttribute("aria-pressed","true");}
+    clearPreset();
+  }
+  $("q").addEventListener("input",(e)=>{state.q=e.target.value.trim().toLowerCase();render();});
+
+  document.querySelectorAll(".preset").forEach(p=>p.addEventListener("click",()=>applyPreset(p.dataset.preset,p)));
+  function applyPreset(name,btn){
+    const active=state.preset===name; resetFilters();
+    if(!active){state.preset=name;btn.setAttribute("aria-pressed","true");
+      if(name==="work"){state.statuses=new Set(["open"]);state.reviews=new Set(["accepted"]);}
+      if(name==="queue"){state.reviews=new Set(["proposed"]);}
+      syncChipUI();}
+    render();
+  }
+  function clearPreset(){state.preset=null;document.querySelectorAll(".preset").forEach(p=>p.setAttribute("aria-pressed","false"));}
+  function resetFilters(){state.kinds.clear();state.statuses.clear();state.reviews.clear();state.q="";$("q").value="";clearPreset();syncChipUI();}
+  function syncChipUI(){
+    [[kindWrap,state.kinds],[statusWrap,state.statuses],[reviewWrap,state.reviews]].forEach(([wrap,set])=>
+      wrap.querySelectorAll(".chip").forEach(c=>c.setAttribute("aria-pressed",set.has(c.textContent.trim())?"true":"false")));
+  }
+  $("clearAll").addEventListener("click",()=>{resetFilters();render();});
+
+  function passes(e){
+    if(state.kinds.size&&!state.kinds.has(e.kind))return false;
+    if(state.statuses.size&&!(e.status&&state.statuses.has(e.status)))return false;
+    if(state.reviews.size&&!state.reviews.has(e.review))return false;
+    if(state.q&&!e.id.toLowerCase().includes(state.q))return false;
+    return true;
+  }
+  function ago(iso){
+    if(!iso)return "—"; const t=Date.parse(iso); if(!t)return "—";
+    const s=(Date.now()-t)/1000; if(s<90)return "just now";
+    const m=s/60; if(m<90)return Math.round(m)+"m ago";
+    const h=m/60; if(h<40)return Math.round(h)+"h ago";
+    const d=h/24; if(d<14)return Math.round(d)+"d ago";
+    return iso.slice(0,10);
+  }
+
+  function render(){
+    const list=rows.filter(passes);
+    const el=$("rows"); el.innerHTML="";
+    if(!list.length){
+      const tr=document.createElement("tr");
+      tr.innerHTML='<td class="empty" colspan="5">No entities match these filters.</td>';
+      el.appendChild(tr);
+    } else for(const e of list) el.appendChild(rowEl(e));
+    $("totN").textContent=list.length;
+    $("visN").textContent=Math.min(10,list.length);
+    $("clearAll").hidden=!(state.kinds.size||state.statuses.size||state.reviews.size||state.q);
+  }
+  function rowEl(e){
+    const tr=document.createElement("tr");
+    if(changedIds.has(e.id))tr.classList.add("changed");
+    if(e.status==="abandoned")tr.classList.add("st-abandoned");
+    const tdId=document.createElement("td");tdId.className="id mono";
+    const cell=document.createElement("div");cell.className="idcell";
+    if(changedIds.has(e.id)){const nd=document.createElement("span");nd.className="newdot";nd.title="changed since last reload";cell.appendChild(nd);}
+    const txt=document.createElement("span");txt.className="txt";txt.textContent=e.id;txt.title=e.id;cell.appendChild(txt);
+    tdId.appendChild(cell);tr.appendChild(tdId);
+    const tdK=document.createElement("td");const k=document.createElement("span");k.className="kind";k.textContent=e.kind;tdK.appendChild(k);tr.appendChild(tdK);
+    const tdS=document.createElement("td");
+    if(e.status){const s=document.createElement("span");s.className="status";const dot=document.createElement("span");dot.className="dot";dot.style.background=stDot[e.status]||"var(--ink-3)";s.appendChild(dot);s.appendChild(document.createTextNode(e.status));tdS.appendChild(s);}
+    else{const s=document.createElement("span");s.className="status none";s.textContent="—";tdS.appendChild(s);}
+    tr.appendChild(tdS);
+    const tdR=document.createElement("td");const r=document.createElement("span");r.className="rev "+(e.review||"");r.textContent=e.review||"—";tdR.appendChild(r);tr.appendChild(tdR);
+    const tdU=document.createElement("td");tdU.className="upd mono";tdU.textContent=ago(e.updatedAt);tr.appendChild(tdU);
+    return tr;
+  }
+
+  async function refresh(){
+    try{
+      const res=await fetch("/api/entities",{cache:"no-store"});
+      const snap=await res.json();
+      const next=snap.rows||[];
+      // mark rows whose updatedAt advanced or that are new, but not on first load
+      const firstLoad=lastCursor==="";
+      changedIds=new Set();
+      if(!firstLoad) for(const e of next){ if(!(e.id in prevTs)||prevTs[e.id]!==e.updatedAt) changedIds.add(e.id); }
+      prevTs={}; for(const e of next) prevTs[e.id]=e.updatedAt;
+      rows=next; lastCursor=snap.cursor||"";
+      $("err").hidden=!snap.error; if(snap.error)$("err").textContent="reload error: "+snap.error;
+      const n=snap.counts?snap.counts.edges:0;
+      $("syncTxt").textContent="synced just now · "+next.length+" entities"+(changedIds.size?" · "+changedIds.size+" changed":"");
+      $("pulse").classList.remove("off");
+      render();
+    }catch(err){
+      $("syncTxt").textContent="server unreachable — retrying"; $("pulse").classList.add("off");
+    }
+  }
+
+  function connect(){
+    const es=new EventSource("/events");
+    es.addEventListener("change",()=>refresh());
+    es.onerror=()=>{$("pulse").classList.add("off");$("syncTxt").textContent="reconnecting…";};
+    es.onopen=()=>{$("pulse").classList.remove("off");};
+  }
+  refresh(); connect();
+</script>
+</body>
+</html>
