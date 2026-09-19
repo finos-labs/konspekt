@@ -5,8 +5,15 @@ specification and nothing here is normative: `spec/` governs on any conflict.
 Snapshot of the design session of 2026-09-14, recorded so the component names
 and the reasons behind them survive outside the conversation.
 
-Diagram: `ui-architecture.svg` in this directory. Today's flows are solid,
-the target is dotted.
+Diagram: `ui-architecture.svg` in this directory is the source; `ui-architecture.png`
+beside it is the raster export shown below. Today's flows are solid, the target
+is dotted.
+
+![konspekt UI architecture: today solid, target dotted](ui-architecture.png)
+
+The PNG is a raster export of the SVG at 2x scale. Regenerate it from the SVG
+rather than editing it by hand, and redraw the SVG rather than patching either
+when the design changes.
 
 ## Components
 

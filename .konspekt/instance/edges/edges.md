@@ -262,3 +262,22 @@ proposal.
 | e-prod-mcpapp-uidesign | produces | node:task-mcp-app-surface | artifact:artifact-ui-design |  | proposed |
 | e-prod-cas-uidesign | produces | node:task-atom-versioning-cas | artifact:artifact-ui-design |  | proposed |
 | e-prod-enterprise-uidesign | produces | node:task-enterprise-persistence | artifact:artifact-ui-design |  | proposed |
+
+<!-- === implementations changeset (proposed; local-first layering) === -->
+| e-dec-uiapp-implzero | decomposes | node:task-konspekt-ui-app | node:task-implementation-zero |  | proposed |
+| e-dec-uiapp-intellij | decomposes | node:task-konspekt-ui-app | node:task-intellij-plugin |  | proposed |
+| e-not-uiapp-layering | notes | node:task-konspekt-ui-app | noteworthy:nw-implementation-layering |  | proposed |
+| e-not-implzero-layering | notes | node:task-implementation-zero | noteworthy:nw-implementation-layering |  |  |
+| e-not-intellij-layering | notes | node:task-intellij-plugin | noteworthy:nw-implementation-layering |  |  |
+| e-not-implzero-pollfloor | notes | node:task-implementation-zero | noteworthy:nw-poll-is-the-floor-push-is-optional |  | proposed |
+| e-not-implzero-oneview | notes | node:task-implementation-zero | noteworthy:nw-one-view-two-transports |  | proposed |
+| e-not-intellij-oneview | notes | node:task-intellij-plugin | noteworthy:nw-one-view-two-transports |  | proposed |
+| e-link-intellij-mcpapp | links | node:task-intellij-plugin | node:task-mcp-app-surface | 0.7 | proposed |
+| e-link-implzero-intellij | links | node:task-implementation-zero | node:task-intellij-plugin | 0.6 |  |
+| e-prod-implzero-design | produces | node:task-implementation-zero | artifact:artifact-implementation-zero-design |  |  |
+| e-not-implzero-electron | notes | node:task-implementation-zero | noteworthy:nw-electron-shell |  |  |
+| e-not-repostructure-impldir | notes | node:investigation-repo-structure | noteworthy:nw-implementations-directory |  |  |
+| e-not-implzero-impldir | notes | node:task-implementation-zero | noteworthy:nw-implementations-directory |  |  |
+| e-prod-implzero-app | produces | node:task-implementation-zero | artifact:artifact-implementation-zero-app |  |  |
+| e-prod-nav-app | produces | node:task-goal-task-navigation | artifact:artifact-implementation-zero-app |  |  |
+| e-prod-analytics-app | produces | node:task-graph-analytics | artifact:artifact-implementation-zero-app |  | proposed |

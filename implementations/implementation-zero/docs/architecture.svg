@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 660" width="760" height="660" font-family="Helvetica, Arial, sans-serif" role="img" aria-label="implementation_zero data path: writers to working tree to watcher to localhost server to always-on-top window">
+<title>konspekt implementation_zero — local data path</title>
+<style>
+.t{font-size:14px;font-weight:500;fill:#1A1A18}
+.s{font-size:12px;fill:#6B6B66}
+.f{font-size:12px;fill:#6B6B66}
+.g{font-size:11px;fill:#8A8A82;font-style:italic}
+.ln{stroke:#8A8A82;stroke-width:1.4;fill:none}
+.dt{stroke:#8A8A82;stroke-width:1.4;fill:none;stroke-dasharray:4 4}
+</style>
+<defs><marker id="a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#8A8A82" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+
+<!-- writers -->
+<rect x="230" y="30" width="300" height="54" rx="12" fill="#F1F1EF" stroke="#C9C9C2"/>
+<text class="t" x="380" y="54" text-anchor="middle">Agent (Claude in IDE) and human</text>
+<text class="s" x="380" y="72" text-anchor="middle">write entity .md files</text>
+<line x1="380" y1="84" x2="380" y2="118" class="ln" marker-end="url(#a)"/>
+<text class="g" x="392" y="105">write</text>
+
+<!-- working tree -->
+<rect x="230" y="120" width="300" height="54" rx="10" fill="#FFFFFF" stroke="#C9C9C2"/>
+<text class="t" x="380" y="144" text-anchor="middle">.konspekt/instance/</text>
+<text class="s" x="380" y="162" text-anchor="middle">working tree — local files</text>
+<line x1="380" y1="174" x2="380" y2="222" class="ln" marker-end="url(#a)"/>
+<text class="g" x="392" y="202">fs.watch (recursive), debounce</text>
+
+<!-- core group -->
+<rect x="196" y="216" width="368" height="176" rx="14" fill="none" stroke="#A79DE0" stroke-dasharray="5 4"/>
+<text class="g" x="206" y="234" fill="#7A6FC0">core — zero-dependency Node, shell-agnostic</text>
+
+<!-- watcher -->
+<rect x="230" y="244" width="300" height="54" rx="12" fill="#E6F2F1" stroke="#7FB8B4"/>
+<text class="t" x="380" y="268" text-anchor="middle">Node watcher</text>
+<text class="s" x="380" y="286" text-anchor="middle">loadInstance() from lib/conformance.mjs</text>
+<line x1="380" y1="298" x2="380" y2="330" class="ln" marker-end="url(#a)"/>
+<text class="g" x="392" y="318">in-memory graph</text>
+
+<!-- server -->
+<rect x="230" y="332" width="300" height="54" rx="12" fill="#EFEDFB" stroke="#A79DE0"/>
+<text class="t" x="380" y="356" text-anchor="middle">Localhost server</text>
+<text class="s" x="380" y="374" text-anchor="middle">GET /view, /api · SSE /events</text>
+
+<!-- server to window (request + push) -->
+<line x1="380" y1="392" x2="380" y2="438" class="ln" marker-start="url(#a)" marker-end="url(#a)"/>
+<text class="g" x="392" y="418">HTTP + SSE</text>
+
+<!-- window / shell -->
+<rect x="230" y="440" width="300" height="54" rx="12" fill="#E6F2F1" stroke="#7FB8B4"/>
+<text class="t" x="380" y="464" text-anchor="middle">Always-on-top window</text>
+<text class="s" x="380" y="482" text-anchor="middle">Changes / Stats / Goals — read-only</text>
+<text class="g" x="546" y="471">shell —</text>
+<text class="g" x="546" y="487">Electron</text>
+
+<!-- boundaries -->
+<line x1="40" y1="540" x2="720" y2="540" class="dt"/>
+<text class="f" x="40" y="566">Read-only: no write path from the window — propose to accept stays intact.</text>
+<text class="f" x="40" y="588">Local only: fs.watch sees local edits, not remote commits; remote fetch is out of scope.</text>
+<text class="f" x="40" y="610">The core is reused unchanged by the IntelliJ plugin (the next local layer).</text>
+
+<text class="f" x="40" y="642">Non-normative. implementation_zero data path, 2026-09-19.</text>
+</svg>

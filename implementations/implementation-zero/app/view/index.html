@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>konspekt</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<div class="wrap">
+  <div class="app">
+    <header class="topbar">
+      <div class="brand"><b>konspekt</b><span>local · read-only</span></div>
+      <nav class="tabs" role="tablist" aria-label="Views">
+        <button class="tab" role="tab" data-tab="changes" aria-selected="true">Changes</button>
+        <button class="tab" role="tab" data-tab="stats" aria-selected="false">Stats</button>
+        <button class="tab" role="tab" data-tab="goals" aria-selected="false">Goals</button>
+      </nav>
+    </header>
+
+    <!-- Changes -->
+    <section id="panel-changes">
+      <div class="filters">
+        <div class="frow">
+          <span class="flabel">Presets</span>
+          <div class="chips">
+            <button class="preset" data-preset="work" aria-pressed="false">Open + accepted work</button>
+            <button class="preset" data-preset="queue" aria-pressed="false">Proposed review queue</button>
+          </div>
+          <span class="spacer"></span>
+          <label class="search">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+            <input id="q" type="search" placeholder="Filter by id…" autocomplete="off">
+          </label>
+        </div>
+        <div class="frow"><span class="flabel">Kind</span><div class="chips" id="kindChips"></div></div>
+        <div class="frow">
+          <span class="flabel">Status</span><div class="chips" id="statusChips"></div>
+          <span class="flabel" style="min-width:auto;margin-left:8px">Review</span><div class="chips" id="reviewChips"></div>
+          <span class="spacer"></span><button class="clearall" id="clearAll" hidden>Clear filters</button>
+        </div>
+      </div>
+      <p class="err" id="err" hidden></p>
+      <div class="tablescroll">
+        <table>
+          <colgroup><col class="c-id"><col class="c-kind"><col class="c-status"><col class="c-review"><col class="c-upd"></colgroup>
+          <thead><tr><th>Entity id</th><th>Kind</th><th>Status</th><th>Review</th><th class="upd">Updated</th></tr></thead>
+          <tbody id="rows"></tbody>
+        </table>
+      </div>
+      <div class="foot">
+        <div class="window">Showing <b id="visN">0</b> of <b id="totN">0</b> entities · window of 10, scroll for the rest</div>
+        <div class="sync"><span class="pulse" id="pulse"></span><span id="syncTxt">connecting…</span></div>
+      </div>
+    </section>
+
+    <!-- Stats -->
+    <section id="panel-stats" class="pad" hidden>
+      <div id="statsBody"><p class="muted">loading…</p></div>
+    </section>
+
+    <!-- Goals -->
+    <section id="panel-goals" hidden>
+      <div class="goals-grid">
+        <div class="goals-list" id="goalsList"><p class="muted pad">loading…</p></div>
+        <div class="graph-area">
+          <div class="graph-head" id="graphHead"></div>
+          <div class="graph-scroll" id="graphScroll"></div>
+          <div class="graph-detail" id="graphDetail">Select a goal.</div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="chan-legend">
+    <div>
+      <h4>Status</h4>
+      <div class="lg"><span class="swatch" style="background:var(--st-open)"></span> open</div>
+      <div class="lg"><span class="swatch" style="background:var(--st-active)"></span> active</div>
+      <div class="lg"><span class="swatch" style="background:var(--st-resolved)"></span> resolved</div>
+      <div class="lg"><span class="swatch" style="background:var(--st-abandoned)"></span> abandoned</div>
+    </div>
+    <div>
+      <h4>Review</h4>
+      <div class="lg"><span class="rev proposed">proposed</span> awaiting a human disposition</div>
+      <div class="lg"><span class="rev accepted">accepted</span> human-accepted</div>
+    </div>
+    <div>
+      <h4>Graph</h4>
+      <div class="lg">node border = status · dashed border = proposed</div>
+      <div class="lg">edges are <span class="mono">decomposes</span>, goal at top</div>
+    </div>
+  </div>
+
+  <p class="note">Read-only over the local working tree, refreshed by a filesystem watcher over Server-Sent Events. Changes is a window over every entity; Stats is a projection of counts and unaccepted-proposal age; Goals walks the <span class="mono">decomposes</span> subgraph. Click any entity for its file; nothing here writes to the instance.</p>
+</div>
+
+<div class="drawer-backdrop" id="drawerBackdrop" hidden></div>
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="drawerTitle" aria-hidden="true">
+  <header class="drawer-head">
+    <span class="drawer-id mono" id="drawerTitle">entity</span>
+    <button class="drawer-close" id="drawerClose" type="button" aria-label="Close detail">✕</button>
+  </header>
+  <div class="drawer-body" id="drawerBody"></div>
+</aside>
+<script src="app.js"></script>
+</body>
+</html>
