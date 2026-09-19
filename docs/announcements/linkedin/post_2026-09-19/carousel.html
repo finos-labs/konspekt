@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+  :root{
+    --navy:#161922; --navy-2:#1f2530; --ink:#1b1e26; --ink-2:#59616f; --ink-3:#8b93a1;
+    --line:#dde2e9; --ground:#eef1f5; --surface:#fff; --accent:#4a4fb0; --accent-soft:rgba(74,79,176,.12);
+    --gold:#c67c1e; --green:#2e9e6b; --blue:#2f6feb;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:#c9ced6;font-family:"IBM Plex Sans",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+  .mono{font-family:"IBM Plex Mono",monospace}
+  .slide{
+    width:1080px;height:1350px;position:relative;overflow:hidden;background:var(--surface);
+    display:flex;flex-direction:column;
+  }
+  /* wrapper just for on-screen separation; screenshots crop .slide exactly */
+  .deck{display:flex;flex-direction:column;gap:40px;padding:40px;align-items:center}
+
+  /* ---------- content slide ---------- */
+  .head{padding:70px 74px 34px}
+  .kicker{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px}
+  .kicker .tab{font-family:"IBM Plex Mono",monospace;font-size:22px;font-weight:600;color:var(--accent);letter-spacing:.02em}
+  .kicker .idx{font-family:"IBM Plex Mono",monospace;font-size:20px;color:var(--ink-3)}
+  h1.title{font-size:52px;font-weight:600;color:var(--ink);line-height:1.1;letter-spacing:-.01em}
+  .cap{margin-top:20px;font-size:26px;line-height:1.42;color:var(--ink-2);max-width:900px;font-weight:400}
+  .cap b{color:var(--ink);font-weight:600}
+  .shot-wrap{flex:1;margin:0 56px 40px;background:var(--ground);border:1px solid var(--line);border-radius:20px;
+    box-shadow:0 2px 4px rgba(20,24,34,.06),0 18px 44px rgba(20,24,34,.10);display:flex;align-items:center;justify-content:center;overflow:hidden}
+  .shot-wrap img{width:100%;height:100%;object-fit:contain;object-position:center top;padding:22px}
+  .footer{position:absolute;bottom:30px;left:74px;right:74px;display:flex;justify-content:space-between;align-items:center;
+    font-family:"IBM Plex Mono",monospace;font-size:18px;color:var(--ink-3)}
+  .footer .brand b{color:var(--ink-2)}
+
+  /* ---------- dark slides ---------- */
+  .slide.dark{background:var(--navy);color:#fff;justify-content:center;padding:96px 88px}
+  .slide.dark .grid-bg{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px);background-size:54px 54px;opacity:.7}
+  .cover-brand{font-size:34px;font-weight:700;letter-spacing:.01em}
+  .cover-brand span{color:#9aa0f0}
+  .cover-tag{font-family:"IBM Plex Mono",monospace;font-size:19px;color:#8b93a1;margin-top:8px;letter-spacing:.04em}
+  .cover-main{margin-top:120px}
+  .cover-eyebrow{font-family:"IBM Plex Mono",monospace;font-size:22px;color:#9aa0f0;font-weight:500;margin-bottom:26px;letter-spacing:.02em}
+  h1.cover-title{font-size:88px;line-height:1.04;font-weight:600;letter-spacing:-.02em}
+  .cover-sub{margin-top:34px;font-size:29px;line-height:1.45;color:#c4c9d4;max-width:820px;font-weight:400}
+  .chips{margin-top:52px;display:flex;gap:14px;flex-wrap:wrap}
+  .chip{font-family:"IBM Plex Mono",monospace;font-size:19px;padding:11px 20px;border:1px solid #333a48;border-radius:999px;color:#c4c9d4;background:rgba(255,255,255,.03)}
+  .cover-foot{position:absolute;left:88px;bottom:76px;font-family:"IBM Plex Mono",monospace;font-size:20px;color:#8b93a1}
+
+  /* close slide */
+  .recap-eyebrow{font-family:"IBM Plex Mono",monospace;font-size:22px;color:#9aa0f0;font-weight:500;margin-bottom:22px}
+  h1.recap-title{font-size:60px;font-weight:600;line-height:1.08;letter-spacing:-.01em}
+  .recap-list{margin-top:52px;display:flex;flex-direction:column;gap:26px}
+  .r{display:flex;gap:22px;align-items:baseline}
+  .r .rt{font-family:"IBM Plex Mono",monospace;font-size:23px;font-weight:600;color:#9aa0f0;min-width:132px}
+  .r .rd{font-size:27px;color:#d6dae2;line-height:1.36}
+  .r .rd b{color:#fff;font-weight:600}
+  .next{margin-top:48px;padding:24px 28px;border:1px solid rgba(154,160,240,.28);border-left:4px solid #9aa0f0;border-radius:14px;background:rgba(154,160,240,.06)}
+  .next-k{display:block;font-family:"IBM Plex Mono",monospace;font-size:19px;letter-spacing:.08em;color:#9aa0f0;font-weight:600;margin-bottom:10px}
+  .next-d{font-size:27px;color:#eef0f6;line-height:1.36}
+  .next-d b{color:#fff;font-weight:600}
+  .close-cta{margin-top:52px;padding-top:40px;border-top:1px solid #2a3040}
+  .close-cta .repo{font-family:"IBM Plex Mono",monospace;font-size:27px;color:#fff;font-weight:500}
+  .close-cta .meta{margin-top:12px;font-size:22px;color:#8b93a1}
+  .tags{margin-top:30px;font-family:"IBM Plex Mono",monospace;font-size:19px;color:#6f7787}
+</style>
+</head>
+<body>
+<div class="deck">
+
+  <!-- 1. COVER -->
+  <section class="slide dark" id="s1">
+    <div class="grid-bg"></div>
+    <div style="position:relative">
+      <div class="cover-brand">konspekt <span>/</span> local</div>
+      <div class="cover-tag">read-only view over a live project</div>
+      <div class="cover-main">
+        <div class="cover-eyebrow">SHIPPED · implementation_zero</div>
+        <h1 class="cover-title">konspekt now<br>has a local UI</h1>
+        <p class="cover-sub">A window that sits beside the session and shows the project state as the agent and I write to it. Three tabs and a detail panel, updating live.</p>
+        <div class="chips">
+          <span class="chip">Changes</span>
+          <span class="chip">Stats</span>
+          <span class="chip">Goals</span>
+          <span class="chip">+ detail panel</span>
+        </div>
+      </div>
+    </div>
+    <div class="cover-foot">FINOS Labs · Apache-2.0 · github.com/finos-labs/konspekt</div>
+  </section>
+
+  <!-- 2. CHANGES / to-do -->
+  <section class="slide" id="s2">
+    <div class="head">
+      <div class="kicker"><span class="tab">Changes</span><span class="idx">02 / 07</span></div>
+      <h1 class="title">A rolling to-do over every entity</h1>
+      <p class="cap">A ten-row window over the whole project, newest change first. Filter by <b>kind</b>, <b>status</b>, and <b>review</b>, or jump to a preset: open accepted work, or the proposed review queue.</p>
+    </div>
+    <div class="shot-wrap"><img src="images/changes.png" alt="Changes tab"></div>
+    <div class="footer"><span class="brand"><b>konspekt</b> · local read-only view</span><span>the work, at a glance</span></div>
+  </section>
+
+  <!-- 3. STATS / size -->
+  <section class="slide" id="s3">
+    <div class="head">
+      <div class="kicker"><span class="tab">Stats</span><span class="idx">03 / 07</span></div>
+      <h1 class="title">The size of the project</h1>
+      <p class="cap"><b>152 entities, 257 edges, 75% accepted, 38 open proposals.</b> Accepted versus proposed by kind, and the oldest proposals still waiting on a human decision.</p>
+    </div>
+    <div class="shot-wrap"><img src="images/stats.png" alt="Stats tab"></div>
+    <div class="footer"><span class="brand"><b>konspekt</b> · local read-only view</span><span>counts over the graph</span></div>
+  </section>
+
+  <!-- 4. GOALS / context -->
+  <section class="slide" id="s4">
+    <div class="head">
+      <div class="kicker"><span class="tab">Goals</span><span class="idx">04 / 07</span></div>
+      <h1 class="title">Project context, decomposed</h1>
+      <p class="cap">Each goal opens into its <b>decomposes</b> subgraph, drawn as a layered diagram. A node's border is its status; a dashed border means it is still only proposed.</p>
+    </div>
+    <div class="shot-wrap"><img src="images/goals.png" alt="Goals tab"></div>
+    <div class="footer"><span class="brand"><b>konspekt</b> · local read-only view</span><span>goal &rarr; tasks &rarr; findings</span></div>
+  </section>
+
+  <!-- 5. DETAIL PANEL / record -->
+  <section class="slide" id="s5">
+    <div class="head">
+      <div class="kicker"><span class="tab">Detail panel</span><span class="idx">05 / 07</span></div>
+      <h1 class="title">Open any atom, read its record</h1>
+      <p class="cap">Click any row or graph node for the whole atom: its <b>type, status, and review state</b>, the provenance pointer, and the body the agent wrote. Read-only, like everything here.</p>
+    </div>
+    <div class="shot-wrap"><img src="images/detail.png" alt="Detail panel — an atom's full record"></div>
+    <div class="footer"><span class="brand"><b>konspekt</b> · local read-only view</span><span>one atom, in full</span></div>
+  </section>
+
+  <!-- 6. PROVENANCE / who said what -->
+  <section class="slide" id="s6">
+    <div class="head">
+      <div class="kicker"><span class="tab">Provenance</span><span class="idx">06 / 07</span></div>
+      <h1 class="title">Who said what, behind a decision</h1>
+      <p class="cap">Open any atom for the <b>verbatim exchange</b> it came from: the human and the assistant working the decision, turn by turn. Both sides, never paraphrased, each hop checked by re-hashing the source against its recorded hash.</p>
+    </div>
+    <div class="shot-wrap"><img src="images/provenance.png" alt="Provenance detail panel"></div>
+    <div class="footer"><span class="brand"><b>konspekt</b> · local read-only view</span><span>both sides &middot; verbatim</span></div>
+  </section>
+
+  <!-- 7. CLOSE -->
+  <section class="slide dark" id="s7">
+    <div class="grid-bg"></div>
+    <div style="position:relative">
+      <div class="recap-eyebrow">ONE LOCAL WINDOW</div>
+      <h1 class="recap-title">Read-only, local, live<br>over the working tree</h1>
+      <div class="recap-list">
+        <div class="r"><span class="rt">Changes</span><span class="rd">a rolling to-do over every entity, filtered by kind, status, review</span></div>
+        <div class="r"><span class="rt">Stats</span><span class="rd">size at a glance and the oldest proposals still waiting</span></div>
+        <div class="r"><span class="rt">Goals</span><span class="rd">each goal decomposed into its subgraph</span></div>
+        <div class="r"><span class="rt">Detail</span><span class="rd">the record and the verbatim source it came from, hash-verified</span></div>
+      </div>
+      <div class="next"><span class="next-k">NEXT RELEASE</span><span class="next-d">an <b>IntelliJ plugin for the engineer persona</b> — the same view in the IDE, where writes arrive first.</span></div>
+      <div class="close-cta">
+        <div class="repo">github.com/finos-labs/konspekt</div>
+        <div class="meta">A filesystem watcher feeds it over server-sent events. It takes no disposition, so propose &rarr; accept still holds.</div>
+        <div class="tags">#AI · #KnowledgeGraphs · #OpenSource · #FINOS · #konspekt</div>
+      </div>
+    </div>
+  </section>
+
+</div>
+</body>
+</html>
