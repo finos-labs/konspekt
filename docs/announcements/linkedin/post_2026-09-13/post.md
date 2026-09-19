@@ -2,7 +2,7 @@
 platform: linkedin
 format: feed
 date: 2026-09-13
-url:                      # teaser post URL, filled in once posted
+url: https://www.linkedin.com/feed/update/urn:li:activity:7504995186310037504/
 announces: "usability push — teaser for the article; carousel of the type-system poster and worked example"
 carousel: carousel.pdf    # 2-page PDF (graph, then poster) uploaded to LinkedIn as a document; assembled from the images below
 assets:
