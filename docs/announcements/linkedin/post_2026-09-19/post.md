@@ -2,7 +2,7 @@
 platform: linkedin
 format: feed
 date: 2026-09-19
-url:                      # live post URL, filled in once posted
+url: https://www.linkedin.com/feed/update/urn:li:activity:7507169289972547584/
 announces: "implementation_zero — the local read-only UI (Changes / Stats / Goals + detail panel)"
 carousel: carousel.pdf    # 7-page PDF uploaded to LinkedIn as a document; assembled from images/slide-*.png
 assets:
