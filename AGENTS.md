@@ -18,6 +18,14 @@ All agents maintaining the konspekt instance MUST load `konspekt-atom-readiness`
 — it forces the propose half of the operating loop: detect crystallized atoms,
 venture specific sync proposals, never self-accept.
 
+When `.konspekt/instance/project.md` activates a persona layer (`personas:`),
+that layer's operating brief `spec/personas/<layer>/AGENTS.md` is also mandatory
+at session start; the `load-mandatory-skills` hook injects it alongside the
+skills above. For the active `engineer` layer this adds the ASR and ADR
+constructs and the executed-command provenance obligation (`commands/` files plus
+`executed` edges). The core forcing function stays persona-agnostic by design, so
+these layer duties are surfaced here rather than inside `konspekt-atom-readiness`.
+
 The canonical skill directory is:
 
 ```text
