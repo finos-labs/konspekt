@@ -5,9 +5,13 @@
   "type": "module",
   "description": "Local watcher and always-on-top read-only view over a konspekt instance.",
   "main": "electron-main.mjs",
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "start": "node server.mjs",
-    "shell": "electron ."
+    "shell": "electron .",
+    "test": "node --test"
   },
   "devDependencies": {
     "electron": "^33.0.0"

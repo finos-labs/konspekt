@@ -27,6 +27,7 @@ import { fileURLToPath } from "node:url";
 import { loadInstance } from "../../../lib/conformance.mjs";
 import { loadActivePersonas } from "../../../lib/load-personas.mjs";
 import { goalState } from "../../../lib/views.mjs";
+import { rowsFrom, statsFrom, goalsFrom } from "./projections.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = resolve(__dirname, "..", "..", "..");
@@ -39,81 +40,10 @@ const personasDir = join(REPO_ROOT, "spec", "personas");
 const PORT = Number(process.env.KONSPEKT_PORT || 4319);
 const FILENAME_RULE = process.env.KONSPEKT_FILENAME_RULE || "strict";
 
-// Fixed entity-kind order for the change feed and the stats view.
-const KIND_ORDER = ["goal", "investigation", "experiment", "topic", "task", "note",
-  "concept", "noteworthy", "artifact", "waypoint"];
-
 // Personas are static config; load once. The graph reloads on file change.
 const personas = await loadActivePersonas(instanceDir, personasDir, {
   warn: (m) => console.error(`warning: ${m}`),
 });
-
-// ---------- flatten the graph ----------
-
-// "kind" is the display kind (node.type for nodes, the entityType otherwise);
-// "status" is the node status where one exists (nodes always, noteworthy for
-// assumption/constraint) and null otherwise, which distinguishes an entity from
-// a node. "ts" is the best timestamp for recency and proposal age.
-function eachEntity(g, fn) {
-  for (const e of g.nodes) fn(e, e.type || "node", e.status ?? null);
-  for (const e of g.concepts) fn(e, "concept", null);
-  for (const e of g.noteworthy) fn(e, "noteworthy", e.status ?? null);
-  for (const e of g.artifacts) fn(e, "artifact", null);
-  for (const e of g.waypoints) fn(e, "waypoint", null);
-}
-const bestTs = (e) => e.updatedAt || (e.summary && e.summary.updatedAt) ||
-  e.createdAt || (e.provenance && e.provenance.timestamp) || null;
-
-function rowsFrom(g) {
-  const out = [];
-  eachEntity(g, (e, kind, status) =>
-    out.push({ id: e.id, kind, status: status ?? null, review: e.review ?? null, updatedAt: bestTs(e) }));
-  const ts = (r) => (r.updatedAt ? Date.parse(r.updatedAt) || 0 : 0);
-  out.sort((a, b) => ts(b) - ts(a) || (a.id < b.id ? -1 : 1));
-  return out;
-}
-
-// Counts by kind (total / proposed / accepted), totals, and the oldest
-// unaccepted proposals by age — the measures task-graph-analytics names.
-function statsFrom(g) {
-  const groups = {};
-  const all = [];
-  eachEntity(g, (e, kind) => {
-    const x = groups[kind] || (groups[kind] = { total: 0, proposed: 0, accepted: 0 });
-    x.total++;
-    if (e.review === "accepted") x.accepted++;
-    else if (e.review === "proposed") x.proposed++;
-    const tsRaw = (e.provenance && e.provenance.timestamp) || e.createdAt || null;
-    all.push({ id: e.id, kind, review: e.review ?? null, ts: tsRaw });
-  });
-  const now = Date.now();
-  const oldest = all
-    .filter((x) => x.review === "proposed" && x.ts)
-    .map((x) => ({ id: x.id, kind: x.kind, ageDays: Math.max(0, Math.floor((now - Date.parse(x.ts)) / 86400000)) }))
-    .sort((a, b) => b.ageDays - a.ageDays)
-    .slice(0, 10);
-  return {
-    total: all.length,
-    edges: g.edges.length,
-    accepted: all.filter((x) => x.review === "accepted").length,
-    proposed: all.filter((x) => x.review === "proposed").length,
-    byKind: KIND_ORDER.filter((k) => groups[k]).map((k) => ({ kind: k, ...groups[k] })),
-    oldest,
-  };
-}
-
-// The goals list with a decomposes roll-up per goal (reuses goalState).
-function goalsFrom(g) {
-  const goals = g.nodes.filter((n) => n.type === "goal");
-  const rank = (r) => (r.review === "accepted" ? 0 : 1);
-  return goals
-    .map((gl) => {
-      let rollup = { total: 0, byStatus: {}, proposed: 0 };
-      try { rollup = goalState(g, gl.id).rollup; } catch { /* leave empty */ }
-      return { id: gl.id, title: gl.title || gl.id, status: gl.status ?? null, review: gl.review ?? null, rollup };
-    })
-    .sort((a, b) => rank(a) - rank(b) || (a.id < b.id ? -1 : 1));
-}
 
 // ---------- state ----------
 
