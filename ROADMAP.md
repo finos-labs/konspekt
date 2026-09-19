@@ -3,7 +3,7 @@
      Check freshness with: node tools/roadmap.mjs --check
      This file is a pure function of .konspekt/instance/ (no timestamps baked in).
      Goals and tasks are graph nodes; the horizon is derived from node status/review.
-     contentHash: sha256:cd0e4ed7cba42f7d -->
+     contentHash: sha256:3dd097602e45acae -->
 
 # konspekt roadmap
 
@@ -80,7 +80,6 @@ Keep a project's working context — its instructions, accumulated decisions, an
 **Next** — _accepted and planned_
 
 - Decide whether instance/ directory layout should be regularized
-- Choose a license
 - Consider an "outcome" node type for testable controls
 - Make notifications portable
 - Find the second implementer
@@ -91,6 +90,7 @@ Keep a project's working context — its instructions, accumulated decisions, an
 
 **Shipped** — _resolved_
 
+- Choose a license
 - Re-serialize the instance to the reconciled spec
 - Reconcile canonical schema into spec/
 - Lock the serialization format
@@ -102,8 +102,16 @@ Make a konspekt instance operable by a human through a visual interface, not onl
 **Next** — _accepted and planned_
 
 - Navigate from a goal to its open tasks
+- Build implementation_zero — a local watcher and floating read-only view
+- Build the IntelliJ plugin shell over the one view
 - Work through and disposition tasks in the interface
 - Encode status and review as visual channels and filters
+
+**Later** — _proposed, not yet committed_
+
+- Settle "atom" in the vocabulary
+- Build the konspekt UI app as one view with two shells
+- Serve the konspekt view as an MCP Apps ui:// resource
 
 ## Answer who is responsible _(proposed)_
 
@@ -126,8 +134,9 @@ Let several participants — people and agents — propose into and review one s
 **Later** — _proposed, not yet committed_
 
 - One reviewer over a fleet of agents
+- Per-atom compare-and-swap and a store cursor
 - Support multiple human authors on one instance
 
 ---
 
-Generated from 7 goal(s) and 38 task-listing(s) over the instance graph.
+Generated from 7 goal(s) and 44 task-listing(s) over the instance graph.
