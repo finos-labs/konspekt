@@ -95,8 +95,17 @@
     </div>
   </div>
 
-  <p class="note">Read-only over the local working tree, refreshed by a filesystem watcher over Server-Sent Events. Changes is a window over every entity; Stats is a projection of counts and unaccepted-proposal age; Goals walks the <span class="mono">decomposes</span> subgraph. Nothing here writes to the instance.</p>
+  <p class="note">Read-only over the local working tree, refreshed by a filesystem watcher over Server-Sent Events. Changes is a window over every entity; Stats is a projection of counts and unaccepted-proposal age; Goals walks the <span class="mono">decomposes</span> subgraph. Click any entity for its file; nothing here writes to the instance.</p>
 </div>
+
+<div class="drawer-backdrop" id="drawerBackdrop" hidden></div>
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="drawerTitle" aria-hidden="true">
+  <header class="drawer-head">
+    <span class="drawer-id mono" id="drawerTitle">entity</span>
+    <button class="drawer-close" id="drawerClose" type="button" aria-label="Close detail">✕</button>
+  </header>
+  <div class="drawer-body" id="drawerBody"></div>
+</aside>
 <script src="app.js"></script>
 </body>
 </html>

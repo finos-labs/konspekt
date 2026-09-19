@@ -106,6 +106,9 @@ function rowEl(e) {
   tr.appendChild(tdS);
   const tdR = document.createElement("td"); const r = document.createElement("span"); r.className = "rev " + (e.review || ""); r.textContent = e.review || "—"; tdR.appendChild(r); tr.appendChild(tdR);
   const tdU = document.createElement("td"); tdU.className = "upd mono"; tdU.textContent = ago(e.updatedAt); tr.appendChild(tdU);
+  tr.classList.add("clickable"); tr.tabIndex = 0; tr.setAttribute("role", "button"); tr.title = "Open " + e.id;
+  tr.addEventListener("click", () => openDetail(e.id));
+  tr.addEventListener("keydown", (ev) => { if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); openDetail(e.id); } });
   return tr;
 }
 async function refreshChanges() {
@@ -229,11 +232,58 @@ function renderGraph(data) {
       document.querySelectorAll(".gnode.sel").forEach((x) => x.classList.remove("sel"));
       g.classList.add("sel");
       $("graphDetail").innerHTML = `<b>${n.id}</b> — ${n.type || "?"} · ${n.status || "—"} · ${n.review || "—"}${n.title ? " — " + n.title : ""}`;
+      openDetail(n.id);
     });
     svg.appendChild(g);
   }
   const scroll = $("graphScroll"); scroll.innerHTML = ""; scroll.appendChild(svg);
 }
+
+// ---------- entity detail drawer ----------
+const drawer = $("drawer"), backdrop = $("drawerBackdrop"), drawerBody = $("drawerBody");
+let lastFocus = null;
+
+async function openDetail(id) {
+  lastFocus = document.activeElement;
+  $("drawerTitle").textContent = id;
+  drawerBody.innerHTML = '<p class="drawer-loading">loading…</p>';
+  backdrop.hidden = false; drawer.classList.add("open"); drawer.setAttribute("aria-hidden", "false");
+  $("drawerClose").focus();
+  try {
+    const d = await (await fetch("/api/entity?id=" + encodeURIComponent(id), { cache: "no-store" })).json();
+    drawerBody.innerHTML = "";
+    if (d.error) { const p = document.createElement("p"); p.className = "drawer-err"; p.textContent = d.error; drawerBody.appendChild(p); return; }
+    const pre = document.createElement("pre"); pre.className = "md"; pre.textContent = d.markdown; drawerBody.appendChild(pre);
+    if (d.sourceRef) drawerBody.appendChild(sourceBlock(d.sourceRef)); // only entities with a source get this
+  } catch { drawerBody.innerHTML = '<p class="drawer-err">server unreachable.</p>'; }
+}
+
+function sourceBlock(ref) {
+  const block = document.createElement("div"); block.className = "src-block";
+  const label = (verb) => verb + " provenance source · " + ref.slice(0, 10) + "…";
+  const btn = document.createElement("button"); btn.className = "src-btn"; btn.type = "button"; btn.textContent = label("View");
+  const holder = document.createElement("div"); holder.hidden = true;
+  btn.addEventListener("click", async () => {
+    if (holder.dataset.loaded === "1") { holder.hidden = !holder.hidden; btn.textContent = label(holder.hidden ? "View" : "Hide"); return; }
+    btn.disabled = true; btn.textContent = "loading source…";
+    try {
+      const d = await (await fetch("/api/source?ref=" + encodeURIComponent(ref), { cache: "no-store" })).json();
+      const lbl = document.createElement("div"); lbl.className = "src-label"; lbl.textContent = "sources/" + ref + ".md";
+      const pre = document.createElement("pre"); pre.className = "md"; pre.textContent = d.error ? ("error: " + d.error) : d.markdown;
+      holder.appendChild(lbl); holder.appendChild(pre); holder.hidden = false; holder.dataset.loaded = "1"; btn.textContent = label("Hide");
+    } catch { const p = document.createElement("p"); p.className = "drawer-err"; p.textContent = "server unreachable."; holder.appendChild(p); holder.hidden = false; }
+    finally { btn.disabled = false; }
+  });
+  block.appendChild(btn); block.appendChild(holder); return block;
+}
+
+function closeDetail() {
+  drawer.classList.remove("open"); drawer.setAttribute("aria-hidden", "true"); backdrop.hidden = true;
+  if (lastFocus && lastFocus.focus) lastFocus.focus();
+}
+$("drawerClose").addEventListener("click", closeDetail);
+backdrop.addEventListener("click", closeDetail);
+document.addEventListener("keydown", (e) => { if (e.key === "Escape" && drawer.classList.contains("open")) closeDetail(); });
 
 // ---------- live updates ----------
 function refreshActive() {

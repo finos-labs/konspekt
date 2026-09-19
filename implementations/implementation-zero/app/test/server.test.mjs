@@ -56,3 +56,25 @@ test("GET /api/graph with a bad id returns an error, not a crash", async () => {
   const body = await r.json();
   assert.ok(body.error, "missing goal reports an error");
 });
+
+test("GET /api/entity returns the file markdown and its source pointer", async () => {
+  const d = await (await get("/api/entity?id=task-implementation-zero")).json();
+  assert.ok(d.markdown.includes("task-implementation-zero"), "returns the entity's own file");
+  assert.match(d.sourceRef, /^[0-9a-f]{40}$/, "a content-addressed entity carries a sourceRef");
+});
+
+test("GET /api/source returns the excerpt for a valid ref", async () => {
+  const e = await (await get("/api/entity?id=task-implementation-zero")).json();
+  const s = await (await get("/api/source?ref=" + e.sourceRef)).json();
+  assert.equal(s.ref, e.sourceRef);
+  assert.ok(typeof s.markdown === "string" && s.markdown.length > 0);
+});
+
+test("GET /api/entity unknown id → 404; /api/source non-hex ref → 400", async () => {
+  const e = await get("/api/entity?id=nope-nope");
+  assert.equal(e.status, 404);
+  assert.ok((await e.json()).error);
+  const r = await get("/api/source?ref=not-hex!");
+  assert.equal(r.status, 400);
+  assert.ok((await r.json()).error);
+});

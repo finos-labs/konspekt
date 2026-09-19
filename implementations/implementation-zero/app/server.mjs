@@ -131,6 +131,29 @@ const server = createServer((req, res) => {
     try { return sendJson(res, goalState(graph, url.searchParams.get("goal") || "")); }
     catch (e) { return sendJson(res, { error: String(e.message || e) }, 404); }
   }
+  // One entity's raw markdown file, plus its provenance source pointer (null when
+  // the entity predates content-addressed provenance). The path comes from the
+  // loader's _file, so this cannot read outside the instance.
+  if (path === "/api/entity") {
+    if (!graph) return sendJson(res, { error: snapshot.error || "not loaded" }, 503);
+    const e = graph.byId.get(url.searchParams.get("id") || "");
+    if (!e || !e._file) return sendJson(res, { error: "no such entity" }, 404);
+    const abs = join(instanceDir, e._file);
+    if (!abs.startsWith(instanceDir) || !existsSync(abs)) return sendJson(res, { error: "file missing" }, 404);
+    const p = e.provenance || {};
+    return sendJson(res, { id: e.id, file: e._file, markdown: readFileSync(abs, "utf8"),
+      sourceRef: p.sourceRef || null, contentHash: p.contentHash || null });
+  }
+  // One provenance source excerpt by its content hash (git blob SHA). Confined to
+  // sources/ and gated on a hex ref, so no path traversal.
+  if (path === "/api/source") {
+    const ref = url.searchParams.get("ref") || "";
+    if (!/^[0-9a-f]{7,64}$/.test(ref)) return sendJson(res, { error: "bad ref" }, 400);
+    const base = join(instanceDir, "sources");
+    const abs = join(base, ref + ".md");
+    if (!abs.startsWith(base) || !existsSync(abs)) return sendJson(res, { error: "no such source" }, 404);
+    return sendJson(res, { ref, markdown: readFileSync(abs, "utf8") });
+  }
 
   if (path === "/events") {
     res.writeHead(200, { "content-type": "text/event-stream", "cache-control": "no-cache", connection: "keep-alive" });
