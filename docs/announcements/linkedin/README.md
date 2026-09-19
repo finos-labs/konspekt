@@ -38,3 +38,4 @@ To start a post, copy `TEMPLATE/` to `post_YYYY-MM-DD/` and edit.
 | Date | Announces | Live URL |
 | --- | --- | --- |
 | 2026-09-13 | PR #19 — UI sources (draft) | |
+| 2026-09-19 | implementation_zero — local read-only UI (draft) | |
