@@ -27,6 +27,10 @@ function startServer() {
   server.on("exit", (code) => { if (code) console.error(`server exited: ${code}`); });
 }
 
+// Kill the spawned server once, whatever the quit path. Guarded so the
+// before-quit and window-all-closed paths do not double-kill.
+function stopServer() { if (server) { server.kill(); server = null; } }
+
 async function waitForServer(timeoutMs = 5000) {
   const start = Date.now();
   while (Date.now() - start < timeoutMs) {
@@ -53,7 +57,7 @@ app.whenReady().then(() => {
   app.on("activate", () => { if (BrowserWindow.getAllWindows().length === 0) createWindow(); });
 });
 
-app.on("window-all-closed", () => {
-  if (server) server.kill();
-  app.quit();
-});
+// before-quit covers every quit path — File > Exit, the menu Quit role, Cmd+Q,
+// and the app.quit() below — so the server never outlives the window.
+app.on("before-quit", stopServer);
+app.on("window-all-closed", () => { stopServer(); app.quit(); });
