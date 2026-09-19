@@ -2,7 +2,7 @@
 id: task-implementation-zero
 type: task
 title: Build implementation_zero — a local watcher and floating read-only view
-status: open
+status: active
 summary:
   origin: machine
   pinned: false

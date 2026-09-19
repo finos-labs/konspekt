@@ -278,3 +278,6 @@ proposal.
 | e-not-implzero-electron | notes | node:task-implementation-zero | noteworthy:nw-electron-shell |  |  |
 | e-not-repostructure-impldir | notes | node:investigation-repo-structure | noteworthy:nw-implementations-directory |  |  |
 | e-not-implzero-impldir | notes | node:task-implementation-zero | noteworthy:nw-implementations-directory |  |  |
+| e-prod-implzero-app | produces | node:task-implementation-zero | artifact:artifact-implementation-zero-app |  |  |
+| e-prod-nav-app | produces | node:task-goal-task-navigation | artifact:artifact-implementation-zero-app |  |  |
+| e-prod-analytics-app | produces | node:task-graph-analytics | artifact:artifact-implementation-zero-app |  | proposed |

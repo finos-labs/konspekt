@@ -3,7 +3,7 @@
      Check freshness with: node tools/roadmap.mjs --check
      This file is a pure function of .konspekt/instance/ (no timestamps baked in).
      Goals and tasks are graph nodes; the horizon is derived from node status/review.
-     contentHash: sha256:3dd097602e45acae -->
+     contentHash: sha256:2b65350e4aedb252 -->
 
 # konspekt roadmap
 
@@ -99,10 +99,13 @@ Keep a project's working context — its instructions, accumulated decisions, an
 
 Make a konspekt instance operable by a human through a visual interface, not only readable: select a goal, see its open tasks, and work through them — reviewing, dispositioning, accepting, and resolving from the interface rather than by hand- editing files. Where [[goal-observability]] makes the graph legible (read-only projections and metrics), this goal makes it operable (navigate and act).
 
+**Now** — _in progress_
+
+- Build implementation_zero — a local watcher and floating read-only view
+
 **Next** — _accepted and planned_
 
 - Navigate from a goal to its open tasks
-- Build implementation_zero — a local watcher and floating read-only view
 - Build the IntelliJ plugin shell over the one view
 - Work through and disposition tasks in the interface
 - Encode status and review as visual channels and filters
