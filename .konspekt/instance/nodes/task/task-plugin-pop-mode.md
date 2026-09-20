@@ -2,12 +2,12 @@
 id: task-plugin-pop-mode
 type: task
 title: Configurable popup mode for the IntelliJ plugin
-status: open
+status: resolved
 summary:
   origin: machine
   pinned: false
   updatedAt: 2026-09-20T15:00:00Z
-review: proposed
+review: accepted
 provenance:
   sourceRef: 3e40ecbee32fff105151a8d772969f2f84f4c8ef
   contentHash: 3e40ecbee32fff105151a8d772969f2f84f4c8ef

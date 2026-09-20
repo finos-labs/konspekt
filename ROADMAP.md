@@ -3,7 +3,7 @@
      Check freshness with: node tools/roadmap.mjs --check
      This file is a pure function of .konspekt/instance/ (no timestamps baked in).
      Goals and tasks are graph nodes; the horizon is derived from node status/review.
-     contentHash: sha256:86ce1842841ccb14 -->
+     contentHash: sha256:b0a05f00b9d69964 -->
 
 # konspekt roadmap
 
@@ -112,10 +112,13 @@ Make a konspekt instance operable by a human through a visual interface, not onl
 
 **Later** — _proposed, not yet committed_
 
-- An ASR/ADR view in the konspekt UI
 - Settle "atom" in the vocabulary
 - Build the konspekt UI app as one view with two shells
 - Serve the konspekt view as an MCP Apps ui:// resource
+
+**Shipped** — _resolved_
+
+- An ASR/ADR view in the konspekt UI
 - Configurable popup mode for the IntelliJ plugin
 - Related-commands tab in the entity detail panel
 

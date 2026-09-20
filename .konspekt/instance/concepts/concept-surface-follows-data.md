@@ -3,7 +3,7 @@ id: concept-surface-follows-data
 subtype: asr
 label: UI surfaces are gated by data presence, not mode flags
 aliases: [surface follows data, show a surface when there is data to show, not gated by the persona flag]
-review: proposed
+review: accepted
 provenance:
   sourceRef: 3e40ecbee32fff105151a8d772969f2f84f4c8ef
   contentHash: 3e40ecbee32fff105151a8d772969f2f84f4c8ef
