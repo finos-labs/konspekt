@@ -1,45 +1,70 @@
 package dev.konspekt.plugin
 
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.vfs.VirtualFileManager
+import com.intellij.openapi.vfs.newvfs.BulkFileListener
+import com.intellij.openapi.vfs.newvfs.events.VFileEvent
+import com.intellij.util.messages.MessageBusConnection
 import com.sun.net.httpserver.HttpExchange
 import com.sun.net.httpserver.HttpServer
+import java.io.File
+import java.io.IOException
+import java.io.OutputStream
 import java.net.InetSocketAddress
+import java.net.URLDecoder
+import java.util.Collections
 import java.util.concurrent.Executors
 
 /**
- * In-process HTTP/SSE server for the tool window's JCEF browser. It serves the
- * shared view assets (copied from implementation_zero at build time) and the same
- * JSON endpoints the view expects, so the view is reused byte-for-byte.
- *
- * INCREMENT 1: assets are served and the data endpoints return an empty snapshot,
- * so the view renders (styled, "0 entities"). INCREMENT 2 will back the endpoints
- * with a Kotlin reader over [project]'s .konspekt/instance and a VFS listener.
+ * In-process HTTP/SSE server for the tool window's JCEF browser. Serves the shared
+ * view assets (copied from implementation_zero at build time) and the same JSON
+ * endpoints the view expects, backed by [InstanceReader] over the open project's
+ * .konspekt/instance. Read-only. A VFS listener pushes a fresh cursor over SSE on
+ * each change under the instance, so the view refreshes live.
  */
 class ViewServer(private val project: Project) {
   private var server: HttpServer? = null
+  private var vfs: MessageBusConnection? = null
+  private val clients = Collections.synchronizedSet(HashSet<OutputStream>())
+  @Volatile private var cursor: String = "0"
+  private var seq = 0L
+
+  private fun instanceDir(): File? {
+    val base = project.basePath ?: return null
+    val dir = File(base, ".konspekt/instance")
+    return if (dir.isDirectory) dir else null
+  }
 
   fun start(): String {
     val s = HttpServer.create(InetSocketAddress("127.0.0.1", 0), 0)
     s.executor = Executors.newCachedThreadPool { r -> Thread(r, "konspekt-view-server").apply { isDaemon = true } }
 
     s.createContext("/api/") { ex ->
-      // Increment 1 stubs; increment 2 replaces these with the Kotlin reader.
-      val body = when {
-        ex.requestURI.path.startsWith("/api/entities") -> """{"cursor":"0","rows":[],"counts":null,"error":null}"""
-        ex.requestURI.path.startsWith("/api/stats") -> """{"total":0,"edges":0,"accepted":0,"proposed":0,"byKind":[],"oldest":[]}"""
-        ex.requestURI.path.startsWith("/api/goals") -> "[]"
-        else -> """{"error":"not implemented in increment 1"}"""
+      val dir = instanceDir()
+      if (dir == null) { sendJson(ex, "{\"error\":\"no .konspekt/instance in the open project\"}"); return@createContext }
+      val g = try { InstanceReader.load(dir) } catch (e: Exception) {
+        sendJson(ex, "{\"error\":${jsonStr(e.message ?: "load failed")}}"); return@createContext
       }
-      sendJson(ex, body)
+      val path = ex.requestURI.path
+      val json = when {
+        path.startsWith("/api/entities") -> InstanceReader.entitiesJson(g, cursor)
+        path.startsWith("/api/stats")    -> InstanceReader.statsJson(g)
+        path.startsWith("/api/goals")    -> InstanceReader.goalsJson(g)
+        path.startsWith("/api/graph")    -> InstanceReader.graphJson(g, param(ex, "goal") ?: "")
+        path.startsWith("/api/entity")   -> InstanceReader.entityJson(g, dir, param(ex, "id") ?: "")
+        path.startsWith("/api/source")   -> InstanceReader.sourceJson(dir, param(ex, "ref") ?: "")
+        else -> "{\"error\":\"not found\"}"
+      }
+      sendJson(ex, json)
     }
 
     s.createContext("/events") { ex ->
       ex.responseHeaders.add("Content-Type", "text/event-stream")
       ex.responseHeaders.add("Cache-Control", "no-cache")
       ex.sendResponseHeaders(200, 0)
-      ex.responseBody.write("event: change\ndata: {\"cursor\":\"0\"}\n\n".toByteArray())
-      ex.responseBody.flush()
-      // Left open; increment 2 pushes a fresh cursor on each VFS change.
+      val out = ex.responseBody
+      try { out.write(event(cursor)); out.flush(); clients.add(out) }
+      catch (e: IOException) { runCatching { out.close() } }
     }
 
     s.createContext("/") { ex ->
@@ -54,10 +79,49 @@ class ViewServer(private val project: Project) {
 
     s.start()
     server = s
+
+    // Live refresh: bump the cursor and notify SSE clients when files under the
+    // instance change (the IDE VFS is the plugin's change source).
+    val base = project.basePath?.replace('\\', '/')
+    if (base != null) {
+      val conn = project.messageBus.connect()
+      conn.subscribe(VirtualFileManager.VFS_CHANGES, object : BulkFileListener {
+        override fun after(events: List<VFileEvent>) {
+          val hit = events.any { it.path.replace('\\', '/').contains("$base/.konspekt/instance/") }
+          if (hit) { cursor = "${System.currentTimeMillis()}-${++seq}"; notifyClients() }
+        }
+      })
+      vfs = conn
+    }
+
     return "http://127.0.0.1:${s.address.port}/"
   }
 
-  fun stop() { server?.stop(0); server = null }
+  fun stop() {
+    vfs?.disconnect(); vfs = null
+    synchronized(clients) { clients.forEach { runCatching { it.close() } }; clients.clear() }
+    server?.stop(0); server = null
+  }
+
+  private fun notifyClients() {
+    val line = event(cursor)
+    synchronized(clients) {
+      val dead = ArrayList<OutputStream>()
+      for (out in clients) try { out.write(line); out.flush() } catch (e: IOException) { dead.add(out) }
+      clients.removeAll(dead.toSet())
+    }
+  }
+
+  private fun event(c: String) = "event: change\ndata: {\"cursor\":\"$c\"}\n\n".toByteArray()
+
+  private fun param(ex: HttpExchange, key: String): String? {
+    val qs = ex.requestURI.query ?: return null
+    for (p in qs.split("&")) {
+      val i = p.indexOf('='); if (i < 0) continue
+      if (p.substring(0, i) == key) return URLDecoder.decode(p.substring(i + 1), "UTF-8")
+    }
+    return null
+  }
 
   private fun sendJson(ex: HttpExchange, body: String) {
     val bytes = body.toByteArray()
@@ -65,6 +129,12 @@ class ViewServer(private val project: Project) {
     ex.responseHeaders.add("Cache-Control", "no-store")
     ex.sendResponseHeaders(200, bytes.size.toLong())
     ex.responseBody.use { it.write(bytes) }
+  }
+
+  private fun jsonStr(s: String): String {
+    val b = StringBuilder("\"")
+    for (c in s) when (c) { '\\' -> b.append("\\\\"); '"' -> b.append("\\\""); '\n' -> b.append("\\n"); '\r' -> b.append("\\r"); '\t' -> b.append("\\t"); else -> if (c < ' ') b.append("\\u%04x".format(c.code)) else b.append(c) }
+    return b.append("\"").toString()
   }
 
   private fun contentType(path: String) = when {

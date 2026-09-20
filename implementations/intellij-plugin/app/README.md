@@ -46,10 +46,15 @@ renders the shared view via JCEF. Data endpoints return an empty snapshot, so th
 view shows its chrome (tabs, filters) with "0 entities". Runtime (`runIde` /
 install) is the remaining manual check.
 
-**Increment 2 (next):** back the endpoints with a Kotlin reader over
-`.konspekt/instance` (a second, independent implementation of the serialization —
-the `task-second-implementer` milestone) and push a fresh cursor on each IDE VFS
-change. Then Stats, Goals, and the entity detail drawer light up with real data.
+**Increment 2 (implemented; runtime verification pending):** `InstanceReader.kt`
+parses the open project's `.konspekt/instance` (a second, independent
+implementation of the serialization — the `task-second-implementer` milestone)
+and backs `/api/entities`, `/api/stats`, `/api/goals`, `/api/graph`,
+`/api/entity`, `/api/source`. A VFS listener pushes a fresh cursor over SSE on
+each instance change, so Changes / Stats / Goals and the entity detail drawer
+populate and refresh live. It reads the instance of whichever project is open in
+the IDE. Compiles green; confirm the data renders by reinstalling the zip (or
+`runIde`).
 
 **Later:** the write path and authority verbs (`task-task-workthrough-ui`).
 
