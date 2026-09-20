@@ -306,6 +306,16 @@ function renderDrawer(d, source, cmds, chgs) {
   } });
 
   drawerBody.innerHTML = "";
+  // Accept banner: the one write action (human disposition). Shown only while the
+  // entity is proposed; accepting flips review in the working tree and two-way
+  // auto-accepts edges. The model never does this.
+  if (d.review === "proposed") {
+    const bar = document.createElement("div"); bar.className = "accept-bar";
+    const note = document.createElement("span"); note.className = "accept-note"; note.textContent = "Proposed — awaiting a human disposition.";
+    const btn = document.createElement("button"); btn.className = "accept-btn"; btn.type = "button"; btn.textContent = "Accept";
+    btn.addEventListener("click", () => acceptEntity(d.id, btn));
+    bar.appendChild(note); bar.appendChild(btn); drawerBody.appendChild(bar);
+  }
   const strip = document.createElement("div"); strip.className = "drawer-tabs"; strip.setAttribute("role", "tablist");
   const panel = document.createElement("div"); panel.className = "drawer-panel";
   const show = (t, btn) => { strip.querySelectorAll(".dtab").forEach((x) => x.setAttribute("aria-selected", "false")); btn.setAttribute("aria-selected", "true"); panel.innerHTML = ""; panel.appendChild(t.build()); };
@@ -316,6 +326,19 @@ function renderDrawer(d, source, cmds, chgs) {
   });
   drawerBody.appendChild(strip); drawerBody.appendChild(panel);
   panel.appendChild(tabs[0].build());
+}
+
+// The one write from the UI: accept a proposed entity. POSTs to the server,
+// which flips review in the working tree and auto-accepts edges; the watcher then
+// refreshes every view. Re-opens the entity so the drawer reflects the new state.
+async function acceptEntity(id, btn) {
+  if (!window.confirm("Accept " + id + "?\nThis edits the working tree (proposed → accepted).")) return;
+  if (btn) { btn.disabled = true; btn.textContent = "Accepting…"; }
+  try {
+    const r = await (await fetch("/api/accept?entity=" + encodeURIComponent(id), { method: "POST" })).json();
+    if (r && r.error) { if (btn) { btn.disabled = false; btn.textContent = "Accept"; } window.alert("Could not accept: " + r.error); return; }
+    openDetail(id);
+  } catch { if (btn) { btn.disabled = false; btn.textContent = "Accept"; } window.alert("Server unreachable."); }
 }
 
 function closeDetail() {

@@ -243,7 +243,43 @@ object InstanceReader {
     val e = g.byId[id] ?: return "{\"error\":\"no such entity\"}"
     val f = File(instanceDir, e.file)
     if (!f.isFile) return "{\"error\":\"file missing\"}"
-    return "{\"id\":${q(e.id)},\"file\":${q(e.file)},\"markdown\":${q(f.readText())},\"sourceRef\":${q(e.sourceRef)},\"contentHash\":${q(e.contentHash)}}"
+    return "{\"id\":${q(e.id)},\"file\":${q(e.file)},\"markdown\":${q(f.readText())},\"review\":${q(e.review)},\"sourceRef\":${q(e.sourceRef)},\"contentHash\":${q(e.contentHash)}}"
+  }
+
+  // The one write from the UI: accept a proposed entity (human disposition). Flip
+  // its review proposed -> accepted in the working tree, then two-way auto-accept
+  // every proposed edge touching it whose other endpoint is also accepted. Mirrors
+  // the implementation-zero server. Working-tree only; no git commit. Idempotent.
+  fun acceptEntity(instanceDir: File, g: Graph, id: String): String {
+    val e = g.byId[id] ?: return "{\"error\":\"no such entity\"}"
+    val f = File(instanceDir, e.file)
+    if (!f.isFile) return "{\"error\":\"file missing\"}"
+    val txt = f.readText()
+    val flipped = txt.replace(Regex("(?m)^review:[ \\t]*proposed[ \\t]*$"), "review: accepted")
+    if (flipped != txt) f.writeText(flipped)
+
+    val edgesFile = File(File(instanceDir, "edges"), "edges.md")
+    var edgesChanged = 0
+    if (edgesFile.isFile) {
+      val out = edgesFile.readText().replace("\r\n", "\n").split("\n").map { line ->
+        val t = line.trim()
+        if (!t.startsWith("|")) return@map line
+        val cells = t.trim('|').split("|").map { it.trim() }
+        if (cells.size < 6 || cells[0] == "id" || cells[0].startsWith("---")) return@map line
+        if (cells[5] != "proposed") return@map line
+        val from = cells[2]; val to = cells[3]
+        val fromId = if (from.contains(":")) from.substringAfter(":") else from
+        val toId = if (to.contains(":")) to.substringAfter(":") else to
+        if (fromId != id && toId != id) return@map line
+        val other = if (fromId == id) toId else fromId
+        val otherAccepted = other == id || (g.byId[other]?.review == "accepted")
+        if (!otherAccepted) return@map line
+        edgesChanged++
+        "| ${cells[0]} | ${cells[1]} | $from | $to | ${cells[4]} | accepted |"
+      }
+      if (edgesChanged > 0) edgesFile.writeText(out.joinToString("\n"))
+    }
+    return "{\"entity\":${q(id)},\"accepted\":true,\"edges\":$edgesChanged}"
   }
 
   fun sourceJson(instanceDir: File, ref: String): String {

@@ -10,9 +10,10 @@
 //     signal over Server-Sent Events.
 //
 // Derived views reuse the shared query layer (lib/views.mjs) so semantics live
-// once, in the standard's shape (nw-derive-not-copy). Read-only: there is no
-// write endpoint, so nothing here can affect propose to accept. Local only:
-// fs.watch sees local edits, not remote commits.
+// once, in the standard's shape (nw-derive-not-copy). The one write endpoint is
+// POST /api/accept: a human disposition (propose -> accept) that edits the
+// working tree only; the model still never self-accepts (concept-ui-human-
+// disposition). Local only: fs.watch sees local edits, not remote commits.
 //
 // Usage:
 //   node server.mjs [instanceDir]
@@ -21,7 +22,7 @@
 // Defaults: this repo's instance at <repo>/.konspekt/instance, port 4319.
 
 import { createServer } from "node:http";
-import { readFileSync, existsSync, watch } from "node:fs";
+import { readFileSync, writeFileSync, existsSync, watch } from "node:fs";
 import { join, resolve, dirname, extname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { loadInstance } from "../../../lib/conformance.mjs";
@@ -109,6 +110,52 @@ function serveStatic(res, name) {
   res.end(readFileSync(file));
 }
 
+// ---------- accept (the one write) ----------
+
+// A human disposition from the UI: flip one entity's review proposed -> accepted
+// in the working tree, then two-way auto-accept every proposed edge that touches
+// it whose other endpoint is also accepted (mirrors what a human does by hand).
+// Working-tree only: no git commit. Idempotent — accepting an accepted entity is
+// a no-op. The model never calls this; only the human, through the UI.
+function acceptEntity(id) {
+  if (!graph) return { error: "not loaded" };
+  const e = graph.byId.get(id);
+  if (!e || !e._file) return { error: "no such entity" };
+  const abs = join(instanceDir, e._file);
+  if (!abs.startsWith(instanceDir) || !existsSync(abs)) return { error: "file missing" };
+
+  const txt = readFileSync(abs, "utf8");
+  const flipped = txt.replace(/^review:[ \t]*proposed[ \t]*$/m, "review: accepted");
+  if (flipped !== txt) writeFileSync(abs, flipped);
+
+  // Auto-accept edges: the accepted id counts as accepted; the other endpoint is
+  // checked against the current graph. Provenance-ref endpoints (channel:hash,
+  // not entities) are left alone.
+  const edgesPath = join(instanceDir, "edges", "edges.md");
+  let edgesChanged = 0;
+  if (existsSync(edgesPath)) {
+    const lines = readFileSync(edgesPath, "utf8").split("\n").map((line) => {
+      const t = line.trim();
+      if (!t.startsWith("|")) return line;
+      const cells = t.split("|").slice(1, -1).map((c) => c.trim());
+      if (cells.length < 6 || cells[0] === "id" || /^-+$/.test(cells[0])) return line;
+      const [eid, kind, from, to, weight, review] = cells;
+      if (review !== "proposed") return line;
+      const fromId = from.includes(":") ? from.slice(from.indexOf(":") + 1) : from;
+      const toId = to.includes(":") ? to.slice(to.indexOf(":") + 1) : to;
+      if (fromId !== id && toId !== id) return line;
+      const other = fromId === id ? toId : fromId;
+      const oe = graph.byId.get(other);
+      const otherAccepted = other === id || (oe && oe.review === "accepted");
+      if (!otherAccepted) return line;
+      edgesChanged++;
+      return `| ${eid} | ${kind} | ${from} | ${to} | ${weight} | accepted |`;
+    });
+    if (edgesChanged) writeFileSync(edgesPath, lines.join("\n"));
+  }
+  return { entity: id, accepted: true, edges: edgesChanged };
+}
+
 // ---------- HTTP ----------
 
 const server = createServer((req, res) => {
@@ -116,6 +163,14 @@ const server = createServer((req, res) => {
   const path = url.pathname;
 
   if (path === "/" || path === "/view") return serveStatic(res, "index.html");
+
+  // The one write: accept a proposed entity (human disposition). POST only.
+  if (path === "/api/accept") {
+    if (req.method !== "POST") { res.writeHead(405); return res.end("method not allowed"); }
+    const result = acceptEntity(url.searchParams.get("entity") || "");
+    if (!result.error) reload("accept");
+    return sendJson(res, result, result.error ? 400 : 200);
+  }
 
   if (path === "/api/entities") return sendJson(res, snapshot);
   if (path === "/api/stats") {
@@ -142,6 +197,7 @@ const server = createServer((req, res) => {
     if (!abs.startsWith(instanceDir) || !existsSync(abs)) return sendJson(res, { error: "file missing" }, 404);
     const p = e.provenance || {};
     return sendJson(res, { id: e.id, file: e._file, markdown: readFileSync(abs, "utf8"),
+      review: e.review || null,
       sourceRef: p.sourceRef || null, contentHash: p.contentHash || null });
   }
   // One provenance source excerpt by its content hash (git blob SHA). Confined to
