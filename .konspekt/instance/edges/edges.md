@@ -278,6 +278,12 @@ proposal.
 | e-not-implzero-electron | notes | node:task-implementation-zero | noteworthy:nw-electron-shell |  |  |
 | e-not-repostructure-impldir | notes | node:investigation-repo-structure | noteworthy:nw-implementations-directory |  |  |
 | e-not-implzero-impldir | notes | node:task-implementation-zero | noteworthy:nw-implementations-directory |  |  |
+
+<!-- === intellij-plugin changeset (ASR/ADR + RCA finding) === -->
+| e-drv-viewnofork-plugininprocess | drives | concept:concept-view-no-fork | waypoint:wp-adr-plugin-inprocess |  |  |
+| e-mark-adrplugininprocess-intellij | marks | waypoint:wp-adr-plugin-inprocess | node:task-intellij-plugin |  |  |
+| e-not-oploop-personabrief | notes | node:investigation-operating-loop | noteworthy:nw-persona-brief-not-surfaced |  | proposed |
+| e-link-intellij-second | links | node:task-intellij-plugin | node:task-second-implementer | 0.8 | proposed |
 | e-prod-implzero-app | produces | node:task-implementation-zero | artifact:artifact-implementation-zero-app |  |  |
 | e-prod-nav-app | produces | node:task-goal-task-navigation | artifact:artifact-implementation-zero-app |  |  |
 | e-prod-analytics-app | produces | node:task-graph-analytics | artifact:artifact-implementation-zero-app |  | proposed |
