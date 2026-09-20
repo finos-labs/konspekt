@@ -16,6 +16,7 @@ data class Entity(
   val status: String?,
   val review: String?,
   val kind: String?,               // noteworthy/waypoint kind
+  val subtype: String?,            // persona-layer discriminator (asr/adr)
   val title: String?,
   val updatedAt: String?,
   val createdAt: String?,
@@ -82,6 +83,7 @@ object InstanceReader {
       status = fr["status"],
       review = fr["review"],
       kind = fr["kind"],
+      subtype = fr["subtype"],
       title = fr["title"] ?: fr["label"],
       updatedAt = fr["updatedAt"],
       createdAt = fr["createdAt"],
@@ -269,5 +271,17 @@ object InstanceReader {
       }
     }
     return "{\"entity\":${q(entity)},\"commands\":[${rows.joinToString(",")}]}"
+  }
+
+  // ASRs (concepts subtype asr) with the ADRs each drives; count is all ASRs+ADRs.
+  fun asradrJson(g: Graph): String {
+    val drives = g.edges.filter { it.kind == "drives" }
+    val asrs = g.entities.filter { it.entityType == "concept" && it.subtype == "asr" }.map { a ->
+      val adrs = drives.filter { stripType(it.from) == a.id }.mapNotNull { g.byId[stripType(it.to)] }
+        .joinToString(",") { "{\"id\":${q(it.id)},\"review\":${q(it.review)}}" }
+      "{\"id\":${q(a.id)},\"label\":${q(a.title ?: a.id)},\"review\":${q(a.review)},\"adrs\":[$adrs]}"
+    }
+    val adrCount = g.entities.count { it.entityType == "waypoint" && it.subtype == "adr" }
+    return "{\"count\":${asrs.size + adrCount},\"asrs\":[${asrs.joinToString(",")}]}"
   }
 }

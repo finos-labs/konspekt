@@ -18,6 +18,7 @@
         <button class="tab" role="tab" data-tab="changes" aria-selected="true">Changes</button>
         <button class="tab" role="tab" data-tab="stats" aria-selected="false">Stats</button>
         <button class="tab" role="tab" data-tab="goals" aria-selected="false">Goals</button>
+        <button class="tab" role="tab" data-tab="decisions" aria-selected="false" hidden>Decisions</button>
       </nav>
     </header>
 
@@ -70,6 +71,18 @@
           <div class="graph-head" id="graphHead"></div>
           <div class="graph-scroll" id="graphScroll"></div>
           <div class="graph-detail" id="graphDetail">Select a goal.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Decisions (ASRs / ADRs) -->
+    <section id="panel-decisions" hidden>
+      <div class="goals-grid">
+        <div class="goals-list" id="asrList"><p class="muted pad">loading…</p></div>
+        <div class="graph-area">
+          <div class="graph-head" id="asrHead"></div>
+          <div class="graph-scroll" id="adrList"></div>
+          <div class="graph-detail" id="asrDetail">Select an ASR.</div>
         </div>
       </div>
     </section>

@@ -9,7 +9,7 @@ const stDot = { ...stColor };
 const state = {
   tab: "changes",
   kinds: new Set(), statuses: new Set(), reviews: new Set(), q: "", preset: null,
-  goal: null, statsLoaded: false, goalsLoaded: false,
+  goal: null, asr: null, statsLoaded: false, goalsLoaded: false, decisionsLoaded: false,
 };
 
 // ---------- tabs ----------
@@ -20,8 +20,10 @@ function selectTab(name) {
   $("panel-changes").hidden = name !== "changes";
   $("panel-stats").hidden = name !== "stats";
   $("panel-goals").hidden = name !== "goals";
+  $("panel-decisions").hidden = name !== "decisions";
   if (name === "stats" && !state.statsLoaded) refreshStats();
   if (name === "goals" && !state.goalsLoaded) refreshGoals();
+  if (name === "decisions" && !state.decisionsLoaded) refreshDecisions();
 }
 document.querySelectorAll(".tab").forEach((b) => b.addEventListener("click", () => selectTab(b.dataset.tab)));
 
@@ -306,11 +308,58 @@ $("drawerClose").addEventListener("click", closeDetail);
 backdrop.addEventListener("click", closeDetail);
 document.addEventListener("keydown", (e) => { if (e.key === "Escape" && drawer.classList.contains("open")) closeDetail(); });
 
+// ---------- Decisions (ASR/ADR) ----------
+async function updateDecisionsTab() {
+  try {
+    const d = await (await fetch("/api/asradr", { cache: "no-store" })).json();
+    const btn = document.querySelector('.tab[data-tab="decisions"]');
+    if (btn) btn.hidden = !(d.count > 0); // surface follows data, not the persona flag
+    if (state.tab === "decisions" && !(d.count > 0)) selectTab("changes");
+  } catch { /* leave the tab as-is */ }
+}
+async function refreshDecisions() {
+  try {
+    const d = await (await fetch("/api/asradr", { cache: "no-store" })).json();
+    if (d.error) { $("asrList").innerHTML = '<p class="muted pad">' + d.error + "</p>"; return; }
+    state.decisionsLoaded = true;
+    const list = $("asrList"); list.innerHTML = "";
+    if (!d.asrs.length) { list.innerHTML = '<p class="muted pad">No ASRs recorded.</p>'; $("asrHead").innerHTML = ""; $("adrList").innerHTML = ""; return; }
+    for (const a of d.asrs) {
+      const b = document.createElement("button"); b.className = "gitem"; b.type = "button"; b.dataset.asr = a.id;
+      b.setAttribute("aria-selected", String(state.asr === a.id));
+      b.innerHTML = `<span class="gt">${a.label}</span><span class="gm">${a.adrs.length} ADR${a.adrs.length === 1 ? "" : "s"}${a.review !== "accepted" ? " · (" + a.review + ")" : ""}</span>`;
+      b.addEventListener("click", () => selectAsr(a));
+      list.appendChild(b);
+    }
+    selectAsr(d.asrs.find((a) => a.id === state.asr) || d.asrs[0]);
+  } catch { $("asrList").innerHTML = '<p class="muted pad">server unreachable.</p>'; }
+}
+function selectAsr(a) {
+  state.asr = a.id;
+  document.querySelectorAll("#asrList .gitem").forEach((b) => b.setAttribute("aria-selected", String(b.dataset.asr === a.id)));
+  $("asrHead").innerHTML = `<span class="gh-t">${a.label}</span><span class="gh-r">${a.adrs.length} ADR${a.adrs.length === 1 ? "" : "s"} driven</span>`;
+  const wrap = $("adrList"); wrap.innerHTML = "";
+  const asrRow = drow("ASR", a.id, a.review, false); asrRow.addEventListener("click", () => openDetail(a.id)); wrap.appendChild(asrRow);
+  if (!a.adrs.length) { const p = document.createElement("p"); p.className = "muted"; p.style.padding = "8px 14px"; p.textContent = "This ASR drives no ADRs yet."; wrap.appendChild(p); }
+  for (const adr of a.adrs) { const r = drow("ADR", adr.id, adr.review, true); r.addEventListener("click", () => openDetail(adr.id)); wrap.appendChild(r); }
+  $("asrDetail").textContent = "Click an ASR or ADR to open its details and provenance.";
+}
+function drow(kind, id, review, isAdr) {
+  const b = document.createElement("button"); b.className = "drow"; b.type = "button";
+  const k = document.createElement("span"); k.className = "drow-k" + (isAdr ? " adr" : ""); k.textContent = kind;
+  const t = document.createElement("span"); t.className = "mono"; t.textContent = id; t.title = id;
+  b.appendChild(k); b.appendChild(t);
+  if (review) { const r = document.createElement("span"); r.className = "rev " + review; r.textContent = review; b.appendChild(r); }
+  return b;
+}
+
 // ---------- live updates ----------
 function refreshActive() {
   refreshChanges();
+  updateDecisionsTab();
   if (state.tab === "stats") refreshStats();
   if (state.tab === "goals") refreshGoals();
+  if (state.tab === "decisions") refreshDecisions();
 }
 function connect() {
   const es = new EventSource("/events");
@@ -320,5 +369,6 @@ function connect() {
 }
 refreshChanges();
 connect();
+updateDecisionsTab();
 const initTab = location.hash.slice(1);
-if (initTab === "stats" || initTab === "goals") selectTab(initTab);
+if (initTab === "stats" || initTab === "goals" || initTab === "decisions") selectTab(initTab);

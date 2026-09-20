@@ -174,6 +174,19 @@ const server = createServer((req, res) => {
     }
     return sendJson(res, { entity: id, commands: out });
   }
+  // ASRs (concepts subtype asr) with the ADRs each drives (waypoints subtype adr,
+  // via drives edges). `count` is all ASRs+ADRs, for data-presence tab gating.
+  if (path === "/api/asradr") {
+    if (!graph) return sendJson(res, { error: snapshot.error || "not loaded" }, 503);
+    const drives = graph.edges.filter((e) => e.kind === "drives");
+    const asrs = graph.concepts.filter((c) => c.subtype === "asr").map((a) => {
+      const adrs = drives.filter((e) => e.from.id === a.id).map((e) => graph.byId.get(e.to.id)).filter(Boolean)
+        .map((w) => ({ id: w.id, review: w.review || null }));
+      return { id: a.id, label: a.label || a.id, review: a.review || null, adrs };
+    });
+    const adrCount = graph.waypoints.filter((w) => w.subtype === "adr").length;
+    return sendJson(res, { count: asrs.length + adrCount, asrs });
+  }
 
   if (path === "/events") {
     res.writeHead(200, { "content-type": "text/event-stream", "cache-control": "no-cache", connection: "keep-alive" });
