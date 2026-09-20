@@ -40,6 +40,26 @@ if (( ${#missing[@]} > 0 )); then
   done
 fi
 
+# Active persona operating briefs. When the instance activates a persona layer
+# (project.md `personas:`), inject that layer's AGENTS.md too, so its operating
+# obligations enter context — not just its data-model registry, which only the
+# conformance checker consumes. Closes the drift where engineer-layer duties
+# (ASR/ADR, executed-command provenance) lived in a file no session read.
+project_md="${CLAUDE_PROJECT_DIR:-.}/.konspekt/instance/project.md"
+personas_dir="${CLAUDE_PROJECT_DIR:-.}/spec/personas"
+if [[ -f "$project_md" ]]; then
+  personas_line="$(grep -E '^personas:' "$project_md" || true)"
+  names="$(printf '%s' "$personas_line" | sed -E 's/^personas:[[:space:]]*\[?//; s/].*$//; s/,/ /g')"
+  for name in $names; do
+    brief="$personas_dir/$name/AGENTS.md"
+    if [[ -f "$brief" ]]; then
+      context+=$'\n\n===== BEGIN ACTIVE PERSONA BRIEF ('"$name"$'): '"$brief"$' =====\n\n'
+      context+="$(cat "$brief")"
+      context+=$'\n\n===== END ACTIVE PERSONA BRIEF ('"$name"$') =====\n'
+    fi
+  done
+fi
+
 # Escape a string for embedding as a JSON string value (no jq dependency).
 json_escape() {
   local s="$1"

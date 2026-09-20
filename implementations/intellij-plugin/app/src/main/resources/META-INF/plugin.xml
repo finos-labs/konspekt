@@ -1,0 +1,18 @@
+<idea-plugin>
+  <id>dev.konspekt.intellij</id>
+  <name>konspekt</name>
+  <vendor>konspekt</vendor>
+  <description>
+    Read-only konspekt view (Changes / Stats / Goals) in a tool window, rendered
+    from the shared HTML view via JCEF. In-process: reads the open project's
+    .konspekt/instance directly, no external server.
+  </description>
+
+  <depends>com.intellij.modules.platform</depends>
+  <depends>com.intellij.modules.jcef</depends>
+
+  <extensions defaultExtensionNs="com.intellij">
+    <toolWindow id="konspekt" anchor="right" icon="AllIcons.Toolwindows.ToolWindowMessages"
+                factoryClass="dev.konspekt.plugin.KonspektToolWindowFactory"/>
+  </extensions>
+</idea-plugin>
