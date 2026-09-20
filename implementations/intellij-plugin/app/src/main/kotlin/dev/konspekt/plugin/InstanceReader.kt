@@ -16,6 +16,7 @@ data class Entity(
   val status: String?,
   val review: String?,
   val kind: String?,               // noteworthy/waypoint kind
+  val subtype: String?,            // persona-layer discriminator (asr/adr)
   val title: String?,
   val updatedAt: String?,
   val createdAt: String?,
@@ -82,6 +83,7 @@ object InstanceReader {
       status = fr["status"],
       review = fr["review"],
       kind = fr["kind"],
+      subtype = fr["subtype"],
       title = fr["title"] ?: fr["label"],
       updatedAt = fr["updatedAt"],
       createdAt = fr["createdAt"],
@@ -249,5 +251,58 @@ object InstanceReader {
     val f = File(File(instanceDir, "sources"), "$ref.md")
     if (!f.isFile) return "{\"error\":\"no such source\"}"
     return "{\"ref\":${q(ref)},\"markdown\":${q(f.readText())}}"
+  }
+
+  // Related commands for an entity: the commands/executed.md rows whose entity is
+  // this one, in execution order, each resolved to its verbatim text.
+  fun commandsJson(instanceDir: File, entity: String): String {
+    val log = File(File(instanceDir, "commands"), "executed.md")
+    val rows = ArrayList<String>()
+    if (log.isFile) {
+      for (line in log.readText().replace("\r\n", "\n").split("\n")) {
+        val t = line.trim()
+        if (!t.startsWith("|")) continue
+        val cells = t.trim('|').split("|").map { it.trim() }
+        if (cells.size < 2 || cells[0] == "entity" || cells[0].startsWith("---") || cells[0] != entity) continue
+        val hash = cells[1]
+        val cf = File(File(instanceDir, "commands"), "$hash.md")
+        val md = if (cf.isFile) cf.readText() else "(command text missing)"
+        rows.add("{\"command\":${q(hash)},\"markdown\":${q(md)}}")
+      }
+    }
+    return "{\"entity\":${q(entity)},\"commands\":[${rows.joinToString(",")}]}"
+  }
+
+  // Related code changes for an entity: the changes/changed.md rows whose entity
+  // is this one, in commit order, grouped by commit. `commit` is an opaque
+  // revision token (nw-commit-is-opaque-revision) — never resolved against git.
+  fun changesJson(instanceDir: File, entity: String): String {
+    val log = File(File(instanceDir, "changes"), "changed.md")
+    val byCommit = LinkedHashMap<String, MutableList<String>>()
+    if (log.isFile) {
+      for (line in log.readText().replace("\r\n", "\n").split("\n")) {
+        val t = line.trim()
+        if (!t.startsWith("|")) continue
+        val cells = t.trim('|').split("|").map { it.trim() }
+        if (cells.size < 3 || cells[0] == "entity" || cells[0].startsWith("---") || cells[0] != entity) continue
+        byCommit.getOrPut(cells[1]) { ArrayList() }.add(cells[2])
+      }
+    }
+    val groups = byCommit.entries.map { (commit, files) ->
+      "{\"commit\":${q(commit)},\"files\":[${files.joinToString(",") { q(it) }}]}"
+    }
+    return "{\"entity\":${q(entity)},\"changes\":[${groups.joinToString(",")}]}"
+  }
+
+  // ASRs (concepts subtype asr) with the ADRs each drives; count is all ASRs+ADRs.
+  fun asradrJson(g: Graph): String {
+    val drives = g.edges.filter { it.kind == "drives" }
+    val asrs = g.entities.filter { it.entityType == "concept" && it.subtype == "asr" }.map { a ->
+      val adrs = drives.filter { stripType(it.from) == a.id }.mapNotNull { g.byId[stripType(it.to)] }
+        .joinToString(",") { "{\"id\":${q(it.id)},\"review\":${q(it.review)}}" }
+      "{\"id\":${q(a.id)},\"label\":${q(a.title ?: a.id)},\"review\":${q(a.review)},\"adrs\":[$adrs]}"
+    }
+    val adrCount = g.entities.count { it.entityType == "waypoint" && it.subtype == "adr" }
+    return "{\"count\":${asrs.size + adrCount},\"asrs\":[${asrs.joinToString(",")}]}"
   }
 }

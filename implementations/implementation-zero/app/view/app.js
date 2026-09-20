@@ -9,7 +9,7 @@ const stDot = { ...stColor };
 const state = {
   tab: "changes",
   kinds: new Set(), statuses: new Set(), reviews: new Set(), q: "", preset: null,
-  goal: null, statsLoaded: false, goalsLoaded: false,
+  goal: null, asr: null, statsLoaded: false, goalsLoaded: false, decisionsLoaded: false,
 };
 
 // ---------- tabs ----------
@@ -20,8 +20,10 @@ function selectTab(name) {
   $("panel-changes").hidden = name !== "changes";
   $("panel-stats").hidden = name !== "stats";
   $("panel-goals").hidden = name !== "goals";
+  $("panel-decisions").hidden = name !== "decisions";
   if (name === "stats" && !state.statsLoaded) refreshStats();
   if (name === "goals" && !state.goalsLoaded) refreshGoals();
+  if (name === "decisions" && !state.decisionsLoaded) refreshDecisions();
 }
 document.querySelectorAll(".tab").forEach((b) => b.addEventListener("click", () => selectTab(b.dataset.tab)));
 
@@ -251,30 +253,69 @@ async function openDetail(id) {
   $("drawerClose").focus();
   try {
     const d = await (await fetch("/api/entity?id=" + encodeURIComponent(id), { cache: "no-store" })).json();
-    drawerBody.innerHTML = "";
-    if (d.error) { const p = document.createElement("p"); p.className = "drawer-err"; p.textContent = d.error; drawerBody.appendChild(p); return; }
-    const pre = document.createElement("pre"); pre.className = "md"; pre.textContent = d.markdown; drawerBody.appendChild(pre);
-    if (d.sourceRef) drawerBody.appendChild(sourceBlock(d.sourceRef)); // only entities with a source get this
+    if (d.error) { drawerBody.innerHTML = ""; const p = document.createElement("p"); p.className = "drawer-err"; p.textContent = d.error; drawerBody.appendChild(p); return; }
+    let source = null;
+    if (d.sourceRef) { try { source = await (await fetch("/api/source?ref=" + encodeURIComponent(d.sourceRef), { cache: "no-store" })).json(); } catch { source = { error: "unreachable" }; } }
+    let cmds = [];
+    try { cmds = (await (await fetch("/api/commands?entity=" + encodeURIComponent(id), { cache: "no-store" })).json()).commands || []; } catch { /* endpoint may be absent */ }
+    let chgs = [];
+    try { chgs = (await (await fetch("/api/changes?entity=" + encodeURIComponent(id), { cache: "no-store" })).json()).changes || []; } catch { /* endpoint may be absent */ }
+    renderDrawer(d, source, cmds, chgs);
   } catch { drawerBody.innerHTML = '<p class="drawer-err">server unreachable.</p>'; }
 }
 
-function sourceBlock(ref) {
-  const block = document.createElement("div"); block.className = "src-block";
-  const label = (verb) => verb + " provenance source · " + ref.slice(0, 10) + "…";
-  const btn = document.createElement("button"); btn.className = "src-btn"; btn.type = "button"; btn.textContent = label("View");
-  const holder = document.createElement("div"); holder.hidden = true;
-  btn.addEventListener("click", async () => {
-    if (holder.dataset.loaded === "1") { holder.hidden = !holder.hidden; btn.textContent = label(holder.hidden ? "View" : "Hide"); return; }
-    btn.disabled = true; btn.textContent = "loading source…";
-    try {
-      const d = await (await fetch("/api/source?ref=" + encodeURIComponent(ref), { cache: "no-store" })).json();
-      const lbl = document.createElement("div"); lbl.className = "src-label"; lbl.textContent = "sources/" + ref + ".md";
-      const pre = document.createElement("pre"); pre.className = "md"; pre.textContent = d.error ? ("error: " + d.error) : d.markdown;
-      holder.appendChild(lbl); holder.appendChild(pre); holder.hidden = false; holder.dataset.loaded = "1"; btn.textContent = label("Hide");
-    } catch { const p = document.createElement("p"); p.className = "drawer-err"; p.textContent = "server unreachable."; holder.appendChild(p); holder.hidden = false; }
-    finally { btn.disabled = false; }
+// The detail drawer is a tab panel: Details (the file), Provenance (the source),
+// Commands, and Changes — the last two shown only when the entity has recorded
+// commands / code changes (surface follows data). Tabs render for both shells
+// from this one view.
+function pre(text) { const p = document.createElement("pre"); p.className = "md"; p.textContent = text; return p; }
+function renderDrawer(d, source, cmds, chgs) {
+  chgs = chgs || [];
+  const tabs = [
+    { label: "Details", build: () => pre(d.markdown) },
+    { label: "Provenance", build: () => {
+      const w = document.createElement("div");
+      if (d.sourceRef) {
+        const lbl = document.createElement("div"); lbl.className = "src-label"; lbl.textContent = "sources/" + d.sourceRef + ".md";
+        w.appendChild(lbl); w.appendChild(pre(source && !source.error ? source.markdown : (source && source.error ? "error: " + source.error : "(source unavailable)")));
+      } else { const p = document.createElement("p"); p.className = "muted"; p.textContent = "No content-addressed provenance for this entity."; w.appendChild(p); }
+      return w;
+    } },
+  ];
+  if (cmds.length) tabs.push({ label: "Commands (" + cmds.length + ")", build: () => {
+    const w = document.createElement("div"); w.className = "cmd-list";
+    cmds.forEach((c, i) => {
+      const lbl = document.createElement("div"); lbl.className = "src-label"; lbl.textContent = (i + 1) + " · commands/" + c.command.slice(0, 10) + "…";
+      w.appendChild(lbl); w.appendChild(pre(c.markdown));
+    });
+    return w;
+  } });
+  // Changes: the changed-code log grouped by commit. `commit` is an opaque
+  // revision token shown as a short label; the files are the change's projection.
+  if (chgs.length) tabs.push({ label: "Changes (" + chgs.length + ")", build: () => {
+    const w = document.createElement("div"); w.className = "cmd-list";
+    chgs.forEach((g, i) => {
+      const lbl = document.createElement("div"); lbl.className = "src-label";
+      lbl.textContent = (i + 1) + " · commit " + String(g.commit).slice(0, 10) + "…";
+      w.appendChild(lbl);
+      const ul = document.createElement("ul"); ul.className = "chg-files";
+      (g.files || []).forEach((f) => { const li = document.createElement("li"); li.textContent = f; ul.appendChild(li); });
+      w.appendChild(ul);
+    });
+    return w;
+  } });
+
+  drawerBody.innerHTML = "";
+  const strip = document.createElement("div"); strip.className = "drawer-tabs"; strip.setAttribute("role", "tablist");
+  const panel = document.createElement("div"); panel.className = "drawer-panel";
+  const show = (t, btn) => { strip.querySelectorAll(".dtab").forEach((x) => x.setAttribute("aria-selected", "false")); btn.setAttribute("aria-selected", "true"); panel.innerHTML = ""; panel.appendChild(t.build()); };
+  tabs.forEach((t, i) => {
+    const b = document.createElement("button"); b.className = "dtab"; b.type = "button"; b.textContent = t.label; b.setAttribute("role", "tab"); b.setAttribute("aria-selected", i === 0 ? "true" : "false");
+    b.addEventListener("click", () => show(t, b));
+    strip.appendChild(b);
   });
-  block.appendChild(btn); block.appendChild(holder); return block;
+  drawerBody.appendChild(strip); drawerBody.appendChild(panel);
+  panel.appendChild(tabs[0].build());
 }
 
 function closeDetail() {
@@ -285,11 +326,58 @@ $("drawerClose").addEventListener("click", closeDetail);
 backdrop.addEventListener("click", closeDetail);
 document.addEventListener("keydown", (e) => { if (e.key === "Escape" && drawer.classList.contains("open")) closeDetail(); });
 
+// ---------- Decisions (ASR/ADR) ----------
+async function updateDecisionsTab() {
+  try {
+    const d = await (await fetch("/api/asradr", { cache: "no-store" })).json();
+    const btn = document.querySelector('.tab[data-tab="decisions"]');
+    if (btn) btn.hidden = !(d.count > 0); // surface follows data, not the persona flag
+    if (state.tab === "decisions" && !(d.count > 0)) selectTab("changes");
+  } catch { /* leave the tab as-is */ }
+}
+async function refreshDecisions() {
+  try {
+    const d = await (await fetch("/api/asradr", { cache: "no-store" })).json();
+    if (d.error) { $("asrList").innerHTML = '<p class="muted pad">' + d.error + "</p>"; return; }
+    state.decisionsLoaded = true;
+    const list = $("asrList"); list.innerHTML = "";
+    if (!d.asrs.length) { list.innerHTML = '<p class="muted pad">No ASRs recorded.</p>'; $("asrHead").innerHTML = ""; $("adrList").innerHTML = ""; return; }
+    for (const a of d.asrs) {
+      const b = document.createElement("button"); b.className = "gitem"; b.type = "button"; b.dataset.asr = a.id;
+      b.setAttribute("aria-selected", String(state.asr === a.id));
+      b.innerHTML = `<span class="gt">${a.label}</span><span class="gm">${a.adrs.length} ADR${a.adrs.length === 1 ? "" : "s"}${a.review !== "accepted" ? " · (" + a.review + ")" : ""}</span>`;
+      b.addEventListener("click", () => selectAsr(a));
+      list.appendChild(b);
+    }
+    selectAsr(d.asrs.find((a) => a.id === state.asr) || d.asrs[0]);
+  } catch { $("asrList").innerHTML = '<p class="muted pad">server unreachable.</p>'; }
+}
+function selectAsr(a) {
+  state.asr = a.id;
+  document.querySelectorAll("#asrList .gitem").forEach((b) => b.setAttribute("aria-selected", String(b.dataset.asr === a.id)));
+  $("asrHead").innerHTML = `<span class="gh-t">${a.label}</span><span class="gh-r">${a.adrs.length} ADR${a.adrs.length === 1 ? "" : "s"} driven</span>`;
+  const wrap = $("adrList"); wrap.innerHTML = "";
+  const asrRow = drow("ASR", a.id, a.review, false); asrRow.addEventListener("click", () => openDetail(a.id)); wrap.appendChild(asrRow);
+  if (!a.adrs.length) { const p = document.createElement("p"); p.className = "muted"; p.style.padding = "8px 14px"; p.textContent = "This ASR drives no ADRs yet."; wrap.appendChild(p); }
+  for (const adr of a.adrs) { const r = drow("ADR", adr.id, adr.review, true); r.addEventListener("click", () => openDetail(adr.id)); wrap.appendChild(r); }
+  $("asrDetail").textContent = "Click an ASR or ADR to open its details and provenance.";
+}
+function drow(kind, id, review, isAdr) {
+  const b = document.createElement("button"); b.className = "drow"; b.type = "button";
+  const k = document.createElement("span"); k.className = "drow-k" + (isAdr ? " adr" : ""); k.textContent = kind;
+  const t = document.createElement("span"); t.className = "mono"; t.textContent = id; t.title = id;
+  b.appendChild(k); b.appendChild(t);
+  if (review) { const r = document.createElement("span"); r.className = "rev " + review; r.textContent = review; b.appendChild(r); }
+  return b;
+}
+
 // ---------- live updates ----------
 function refreshActive() {
   refreshChanges();
+  updateDecisionsTab();
   if (state.tab === "stats") refreshStats();
   if (state.tab === "goals") refreshGoals();
+  if (state.tab === "decisions") refreshDecisions();
 }
 function connect() {
   const es = new EventSource("/events");
@@ -299,5 +387,6 @@ function connect() {
 }
 refreshChanges();
 connect();
+updateDecisionsTab();
 const initTab = location.hash.slice(1);
-if (initTab === "stats" || initTab === "goals") selectTab(initTab);
+if (initTab === "stats" || initTab === "goals" || initTab === "decisions") selectTab(initTab);

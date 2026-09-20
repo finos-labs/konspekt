@@ -3,7 +3,7 @@
      Check freshness with: node tools/roadmap.mjs --check
      This file is a pure function of .konspekt/instance/ (no timestamps baked in).
      Goals and tasks are graph nodes; the horizon is derived from node status/review.
-     contentHash: sha256:2b65350e4aedb252 -->
+     contentHash: sha256:66672972eb859044 -->
 
 # konspekt roadmap
 
@@ -116,6 +116,12 @@ Make a konspekt instance operable by a human through a visual interface, not onl
 - Build the konspekt UI app as one view with two shells
 - Serve the konspekt view as an MCP Apps ui:// resource
 
+**Shipped** — _resolved_
+
+- An ASR/ADR view in the konspekt UI
+- Configurable popup mode for the IntelliJ plugin
+- Related-commands tab in the entity detail panel
+
 ## Answer who is responsible _(proposed)_
 
 Make the facts a responsibility question needs answerable with evidence. The law decides who is responsible; konspekt records, verbatim and unaltered, what an AI proposed and which named human accepted it, so the underlying account is not in dispute. Responsibility attaches to a human by construction: an AI proposes, and only a named maintainer accepts.
@@ -130,6 +136,11 @@ Make the facts a responsibility question needs answerable with evidence. The law
 - The responsibility report
 - Signed accepts via a legally-bound persona
 
+**Shipped** — _resolved_
+
+- Serialize executed-command provenance as an ordered log
+- Record the source and config changes associated with a task
+
 ## Share authorship across a team _(proposed)_
 
 Let several participants — people and agents — propose into and review one shared instance without weakening propose→accept, with accept authority named in config so it survives a change of backing store. Platforms build collaboration into their own closed state; the version that works across a neutral, portable record is the one no single vendor is incentivized to build. The hardest open part is concurrency control on the single edge table, unresolved and shared by both the human and the agent case.
@@ -142,4 +153,4 @@ Let several participants — people and agents — propose into and review one s
 
 ---
 
-Generated from 7 goal(s) and 44 task-listing(s) over the instance graph.
+Generated from 7 goal(s) and 49 task-listing(s) over the instance graph.

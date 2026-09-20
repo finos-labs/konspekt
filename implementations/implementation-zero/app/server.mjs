@@ -154,6 +154,61 @@ const server = createServer((req, res) => {
     if (!abs.startsWith(base) || !existsSync(abs)) return sendJson(res, { error: "no such source" }, 404);
     return sendJson(res, { ref, markdown: readFileSync(abs, "utf8") });
   }
+  // Related commands for an entity: the commands/executed.md rows whose entity is
+  // this one, in execution order, each resolved to its verbatim text. Empty when
+  // the entity has no recorded commands.
+  if (path === "/api/commands") {
+    const id = url.searchParams.get("entity") || "";
+    const logPath = join(instanceDir, "commands", "executed.md");
+    const out = [];
+    if (existsSync(logPath)) {
+      for (const line of readFileSync(logPath, "utf8").split("\n")) {
+        const t = line.trim();
+        if (!t.startsWith("|")) continue;
+        const cells = t.split("|").slice(1, -1).map((c) => c.trim());
+        if (cells.length < 2 || cells[0] === "entity" || /^-+$/.test(cells[0]) || cells[0] !== id) continue;
+        const hash = cells[1];
+        const cf = join(instanceDir, "commands", hash + ".md");
+        out.push({ command: hash, markdown: existsSync(cf) ? readFileSync(cf, "utf8") : "(command text missing)" });
+      }
+    }
+    return sendJson(res, { entity: id, commands: out });
+  }
+  // Related code changes for an entity: the changes/changed.md rows whose entity
+  // is this one, in commit order, grouped by commit. `commit` is an opaque
+  // revision token (nw-commit-is-opaque-revision) — never resolved against git —
+  // so this stays VCS-neutral. Empty when the entity has no recorded changes.
+  if (path === "/api/changes") {
+    const id = url.searchParams.get("entity") || "";
+    const logPath = join(instanceDir, "changes", "changed.md");
+    const groups = []; const byCommit = new Map();
+    if (existsSync(logPath)) {
+      for (const line of readFileSync(logPath, "utf8").split("\n")) {
+        const t = line.trim();
+        if (!t.startsWith("|")) continue;
+        const cells = t.split("|").slice(1, -1).map((c) => c.trim());
+        if (cells.length < 3 || cells[0] === "entity" || /^-+$/.test(cells[0]) || cells[0] !== id) continue;
+        const [, commit, file] = cells;
+        let g = byCommit.get(commit);
+        if (!g) { g = { commit, files: [] }; byCommit.set(commit, g); groups.push(g); }
+        g.files.push(file);
+      }
+    }
+    return sendJson(res, { entity: id, changes: groups });
+  }
+  // ASRs (concepts subtype asr) with the ADRs each drives (waypoints subtype adr,
+  // via drives edges). `count` is all ASRs+ADRs, for data-presence tab gating.
+  if (path === "/api/asradr") {
+    if (!graph) return sendJson(res, { error: snapshot.error || "not loaded" }, 503);
+    const drives = graph.edges.filter((e) => e.kind === "drives");
+    const asrs = graph.concepts.filter((c) => c.subtype === "asr").map((a) => {
+      const adrs = drives.filter((e) => e.from.id === a.id).map((e) => graph.byId.get(e.to.id)).filter(Boolean)
+        .map((w) => ({ id: w.id, review: w.review || null }));
+      return { id: a.id, label: a.label || a.id, review: a.review || null, adrs };
+    });
+    const adrCount = graph.waypoints.filter((w) => w.subtype === "adr").length;
+    return sendJson(res, { count: asrs.length + adrCount, asrs });
+  }
 
   if (path === "/events") {
     res.writeHead(200, { "content-type": "text/event-stream", "cache-control": "no-cache", connection: "keep-alive" });
