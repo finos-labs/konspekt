@@ -2,12 +2,12 @@
 id: task-ui-simple-actions
 type: task
 title: Take simple actions from the UI (accept a proposed entity)
-status: active
+status: resolved
 summary:
   origin: machine
   pinned: false
   updatedAt: 2026-09-20T18:00:00Z
-review: proposed
+review: accepted
 provenance:
   sourceRef: 8ba9d7285e3780034133f597e92d53bb89e98acf
   contentHash: 8ba9d7285e3780034133f597e92d53bb89e98acf

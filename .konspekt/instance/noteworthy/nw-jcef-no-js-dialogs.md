@@ -1,7 +1,7 @@
 ```yaml
 id: nw-jcef-no-js-dialogs
 kind: constraint
-review: proposed
+review: accepted
 provenance:
   sourceRef: 0508aa2acf48b1f31daafe98a465f29f3a00a487
   contentHash: 0508aa2acf48b1f31daafe98a465f29f3a00a487

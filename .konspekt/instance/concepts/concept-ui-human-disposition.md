@@ -3,7 +3,7 @@ id: concept-ui-human-disposition
 subtype: asr
 label: The UI may take human dispositions; the model still never self-accepts
 aliases: [accept from the UI, human disposition surface, ui is not strictly read-only]
-review: proposed
+review: accepted
 provenance:
   sourceRef: 8ba9d7285e3780034133f597e92d53bb89e98acf
   contentHash: 8ba9d7285e3780034133f597e92d53bb89e98acf
