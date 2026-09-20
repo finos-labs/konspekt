@@ -235,6 +235,9 @@ proposal.
 | e-men-mcpapp-companion | mentions | node:task-mcp-app-surface | concept:concept-companion-surface |  | proposed |
 | e-men-uiapp-sep | mentions | node:task-konspekt-ui-app | concept:concept-propose-accept-separation |  | proposed |
 | e-men-cas-sep | mentions | node:task-atom-versioning-cas | concept:concept-propose-accept-separation |  | proposed |
+| e-drv-vwseam-casadr | drives | concept:concept-versioned-write-seam | waypoint:wp-adr-cas-write-contract |  | proposed |
+| e-mark-casadr-castask | marks | waypoint:wp-adr-cas-write-contract | node:task-atom-versioning-cas |  | proposed |
+| e-men-cas-vwseam | mentions | node:task-atom-versioning-cas | concept:concept-versioned-write-seam |  | proposed |
 | e-men-mcpapp-contract | mentions | node:task-mcp-app-surface | concept:concept-transport-contract |  | proposed |
 | e-rel-companion-memorylayer | relates | concept:concept-companion-surface | concept:concept-konspekt-vs-memory-layer | 0.6 | proposed |
 | e-not-mcpapp-nowake | notes | node:task-mcp-app-surface | noteworthy:nw-server-cannot-wake-a-session |  | proposed |
