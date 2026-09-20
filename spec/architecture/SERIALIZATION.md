@@ -16,6 +16,7 @@ This is the locked, lowest-common-denominator on-disk form: human-readable files
   waypoints/<id>.md
   sources/<contentHash>.md  # content-addressed provenance excerpts (not entities)
   commands/<contentHash>.md # content-addressed executed-command provenance (persona layer)
+  changes/changed.md        # append-only changed-code log (persona layer)
   edges/edges.md            # single typed edge table
 ```
 
@@ -60,6 +61,12 @@ Entities predating the mechanism may carry provenance without `sourceRef` / `con
 Executions are recorded in `commands/executed.md`, an append-only table `| entity | command |` binding each run to the entity it was about (any entity type), one row per execution in **execution order** — row order is the timeline, so no per-row timestamp is stored. It is a provenance log, not the goal-graph edge table.
 
 Only the command text is stored; output (stdout / stderr / exit) is deliberately excluded — the record answers *what was run*, and capturing results would balloon the channel past its purpose. This channel is contributed by the `engineer` persona layer (`../personas/engineer/SPEC.md`) and is present only in instances that activate it.
+
+## Changed code
+
+`changes/changed.md` is an append-only table `| entity | commit | file |` binding each committed code change to the entity it was about (any entity type), one row per `(entity, commit, file)` in **commit order** — row order is the timeline, so no per-row timestamp is stored. Unlike commands, the change itself is **not** stored here: it already lives in git, recoverable by `commit`, so only the legible projection (which files) and the pointer (which commit) are kept.
+
+`commit` is an **opaque revision token**: the conformance checker validates its shape and non-emptiness only, and no reader resolves it against a VCS, so the format stays VCS-neutral. Rows are written **push-based at commit time** (the maintainer already holds the SHA and file list from the commit just made), so a row trails its commit by one; deriving the log by walking history would make generation git-specific and is not done. Bookkeeping commits — those touching only `.konspekt/instance/**` or this log — are excluded, and commits with no `<entity-id>:` subject prefix are dropped. Like the command channel, this is contributed by the `engineer` persona layer and present only in instances that activate it.
 
 ## Versioning
 

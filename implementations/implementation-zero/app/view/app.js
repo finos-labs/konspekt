@@ -258,15 +258,19 @@ async function openDetail(id) {
     if (d.sourceRef) { try { source = await (await fetch("/api/source?ref=" + encodeURIComponent(d.sourceRef), { cache: "no-store" })).json(); } catch { source = { error: "unreachable" }; } }
     let cmds = [];
     try { cmds = (await (await fetch("/api/commands?entity=" + encodeURIComponent(id), { cache: "no-store" })).json()).commands || []; } catch { /* endpoint may be absent */ }
-    renderDrawer(d, source, cmds);
+    let chgs = [];
+    try { chgs = (await (await fetch("/api/changes?entity=" + encodeURIComponent(id), { cache: "no-store" })).json()).changes || []; } catch { /* endpoint may be absent */ }
+    renderDrawer(d, source, cmds, chgs);
   } catch { drawerBody.innerHTML = '<p class="drawer-err">server unreachable.</p>'; }
 }
 
 // The detail drawer is a tab panel: Details (the file), Provenance (the source),
-// and Commands — the last shown only when the entity has recorded commands
-// (surface follows data). Tabs render for both shells from this one view.
+// Commands, and Changes — the last two shown only when the entity has recorded
+// commands / code changes (surface follows data). Tabs render for both shells
+// from this one view.
 function pre(text) { const p = document.createElement("pre"); p.className = "md"; p.textContent = text; return p; }
-function renderDrawer(d, source, cmds) {
+function renderDrawer(d, source, cmds, chgs) {
+  chgs = chgs || [];
   const tabs = [
     { label: "Details", build: () => pre(d.markdown) },
     { label: "Provenance", build: () => {
@@ -283,6 +287,20 @@ function renderDrawer(d, source, cmds) {
     cmds.forEach((c, i) => {
       const lbl = document.createElement("div"); lbl.className = "src-label"; lbl.textContent = (i + 1) + " · commands/" + c.command.slice(0, 10) + "…";
       w.appendChild(lbl); w.appendChild(pre(c.markdown));
+    });
+    return w;
+  } });
+  // Changes: the changed-code log grouped by commit. `commit` is an opaque
+  // revision token shown as a short label; the files are the change's projection.
+  if (chgs.length) tabs.push({ label: "Changes (" + chgs.length + ")", build: () => {
+    const w = document.createElement("div"); w.className = "cmd-list";
+    chgs.forEach((g, i) => {
+      const lbl = document.createElement("div"); lbl.className = "src-label";
+      lbl.textContent = (i + 1) + " · commit " + String(g.commit).slice(0, 10) + "…";
+      w.appendChild(lbl);
+      const ul = document.createElement("ul"); ul.className = "chg-files";
+      (g.files || []).forEach((f) => { const li = document.createElement("li"); li.textContent = f; ul.appendChild(li); });
+      w.appendChild(ul);
     });
     return w;
   } });

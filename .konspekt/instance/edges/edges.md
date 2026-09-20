@@ -288,6 +288,9 @@ proposal.
 <!-- === executed-provenance changeset (ASR/ADR for the command log) === -->
 | e-drv-recordexec-adrlog | drives | concept:concept-record-all-executed | waypoint:wp-adr-executed-log |  |  |
 | e-mark-adrlog-exectask | marks | waypoint:wp-adr-executed-log | node:task-executed-provenance-serialization |  |  |
+| e-drv-recordexec-adrchanged | drives | concept:concept-record-all-executed | waypoint:wp-adr-changed-log |  | proposed |
+| e-mark-adrchanged-changetask | marks | waypoint:wp-adr-changed-log | node:task-record-code-changes |  | proposed |
+| e-notes-changetask-opaquerev | notes | node:task-record-code-changes | noteworthy:nw-commit-is-opaque-revision |  | proposed |
 | e-dec-account-exectask | decomposes | node:goal-accountability | node:task-executed-provenance-serialization |  | proposed |
 
 <!-- === UI tasks changeset (ASR/ADR view, related-commands, plugin pop-mode) === -->

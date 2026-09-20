@@ -42,6 +42,15 @@ Executions are recorded in an append-only log, **not** as edges:
 
 A log rather than `executed` edges keeps a high-volume, time-ordered, provenance-only record out of the goal graph's edge table (whose rows carry no timestamp), and lets any entity type be a command's subject without widening core edge domain/range.
 
+## Changed code — a second provenance channel
+
+Committed code changes are recorded the same way as commands, but the change itself is not stored — it already lives in git:
+
+- `changes/changed.md` is an append-only table `| entity | commit | file |`. Each row binds one code change to the entity it was about — **any entity type**: `commit` is the revision that carried it, `file` a repo-relative path it touched. One-to-many, and **row order is commit order** (no stored timestamp).
+- `commit` is an **opaque revision token**: the checker validates its shape and non-emptiness only, and no reader resolves it against a VCS, so the channel stays VCS-neutral. The diff is recoverable from `commit`; only which-files and which-commit are stored.
+- Rows are written **push-based at commit time**, so a row trails its commit by one. Deriving the log by walking `git log` and parsing `<entity-id>:` subject prefixes is deliberately **not** done, because it would make generation git-specific.
+- **Scope:** bookkeeping commits — those touching only `.konspekt/instance/**` or this log — are excluded; commits with no `<entity-id>:` subject prefix are dropped. As with commands, this answers *what changed for entity X*, a filter over the `entity` column.
+
 ## Edges this layer adds
 
 | kind | from | to | meaning |

@@ -2,7 +2,7 @@
 id: task-record-code-changes
 type: task
 title: Record the source and config changes associated with a task
-status: open
+status: active
 summary:
   origin: machine
   pinned: false

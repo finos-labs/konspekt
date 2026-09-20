@@ -273,6 +273,27 @@ object InstanceReader {
     return "{\"entity\":${q(entity)},\"commands\":[${rows.joinToString(",")}]}"
   }
 
+  // Related code changes for an entity: the changes/changed.md rows whose entity
+  // is this one, in commit order, grouped by commit. `commit` is an opaque
+  // revision token (nw-commit-is-opaque-revision) — never resolved against git.
+  fun changesJson(instanceDir: File, entity: String): String {
+    val log = File(File(instanceDir, "changes"), "changed.md")
+    val byCommit = LinkedHashMap<String, MutableList<String>>()
+    if (log.isFile) {
+      for (line in log.readText().replace("\r\n", "\n").split("\n")) {
+        val t = line.trim()
+        if (!t.startsWith("|")) continue
+        val cells = t.trim('|').split("|").map { it.trim() }
+        if (cells.size < 3 || cells[0] == "entity" || cells[0].startsWith("---") || cells[0] != entity) continue
+        byCommit.getOrPut(cells[1]) { ArrayList() }.add(cells[2])
+      }
+    }
+    val groups = byCommit.entries.map { (commit, files) ->
+      "{\"commit\":${q(commit)},\"files\":[${files.joinToString(",") { q(it) }}]}"
+    }
+    return "{\"entity\":${q(entity)},\"changes\":[${groups.joinToString(",")}]}"
+  }
+
   // ASRs (concepts subtype asr) with the ADRs each drives; count is all ASRs+ADRs.
   fun asradrJson(g: Graph): String {
     val drives = g.edges.filter { it.kind == "drives" }

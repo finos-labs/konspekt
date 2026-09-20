@@ -174,6 +174,28 @@ const server = createServer((req, res) => {
     }
     return sendJson(res, { entity: id, commands: out });
   }
+  // Related code changes for an entity: the changes/changed.md rows whose entity
+  // is this one, in commit order, grouped by commit. `commit` is an opaque
+  // revision token (nw-commit-is-opaque-revision) — never resolved against git —
+  // so this stays VCS-neutral. Empty when the entity has no recorded changes.
+  if (path === "/api/changes") {
+    const id = url.searchParams.get("entity") || "";
+    const logPath = join(instanceDir, "changes", "changed.md");
+    const groups = []; const byCommit = new Map();
+    if (existsSync(logPath)) {
+      for (const line of readFileSync(logPath, "utf8").split("\n")) {
+        const t = line.trim();
+        if (!t.startsWith("|")) continue;
+        const cells = t.split("|").slice(1, -1).map((c) => c.trim());
+        if (cells.length < 3 || cells[0] === "entity" || /^-+$/.test(cells[0]) || cells[0] !== id) continue;
+        const [, commit, file] = cells;
+        let g = byCommit.get(commit);
+        if (!g) { g = { commit, files: [] }; byCommit.set(commit, g); groups.push(g); }
+        g.files.push(file);
+      }
+    }
+    return sendJson(res, { entity: id, changes: groups });
+  }
   // ASRs (concepts subtype asr) with the ADRs each drives (waypoints subtype adr,
   // via drives edges). `count` is all ASRs+ADRs, for data-presence tab gating.
   if (path === "/api/asradr") {

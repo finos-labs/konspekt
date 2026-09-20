@@ -44,4 +44,19 @@ export const commandLog = {
   from: ["node", "concept", "noteworthy", "artifact", "waypoint"],
 };
 
-export default { persona, subtypes, edges, provenanceRefs, commandLog };
+// Changed-code log (not edges). changes/changed.md is an append-only table
+// `| entity | commit | file |` binding each committed code change to the entity
+// it was about — any entity type — one row per (entity, commit, file), in commit
+// order. Unlike the command log, the change itself is NOT stored here: it already
+// lives in git, recoverable by `commit` (nw-derive-not-copy). `commit` is an
+// OPAQUE revision token to every reader — conformance validates its shape and
+// never resolves it against a VCS — so the format stays VCS-neutral
+// (nw-commit-is-opaque-revision). Rows are written push-based at commit time,
+// never derived by walking history (which would couple the core to git). No
+// provenance `ref`: there is no content-addressed sidecar to resolve.
+export const changeLog = {
+  file: "changes/changed.md",
+  from: ["node", "concept", "noteworthy", "artifact", "waypoint"],
+};
+
+export default { persona, subtypes, edges, provenanceRefs, commandLog, changeLog };
