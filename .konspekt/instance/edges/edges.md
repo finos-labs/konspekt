@@ -289,6 +289,17 @@ proposal.
 | e-drv-recordexec-adrlog | drives | concept:concept-record-all-executed | waypoint:wp-adr-executed-log |  |  |
 | e-mark-adrlog-exectask | marks | waypoint:wp-adr-executed-log | node:task-executed-provenance-serialization |  |  |
 | e-dec-account-exectask | decomposes | node:goal-accountability | node:task-executed-provenance-serialization |  | proposed |
+
+<!-- === UI tasks changeset (ASR/ADR view, related-commands, plugin pop-mode) === -->
+| e-dec-usability-asradrui | decomposes | node:goal-usability | node:task-asr-adr-ui |  | proposed |
+| e-dec-usability-relcommands | decomposes | node:goal-usability | node:task-related-commands-view |  | proposed |
+| e-dec-intellij-popmode | decomposes | node:task-intellij-plugin | node:task-plugin-pop-mode |  | proposed |
+| e-men-asradrui-surfacedata | mentions | node:task-asr-adr-ui | concept:concept-surface-follows-data |  | proposed |
+| e-men-asradrui-nofork | mentions | node:task-asr-adr-ui | concept:concept-view-no-fork |  | proposed |
+| e-men-relcommands-nofork | mentions | node:task-related-commands-view | concept:concept-view-no-fork |  | proposed |
+| e-men-relcommands-surfacedata | mentions | node:task-related-commands-view | concept:concept-surface-follows-data |  | proposed |
+| e-link-relcommands-execlog | links | node:task-related-commands-view | node:task-executed-provenance-serialization | 0.7 | proposed |
+| e-men-popmode-nofork | mentions | node:task-plugin-pop-mode | concept:concept-view-no-fork |  | proposed |
 | e-prod-implzero-app | produces | node:task-implementation-zero | artifact:artifact-implementation-zero-app |  |  |
 | e-prod-nav-app | produces | node:task-goal-task-navigation | artifact:artifact-implementation-zero-app |  |  |
 | e-prod-analytics-app | produces | node:task-graph-analytics | artifact:artifact-implementation-zero-app |  | proposed |
