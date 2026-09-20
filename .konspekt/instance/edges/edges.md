@@ -188,7 +188,7 @@ proposal.
 <!-- === accountability draft (first draft, unreviewed; one open item) === -->
 | e-dec-account-report | decomposes | node:goal-accountability | node:task-accountability-report |  | proposed |
 | e-dec-account-signed | decomposes | node:goal-accountability | node:task-signed-accepts |  | proposed |
-| e-dec-account-gate | decomposes | node:goal-accountability | node:task-persona-change-gate |  | proposed |
+| e-dec-account-gate | decomposes | node:goal-accountability | node:task-persona-change-gate |  | accepted |
 | e-men-report-caprov | mentions | node:task-accountability-report | concept:concept-content-addressed-provenance |  | proposed |
 | e-men-signed-sep | mentions | node:task-signed-accepts | concept:concept-propose-accept-separation |  | proposed |
 | e-link-report-fleet | links | node:task-accountability-report | node:task-agent-fleet | 0.5 | proposed |
@@ -202,7 +202,7 @@ proposal.
 | e-dec-obs-roadmap-poster | decomposes | node:goal-observability | node:task-roadmap-poster-generated |  | proposed |
 | e-not-poster-derive | notes | node:task-roadmap-poster-generated | noteworthy:nw-derive-not-copy |  |  |
 | e-not-collab-issueintake | notes | node:goal-collaboration | noteworthy:nw-inbound-issue-needs-consensus-intake |  | proposed |
-| e-dec-account-authority | decomposes | node:goal-accountability | node:task-authority-mechanism |  | proposed |
+| e-dec-account-authority | decomposes | node:goal-accountability | node:task-authority-mechanism |  | accepted |
 | e-link-authority-gate | links | node:task-authority-mechanism | node:task-persona-change-gate | 0.7 | proposed |
 | e-link-authority-signed | links | node:task-authority-mechanism | node:task-signed-accepts | 0.6 | proposed |
 | e-not-authority-single | notes | node:task-authority-mechanism | noteworthy:nw-instance-single-individual-authority |  | proposed |
@@ -235,6 +235,9 @@ proposal.
 | e-men-mcpapp-companion | mentions | node:task-mcp-app-surface | concept:concept-companion-surface |  | proposed |
 | e-men-uiapp-sep | mentions | node:task-konspekt-ui-app | concept:concept-propose-accept-separation |  | proposed |
 | e-men-cas-sep | mentions | node:task-atom-versioning-cas | concept:concept-propose-accept-separation |  | proposed |
+| e-drv-vwseam-casadr | drives | concept:concept-versioned-write-seam | waypoint:wp-adr-cas-write-contract |  | proposed |
+| e-mark-casadr-castask | marks | waypoint:wp-adr-cas-write-contract | node:task-atom-versioning-cas |  | proposed |
+| e-men-cas-vwseam | mentions | node:task-atom-versioning-cas | concept:concept-versioned-write-seam |  | proposed |
 | e-men-mcpapp-contract | mentions | node:task-mcp-app-surface | concept:concept-transport-contract |  | proposed |
 | e-rel-companion-memorylayer | relates | concept:concept-companion-surface | concept:concept-konspekt-vs-memory-layer | 0.6 | proposed |
 | e-not-mcpapp-nowake | notes | node:task-mcp-app-surface | noteworthy:nw-server-cannot-wake-a-session |  | proposed |
@@ -291,7 +294,7 @@ proposal.
 | e-drv-recordexec-adrchanged | drives | concept:concept-record-all-executed | waypoint:wp-adr-changed-log |  | accepted |
 | e-mark-adrchanged-changetask | marks | waypoint:wp-adr-changed-log | node:task-record-code-changes |  | accepted |
 | e-notes-changetask-opaquerev | notes | node:task-record-code-changes | noteworthy:nw-commit-is-opaque-revision |  | accepted |
-| e-dec-account-exectask | decomposes | node:goal-accountability | node:task-executed-provenance-serialization |  | proposed |
+| e-dec-account-exectask | decomposes | node:goal-accountability | node:task-executed-provenance-serialization |  | accepted |
 
 <!-- === UI tasks changeset (ASR/ADR view, related-commands, plugin pop-mode) === -->
 | e-dec-usability-asradrui | decomposes | node:goal-usability | node:task-asr-adr-ui |  | accepted |
@@ -303,7 +306,7 @@ proposal.
 | e-men-relcommands-surfacedata | mentions | node:task-related-commands-view | concept:concept-surface-follows-data |  | accepted |
 | e-link-relcommands-execlog | links | node:task-related-commands-view | node:task-executed-provenance-serialization | 0.7 | accepted |
 | e-men-popmode-nofork | mentions | node:task-plugin-pop-mode | concept:concept-view-no-fork |  | accepted |
-| e-dec-account-codechanges | decomposes | node:goal-accountability | node:task-record-code-changes |  | proposed |
+| e-dec-account-codechanges | decomposes | node:goal-accountability | node:task-record-code-changes |  | accepted |
 | e-link-codechanges-execlog | links | node:task-record-code-changes | node:task-executed-provenance-serialization | 0.7 | accepted |
 | e-link-codechanges-popmode | links | node:task-record-code-changes | node:task-plugin-pop-mode | 0.5 | accepted |
 | e-men-codechanges-caprov | mentions | node:task-record-code-changes | concept:concept-content-addressed-provenance |  | accepted |

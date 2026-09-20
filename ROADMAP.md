@@ -3,13 +3,32 @@
      Check freshness with: node tools/roadmap.mjs --check
      This file is a pure function of .konspekt/instance/ (no timestamps baked in).
      Goals and tasks are graph nodes; the horizon is derived from node status/review.
-     contentHash: sha256:b487495ac313344d -->
+     contentHash: sha256:e4fd901a09e9d890 -->
 
 # konspekt roadmap
 
 konspekt's direction lives in its own graph: every goal and task below is a node in `.konspekt/instance/`, and this file is a regenerated projection of that graph — the project's roadmap is a query over its own record. Per-item work status lives in the graph and in GitHub issues, not here.
 
 Horizon: **Now** — in progress · **Next** — accepted and planned · **Later** — proposed, not yet committed · **Shipped** — resolved.
+
+## Answer who is responsible
+
+Make the facts a responsibility question needs answerable with evidence. The law decides who is responsible; konspekt records, verbatim and unaltered, what an AI proposed and which named human accepted it, so the underlying account is not in dispute. Responsibility attaches to a human by construction: an AI proposes, and only a named maintainer accepts.
+
+**Next** — _accepted and planned_
+
+- Design a richer accept-authority mechanism
+- Protect changes to who carries legal weight
+
+**Later** — _proposed, not yet committed_
+
+- The responsibility report
+- Signed accepts via a legally-bound persona
+
+**Shipped** — _resolved_
+
+- Serialize executed-command provenance as an ordered log
+- Record the source and config changes associated with a task
 
 ## Curated context as a quality input to the LLM
 
@@ -122,25 +141,6 @@ Make a konspekt instance operable by a human through a visual interface, not onl
 - Configurable popup mode for the IntelliJ plugin
 - Related-commands tab in the entity detail panel
 - Take simple actions from the UI (accept a proposed entity)
-
-## Answer who is responsible _(proposed)_
-
-Make the facts a responsibility question needs answerable with evidence. The law decides who is responsible; konspekt records, verbatim and unaltered, what an AI proposed and which named human accepted it, so the underlying account is not in dispute. Responsibility attaches to a human by construction: an AI proposes, and only a named maintainer accepts.
-
-**Next** — _accepted and planned_
-
-- Design a richer accept-authority mechanism
-- Protect changes to who carries legal weight
-
-**Later** — _proposed, not yet committed_
-
-- The responsibility report
-- Signed accepts via a legally-bound persona
-
-**Shipped** — _resolved_
-
-- Serialize executed-command provenance as an ordered log
-- Record the source and config changes associated with a task
 
 ## Share authorship across a team _(proposed)_
 
