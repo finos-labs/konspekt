@@ -154,6 +154,26 @@ const server = createServer((req, res) => {
     if (!abs.startsWith(base) || !existsSync(abs)) return sendJson(res, { error: "no such source" }, 404);
     return sendJson(res, { ref, markdown: readFileSync(abs, "utf8") });
   }
+  // Related commands for an entity: the commands/executed.md rows whose entity is
+  // this one, in execution order, each resolved to its verbatim text. Empty when
+  // the entity has no recorded commands.
+  if (path === "/api/commands") {
+    const id = url.searchParams.get("entity") || "";
+    const logPath = join(instanceDir, "commands", "executed.md");
+    const out = [];
+    if (existsSync(logPath)) {
+      for (const line of readFileSync(logPath, "utf8").split("\n")) {
+        const t = line.trim();
+        if (!t.startsWith("|")) continue;
+        const cells = t.split("|").slice(1, -1).map((c) => c.trim());
+        if (cells.length < 2 || cells[0] === "entity" || /^-+$/.test(cells[0]) || cells[0] !== id) continue;
+        const hash = cells[1];
+        const cf = join(instanceDir, "commands", hash + ".md");
+        out.push({ command: hash, markdown: existsSync(cf) ? readFileSync(cf, "utf8") : "(command text missing)" });
+      }
+    }
+    return sendJson(res, { entity: id, commands: out });
+  }
 
   if (path === "/events") {
     res.writeHead(200, { "content-type": "text/event-stream", "cache-control": "no-cache", connection: "keep-alive" });

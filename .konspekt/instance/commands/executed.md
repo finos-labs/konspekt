@@ -16,3 +16,5 @@ New rows below this backfill are recorded live.
 | task-intellij-plugin | a507f620c5e3878fed269db1d24794cf843a8ee2 |
 | task-intellij-plugin | 451867baf7eff69f5ea0f475fce6b45054ead873 |
 | task-intellij-plugin | 2434825abc523d17270385e39c14c475dd0657cf |
+| task-related-commands-view | 665a4a190fbae07725ab359f16eb46eb09f8b24e |
+| task-related-commands-view | a507f620c5e3878fed269db1d24794cf843a8ee2 |

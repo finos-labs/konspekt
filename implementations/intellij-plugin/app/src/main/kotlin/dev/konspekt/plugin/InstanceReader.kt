@@ -250,4 +250,24 @@ object InstanceReader {
     if (!f.isFile) return "{\"error\":\"no such source\"}"
     return "{\"ref\":${q(ref)},\"markdown\":${q(f.readText())}}"
   }
+
+  // Related commands for an entity: the commands/executed.md rows whose entity is
+  // this one, in execution order, each resolved to its verbatim text.
+  fun commandsJson(instanceDir: File, entity: String): String {
+    val log = File(File(instanceDir, "commands"), "executed.md")
+    val rows = ArrayList<String>()
+    if (log.isFile) {
+      for (line in log.readText().replace("\r\n", "\n").split("\n")) {
+        val t = line.trim()
+        if (!t.startsWith("|")) continue
+        val cells = t.trim('|').split("|").map { it.trim() }
+        if (cells.size < 2 || cells[0] == "entity" || cells[0].startsWith("---") || cells[0] != entity) continue
+        val hash = cells[1]
+        val cf = File(File(instanceDir, "commands"), "$hash.md")
+        val md = if (cf.isFile) cf.readText() else "(command text missing)"
+        rows.add("{\"command\":${q(hash)},\"markdown\":${q(md)}}")
+      }
+    }
+    return "{\"entity\":${q(entity)},\"commands\":[${rows.joinToString(",")}]}"
+  }
 }

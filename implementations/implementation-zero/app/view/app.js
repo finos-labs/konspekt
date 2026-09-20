@@ -251,30 +251,51 @@ async function openDetail(id) {
   $("drawerClose").focus();
   try {
     const d = await (await fetch("/api/entity?id=" + encodeURIComponent(id), { cache: "no-store" })).json();
-    drawerBody.innerHTML = "";
-    if (d.error) { const p = document.createElement("p"); p.className = "drawer-err"; p.textContent = d.error; drawerBody.appendChild(p); return; }
-    const pre = document.createElement("pre"); pre.className = "md"; pre.textContent = d.markdown; drawerBody.appendChild(pre);
-    if (d.sourceRef) drawerBody.appendChild(sourceBlock(d.sourceRef)); // only entities with a source get this
+    if (d.error) { drawerBody.innerHTML = ""; const p = document.createElement("p"); p.className = "drawer-err"; p.textContent = d.error; drawerBody.appendChild(p); return; }
+    let source = null;
+    if (d.sourceRef) { try { source = await (await fetch("/api/source?ref=" + encodeURIComponent(d.sourceRef), { cache: "no-store" })).json(); } catch { source = { error: "unreachable" }; } }
+    let cmds = [];
+    try { cmds = (await (await fetch("/api/commands?entity=" + encodeURIComponent(id), { cache: "no-store" })).json()).commands || []; } catch { /* endpoint may be absent */ }
+    renderDrawer(d, source, cmds);
   } catch { drawerBody.innerHTML = '<p class="drawer-err">server unreachable.</p>'; }
 }
 
-function sourceBlock(ref) {
-  const block = document.createElement("div"); block.className = "src-block";
-  const label = (verb) => verb + " provenance source · " + ref.slice(0, 10) + "…";
-  const btn = document.createElement("button"); btn.className = "src-btn"; btn.type = "button"; btn.textContent = label("View");
-  const holder = document.createElement("div"); holder.hidden = true;
-  btn.addEventListener("click", async () => {
-    if (holder.dataset.loaded === "1") { holder.hidden = !holder.hidden; btn.textContent = label(holder.hidden ? "View" : "Hide"); return; }
-    btn.disabled = true; btn.textContent = "loading source…";
-    try {
-      const d = await (await fetch("/api/source?ref=" + encodeURIComponent(ref), { cache: "no-store" })).json();
-      const lbl = document.createElement("div"); lbl.className = "src-label"; lbl.textContent = "sources/" + ref + ".md";
-      const pre = document.createElement("pre"); pre.className = "md"; pre.textContent = d.error ? ("error: " + d.error) : d.markdown;
-      holder.appendChild(lbl); holder.appendChild(pre); holder.hidden = false; holder.dataset.loaded = "1"; btn.textContent = label("Hide");
-    } catch { const p = document.createElement("p"); p.className = "drawer-err"; p.textContent = "server unreachable."; holder.appendChild(p); holder.hidden = false; }
-    finally { btn.disabled = false; }
+// The detail drawer is a tab panel: Details (the file), Provenance (the source),
+// and Commands — the last shown only when the entity has recorded commands
+// (surface follows data). Tabs render for both shells from this one view.
+function pre(text) { const p = document.createElement("pre"); p.className = "md"; p.textContent = text; return p; }
+function renderDrawer(d, source, cmds) {
+  const tabs = [
+    { label: "Details", build: () => pre(d.markdown) },
+    { label: "Provenance", build: () => {
+      const w = document.createElement("div");
+      if (d.sourceRef) {
+        const lbl = document.createElement("div"); lbl.className = "src-label"; lbl.textContent = "sources/" + d.sourceRef + ".md";
+        w.appendChild(lbl); w.appendChild(pre(source && !source.error ? source.markdown : (source && source.error ? "error: " + source.error : "(source unavailable)")));
+      } else { const p = document.createElement("p"); p.className = "muted"; p.textContent = "No content-addressed provenance for this entity."; w.appendChild(p); }
+      return w;
+    } },
+  ];
+  if (cmds.length) tabs.push({ label: "Commands (" + cmds.length + ")", build: () => {
+    const w = document.createElement("div"); w.className = "cmd-list";
+    cmds.forEach((c, i) => {
+      const lbl = document.createElement("div"); lbl.className = "src-label"; lbl.textContent = (i + 1) + " · commands/" + c.command.slice(0, 10) + "…";
+      w.appendChild(lbl); w.appendChild(pre(c.markdown));
+    });
+    return w;
+  } });
+
+  drawerBody.innerHTML = "";
+  const strip = document.createElement("div"); strip.className = "drawer-tabs"; strip.setAttribute("role", "tablist");
+  const panel = document.createElement("div"); panel.className = "drawer-panel";
+  const show = (t, btn) => { strip.querySelectorAll(".dtab").forEach((x) => x.setAttribute("aria-selected", "false")); btn.setAttribute("aria-selected", "true"); panel.innerHTML = ""; panel.appendChild(t.build()); };
+  tabs.forEach((t, i) => {
+    const b = document.createElement("button"); b.className = "dtab"; b.type = "button"; b.textContent = t.label; b.setAttribute("role", "tab"); b.setAttribute("aria-selected", i === 0 ? "true" : "false");
+    b.addEventListener("click", () => show(t, b));
+    strip.appendChild(b);
   });
-  block.appendChild(btn); block.appendChild(holder); return block;
+  drawerBody.appendChild(strip); drawerBody.appendChild(panel);
+  panel.appendChild(tabs[0].build());
 }
 
 function closeDetail() {

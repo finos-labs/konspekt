@@ -157,15 +157,22 @@ svg.dag text{font-family:"IBM Plex Mono",monospace}
 .drawer-id{font-size:13px;font-weight:500;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .drawer-close{appearance:none;border:1px solid var(--line);background:var(--surface);color:var(--ink-2);cursor:pointer;font-size:13px;line-height:1;padding:6px 9px;border-radius:6px}
 .drawer-close:hover{border-color:var(--accent);color:var(--accent)}
-.drawer-body{overflow:auto;padding:14px;flex:1;display:flex;flex-direction:column;gap:12px}
-.drawer-body pre.md{margin:0;white-space:pre-wrap;word-break:break-word;font-family:"IBM Plex Mono",monospace;font-size:12px;line-height:1.5;color:var(--ink);background:var(--surface-2);border:1px solid var(--line);border-radius:8px;padding:12px}
+.drawer-body{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.drawer-tabs{display:flex;gap:2px;padding:0 8px;border-bottom:1px solid var(--line);background:var(--surface-2)}
+.dtab{appearance:none;border:0;background:none;cursor:pointer;font:inherit;font-size:12px;font-weight:500;color:var(--ink-2);padding:8px 12px 10px;border-bottom:2px solid transparent;border-radius:6px 6px 0 0}
+.dtab:hover{color:var(--ink);background:var(--surface)}
+.dtab[aria-selected="true"]{color:var(--accent);border-bottom-color:var(--accent)}
+.drawer-panel{flex:1;overflow:auto;padding:14px;display:flex;flex-direction:column;gap:10px}
+.cmd-list{display:flex;flex-direction:column;gap:10px}
+.drawer pre.md{margin:0;white-space:pre-wrap;word-break:break-word;font-family:"IBM Plex Mono",monospace;font-size:12px;line-height:1.5;color:var(--ink);background:var(--surface-2);border:1px solid var(--line);border-radius:8px;padding:12px}
 .src-block{display:flex;flex-direction:column;gap:8px}
 .src-btn{align-self:flex-start;appearance:none;cursor:pointer;font:inherit;font-size:12px;font-weight:500;padding:6px 11px;border-radius:7px;border:1px solid var(--rev-proposed-line);background:var(--rev-proposed-bg);color:var(--rev-proposed-ink)}
 .src-btn:hover{filter:brightness(1.04)}
 .src-btn[disabled]{opacity:.6;cursor:default}
 .src-label{font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3);font-weight:600}
-.drawer-loading{color:var(--ink-3);font-size:12.5px}
-.drawer-err{color:var(--bad);font-size:12.5px}
+.drawer-loading{color:var(--ink-3);font-size:12.5px;padding:14px}
+.drawer-err{color:var(--bad);font-size:12.5px;padding:14px}
+.drawer-panel .muted{color:var(--ink-3);font-size:12.5px}
 @media (prefers-reduced-motion: reduce){.drawer{transition:none}}
 
 @media (max-width:640px){
