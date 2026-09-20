@@ -306,6 +306,42 @@ function renderDrawer(d, source, cmds, chgs) {
   } });
 
   drawerBody.innerHTML = "";
+  // Accept banner: the one write action (human disposition). Shown only while the
+  // entity is proposed; accepting flips review in the working tree and two-way
+  // auto-accepts edges. The model never does this.
+  if (d.review === "proposed") {
+    const bar = document.createElement("div"); bar.className = "accept-bar";
+    const note = document.createElement("span"); note.className = "accept-note"; note.textContent = "Proposed — awaiting a human disposition.";
+    const actions = document.createElement("span"); actions.className = "accept-actions";
+    bar.appendChild(note); bar.appendChild(actions); drawerBody.appendChild(bar);
+
+    // Inline confirm — no native window.confirm/alert (the plugin's JCEF browser
+    // has no JS-dialog handler, so those silently no-op). Click Accept, then
+    // Confirm; errors show in the note. On success the entity re-opens accepted.
+    const reset = () => {
+      note.textContent = "Proposed — awaiting a human disposition.";
+      actions.innerHTML = "";
+      const btn = document.createElement("button"); btn.className = "accept-btn"; btn.type = "button"; btn.textContent = "Accept";
+      btn.addEventListener("click", () => {
+        note.textContent = "Accept " + d.id + "? This edits the working tree.";
+        actions.innerHTML = "";
+        const yes = document.createElement("button"); yes.className = "accept-btn"; yes.type = "button"; yes.textContent = "Confirm";
+        const no = document.createElement("button"); no.className = "accept-cancel"; no.type = "button"; no.textContent = "Cancel";
+        no.addEventListener("click", reset);
+        yes.addEventListener("click", async () => {
+          yes.disabled = true; no.disabled = true; yes.textContent = "Accepting…";
+          try {
+            const r = await (await fetch("/api/accept?entity=" + encodeURIComponent(d.id), { method: "POST" })).json();
+            if (r && r.error) { note.textContent = "Could not accept: " + r.error; yes.disabled = false; no.disabled = false; yes.textContent = "Confirm"; return; }
+            openDetail(d.id);
+          } catch { note.textContent = "Server unreachable."; yes.disabled = false; no.disabled = false; yes.textContent = "Confirm"; }
+        });
+        actions.appendChild(yes); actions.appendChild(no);
+      });
+      actions.appendChild(btn);
+    };
+    reset();
+  }
   const strip = document.createElement("div"); strip.className = "drawer-tabs"; strip.setAttribute("role", "tablist");
   const panel = document.createElement("div"); panel.className = "drawer-panel";
   const show = (t, btn) => { strip.querySelectorAll(".dtab").forEach((x) => x.setAttribute("aria-selected", "false")); btn.setAttribute("aria-selected", "true"); panel.innerHTML = ""; panel.appendChild(t.build()); };

@@ -307,6 +307,13 @@ proposal.
 | e-link-codechanges-execlog | links | node:task-record-code-changes | node:task-executed-provenance-serialization | 0.7 | accepted |
 | e-link-codechanges-popmode | links | node:task-record-code-changes | node:task-plugin-pop-mode | 0.5 | accepted |
 | e-men-codechanges-caprov | mentions | node:task-record-code-changes | concept:concept-content-addressed-provenance |  | accepted |
+| e-drv-humandisp-uiaccept | drives | concept:concept-ui-human-disposition | waypoint:wp-adr-ui-accept-action |  | accepted |
+| e-mark-uiaccept-uitask | marks | waypoint:wp-adr-ui-accept-action | node:task-ui-simple-actions |  | accepted |
+| e-dec-usability-uiactions | decomposes | node:goal-usability | node:task-ui-simple-actions |  | accepted |
+| e-men-uiactions-sep | mentions | node:task-ui-simple-actions | concept:concept-propose-accept-separation |  | accepted |
+| e-men-uiactions-nofork | mentions | node:task-ui-simple-actions | concept:concept-view-no-fork |  | accepted |
+| e-rel-humandisp-sep | relates | concept:concept-ui-human-disposition | concept:concept-propose-accept-separation | 0.6 | accepted |
+| e-notes-uiactions-jcef | notes | node:task-ui-simple-actions | noteworthy:nw-jcef-no-js-dialogs |  | accepted |
 | e-prod-implzero-app | produces | node:task-implementation-zero | artifact:artifact-implementation-zero-app |  |  |
 | e-prod-nav-app | produces | node:task-goal-task-navigation | artifact:artifact-implementation-zero-app |  |  |
 | e-prod-analytics-app | produces | node:task-graph-analytics | artifact:artifact-implementation-zero-app |  | proposed |

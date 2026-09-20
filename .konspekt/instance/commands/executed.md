@@ -25,3 +25,5 @@ New rows below this backfill are recorded live.
 | task-plugin-pop-mode | a507f620c5e3878fed269db1d24794cf843a8ee2 |
 | task-record-code-changes | a507f620c5e3878fed269db1d24794cf843a8ee2 |
 | task-plugin-pop-mode | a507f620c5e3878fed269db1d24794cf843a8ee2 |
+| task-ui-simple-actions | a507f620c5e3878fed269db1d24794cf843a8ee2 |
+| task-ui-simple-actions | a507f620c5e3878fed269db1d24794cf843a8ee2 |

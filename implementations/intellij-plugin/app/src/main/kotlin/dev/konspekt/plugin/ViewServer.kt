@@ -19,8 +19,9 @@ import java.util.concurrent.Executors
  * In-process HTTP/SSE server for the tool window's JCEF browser. Serves the shared
  * view assets (copied from implementation_zero at build time) and the same JSON
  * endpoints the view expects, backed by [InstanceReader] over the open project's
- * .konspekt/instance. Read-only. A VFS listener pushes a fresh cursor over SSE on
- * each change under the instance, so the view refreshes live.
+ * .konspekt/instance. The one write is POST /api/accept (a human disposition,
+ * propose -> accept, working-tree only). A VFS listener pushes a fresh cursor over
+ * SSE on each change under the instance, so the view refreshes live.
  */
 class ViewServer(private val project: Project) {
   private var server: HttpServer? = null
@@ -46,6 +47,13 @@ class ViewServer(private val project: Project) {
         sendJson(ex, "{\"error\":${jsonStr(e.message ?: "load failed")}}"); return@createContext
       }
       val path = ex.requestURI.path
+      // The one write: accept a proposed entity (human disposition). POST only.
+      if (path.startsWith("/api/accept")) {
+        if (ex.requestMethod != "POST") { ex.sendResponseHeaders(405, -1); ex.close(); return@createContext }
+        val result = InstanceReader.acceptEntity(dir, g, param(ex, "entity") ?: "")
+        cursor = "${System.currentTimeMillis()}-${++seq}"; notifyClients()
+        sendJson(ex, result); return@createContext
+      }
       val json = when {
         path.startsWith("/api/entities") -> InstanceReader.entitiesJson(g, cursor)
         path.startsWith("/api/stats")    -> InstanceReader.statsJson(g)
