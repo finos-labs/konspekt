@@ -188,6 +188,10 @@ svg.dag text{font-family:"IBM Plex Mono",monospace}
 .accept-btn{appearance:none;cursor:pointer;font:inherit;font-size:12.5px;font-weight:600;padding:6px 14px;border-radius:7px;border:1px solid var(--st-resolved);background:var(--st-resolved);color:#fff}
 .accept-btn:hover{filter:brightness(1.05)}
 .accept-btn[disabled]{opacity:.6;cursor:default}
+.accept-actions{display:flex;gap:8px;flex:none}
+.accept-cancel{appearance:none;cursor:pointer;font:inherit;font-size:12.5px;font-weight:500;padding:6px 12px;border-radius:7px;border:1px solid var(--line);background:var(--surface);color:var(--ink-2)}
+.accept-cancel:hover{filter:brightness(0.98)}
+.accept-cancel[disabled]{opacity:.6;cursor:default}
 .drawer-loading{color:var(--ink-3);font-size:12.5px;padding:14px}
 .drawer-err{color:var(--bad);font-size:12.5px;padding:14px}
 .drawer-panel .muted{color:var(--ink-3);font-size:12.5px}

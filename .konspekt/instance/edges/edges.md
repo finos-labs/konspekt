@@ -313,6 +313,7 @@ proposal.
 | e-men-uiactions-sep | mentions | node:task-ui-simple-actions | concept:concept-propose-accept-separation |  | proposed |
 | e-men-uiactions-nofork | mentions | node:task-ui-simple-actions | concept:concept-view-no-fork |  | proposed |
 | e-rel-humandisp-sep | relates | concept:concept-ui-human-disposition | concept:concept-propose-accept-separation | 0.6 | proposed |
+| e-notes-uiactions-jcef | notes | node:task-ui-simple-actions | noteworthy:nw-jcef-no-js-dialogs |  | proposed |
 | e-prod-implzero-app | produces | node:task-implementation-zero | artifact:artifact-implementation-zero-app |  |  |
 | e-prod-nav-app | produces | node:task-goal-task-navigation | artifact:artifact-implementation-zero-app |  |  |
 | e-prod-analytics-app | produces | node:task-graph-analytics | artifact:artifact-implementation-zero-app |  | proposed |

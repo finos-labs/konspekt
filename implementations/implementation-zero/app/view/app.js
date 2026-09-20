@@ -312,9 +312,35 @@ function renderDrawer(d, source, cmds, chgs) {
   if (d.review === "proposed") {
     const bar = document.createElement("div"); bar.className = "accept-bar";
     const note = document.createElement("span"); note.className = "accept-note"; note.textContent = "Proposed — awaiting a human disposition.";
-    const btn = document.createElement("button"); btn.className = "accept-btn"; btn.type = "button"; btn.textContent = "Accept";
-    btn.addEventListener("click", () => acceptEntity(d.id, btn));
-    bar.appendChild(note); bar.appendChild(btn); drawerBody.appendChild(bar);
+    const actions = document.createElement("span"); actions.className = "accept-actions";
+    bar.appendChild(note); bar.appendChild(actions); drawerBody.appendChild(bar);
+
+    // Inline confirm — no native window.confirm/alert (the plugin's JCEF browser
+    // has no JS-dialog handler, so those silently no-op). Click Accept, then
+    // Confirm; errors show in the note. On success the entity re-opens accepted.
+    const reset = () => {
+      note.textContent = "Proposed — awaiting a human disposition.";
+      actions.innerHTML = "";
+      const btn = document.createElement("button"); btn.className = "accept-btn"; btn.type = "button"; btn.textContent = "Accept";
+      btn.addEventListener("click", () => {
+        note.textContent = "Accept " + d.id + "? This edits the working tree.";
+        actions.innerHTML = "";
+        const yes = document.createElement("button"); yes.className = "accept-btn"; yes.type = "button"; yes.textContent = "Confirm";
+        const no = document.createElement("button"); no.className = "accept-cancel"; no.type = "button"; no.textContent = "Cancel";
+        no.addEventListener("click", reset);
+        yes.addEventListener("click", async () => {
+          yes.disabled = true; no.disabled = true; yes.textContent = "Accepting…";
+          try {
+            const r = await (await fetch("/api/accept?entity=" + encodeURIComponent(d.id), { method: "POST" })).json();
+            if (r && r.error) { note.textContent = "Could not accept: " + r.error; yes.disabled = false; no.disabled = false; yes.textContent = "Confirm"; return; }
+            openDetail(d.id);
+          } catch { note.textContent = "Server unreachable."; yes.disabled = false; no.disabled = false; yes.textContent = "Confirm"; }
+        });
+        actions.appendChild(yes); actions.appendChild(no);
+      });
+      actions.appendChild(btn);
+    };
+    reset();
   }
   const strip = document.createElement("div"); strip.className = "drawer-tabs"; strip.setAttribute("role", "tablist");
   const panel = document.createElement("div"); panel.className = "drawer-panel";
@@ -326,19 +352,6 @@ function renderDrawer(d, source, cmds, chgs) {
   });
   drawerBody.appendChild(strip); drawerBody.appendChild(panel);
   panel.appendChild(tabs[0].build());
-}
-
-// The one write from the UI: accept a proposed entity. POSTs to the server,
-// which flips review in the working tree and auto-accepts edges; the watcher then
-// refreshes every view. Re-opens the entity so the drawer reflects the new state.
-async function acceptEntity(id, btn) {
-  if (!window.confirm("Accept " + id + "?\nThis edits the working tree (proposed → accepted).")) return;
-  if (btn) { btn.disabled = true; btn.textContent = "Accepting…"; }
-  try {
-    const r = await (await fetch("/api/accept?entity=" + encodeURIComponent(id), { method: "POST" })).json();
-    if (r && r.error) { if (btn) { btn.disabled = false; btn.textContent = "Accept"; } window.alert("Could not accept: " + r.error); return; }
-    openDetail(id);
-  } catch { if (btn) { btn.disabled = false; btn.textContent = "Accept"; } window.alert("Server unreachable."); }
 }
 
 function closeDetail() {
