@@ -547,17 +547,20 @@ conformance check against the serialization format.
 
 ## 6. Status and open decisions
 
-From `README.md`:
-
-- **Status.** Pre–first-external-adopter. Schema and serialization are at **v1**.
-  The format is being refined by dogfooding the instance under
-  `.konspekt/instance/`. The next milestone is a second, independent implementer.
-  A reference implementation is intended but deliberately not scaffolded yet; the
-  conformance target today is `spec/` plus the dogfooded instance.
-- **License — open.** Not yet chosen. A permissive license (Apache-2.0 or MIT) is
-  the likely fit; Apache-2.0 adds an explicit patent grant. Deferred.
+- **Status.** Pre–first-external-adopter. Schema and serialization are at **v1**,
+  refined by dogfooding the instance under `.konspekt/instance/`. Two local UI
+  implementations now read that instance through the one shared reader
+  (`lib/conformance.mjs`): `implementations/implementation-zero/` (a
+  zero-dependency Node watcher with a floating read-only view, plus an accept
+  action) and `implementations/intellij-plugin/` (an in-process JCEF tool window
+  over the same view). Both are shells over the standard, not a second
+  implementation of it, so the conformance target remains `spec/` plus the
+  dogfooded instance.
+- **License — Apache-2.0.** Chosen: a permissive license with an explicit patent
+  grant, carried at the repo root as `LICENSE`, `LICENSE.spdx`, and `NOTICE` and
+  declared in `README.md`.
 - **Second implementer — open.** Who, and the smallest thing to put in front of
-  them. Deferred, and the central milestone.
+  them, remains the central milestone.
 
 ---
 
