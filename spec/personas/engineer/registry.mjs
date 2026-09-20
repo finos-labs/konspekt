@@ -21,18 +21,27 @@ export const subtypes = {
 };
 
 // Edge kinds this layer adds, with domain/range in the same shape as core
-// EDGE_DOMAIN_RANGE. A `to` of "command" is a provenance-ref endpoint (below),
-// not an entity type.
+// EDGE_DOMAIN_RANGE.
 export const edges = {
-  drives:   { from: ["concept"], to: ["waypoint"] },        // ASR -> ADR
-  executed: { from: ["waypoint", "node"], to: ["command"] }, // enacting entity -> command
+  drives: { from: ["concept"], to: ["waypoint"] }, // ASR -> ADR
 };
 
 // Content-addressed provenance channels this layer adds, parallel to sources/.
-// An edge endpoint `command:<hash>` resolves to `<dir>/<hash><ext>` and verifies
-// by git-blob-SHA the same way sources/ does.
+// A `command:<hash>` reference resolves to `<dir>/<hash><ext>` and verifies by
+// git-blob-SHA the same way sources/ does.
 export const provenanceRefs = {
   command: { dir: "commands", ext: ".md" },
 };
 
-export default { persona, subtypes, edges, provenanceRefs };
+// Executed-command log (not edges). commands/executed.md is an append-only table
+// `| entity | command |` binding each LLM-executed command to the entity it was
+// about — any entity type — one row per execution, in execution order (row order
+// IS the timeline; no stored timestamp). `command` is a content hash resolved via
+// the `ref` provenance channel above (command:<hash> -> commands/<hash>.md).
+export const commandLog = {
+  file: "commands/executed.md",
+  ref: "command",
+  from: ["node", "concept", "noteworthy", "artifact", "waypoint"],
+};
+
+export default { persona, subtypes, edges, provenanceRefs, commandLog };
