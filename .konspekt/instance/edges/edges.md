@@ -288,9 +288,9 @@ proposal.
 <!-- === executed-provenance changeset (ASR/ADR for the command log) === -->
 | e-drv-recordexec-adrlog | drives | concept:concept-record-all-executed | waypoint:wp-adr-executed-log |  |  |
 | e-mark-adrlog-exectask | marks | waypoint:wp-adr-executed-log | node:task-executed-provenance-serialization |  |  |
-| e-drv-recordexec-adrchanged | drives | concept:concept-record-all-executed | waypoint:wp-adr-changed-log |  | proposed |
-| e-mark-adrchanged-changetask | marks | waypoint:wp-adr-changed-log | node:task-record-code-changes |  | proposed |
-| e-notes-changetask-opaquerev | notes | node:task-record-code-changes | noteworthy:nw-commit-is-opaque-revision |  | proposed |
+| e-drv-recordexec-adrchanged | drives | concept:concept-record-all-executed | waypoint:wp-adr-changed-log |  | accepted |
+| e-mark-adrchanged-changetask | marks | waypoint:wp-adr-changed-log | node:task-record-code-changes |  | accepted |
+| e-notes-changetask-opaquerev | notes | node:task-record-code-changes | noteworthy:nw-commit-is-opaque-revision |  | accepted |
 | e-dec-account-exectask | decomposes | node:goal-accountability | node:task-executed-provenance-serialization |  | proposed |
 
 <!-- === UI tasks changeset (ASR/ADR view, related-commands, plugin pop-mode) === -->
@@ -304,9 +304,9 @@ proposal.
 | e-link-relcommands-execlog | links | node:task-related-commands-view | node:task-executed-provenance-serialization | 0.7 | accepted |
 | e-men-popmode-nofork | mentions | node:task-plugin-pop-mode | concept:concept-view-no-fork |  | accepted |
 | e-dec-account-codechanges | decomposes | node:goal-accountability | node:task-record-code-changes |  | proposed |
-| e-link-codechanges-execlog | links | node:task-record-code-changes | node:task-executed-provenance-serialization | 0.7 | proposed |
-| e-link-codechanges-popmode | links | node:task-record-code-changes | node:task-plugin-pop-mode | 0.5 | proposed |
-| e-men-codechanges-caprov | mentions | node:task-record-code-changes | concept:concept-content-addressed-provenance |  | proposed |
+| e-link-codechanges-execlog | links | node:task-record-code-changes | node:task-executed-provenance-serialization | 0.7 | accepted |
+| e-link-codechanges-popmode | links | node:task-record-code-changes | node:task-plugin-pop-mode | 0.5 | accepted |
+| e-men-codechanges-caprov | mentions | node:task-record-code-changes | concept:concept-content-addressed-provenance |  | accepted |
 | e-prod-implzero-app | produces | node:task-implementation-zero | artifact:artifact-implementation-zero-app |  |  |
 | e-prod-nav-app | produces | node:task-goal-task-navigation | artifact:artifact-implementation-zero-app |  |  |
 | e-prod-analytics-app | produces | node:task-graph-analytics | artifact:artifact-implementation-zero-app |  | proposed |

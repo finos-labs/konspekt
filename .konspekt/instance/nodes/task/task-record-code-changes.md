@@ -2,12 +2,12 @@
 id: task-record-code-changes
 type: task
 title: Record the source and config changes associated with a task
-status: active
+status: resolved
 summary:
   origin: machine
   pinned: false
   updatedAt: 2026-09-20T16:00:00Z
-review: proposed
+review: accepted
 provenance:
   sourceRef: d018aba3296105d67c74cad3b4cdf996dbe7773f
   contentHash: d018aba3296105d67c74cad3b4cdf996dbe7773f

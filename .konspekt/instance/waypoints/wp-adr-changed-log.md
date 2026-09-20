@@ -3,7 +3,7 @@ id: wp-adr-changed-log
 kind: decision
 subtype: adr
 timestamp: 2026-09-20T17:00:00Z
-review: proposed
+review: accepted
 provenance:
   sourceRef: ff351a23b2e76030ec4b6a54ddc6d83e5f435393
   contentHash: ff351a23b2e76030ec4b6a54ddc6d83e5f435393

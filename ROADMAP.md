@@ -3,7 +3,7 @@
      Check freshness with: node tools/roadmap.mjs --check
      This file is a pure function of .konspekt/instance/ (no timestamps baked in).
      Goals and tasks are graph nodes; the horizon is derived from node status/review.
-     contentHash: sha256:b0a05f00b9d69964 -->
+     contentHash: sha256:66672972eb859044 -->
 
 # konspekt roadmap
 
@@ -134,12 +134,12 @@ Make the facts a responsibility question needs answerable with evidence. The law
 **Later** — _proposed, not yet committed_
 
 - The responsibility report
-- Record the source and config changes associated with a task
 - Signed accepts via a legally-bound persona
 
 **Shipped** — _resolved_
 
 - Serialize executed-command provenance as an ordered log
+- Record the source and config changes associated with a task
 
 ## Share authorship across a team _(proposed)_
 

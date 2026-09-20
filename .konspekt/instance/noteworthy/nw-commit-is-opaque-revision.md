@@ -1,7 +1,7 @@
 ```yaml
 id: nw-commit-is-opaque-revision
 kind: decision
-review: proposed
+review: accepted
 provenance:
   sourceRef: ff351a23b2e76030ec4b6a54ddc6d83e5f435393
   contentHash: ff351a23b2e76030ec4b6a54ddc6d83e5f435393
