@@ -39,3 +39,13 @@ commit order; the channel was not live during that work.
 | task-plugin-pop-mode | 4d3239070a5c2d65abb34810b39568559eacc6b1 | implementations/intellij-plugin/app/src/main/kotlin/dev/konspekt/plugin/KonspektToolWindowFactory.kt |
 | task-plugin-pop-mode | e81c602b6f2d9f29476d90cad9cfc8afe4135544 | implementations/intellij-plugin/app/gradle.properties |
 | task-plugin-pop-mode | e81c602b6f2d9f29476d90cad9cfc8afe4135544 | implementations/intellij-plugin/app/src/main/kotlin/dev/konspekt/plugin/KonspektToolWindowFactory.kt |
+| task-record-code-changes | 7116cb67025c328c2ab19c279f4c51ec0061972a | spec/personas/engineer/registry.mjs |
+| task-record-code-changes | 7116cb67025c328c2ab19c279f4c51ec0061972a | lib/conformance.mjs |
+| task-record-code-changes | 7116cb67025c328c2ab19c279f4c51ec0061972a | spec/personas/engineer/SPEC.md |
+| task-record-code-changes | 7116cb67025c328c2ab19c279f4c51ec0061972a | spec/architecture/SERIALIZATION.md |
+| task-record-code-changes | 7116cb67025c328c2ab19c279f4c51ec0061972a | implementations/implementation-zero/app/server.mjs |
+| task-record-code-changes | 7116cb67025c328c2ab19c279f4c51ec0061972a | implementations/implementation-zero/app/view/app.js |
+| task-record-code-changes | 7116cb67025c328c2ab19c279f4c51ec0061972a | implementations/implementation-zero/app/view/app.css |
+| task-record-code-changes | 7116cb67025c328c2ab19c279f4c51ec0061972a | implementations/intellij-plugin/app/gradle.properties |
+| task-record-code-changes | 7116cb67025c328c2ab19c279f4c51ec0061972a | implementations/intellij-plugin/app/src/main/kotlin/dev/konspekt/plugin/InstanceReader.kt |
+| task-record-code-changes | 7116cb67025c328c2ab19c279f4c51ec0061972a | implementations/intellij-plugin/app/src/main/kotlin/dev/konspekt/plugin/ViewServer.kt |
