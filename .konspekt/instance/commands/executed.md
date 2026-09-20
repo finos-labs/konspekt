@@ -20,3 +20,4 @@ New rows below this backfill are recorded live.
 | task-related-commands-view | a507f620c5e3878fed269db1d24794cf843a8ee2 |
 | task-asr-adr-ui | 665a4a190fbae07725ab359f16eb46eb09f8b24e |
 | task-asr-adr-ui | a507f620c5e3878fed269db1d24794cf843a8ee2 |
+| task-plugin-pop-mode | a507f620c5e3878fed269db1d24794cf843a8ee2 |
