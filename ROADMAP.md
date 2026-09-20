@@ -3,7 +3,7 @@
      Check freshness with: node tools/roadmap.mjs --check
      This file is a pure function of .konspekt/instance/ (no timestamps baked in).
      Goals and tasks are graph nodes; the horizon is derived from node status/review.
-     contentHash: sha256:2b65350e4aedb252 -->
+     contentHash: sha256:587ca2c24f4d1e29 -->
 
 # konspekt roadmap
 
@@ -130,6 +130,10 @@ Make the facts a responsibility question needs answerable with evidence. The law
 - The responsibility report
 - Signed accepts via a legally-bound persona
 
+**Shipped** — _resolved_
+
+- Serialize executed-command provenance as an ordered log
+
 ## Share authorship across a team _(proposed)_
 
 Let several participants — people and agents — propose into and review one shared instance without weakening propose→accept, with accept authority named in config so it survives a change of backing store. Platforms build collaboration into their own closed state; the version that works across a neutral, portable record is the one no single vendor is incentivized to build. The hardest open part is concurrency control on the single edge table, unresolved and shared by both the human and the agent case.
@@ -142,4 +146,4 @@ Let several participants — people and agents — propose into and review one s
 
 ---
 
-Generated from 7 goal(s) and 44 task-listing(s) over the instance graph.
+Generated from 7 goal(s) and 45 task-listing(s) over the instance graph.

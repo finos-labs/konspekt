@@ -284,6 +284,11 @@ proposal.
 | e-mark-adrplugininprocess-intellij | marks | waypoint:wp-adr-plugin-inprocess | node:task-intellij-plugin |  |  |
 | e-not-oploop-personabrief | notes | node:investigation-operating-loop | noteworthy:nw-persona-brief-not-surfaced |  | proposed |
 | e-link-intellij-second | links | node:task-intellij-plugin | node:task-second-implementer | 0.8 | proposed |
+
+<!-- === executed-provenance changeset (ASR/ADR for the command log) === -->
+| e-drv-recordexec-adrlog | drives | concept:concept-record-all-executed | waypoint:wp-adr-executed-log |  |  |
+| e-mark-adrlog-exectask | marks | waypoint:wp-adr-executed-log | node:task-executed-provenance-serialization |  |  |
+| e-dec-account-exectask | decomposes | node:goal-accountability | node:task-executed-provenance-serialization |  | proposed |
 | e-prod-implzero-app | produces | node:task-implementation-zero | artifact:artifact-implementation-zero-app |  |  |
 | e-prod-nav-app | produces | node:task-goal-task-navigation | artifact:artifact-implementation-zero-app |  |  |
 | e-prod-analytics-app | produces | node:task-graph-analytics | artifact:artifact-implementation-zero-app |  | proposed |
