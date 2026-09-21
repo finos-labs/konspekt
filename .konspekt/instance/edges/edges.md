@@ -320,3 +320,15 @@ proposal.
 | e-prod-implzero-app | produces | node:task-implementation-zero | artifact:artifact-implementation-zero-app |  |  |
 | e-prod-nav-app | produces | node:task-goal-task-navigation | artifact:artifact-implementation-zero-app |  |  |
 | e-prod-analytics-app | produces | node:task-graph-analytics | artifact:artifact-implementation-zero-app |  | proposed |
+
+<!-- === fleet acceptance-authority changeset (six decisions; conversation fleet-authority) === -->
+| e-not-account-acceptorunit | notes | node:goal-accountability | noteworthy:nw-acceptor-is-persona-capability |  |  |
+| e-not-authority-acceptorunit | notes | node:task-authority-mechanism | noteworthy:nw-acceptor-is-persona-capability |  |  |
+| e-not-authority-humandefault | notes | node:task-authority-mechanism | noteworthy:nw-human-only-accept-default |  |  |
+| e-not-authority-uniqueacceptor | notes | node:task-authority-mechanism | noteworthy:nw-unique-acceptor-per-atom |  |  |
+| e-not-authority-openpredicate | notes | node:task-authority-mechanism | noteworthy:nw-accept-scope-open-predicate |  |  |
+| e-not-authority-enforcenotgated | notes | node:task-authority-mechanism | noteworthy:nw-accept-authority-enforced-not-gated |  |  |
+| e-not-fleet-firstlevel | notes | node:task-agent-fleet | noteworthy:nw-first-fleet-level-triage-and-scoped-propose |  | proposed |
+| e-not-fleet-uniqueacceptor | notes | node:task-agent-fleet | noteworthy:nw-unique-acceptor-per-atom |  | proposed |
+| e-not-signed-acceptorunit | notes | node:task-signed-accepts | noteworthy:nw-acceptor-is-persona-capability |  | proposed |
+| e-not-signed-enforce | notes | node:task-signed-accepts | noteworthy:nw-accept-authority-enforced-not-gated |  | proposed |
