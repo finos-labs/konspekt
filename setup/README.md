@@ -67,6 +67,20 @@ present.
    konspekt spec. `.konspekt/OPERATING.md` is the policy you just adopted —
    edit it to taste; it is yours, not the standard's.
 
+## Viewing an instance in your IDE
+
+A konspekt instance is plain Markdown you can read in any editor. For a live,
+navigable view there is a reference **IntelliJ IDEA plugin** that renders the
+instance (Changes / Stats / Goals) in a tool window, in-process, and refreshes as
+the instance changes. It is a reference implementation, not part of the standard.
+
+Install the prebuilt zip from the latest release — no build required:
+<https://github.com/finos-labs/konspekt/releases/latest> (Settings → Plugins → ⚙ →
+*Install Plugin from Disk…*). It requires IntelliJ IDEA 2026.2 or newer. To build
+it yourself, the source is at `implementations/intellij-plugin/app/` in the
+konspekt repo (output:
+`implementations/intellij-plugin/app/build/distributions/konspekt-intellij-<version>.zip`).
+
 ## Optional components
 
 Scaffolding is create-or-refuse, so on its own it can never retrofit anything
