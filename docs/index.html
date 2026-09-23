@@ -1,0 +1,1123 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Konspekt Deck</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root{
+    /* light slide world */
+    --paper:#F1EDE6; --paper-2:#E8E2D7; --ink:#211D18; --ink-soft:#4C463D;
+    --muted:#8C8377; --rule:#D7D0C3; --rule-soft:#E0DACE;
+    /* dark statement slides */
+    --night:#1A1611; --cream:#EDE7DC; --cream-soft:#B3AA9C; --rule-dark:rgba(237,231,220,.15);
+    /* accents */
+    --ochre:#A9742A; --ochre-bright:#CE9440;
+    /* app + product-UI (cool dark, distinct from warm night) */
+    --app-bg:#100E0B;
+    --ui-bg:#13151B; --ui-panel:#1A1D26; --ui-panel-2:#171A22; --ui-line:rgba(255,255,255,.08);
+    --ui-text:#D8DCE7; --ui-soft:#868FA2; --ui-faint:#5C6472;
+    --ui-blue:#8AA0FF; --ui-green:#6FC58A; --ui-amber:#E0A24B; --ui-grey:#7A8296;
+    --scale:1;
+    --disp:"Fraunces",Georgia,"Times New Roman",serif;
+    --body:"Source Serif 4",Georgia,serif;
+    --mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+  }
+
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{margin:0;background:var(--app-bg);font-family:var(--body);color:var(--ink);
+       -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow:hidden}
+
+  .app{position:fixed;inset:0;display:flex;flex-direction:column;background:var(--app-bg);
+       opacity:0;transition:opacity .35s ease}
+  .app.ready{opacity:1}
+
+  .stage{position:relative;flex:1 1 auto;overflow:hidden}
+
+  .slide{position:absolute;top:50%;left:50%;width:1280px;height:720px;
+         transform:translate(-50%,-50%) scale(var(--scale));transform-origin:center center;
+         opacity:0;visibility:hidden;overflow:hidden;border-radius:9px;
+         box-shadow:0 24px 70px -24px rgba(0,0,0,.7),0 2px 0 rgba(255,255,255,.02);
+         transition:opacity .45s ease}
+  .slide.active{opacity:1;visibility:visible}
+  .slide[data-bg="paper"]{background:var(--paper);color:var(--ink)}
+  .slide[data-bg="night"]{background:var(--night);color:var(--cream)}
+
+  .wrap{position:absolute;inset:0;padding:70px 92px;display:flex;flex-direction:column}
+
+  /* shared type */
+  .eyebrow{font-family:var(--mono);font-size:14px;font-weight:500;letter-spacing:.24em;
+           text-transform:uppercase;color:var(--ochre)}
+  [data-bg="night"] .eyebrow{color:var(--ochre-bright)}
+  .s-head{font-family:var(--disp);font-weight:400;font-size:52px;line-height:1.04;
+          letter-spacing:-.01em;text-wrap:balance;margin:0}
+  .rule{height:1px;background:var(--rule);border:0;width:100%}
+  [data-bg="night"] .rule{background:var(--rule-dark)}
+  .lede{font-size:21px;line-height:1.5;color:var(--ink-soft);max-width:62ch}
+  p{margin:0}
+
+  /* header block used on most content slides: title left, section tag right */
+  .head-row{display:flex;justify-content:space-between;align-items:flex-end;gap:24px}
+  .head-row .eyebrow{padding-bottom:9px}
+
+  /* footer */
+  .foot{margin-top:auto;display:flex;justify-content:space-between;align-items:center;
+        font-size:14.5px;color:var(--muted);padding-top:14px}
+  .foot .rule-top{position:absolute;left:92px;right:92px}
+  .foot-mark{font-variant:small-caps;letter-spacing:.02em}
+  .foot-num{font-family:var(--mono);font-size:13px;letter-spacing:.05em}
+  .footline{border-top:1px solid var(--rule-soft);margin-top:auto;padding-top:14px;
+            display:flex;justify-content:space-between;align-items:center}
+
+  /* ---- Slide 1: title ---- */
+  .brand-top{display:flex;justify-content:space-between;align-items:center;
+             border-bottom:1px solid var(--rule-dark);padding-bottom:16px}
+  .brand-link{font-family:var(--mono);font-size:14.5px;letter-spacing:.02em;color:var(--cream-soft)}
+  .wordmark{font-family:var(--disp);font-weight:400;font-size:150px;line-height:.9;
+            letter-spacing:-.02em;color:var(--cream);margin:0}
+  .title-sub{font-size:33px;line-height:1.34;color:var(--cream);max-width:20ch;
+             font-weight:400;margin:0}
+  .title-copy{display:flex;flex-direction:column;gap:16px;margin-top:8px}
+  .title-tag{font-family:var(--disp);font-weight:400;font-size:43px;line-height:1.08;
+             letter-spacing:-.01em;color:var(--cream);margin:0}
+  .title-desc{font-family:var(--body);font-size:23px;line-height:1.5;color:var(--cream-soft);
+              max-width:50ch;margin:0}
+  .title-tags{display:flex;gap:34px;border-top:1px solid var(--rule-dark);padding-top:16px;
+              font-size:15px;color:var(--cream-soft)}
+  .title-tags span::before{content:"";display:inline-block;width:5px;height:5px;border-radius:50%;
+              background:var(--ochre-bright);margin-right:11px;vertical-align:middle}
+
+  /* ---- Slide 2: contents ---- */
+  .toc{display:flex;flex-direction:column;gap:0;margin-top:6px}
+  .toc-item{display:grid;grid-template-columns:64px 1fr auto;align-items:center;gap:8px;
+            padding:19px 4px;border-bottom:1px solid var(--rule);cursor:pointer;
+            transition:padding-left .2s ease,background .2s ease;text-decoration:none;color:inherit}
+  .toc-item:first-child{border-top:1px solid var(--rule)}
+  .toc-item:hover{padding-left:14px;background:linear-gradient(90deg,rgba(169,116,42,.06),transparent)}
+  .toc-num{font-family:var(--disp);font-size:22px;color:var(--ochre);letter-spacing:.04em}
+  .toc-title{font-family:var(--disp);font-size:29px;color:var(--ink)}
+  .toc-page{font-family:var(--mono);font-size:14px;color:var(--muted)}
+
+  /* ---- Slide 3 / mission-type big statement ---- */
+  .statement{font-family:var(--disp);font-weight:400;font-size:62px;line-height:1.12;
+             letter-spacing:-.015em;color:var(--cream);text-wrap:balance;margin:0;max-width:19ch}
+  .kicker-rule{width:340px;height:1px;background:var(--rule-dark);margin-top:34px}
+
+  /* ---- Slide 4: problem ---- */
+  .prob-body{flex:1;display:flex;flex-direction:column;justify-content:center}
+  .prob-grid{display:grid;grid-template-columns:1fr 1fr;align-items:stretch;margin-top:4px}
+  .prob-side.a{padding-right:60px}
+  .prob-side.b{padding-left:60px;border-left:1px solid var(--rule)}
+  .prob-label{font-family:var(--disp);font-size:25px;color:var(--ochre);padding-bottom:9px;
+              margin-bottom:14px;border-bottom:1px solid var(--rule)}
+  .prob-lead{font-size:19px;line-height:1.44;color:var(--ink);margin-bottom:11px}
+  .prob-slip{font-size:15px;color:var(--muted);font-style:italic;margin:12px 0 2px}
+  .prob-losses{list-style:none;margin:0;padding:0}
+  .prob-losses li{font-size:17.5px;color:var(--ink-soft);padding:6px 0 6px 22px;
+                  border-top:1px solid var(--rule-soft);position:relative}
+  .prob-losses li::before{content:"";position:absolute;left:0;top:15px;width:9px;height:1px;background:var(--ochre)}
+  .prob-friction{font-family:var(--disp);font-weight:400;font-size:29px;line-height:1.2;color:var(--ink);
+                 text-wrap:balance;border-top:1px solid var(--rule);padding-top:16px;margin-top:14px}
+  .prob-friction em{font-style:italic;color:var(--ochre)}
+
+  /* ---- generic multi-column text with hairline rows ---- */
+  .cols3{display:grid;grid-template-columns:1.05fr 1fr 1fr;gap:52px;flex:1;margin-top:26px}
+  .stack{display:flex;flex-direction:column}
+  .stack .row{padding:16px 0;border-top:1px solid var(--rule);font-size:18.5px;line-height:1.4;color:var(--ink)}
+  .stack .row.sub{padding-left:20px;color:var(--ink-soft);font-size:16.5px;border-top:1px solid var(--rule-soft)}
+  .stack .row:first-child{border-top:0}
+
+  /* entity definition list */
+  .deflist{display:flex;flex-direction:column;gap:0}
+  .deflist .dt{font-family:var(--disp);font-size:21px;color:var(--ochre);margin-top:15px}
+  .deflist .dd{font-size:16px;color:var(--ink-soft);line-height:1.35}
+
+  /* ---- three pillars (approach overview) ---- */
+  .pillars{display:grid;grid-template-columns:repeat(3,1fr);flex:1;align-items:stretch;margin-top:10px}
+  .pillar{padding:34px 44px;display:flex;flex-direction:column}
+  .pillar + .pillar{border-left:1px solid var(--rule)}
+  .pillar:first-child{padding-left:0}
+  .pillar:last-child{padding-right:0}
+  .pillar-h{font-family:var(--disp);font-size:29px;color:var(--ink);position:relative;padding-top:22px}
+  .pillar-h::before{content:"";position:absolute;top:0;left:0;width:36px;height:2px;background:var(--ochre)}
+  .pillar-d{font-size:17px;line-height:1.5;color:var(--ink-soft);margin-top:16px}
+  .pillar-k{font-family:var(--mono);font-size:13px;letter-spacing:.02em;color:var(--ochre);margin-top:auto;padding-top:20px}
+  .refimpl{flex:0 0 auto;border-top:1px solid var(--rule);margin-top:18px;padding-top:20px;
+           display:grid;grid-template-columns:190px 1fr 1fr;gap:44px;align-items:start}
+  .refimpl-label{font-family:var(--mono);font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;
+                 color:var(--ochre);line-height:1.6}
+  .refimpl-h{font-family:var(--disp);font-size:19px;color:var(--ink);margin-bottom:6px}
+  .refimpl-item p{font-size:16px;line-height:1.46;color:var(--ink-soft)}
+  /* ---- entity types list (graph data model) ---- */
+  .etypes{display:flex;flex-direction:column}
+  .etype{display:flex;gap:12px;align-items:baseline;padding:8.5px 0;border-top:1px solid var(--rule-soft);font-size:16.5px}
+  .etype:first-child{border-top:0}
+  .etype b{font-family:var(--mono);font-size:13.5px;font-weight:500;color:var(--ochre);min-width:106px;flex:0 0 auto}
+  .etype span{color:var(--ink-soft)}
+  .types-note{font-size:15px;line-height:1.5;color:var(--muted);border-top:1px solid var(--rule);margin-top:16px;padding-top:14px}
+
+  /* ---- Slide 6: numbered outcomes ---- */
+  .num-list{display:flex;flex-direction:column;flex:1;margin-top:20px}
+  .num-row{display:grid;grid-template-columns:96px 1fr;align-items:center;gap:12px;
+           padding:20px 0;border-top:1px solid var(--rule)}
+  .num-row:last-child{border-bottom:1px solid var(--rule)}
+  .num-big{font-family:var(--disp);font-size:46px;color:var(--ochre);font-weight:400;letter-spacing:.02em}
+  .num-txt{font-size:23px;line-height:1.35;color:var(--ink);max-width:52ch}
+  /* ---- benefits: two audiences ---- */
+  .benefits{display:grid;grid-template-columns:1fr 1fr;flex:1;align-items:stretch;margin-top:12px}
+  .ben-col{padding:28px 48px;display:flex;flex-direction:column}
+  .ben-col:first-child{padding-left:0}
+  .ben-col:last-child{padding-right:0}
+  .ben-col + .ben-col{border-left:1px solid var(--rule)}
+  .ben-h{font-family:var(--disp);font-size:28px;color:var(--ochre);padding-bottom:12px;
+         margin-bottom:6px;border-bottom:1px solid var(--rule)}
+  .ben-list{display:flex;flex-direction:column}
+  .ben-item{font-size:18.5px;line-height:1.42;color:var(--ink);padding:14px 0 14px 24px;
+            border-top:1px solid var(--rule-soft);position:relative}
+  .ben-item:first-child{border-top:0}
+  .ben-item::before{content:"";position:absolute;left:0;top:23px;width:10px;height:1px;background:var(--ochre)}
+  .ben-lead{color:var(--ochre)}
+
+  /* ---- Slide 7: record / who accepted ---- */
+  .split{display:grid;grid-template-columns:1fr 1fr;gap:0;flex:1;margin-top:8px}
+  .split .left{padding-right:56px}
+  .split .right{padding-left:56px;border-left:1px solid var(--rule);display:flex;flex-direction:column;gap:26px}
+  .head-xl{font-family:var(--disp);font-size:56px;line-height:1.03;letter-spacing:-.015em;margin:0}
+  .sh-rule{width:96px;height:1px;background:var(--ochre);margin:22px 0 24px;opacity:.5}
+  .body-just{font-size:19px;line-height:1.5;color:var(--ink-soft)}
+  .mini{display:flex;flex-direction:column;gap:7px}
+  .mini-h{display:flex;align-items:baseline;gap:12px}
+  .mini-n{font-family:var(--mono);font-size:14px;color:var(--ochre);letter-spacing:.08em}
+  .mini-t{font-family:var(--disp);font-size:23px;color:var(--ink)}
+  .mini-b{font-size:16.5px;line-height:1.42;color:var(--ink-soft)}
+
+  /* ---- flow (slide 8) ---- */
+  .flow{display:flex;align-items:flex-start;justify-content:space-between;gap:6px;margin:44px 0 40px}
+  .stagex{display:flex;flex-direction:column;align-items:center;text-align:center;width:170px}
+  .glyph{width:78px;height:78px;color:var(--ochre)}
+  .stagex-t{font-family:var(--disp);font-size:24px;color:var(--ink);margin-top:16px}
+  .stagex-c{font-size:14.5px;color:var(--muted);line-height:1.32;margin-top:5px;max-width:20ch}
+  .fl-arrow{width:46px;height:26px;color:var(--rule);flex:0 0 auto;margin-top:26px}
+  .fl-arrow.hot{color:var(--ochre)}
+  .flow-notes{display:grid;grid-template-columns:1fr 1fr 1fr;gap:52px;border-top:1px solid var(--rule);
+              padding-top:26px}
+  .flow-notes p{font-size:17px;line-height:1.45;color:var(--ink-soft)}
+
+  /* ---- provenance channels (slide 9) ---- */
+  .chan{display:grid;grid-template-columns:1fr 1fr 1fr;gap:52px;flex:1;margin-top:30px}
+  .chan-col{border-top:1px solid var(--rule);padding-top:22px}
+  .chan-file{font-family:var(--mono);font-size:15px;color:var(--ochre);letter-spacing:.01em}
+  .chan-h{font-family:var(--disp);font-size:27px;color:var(--ink);margin:12px 0 14px}
+  .chan-b{font-size:17.5px;line-height:1.5;color:var(--ink-soft)}
+
+  /* ---- authority verbs (slide 11) ---- */
+  .vgroup-h{display:flex;align-items:baseline;gap:12px;margin:0 0 2px;flex-wrap:wrap}
+  .vgroup-h b{font-family:var(--mono);font-size:12px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--ochre)}
+  .vgroup-h span{font-size:14px;color:var(--muted);font-style:italic}
+  .vrow{display:grid;gap:0 32px}
+  .vrow.six{grid-template-columns:repeat(6,1fr)}
+  .vrow.three{grid-template-columns:repeat(3,1fr);max-width:72%}
+  .verb{border-top:1px solid var(--rule);padding:15px 0 13px}
+  .verb-w{font-family:var(--disp);font-size:30px;line-height:1;color:var(--ink);font-weight:400}
+  .verb.cmd .verb-w{font-family:var(--mono);font-size:21px;color:var(--ochre);font-weight:500}
+  .verb-c{font-size:13.5px;color:var(--ink-soft);margin-top:9px;line-height:1.32}
+  .verb-note{margin-top:26px;border-top:1px solid var(--rule);padding-top:16px;font-size:16.5px;line-height:1.5;color:var(--ink-soft);max-width:96ch}
+  .verb-note b{color:var(--ochre);font-weight:400}
+  /* ---- payoff scenario ---- */
+  .payoff{display:grid;grid-template-columns:repeat(4,1fr);gap:0 36px;flex:1;align-items:start;margin-top:16px}
+  .pay{border-top:1px solid var(--rule);padding-top:22px;display:flex;flex-direction:column}
+  .pay-m{font-family:var(--mono);font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ochre)}
+  .pay-h{font-family:var(--disp);font-size:27px;line-height:1.06;color:var(--ink);margin:14px 0 12px;text-wrap:balance}
+  .pay-b{font-size:16px;line-height:1.46;color:var(--ink-soft)}
+  /* ---- proof / compounding ---- */
+  .proof{display:grid;grid-template-columns:1.06fr 0.94fr;gap:50px;flex:1;align-items:center;margin-top:10px}
+  .proof-cap{font-size:13px;color:var(--muted);font-style:italic;text-align:center;margin-top:8px;line-height:1.4;max-width:46ch;margin-left:auto;margin-right:auto}
+  .proof-pt{border-top:1px solid var(--rule);padding-top:16px;margin-bottom:22px}
+  .proof-pt:last-child{margin-bottom:0}
+  .proof-h{font-family:var(--disp);font-size:24px;color:var(--ochre);margin-bottom:8px}
+  .proof-b{font-size:16.5px;line-height:1.5;color:var(--ink-soft)}
+  /* ---- faq ---- */
+  .faq{display:grid;grid-template-columns:1fr 1fr;gap:26px 56px;flex:1;align-content:center;margin-top:14px}
+  .faq-q{font-family:var(--disp);font-size:23px;color:var(--ochre);margin-bottom:8px;line-height:1.1}
+  .faq-a{font-size:16.5px;line-height:1.5;color:var(--ink-soft)}
+  /* ---- dogfooding file tree ---- */
+  .dogfood{display:grid;grid-template-columns:1fr 1fr;gap:48px;flex:1;align-items:center;margin-top:12px}
+  .tree{font-family:var(--mono);font-size:13.5px;line-height:1.85}
+  .tree-row{display:flex;align-items:baseline}
+  .tname{white-space:pre;color:var(--ink);flex:0 0 auto;min-width:190px}
+  .tname .d{color:var(--ochre)}
+  .tgloss{font-family:var(--body);font-style:italic;font-size:14px;color:var(--muted)}
+  .dog-lead{font-family:var(--disp);font-size:26px;line-height:1.2;color:var(--ink);text-wrap:balance;margin-bottom:22px}
+
+  /* ---- invariants (slide 14) ---- */
+  .quad{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;flex:1;margin-top:10px}
+  .qcell{padding:34px 48px}
+  .qcell:nth-child(1),.qcell:nth-child(3){padding-left:0;border-right:1px solid var(--rule)}
+  .qcell:nth-child(2),.qcell:nth-child(4){padding-right:0}
+  .qcell:nth-child(3),.qcell:nth-child(4){border-top:1px solid var(--rule)}
+  .qn{font-family:var(--disp);font-size:19px;color:var(--ochre);letter-spacing:.06em}
+  .qh{font-family:var(--disp);font-size:29px;color:var(--ink);margin:14px 0 12px}
+  .qb{font-size:17.5px;line-height:1.5;color:var(--ink-soft)}
+
+  /* ---- roadmap descriptions (slide 15) ---- */
+  .rmcols{display:grid;grid-template-columns:repeat(4,1fr);gap:40px;border-top:1px solid var(--rule);padding-top:22px}
+  .rmcols h4{font-family:var(--disp);font-weight:400;font-size:22px;color:var(--ochre);margin:0 0 10px}
+  .rmcols p{font-size:16px;line-height:1.46;color:var(--ink-soft)}
+
+  /* ---- product UI mockups (slides 12,13) ---- */
+  .panel{background:var(--ui-panel);border:1px solid var(--ui-line);border-radius:12px;color:var(--ui-text);
+         font-family:var(--body);overflow:hidden;box-shadow:0 20px 50px -22px rgba(0,0,0,.6);flex:0 0 auto}
+  .p-head{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;
+          border-bottom:1px solid var(--ui-line)}
+  .p-title{display:flex;align-items:baseline;gap:12px}
+  .p-title b{font-family:var(--mono);font-weight:500;font-size:15px;color:var(--ui-text)}
+  .p-title span{font-family:var(--mono);font-size:13px;color:var(--ui-faint)}
+  .tabs{display:flex;gap:22px;font-size:14.5px;color:var(--ui-soft)}
+  .tabs .on{color:var(--ui-blue);position:relative}
+  .tabs .on::after{content:"";position:absolute;left:0;right:0;bottom:-17px;height:2px;background:var(--ui-blue)}
+  .filterbox{font-family:var(--mono);font-size:12.5px;color:var(--ui-faint);border:1px solid var(--ui-line);
+             border-radius:7px;padding:8px 12px;min-width:210px;background:rgba(0,0,0,.15)}
+  .frow{display:flex;align-items:center;gap:10px;padding:6px 20px;flex-wrap:wrap}
+  .flabel{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--ui-faint);width:60px;flex:0 0 auto}
+  .chip{font-size:13px;padding:5px 12px;border-radius:20px;border:1px solid var(--ui-line);color:var(--ui-soft)}
+  .chip.act{color:#c9d3ff;border-color:rgba(138,160,255,.5);background:rgba(138,160,255,.1)}
+  .chip.pill{border-radius:6px}
+  .dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:7px;vertical-align:middle}
+  .d-blue{background:var(--ui-blue)}.d-amber{background:var(--ui-amber)}.d-green{background:var(--ui-green)}.d-grey{background:var(--ui-grey)}
+  table.ent{width:100%;border-collapse:collapse;font-size:14px}
+  table.ent th{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;color:var(--ui-faint);
+                text-align:left;font-weight:400;padding:11px 20px 8px}
+  table.ent td{padding:11px 20px;border-top:1px solid var(--ui-line);color:var(--ui-text);vertical-align:middle}
+  table.ent td.id{font-family:var(--mono);font-size:13.5px}
+  .kind-tag{font-family:var(--mono);font-size:11px;color:var(--ui-soft);background:rgba(255,255,255,.05);
+            padding:3px 9px;border-radius:5px}
+  .rev{font-size:12px;padding:3px 10px;border-radius:5px}
+  .rev.acc{color:#bfe9cd;background:rgba(111,197,138,.14)}
+  .rev.prop{color:#f0cf96;background:rgba(224,162,75,.16)}
+  tr.hot td{background:rgba(169,116,42,.1)}
+  tr.hot td.id{box-shadow:inset 3px 0 0 var(--ochre-bright)}
+  .p-foot{display:flex;justify-content:space-between;align-items:center;padding:13px 20px;
+          border-top:1px solid var(--ui-line);font-size:13px;color:var(--ui-faint);font-family:var(--mono)}
+  .p-foot b{color:var(--ui-soft);font-weight:500}
+  .u-updated{font-family:var(--mono);font-size:12.5px;color:var(--ui-faint)}
+
+  /* slide 13 detail */
+  .detail{display:grid;grid-template-columns:1.15fr 1fr;gap:24px;flex:1;margin-top:4px}
+  .banner{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:16px 20px;
+          padding:14px 16px;border-radius:8px;background:rgba(224,162,75,.1);border:1px solid rgba(224,162,75,.32)}
+  .banner span{color:#e6b877;font-size:14.5px}
+  .btn-acc{background:var(--ui-green);color:#0d2417;font-size:13.5px;font-weight:600;border:0;
+           padding:9px 18px;border-radius:7px;font-family:var(--body)}
+  .code{font-family:var(--mono);font-size:12.5px;line-height:1.65;color:#c7cddb;white-space:pre-wrap;
+        background:var(--ui-panel-2);border:1px solid var(--ui-line);border-radius:8px;padding:16px 18px;margin:0 20px}
+  .src-lbl{font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--ui-faint);margin:16px 20px 8px}
+  .cap-in{font-size:12.5px;color:var(--ui-faint);margin:12px 20px 18px;font-style:italic}
+  .cmd{font-family:var(--mono)}
+  .cmd-n{font-size:11px;letter-spacing:.08em;color:var(--ui-faint);margin:0 0 6px}
+  .cmd-box{font-family:var(--mono);font-size:13px;color:#cdd3e1;background:var(--ui-panel-2);
+           border:1px solid var(--ui-line);border-radius:7px;padding:11px 14px;margin-bottom:14px}
+  .chg{font-family:var(--mono);font-size:12.5px;color:#c7cddb;line-height:1.9}
+  .chg .ar{color:var(--ochre-bright)}
+
+  .cap{font-size:16px;color:var(--muted);line-height:1.45;margin-top:auto;padding-top:22px;max-width:92ch}
+
+  /* ---- chrome ---- */
+  .bar{flex:0 0 auto;display:flex;align-items:center;gap:14px;height:54px;padding:0 18px;
+       padding-bottom:env(safe-area-inset-bottom,0px);position:relative;
+       background:var(--app-bg);border-top:1px solid rgba(255,255,255,.06)}
+  .progress{position:absolute;top:0;left:0;height:2px;background:var(--ochre-bright);width:0;
+            transition:width .4s ease}
+  .btn{background:transparent;border:1px solid rgba(255,255,255,.14);color:var(--cream-soft);
+       width:34px;height:34px;border-radius:8px;font-size:16px;cursor:pointer;display:flex;
+       align-items:center;justify-content:center;font-family:var(--body);transition:.15s}
+  .btn:hover{color:var(--cream);border-color:rgba(255,255,255,.3)}
+  .btn.wide{width:auto;padding:0 14px;font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+  .counter{font-family:var(--mono);font-size:13px;color:var(--cream-soft);letter-spacing:.1em;min-width:70px;text-align:center}
+  .spacer{flex:1}
+  .cur{color:var(--ochre-bright)}
+
+  /* menu overlay */
+  .menu{position:absolute;inset:0;background:rgba(16,14,11,.9);backdrop-filter:blur(6px);
+        z-index:20;display:none;padding:48px;overflow:auto}
+  .menu.open{display:block}
+  .menu h3{font-family:var(--mono);font-size:12px;letter-spacing:.2em;text-transform:uppercase;
+           color:var(--ochre-bright);margin:0 0 22px}
+  .mgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:2px 40px;max-width:900px;margin:0 auto}
+  .mrow{display:grid;grid-template-columns:44px 1fr;align-items:baseline;gap:10px;padding:13px 8px;
+        border-bottom:1px solid var(--rule-dark);cursor:pointer;color:var(--cream-soft);transition:.15s}
+  .mrow:hover{color:var(--cream);padding-left:16px}
+  .mrow.on{color:var(--ochre-bright)}
+  .mrow .mn{font-family:var(--mono);font-size:13px;color:var(--ochre)}
+  .mrow .mt{font-family:var(--disp);font-size:20px}
+  .menu-close{position:absolute;top:32px;right:40px;color:var(--cream-soft);background:none;border:0;
+              font-size:26px;cursor:pointer;line-height:1}
+
+  @media (prefers-reduced-motion:reduce){
+    .slide,.progress,.toc-item,.btn,.mrow{transition:none}
+  }
+</style>
+</head>
+<body>
+<div class="app" id="app">
+  <div class="stage" id="stage">
+    <div class="deck" id="deck">
+
+      <!-- 1 · TITLE -->
+      <section class="slide" data-bg="night" data-title="konspekt">
+        <div class="wrap">
+          <div class="brand-top">
+            <div class="eyebrow">FINOS Labs · Apache&#8209;2.0</div>
+            <div class="brand-link">github.com/finos-labs/konspekt</div>
+          </div>
+          <div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:22px">
+            <h1 class="wordmark">konspekt</h1>
+            <div class="title-copy">
+              <p class="title-tag">Use AI to keep up with AI</p>
+              <p class="title-desc">A portable context navigator and trusted note-keeper to help you run complex projects.</p>
+            </div>
+          </div>
+          <div class="title-tags">
+            <span>An open standard</span>
+            <span>A reference implementation</span>
+            <span>In use on its own development</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2 · THE PROBLEM -->
+      <section class="slide" data-bg="paper" data-title="The problem">
+        <div class="wrap">
+          <div class="eyebrow">The problem</div>
+          <h2 class="s-head" style="margin-top:12px">Using Gen&nbsp;AI on<br>complex projects is tricky</h2>
+          <hr class="rule" style="margin-top:24px">
+          <div class="prob-body">
+            <div class="prob-grid">
+              <div class="prob-side a">
+                <div class="prob-label">Gen&nbsp;AI</div>
+                <p class="prob-lead">Moves fast, generates a lot of output, starts threads, maintains its own context, and can be hard to control.</p>
+                <p class="prob-slip">so the project starts to slip —</p>
+                <ul class="prob-losses">
+                  <li>losing track of the goals and outcomes</li>
+                  <li>losing track of to&#8209;dos</li>
+                  <li>forgetting which decisions were made</li>
+                  <li>not keeping notes of ideas and thoughts</li>
+                </ul>
+              </div>
+              <div class="prob-side b">
+                <div class="prob-label">The human</div>
+                <p class="prob-lead">Works slower, generates less output, and manages their own context by hand.</p>
+                <p class="prob-lead">They carry the project across memory, local notes, and scattered chat history — and can&rsquo;t keep track of everything the model produces.</p>
+              </div>
+            </div>
+            <p class="prob-friction">One produces more than can be tracked; the other can&rsquo;t keep up — and the combination creates a lot of <em>friction</em>.</p>
+          </div>
+          <div class="foot"><span class="foot-mark">konspekt · FINOS Labs</span><span class="foot-num">02</span></div>
+        </div>
+      </section>
+
+      <!-- 5 · THE APPROACH -->
+      <section class="slide" data-bg="paper" data-title="The solution">
+        <div class="wrap">
+          <div class="eyebrow">The solution</div>
+          <h2 class="s-head" style="margin-top:10px;font-size:54px">This is how konspekt helps</h2>
+          <hr class="rule" style="margin-top:24px">
+          <div class="pillars">
+            <div class="pillar">
+              <div class="pillar-h">The graph</div>
+              <p class="pillar-d">konspekt manages project context as a graph of goals, tasks, decisions, and notes. You drive it from the familiar chat interface, and control verbs keep you in the driving seat.</p>
+              <div class="pillar-k">typed model · control verbs</div>
+            </div>
+            <div class="pillar">
+              <div class="pillar-h">Record keeping</div>
+              <p class="pillar-d">konspekt keeps an immutable, auditable ledger of project activity — from the verbatim record of who proposed what, to the decisions made, and finally the commands run and files changed.</p>
+              <div class="pillar-k">verbatim · hashing · commands · changes</div>
+            </div>
+            <div class="pillar">
+              <div class="pillar-h">The engine</div>
+              <p class="pillar-d">konspekt runs on a set of portable LLM skills, plus an open specification for the project's context data model and control verbs.</p>
+              <div class="pillar-k">portable skills · open spec</div>
+            </div>
+          </div>
+          <div class="refimpl">
+            <div class="refimpl-label">Reference<br>implementation</div>
+            <div class="refimpl-item">
+              <div class="refimpl-h">Persistence</div>
+              <p>Runs on GitHub as its persistence layer, driven by a repo&#8209;connected LLM.</p>
+            </div>
+            <div class="refimpl-item">
+              <div class="refimpl-h">Views</div>
+              <p>Project state, open tasks, and the change ledger — in a standalone Node.js UI or an IntelliJ plugin.</p>
+            </div>
+          </div>
+          <div class="foot"><span class="foot-mark">konspekt · FINOS Labs</span><span class="foot-num">03</span></div>
+        </div>
+      </section>
+
+      <!-- 6 · WHY IT MATTERS -->
+      <section class="slide" data-bg="paper" data-title="Why it matters">
+        <div class="wrap">
+          <div class="eyebrow">Outcomes</div>
+          <h2 class="s-head" style="margin-top:10px;font-size:56px">Why it matters</h2>
+          <hr class="rule" style="margin-top:22px">
+          <div class="benefits">
+            <div class="ben-col">
+              <div class="ben-h">For you</div>
+              <div class="ben-list">
+                <div class="ben-item">less time re&#8209;explaining the project to Gen&nbsp;AI</div>
+                <div class="ben-item">fewer dropped tasks and forgotten decisions</div>
+                <div class="ben-item">you stay in control of what gets accepted</div>
+                <div class="ben-item">works alongside your existing tools</div>
+                <div class="ben-item">portable across LLM vendors — no lock&#8209;in</div>
+              </div>
+            </div>
+            <div class="ben-col">
+              <div class="ben-h">For the enterprise</div>
+              <div class="ben-list">
+                <div class="ben-item"><span class="ben-lead">Accountability</span> — an audit record of the actual prompts and decision chains</div>
+                <div class="ben-item"><span class="ben-lead">Optimization</span> — analytics that show where to improve</div>
+                <div class="ben-item"><span class="ben-lead">Risk reduction</span> — real&#8209;time monitoring</div>
+                <div class="ben-item"><span class="ben-lead">Beehive mind</span> — sharing context across thousands of engineering projects</div>
+              </div>
+            </div>
+          </div>
+          <div class="foot" style="margin-top:8px"><span class="foot-mark">konspekt · FINOS Labs</span><span class="foot-num">04</span></div>
+        </div>
+      </section>
+
+      <!-- UNDER THE HOOD (section divider) -->
+      <section class="slide" data-bg="night" data-title="Under the hood">
+        <div class="wrap" style="justify-content:center">
+          <div class="eyebrow" style="margin-bottom:22px">The internals</div>
+          <p class="statement">Under the hood</p>
+          <p class="title-sub" style="margin-top:26px;font-size:23px;max-width:46ch;color:var(--cream-soft)">The graph, the control verbs, and the record that keeps it honest.</p>
+        </div>
+      </section>
+
+      <!-- THE GRAPH DATA MODEL -->
+      <section class="slide" data-bg="paper" data-title="The graph data model">
+        <div class="wrap">
+          <div class="eyebrow">Serialization v1</div>
+          <h2 class="s-head" style="margin-top:10px;font-size:56px">The graph data model</h2>
+          <hr class="rule" style="margin-top:22px">
+          <div style="display:grid;grid-template-columns:0.82fr 1.18fr;gap:48px;flex:1;margin-top:18px;align-items:center">
+            <div>
+              <div class="etypes">
+                <div class="etype"><b>goal</b><span>a desired outcome</span></div>
+                <div class="etype"><b>investigation</b><span>an open line of inquiry</span></div>
+                <div class="etype"><b>task</b><span>a unit of work</span></div>
+                <div class="etype"><b>note</b><span>a captured thought</span></div>
+                <div class="etype"><b>concept</b><span>an idea or definition</span></div>
+                <div class="etype"><b>noteworthy</b><span>a finding worth keeping</span></div>
+                <div class="etype"><b>artifact</b><span>a produced output</span></div>
+                <div class="etype"><b>waypoint</b><span>a marked point in the record</span></div>
+              </div>
+              <p class="types-note">Entities are the nodes. Every relationship is a typed edge — one row in a single table, and inventories are queries over it.</p>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px">
+              <svg viewBox="0 0 760 455" style="width:100%;max-width:565px" font-family="'IBM Plex Mono', ui-monospace, monospace">
+                <g stroke="#C6BCAB" stroke-width="1.2" fill="none">
+                  <line x1="110" y1="235" x2="370" y2="85"/>
+                  <line x1="110" y1="235" x2="360" y2="235"/>
+                  <line x1="110" y1="235" x2="330" y2="400"/>
+                  <line x1="370" y1="85" x2="630" y2="55"/>
+                  <line x1="370" y1="85" x2="610" y2="140"/>
+                  <line x1="360" y1="235" x2="640" y2="235"/>
+                  <line x1="360" y1="235" x2="630" y2="330"/>
+                </g>
+                <g font-family="'Source Serif 4', Georgia, serif" font-style="italic" font-size="12.5" fill="#9c927f" text-anchor="middle">
+                  <text x="232" y="150">opens</text>
+                  <text x="230" y="226">decomposes</text>
+                  <text x="203" y="312">marks</text>
+                  <text x="507" y="60">finds</text>
+                  <text x="482" y="116">notes</text>
+                  <text x="500" y="226">uses</text>
+                  <text x="487" y="291">produces</text>
+                </g>
+                <g fill="#F1EDE6" stroke="#A9742A" stroke-width="1.3">
+                  <rect x="290.5" y="71" width="159" height="28" rx="14"/>
+                  <rect x="291.5" y="221" width="137" height="28" rx="14"/>
+                  <rect x="261.5" y="386" width="137" height="28" rx="14"/>
+                  <rect x="543.5" y="41" width="173" height="28" rx="14"/>
+                  <rect x="552" y="126" width="116" height="28" rx="14"/>
+                  <rect x="568" y="221" width="144" height="28" rx="14"/>
+                  <rect x="561.5" y="316" width="137" height="28" rx="14"/>
+                </g>
+                <rect x="41.5" y="221" width="137" height="28" rx="14" fill="#A9742A"/>
+                <g font-size="12.5" text-anchor="middle" dominant-baseline="central">
+                  <text x="110" y="235" fill="#F6F1E8">goal-portability</text>
+                  <text x="370" y="85" fill="#211D18">investigation-store</text>
+                  <text x="360" y="235" fill="#211D18">task-persistence</text>
+                  <text x="330" y="400" fill="#211D18">waypoint-spec-v1</text>
+                  <text x="630" y="55" fill="#211D18">noteworthy-dumb-store</text>
+                  <text x="610" y="140" fill="#211D18">note-postgres</text>
+                  <text x="640" y="235" fill="#211D18">concept-interface</text>
+                  <text x="630" y="330" fill="#211D18">artifact-mongodb</text>
+                </g>
+              </svg>
+              <p style="font-size:15.5px;color:var(--muted);text-align:center;max-width:54ch;line-height:1.4">A slice of konspekt&rsquo;s own graph — one node of each type, linked by typed edges.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CONTROL VERBS -->
+      <section class="slide" data-bg="paper" data-title="Control verbs">
+        <div class="wrap">
+          <div class="head-row">
+            <h2 class="s-head">Control verbs</h2>
+            <div class="eyebrow">First&#8209;class operations</div>
+          </div>
+          <p class="lede" style="margin-top:14px;max-width:88ch">The maintainer&rsquo;s command vocabulary, in two families.</p>
+          <div class="vgroup" style="margin-top:20px">
+            <div class="vgroup-h"><b>Standing</b><span>act on an entity — each recorded with its reasoning</span></div>
+            <div class="vrow six">
+              <div class="verb"><div class="verb-w">pin</div><div class="verb-c">fix an entity as settled</div></div>
+              <div class="verb"><div class="verb-w">validate</div><div class="verb-c">confirm it still holds</div></div>
+              <div class="verb"><div class="verb-w">refute</div><div class="verb-c">mark it disproven</div></div>
+              <div class="verb"><div class="verb-w">resolve</div><div class="verb-c">close an open question</div></div>
+              <div class="verb"><div class="verb-w">abandon</div><div class="verb-c">drop it, on the record</div></div>
+              <div class="verb"><div class="verb-w">lift</div><div class="verb-c">promote it in standing</div></div>
+            </div>
+          </div>
+          <div class="vgroup" style="margin-top:24px">
+            <div class="vgroup-h"><b>Checkpoint</b><span>move atoms between the working copy and the store</span></div>
+            <div class="vrow three">
+              <div class="verb cmd"><div class="verb-w">sync</div><div class="verb-c">reconcile incoming atoms into the working copy</div></div>
+              <div class="verb cmd"><div class="verb-w">persist</div><div class="verb-c">flush the working copy to the store</div></div>
+              <div class="verb cmd"><div class="verb-w">sync_persist</div><div class="verb-c">both, in one durable step</div></div>
+            </div>
+          </div>
+          <p class="verb-note">You never have to remember the vocabulary: as you work, the assistant proposes the fitting verb and the interface surfaces it for a one&#8209;click accept. It runs on <b>recognition, not recall</b>.</p>
+          <div class="foot"><span class="foot-mark">konspekt · FINOS Labs</span><span class="foot-num">07</span></div>
+        </div>
+      </section>
+
+      <!-- 8 · HOW AN ENTRY ENTERS THE GRAPH -->
+      <section class="slide" data-bg="paper" data-title="How an entry enters the graph">
+        <div class="wrap">
+          <div class="head-row">
+            <h2 class="s-head">How an entry enters the graph</h2>
+            <div class="eyebrow">Propose, then accept</div>
+          </div>
+          <hr class="rule" style="margin-top:20px">
+          <div class="flow">
+            <div class="stagex">
+              <svg class="glyph" viewBox="0 0 78 78" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="18" y="14" width="42" height="50" rx="5"/>
+                <path d="M27 28h24M27 38h24M27 48h15" stroke-linecap="round" opacity=".65"/>
+              </svg>
+              <div class="stagex-t">Verbatim</div>
+              <div class="stagex-c">both sides of the exchange</div>
+            </div>
+            <svg class="fl-arrow" viewBox="0 0 46 26"><path d="M2 13h38m0 0-8-7m8 7-8 7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <div class="stagex">
+              <svg class="glyph" viewBox="0 0 78 78" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="39" cy="39" r="25"/>
+                <text x="39" y="48" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="26" fill="currentColor" stroke="none">#</text>
+              </svg>
+              <div class="stagex-t">Content hash</div>
+              <div class="stagex-c">sources/&lt;sha&gt;</div>
+            </div>
+            <svg class="fl-arrow" viewBox="0 0 46 26"><path d="M2 13h38m0 0-8-7m8 7-8 7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <div class="stagex">
+              <svg class="glyph" viewBox="0 0 78 78" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="39" cy="39" r="25" stroke-dasharray="4 5"/>
+                <circle cx="39" cy="39" r="5" fill="currentColor" stroke="none"/>
+              </svg>
+              <div class="stagex-t">Proposed</div>
+              <div class="stagex-c">review: proposed</div>
+            </div>
+            <svg class="fl-arrow" viewBox="0 0 46 26"><path d="M2 13h38m0 0-8-7m8 7-8 7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <div class="stagex">
+              <svg class="glyph" viewBox="0 0 78 78" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="16" y="16" width="46" height="46" rx="7"/>
+                <path d="M28 40l8 8 16-18" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <div class="stagex-t">Accepted</div>
+              <div class="stagex-c">by a named maintainer</div>
+            </div>
+            <svg class="fl-arrow hot" viewBox="0 0 46 26"><path d="M2 13h38m0 0-8-7m8 7-8 7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <div class="stagex">
+              <svg class="glyph" viewBox="0 0 78 78">
+                <g stroke="#CDC5B7" stroke-width="1"><line x1="39" y1="39" x2="39" y2="16"/><line x1="39" y1="39" x2="14" y2="30"/><line x1="39" y1="39" x2="64" y2="26"/><line x1="39" y1="39" x2="22" y2="60"/><line x1="39" y1="39" x2="60" y2="58"/></g>
+                <g fill="#F1EDE6" stroke="#A9742A" stroke-width="1.3"><circle cx="39" cy="16" r="4.5"/><circle cx="14" cy="30" r="4.5"/><circle cx="64" cy="26" r="4.5"/><circle cx="22" cy="60" r="4.5"/><circle cx="60" cy="58" r="4.5"/></g>
+                <circle cx="39" cy="39" r="11" fill="#A9742A"/>
+              </svg>
+              <div class="stagex-t">In the graph</div>
+              <div class="stagex-c">linked by typed edges</div>
+            </div>
+          </div>
+          <div class="flow-notes">
+            <p>Provenance is kept for every entry: the exchange it came from, the model that proposed it, and the maintainer who accepted it.</p>
+            <p>The source is stored as direct quotes, both sides of the exchange word for word, rather than a summary of it.</p>
+            <p>Each source is addressed by a hash of its bytes, and every entity carries that hash, so an altered quote no longer resolves.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 9 · PROVENANCE -->
+      <section class="slide" data-bg="paper" data-title="Provenance">
+        <div class="wrap">
+          <div class="head-row">
+            <h2 class="s-head">Provenance</h2>
+            <div class="eyebrow">Three content&#8209;addressed channels</div>
+          </div>
+          <p style="font-family:var(--disp);font-weight:400;font-size:26px;line-height:1.22;color:var(--ink);text-wrap:balance;margin:16px 0 0;max-width:58ch">An action journal and decision-making trail: who did what, when and how — and who accepted each proposal.</p>
+          <p class="lede" style="margin-top:10px;max-width:96ch;font-size:19px;color:var(--muted)">Each channel stores its text under a filename that is the hash of that text. An entry verifies when hashing the file again returns the hash it was stored under, so an altered record stops resolving.</p>
+          <div class="chan">
+            <div class="chan-col">
+              <div class="chan-file">sources/&lt;hash&gt;.md</div>
+              <h4 class="chan-h">Verbatim excerpts</h4>
+              <p class="chan-b">The text an entry was drawn from, covering every participating turn — human prompts and assistant responses, copied as written. Selecting which spans to include is allowed; rewriting or summarizing a span is not.</p>
+            </div>
+            <div class="chan-col">
+              <div class="chan-file">commands/&lt;hash&gt;.md</div>
+              <h4 class="chan-h">Executed commands</h4>
+              <p class="chan-b">The verbatim text of each command run while building, one file per command. A separate log binds each run to the entity it was about, in execution order. Output is not stored: the record answers what was run.</p>
+            </div>
+            <div class="chan-col">
+              <div class="chan-file">changes/changed.md</div>
+              <h4 class="chan-h">Changed code</h4>
+              <p class="chan-b">A row per entity, commit, and file, in commit order. The change itself stays in version control and is reached through the commit token, so only which files changed, and for which entity, is kept here.</p>
+            </div>
+          </div>
+          <div class="foot"><span class="foot-mark">konspekt · FINOS Labs</span><span class="foot-num">07</span></div>
+        </div>
+      </section>
+
+      <!-- 12 · IN THE IDE -->
+      <section class="slide" data-bg="paper" data-title="In the IDE">
+        <div class="wrap">
+          <div class="head-row">
+            <h2 class="s-head" style="font-size:46px">The context is visible to the human</h2>
+            <div class="eyebrow">Side&#8209;car UI · IntelliJ tool window</div>
+          </div>
+          <hr class="rule" style="margin:14px 0 16px">
+          <div class="panel" style="background:var(--ui-bg)">
+            <div class="p-head">
+              <div class="p-title"><b>konspekt</b><span>local · read-only</span></div>
+              <div class="tabs"><span class="on">Changes</span><span>Stats</span><span>Goals</span><span>Decisions</span></div>
+            </div>
+            <div style="padding:8px 0 4px">
+              <div class="frow"><span class="flabel">PRESETS</span><span class="chip act pill">Open + accepted work</span><span class="chip pill">Proposed review queue</span>
+                <span style="flex:1"></span><span class="filterbox">&#9906; Filter by id…</span></div>
+              <div class="frow"><span class="flabel">KIND</span>
+                <span class="chip">goal</span><span class="chip">investigation</span><span class="chip act">task</span><span class="chip">note</span><span class="chip">concept</span><span class="chip">noteworthy</span><span class="chip">artifact</span><span class="chip">waypoint</span></div>
+              <div class="frow"><span class="flabel">STATUS</span>
+                <span class="chip"><i class="dot d-blue"></i>open</span><span class="chip"><i class="dot d-amber"></i>active</span><span class="chip"><i class="dot d-green"></i>resolved</span><span class="chip"><i class="dot d-grey"></i>abandoned</span>
+                <span class="flabel" style="width:auto;margin-left:12px">REVIEW</span><span class="chip">proposed</span><span class="chip">accepted</span></div>
+            </div>
+            <table class="ent">
+              <thead><tr><th>ENTITY ID</th><th>KIND</th><th>STATUS</th><th>REVIEW</th><th>UPDATED</th></tr></thead>
+              <tbody>
+                <tr><td class="id">goal-portability</td><td><span class="kind-tag">goal</span></td><td><i class="dot d-amber"></i>active</td><td><span class="rev acc">accepted</span></td><td class="u-updated">3h ago</td></tr>
+                <tr class="hot"><td class="id"><i class="dot d-blue"></i>task-intellij-plugin</td><td><span class="kind-tag">task</span></td><td><i class="dot d-blue"></i>open</td><td><span class="rev acc">accepted</span></td><td class="u-updated">just now</td></tr>
+                <tr><td class="id">task-second-implementer</td><td><span class="kind-tag">task</span></td><td><i class="dot d-blue"></i>open</td><td><span class="rev prop">proposed</span></td><td class="u-updated">5h ago</td></tr>
+                <tr><td class="id">task-task-workthrough-ui</td><td><span class="kind-tag">task</span></td><td><i class="dot d-blue"></i>open</td><td><span class="rev prop">proposed</span></td><td class="u-updated">1d ago</td></tr>
+              </tbody>
+            </table>
+            <div class="p-foot"><span>Showing <b>4</b> of <b>58</b> entities · window of 10, scroll for the rest</span><span><i class="dot d-green"></i>synced just now · 58 entities · 1 changed</span></div>
+          </div>
+          <p class="cap">Read&#8209;only over the working tree, refreshed by a filesystem watcher. The one write is Accept on a proposed entity. A recreation of the shared view, drawn from its source.</p>
+        </div>
+      </section>
+
+      <!-- 13 · ENTITY DETAIL -->
+      <section class="slide" data-bg="paper" data-title="Entity detail">
+        <div class="wrap">
+          <div class="head-row">
+            <h2 class="s-head" style="font-size:46px">Every atom opens onto its record</h2>
+            <div class="eyebrow">Entity detail · provenance tabs</div>
+          </div>
+          <hr class="rule" style="margin:18px 0 20px">
+          <div class="detail">
+            <div class="panel">
+              <div class="p-head"><div class="p-title"><b>task-second-implementer</b></div><span style="color:var(--ui-faint);font-size:18px">&times;</span></div>
+              <div class="banner"><span>Proposed — awaiting a human disposition.</span><button class="btn-acc">Accept</button></div>
+              <div class="tabs" style="padding:0 20px 12px;border-bottom:1px solid var(--ui-line)"><span>Details</span><span class="on">Provenance</span><span>Commands (2)</span><span>Changes (1)</span></div>
+              <div class="src-lbl">SOURCES/4F1C9E27B3A8_.MD</div>
+              <pre class="code">### human
+Two options for the tool window: have JCEF load the local Node
+server, or read the instance in-process.
+
+### assistant
+In-process needs no Node runtime in the IDE session and gives a
+VFS-native change source, so the reader ships with the plugin …</pre>
+              <p class="cap-in">Stored word for word, both sides of the exchange. Spans may be elided, never rewritten.</p>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:20px">
+              <div class="panel" style="flex:1">
+                <div class="p-head"><div class="p-title"><b style="color:var(--ui-blue)">Commands (2)</b></div></div>
+                <div style="padding:16px 20px">
+                  <p class="cmd-n">1 · COMMANDS/9F2A1C4B8D_</p>
+                  <div class="cmd-box">./gradlew buildPlugin</div>
+                  <p class="cmd-n">2 · COMMANDS/41C7E0AA2F_</p>
+                  <div class="cmd-box" style="margin-bottom:0">./gradlew runIde</div>
+                </div>
+              </div>
+              <div class="panel" style="flex:1">
+                <div class="p-head"><div class="p-title"><b style="color:var(--ui-blue)">Changes (1)</b></div></div>
+                <div style="padding:16px 20px">
+                  <p class="cmd-n">1 · COMMIT 7D1E93AC52_</p>
+                  <div class="chg">
+                    <span class="ar">&rsaquo;</span> intellij-plugin/app/src/main/kotlin/InstanceReader.kt<br>
+                    <span class="ar">&rsaquo;</span> intellij-plugin/app/src/main/kotlin/ViewServer.kt<br>
+                    <span class="ar">&rsaquo;</span> intellij-plugin/app/build.gradle.kts
+                  </div>
+                  <p class="cap-in" style="margin:12px 0 0">The commit token points at version control; only the changed files are kept here.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <p class="cap" style="padding-top:16px">The Commands and Changes tabs appear only when the entity has them recorded. Sample instance, recreated from the view source.</p>
+        </div>
+      </section>
+
+      <!-- PAYOFF / IN PRACTICE -->
+      <section class="slide" data-bg="paper" data-title="In practice">
+        <div class="wrap">
+          <div class="head-row">
+            <h2 class="s-head">You pick up where you left off</h2>
+            <div class="eyebrow">In practice</div>
+          </div>
+          <hr class="rule" style="margin-top:20px">
+          <div class="payoff">
+            <div class="pay">
+              <div class="pay-m">As you work</div>
+              <div class="pay-h">It captures itself</div>
+              <div class="pay-b">Goals, tasks, and decisions are proposed as you go; you accept what sticks. No separate note-taking.</div>
+            </div>
+            <div class="pay">
+              <div class="pay-m">Switch models</div>
+              <div class="pay-h">It comes with you</div>
+              <div class="pay-b">Move to another LLM mid-project and the context travels — nothing re-explained.</div>
+            </div>
+            <div class="pay">
+              <div class="pay-m">Next week</div>
+              <div class="pay-h">It&rsquo;s still there</div>
+              <div class="pay-b">Reopen after days away; the open questions and the reason behind each decision are right where you left them.</div>
+            </div>
+            <div class="pay">
+              <div class="pay-m">A teammate joins</div>
+              <div class="pay-h">They&rsquo;re caught up</div>
+              <div class="pay-b">They read the same graph — no re-briefing.</div>
+            </div>
+          </div>
+          <div class="foot"><span class="foot-mark">konspekt · FINOS Labs</span><span class="foot-num">12</span></div>
+        </div>
+      </section>
+
+      <!-- DOGFOODING -->
+      <section class="slide" data-bg="paper" data-title="Built with konspekt">
+        <div class="wrap">
+          <div class="head-row">
+            <h2 class="s-head">konspekt is built with konspekt</h2>
+            <div class="eyebrow">Dogfooding</div>
+          </div>
+          <hr class="rule" style="margin-top:20px">
+          <div class="dogfood">
+            <div class="tree">
+              <div class="tree-row"><span class="tname"><span class="d">.konspekt/</span></span><span class="tgloss">plain files, in the repo</span></div>
+              <div class="tree-row"><span class="tname">├─ OPERATING.md</span><span class="tgloss">the operating loop</span></div>
+              <div class="tree-row"><span class="tname">├─ notify.yml</span><span class="tgloss">graph-event notifier</span></div>
+              <div class="tree-row"><span class="tname">└─ <span class="d">instance/</span></span></div>
+              <div class="tree-row"><span class="tname">   ├─ project.md</span><span class="tgloss">instance config</span></div>
+              <div class="tree-row"><span class="tname">   ├─ <span class="d">nodes/</span></span><span class="tgloss">goal · investigation · task</span></div>
+              <div class="tree-row"><span class="tname">   ├─ <span class="d">concepts/</span></span><span class="tgloss">ideas &amp; definitions</span></div>
+              <div class="tree-row"><span class="tname">   ├─ <span class="d">noteworthy/</span></span><span class="tgloss">findings worth keeping</span></div>
+              <div class="tree-row"><span class="tname">   ├─ <span class="d">artifacts/</span></span><span class="tgloss">produced outputs</span></div>
+              <div class="tree-row"><span class="tname">   ├─ <span class="d">waypoints/</span></span><span class="tgloss">marked points</span></div>
+              <div class="tree-row"><span class="tname">   ├─ <span class="d">edges/</span></span><span class="tgloss">the typed edge table</span></div>
+              <div class="tree-row"><span class="tname">   ├─ <span class="d">sources/</span></span><span class="tgloss">verbatim provenance</span></div>
+              <div class="tree-row"><span class="tname">   ├─ <span class="d">commands/</span></span><span class="tgloss">executed commands</span></div>
+              <div class="tree-row"><span class="tname">   └─ <span class="d">changes/</span></span><span class="tgloss">changed code</span></div>
+            </div>
+            <div>
+              <p class="dog-lead">Its own development lives in a konspekt instance — the same plain files the standard defines.</p>
+              <div class="proof-pt">
+                <div class="proof-h">Same discipline</div>
+                <div class="proof-b">Every change to the standard is proposed, accepted, and recorded — the same way konspekt asks of your project.</div>
+              </div>
+              <div class="proof-pt">
+                <div class="proof-h">Not slideware</div>
+                <div class="proof-b">The roadmap ahead — goal-portability, goal-collaboration, goal-accountability — are live entities in this instance.</div>
+              </div>
+            </div>
+          </div>
+          <div class="foot"><span class="foot-mark">konspekt · FINOS Labs</span><span class="foot-num">13</span></div>
+        </div>
+      </section>
+
+      <!-- PROOF / COMPOUNDING -->
+      <section class="slide" data-bg="paper" data-title="The advantage compounds">
+        <div class="wrap">
+          <div class="head-row">
+            <h2 class="s-head">The advantage compounds</h2>
+            <div class="eyebrow">Why it holds up</div>
+          </div>
+          <hr class="rule" style="margin-top:20px">
+          <div class="proof">
+            <div>
+              <svg viewBox="0 0 520 350" style="width:100%;max-width:500px;display:block" font-family="'Source Serif 4', Georgia, serif">
+                <g stroke-width="1">
+                  <line x1="70" y1="140" x2="495" y2="140" stroke="#EAE5DB"/>
+                  <line x1="70" y1="215" x2="495" y2="215" stroke="#EAE5DB"/>
+                  <line x1="70" y1="290" x2="495" y2="290" stroke="#D7D0C3"/>
+                  <line x1="70" y1="45" x2="70" y2="290" stroke="#D7D0C3"/>
+                </g>
+                <path d="M70,275 L280,263 L495,251 L495,290 L70,290 Z" fill="rgba(169,116,42,0.08)"/>
+                <polyline points="70,278 123,274 175,263 228,244 280,219 333,186 385,147 438,101 495,57" fill="none" stroke="#7A6A56" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <polyline points="70,275 280,263 495,251" fill="none" stroke="#A9742A" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="495" cy="57" r="4" fill="#7A6A56"/>
+                <circle cx="495" cy="251" r="4.5" fill="#A9742A"/>
+                <text x="360" y="112" text-anchor="middle" font-size="14.5" fill="#7A6A56">Native LLM memory</text>
+                <text x="405" y="278" text-anchor="middle" font-size="14.5" fill="#A9742A" font-weight="600">konspekt</text>
+                <text x="282" y="322" text-anchor="middle" font-size="12.5" fill="#8C8377">project complexity — edges in the graph →</text>
+                <text transform="translate(30,167) rotate(-90)" text-anchor="middle" font-size="12.5" fill="#8C8377">cost to re-establish context →</text>
+              </svg>
+              <p class="proof-cap">Directional. The number comes from an A/B — the same work run with and without konspekt, counting the tokens it takes to restore and hold fidelity.</p>
+            </div>
+            <div>
+              <div class="proof-pt">
+                <div class="proof-h">Built with konspekt</div>
+                <div class="proof-b">The konspekt instance tracks konspekt&rsquo;s own development — the standard is dogfooded against its own evolution.</div>
+              </div>
+              <div class="proof-pt">
+                <div class="proof-h">Why it compounds</div>
+                <div class="proof-b">Native memory re-derives context each time, and that cost climbs super-linearly as the graph grows. konspekt reads a typed record, so its cost stays roughly flat — the harder the project, the wider the gap.</div>
+              </div>
+            </div>
+          </div>
+          <div class="foot"><span class="foot-mark">konspekt · FINOS Labs</span><span class="foot-num">13</span></div>
+        </div>
+      </section>
+
+      <!-- 14 · INVARIANTS -->
+      <section class="slide" data-bg="paper" data-title="Principles the design holds to">
+        <div class="wrap">
+          <div class="eyebrow">Invariants</div>
+          <h2 class="s-head" style="margin-top:10px;font-size:54px">Principles the design holds to</h2>
+          <hr class="rule" style="margin-top:20px">
+          <div class="quad">
+            <div class="qcell"><div class="qn">I</div><h4 class="qh">The store stays simple</h4><p class="qb">The backing store reads and writes. Judging a proposal happens in the review conversation, not in the storage layer.</p></div>
+            <div class="qcell"><div class="qn">II</div><h4 class="qh">The read path is neutral</h4><p class="qb">An instance is plain files that anyone can re&#8209;read without an API, so adopting konspekt does not commit a project to one tool.</p></div>
+            <div class="qcell"><div class="qn">III</div><h4 class="qh">Distribution is a projection</h4><p class="qb">Anything published is regenerated from the graph, so no second copy exists that can drift away from the record.</p></div>
+            <div class="qcell"><div class="qn">IV</div><h4 class="qh">Merge converges, accept does not</h4><p class="qb">Anyone may propose, and proposals merge without conflict. Deciding what is accepted stays with a named authority.</p></div>
+          </div>
+          <div class="foot" style="margin-top:8px"><span class="foot-mark">konspekt · FINOS Labs</span><span class="foot-num">12</span></div>
+        </div>
+      </section>
+
+      <!-- 15 · WHERE IT GOES NEXT -->
+      <section class="slide" data-bg="paper" data-title="Where it goes next">
+        <div class="wrap">
+          <div class="head-row">
+            <h2 class="s-head">Where it goes next</h2>
+            <div class="eyebrow">Proposed · open for review</div>
+          </div>
+          <hr class="rule" style="margin-top:18px">
+          <div style="flex:1;display:flex;align-items:center">
+            <svg viewBox="0 0 1120 340" style="width:100%">
+              <!-- dotted spokes from centre -->
+              <g stroke="#C9AE7E" stroke-width="1" stroke-dasharray="2 5" fill="none">
+                <path d="M560 170 L360 96"/><path d="M560 170 L700 96"/><path d="M560 170 L380 262"/><path d="M560 170 L700 264"/>
+              </g>
+              <!-- solid leaf connectors -->
+              <g stroke="#A9742A" stroke-width="1.1">
+                <line x1="360" y1="96" x2="238" y2="74"/><line x1="360" y1="96" x2="266" y2="128"/>
+                <line x1="700" y1="96" x2="828" y2="80"/><line x1="700" y1="96" x2="822" y2="128"/>
+                <line x1="380" y1="262" x2="252" y2="238"/><line x1="380" y1="262" x2="270" y2="278"/><line x1="380" y1="262" x2="236" y2="312"/>
+                <line x1="700" y1="264" x2="828" y2="272"/>
+              </g>
+              <!-- leaf dots -->
+              <g fill="#F1EDE6" stroke="#A9742A" stroke-width="1.2">
+                <circle cx="234" cy="74" r="4"/><circle cx="262" cy="128" r="4"/>
+                <circle cx="832" cy="80" r="4"/><circle cx="826" cy="128" r="4"/>
+                <circle cx="248" cy="238" r="4"/><circle cx="266" cy="278" r="4"/><circle cx="232" cy="312" r="4"/>
+                <circle cx="832" cy="272" r="4"/>
+              </g>
+              <!-- cluster nodes -->
+              <g fill="#A9742A"><circle cx="360" cy="96" r="8"/><circle cx="700" cy="96" r="8"/><circle cx="380" cy="262" r="8"/><circle cx="700" cy="264" r="8"/></g>
+              <!-- centre -->
+              <circle cx="560" cy="170" r="9" fill="none" stroke="#8C8377" stroke-width="1.3" stroke-dasharray="2 4"/>
+              <circle cx="560" cy="170" r="2.4" fill="#8C8377"/>
+              <!-- labels -->
+              <g font-family="Fraunces, Georgia, serif" fill="#211D18" font-size="22">
+                <text x="372" y="70">Collaboration</text>
+                <text x="688" y="70" text-anchor="end">Observability</text>
+                <text x="392" y="300">Accountability</text>
+                <text x="688" y="298" text-anchor="end">Portability</text>
+              </g>
+              <g font-family="Fraunces, Georgia, serif" fill="#211D18" font-size="16">
+                <text x="226" y="79" text-anchor="end">Multi-author review</text>
+                <text x="254" y="133" text-anchor="end">Agent fleet</text>
+                <text x="844" y="85">Graph analytics</text>
+                <text x="838" y="133">Real-time monitoring</text>
+                <text x="240" y="243" text-anchor="end">Responsibility report</text>
+                <text x="258" y="283" text-anchor="end">Signed accepts</text>
+                <text x="224" y="317" text-anchor="end">Protected role change</text>
+                <text x="844" y="277">Enterprise persistence</text>
+              </g>
+              <g font-family="IBM Plex Mono, monospace" fill="#8C8377">
+                <text x="560" y="210" text-anchor="middle" font-size="15" fill="#211D18">pointer-swap</text>
+                <text x="560" y="230" text-anchor="middle" font-size="13">one primitive, two uses</text>
+              </g>
+            </svg>
+          </div>
+          <div class="rmcols">
+            <div><h4>Collaboration</h4><p>Several people and agents work one project while acceptance stays with the named maintainers.</p></div>
+            <div><h4>Observability</h4><p>Read the state and history of a project through queries.</p></div>
+            <div><h4>Portability</h4><p>Run on enterprise persistence — a database or object store — behind one storage interface.</p></div>
+            <div><h4>Accountability</h4><p>Report the chain behind an accepted decision: what was proposed, by which model, and who accepted it.</p></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 16 · THE ASK -->
+      <section class="slide" data-bg="night" data-title="The ask">
+        <div class="wrap">
+          <div class="brand-top" style="border-color:var(--rule-dark)">
+            <div class="eyebrow">Adopt and review</div>
+            <div class="brand-link">FINOS Labs · Apache&#8209;2.0</div>
+          </div>
+          <div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:26px">
+            <p class="statement" style="font-size:58px;max-width:22ch">The project seeks adoption, the standard seeks review</p>
+            <p class="title-sub" style="max-width:52ch;font-size:26px">Read the specification and provide feedback. Adopt konspekt and try it on a project of your own. The roadmap is driven by you.</p>
+          </div>
+          <div style="border-top:1px solid var(--rule-dark);padding-top:16px;display:flex;justify-content:space-between;align-items:center">
+            <span style="color:var(--ochre-bright);font-family:var(--mono);font-size:15px">github.com/finos-labs/konspekt</span>
+            <span style="color:var(--cream-soft);font-family:var(--mono);font-size:15px">spec/ · WHITEPAPER.md · docs/</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- FAQ -->
+      <section class="slide" data-bg="paper" data-title="FAQ">
+        <div class="wrap">
+          <div class="head-row">
+            <h2 class="s-head">Questions we hear</h2>
+            <div class="eyebrow">FAQ</div>
+          </div>
+          <hr class="rule" style="margin-top:20px">
+          <div class="faq">
+            <div class="faq-item">
+              <div class="faq-q">Why not the model&rsquo;s built-in memory?</div>
+              <div class="faq-a">Native memory re-derives context, and the cost grows super-linearly with complexity. konspekt keeps a typed, verifiable record whose cost stays flat — and it&rsquo;s portable across vendors.</div>
+            </div>
+            <div class="faq-item">
+              <div class="faq-q">Why not a wiki or a doc?</div>
+              <div class="faq-a">A doc drifts from what actually happened. konspekt&rsquo;s entries are content-addressed with verbatim provenance, so the record can&rsquo;t silently diverge — and each one is accepted by a named maintainer.</div>
+            </div>
+            <div class="faq-item">
+              <div class="faq-q">Why not Jira or a tracker?</div>
+              <div class="faq-a">Those track human-assigned work. konspekt tracks the AI-driven work and its decisions, read and written by the agent in the loop. It runs alongside your tools, not instead of them.</div>
+            </div>
+            <div class="faq-item">
+              <div class="faq-q">Does it lock me in?</div>
+              <div class="faq-a">No. An instance is plain files with a neutral, non-API read path, Apache-2.0 on GitHub. git is the reference store; MongoDB and Postgres sit behind the same interface.</div>
+            </div>
+          </div>
+          <div class="foot"><span class="foot-mark">konspekt · FINOS Labs</span><span class="foot-num">17</span></div>
+        </div>
+      </section>
+
+    </div><!-- /deck -->
+
+    <div class="menu" id="menu">
+      <button class="menu-close" id="menuClose">&times;</button>
+      <h3>Jump to slide</h3>
+      <div class="mgrid" id="mgrid"></div>
+    </div>
+  </div><!-- /stage -->
+
+  <div class="bar">
+    <div class="progress" id="progress"></div>
+    <button class="btn wide" id="menuBtn">Slides</button>
+    <div class="spacer"></div>
+    <button class="btn" id="prev" aria-label="Previous">&lsaquo;</button>
+    <div class="counter"><span class="cur" id="cur">01</span> / <span id="total">16</span></div>
+    <button class="btn" id="next" aria-label="Next">&rsaquo;</button>
+  </div>
+</div>
+
+<script>
+(function(){
+  var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var N = slides.length, i = 0;
+  slides.forEach(function(s, idx){ var fn = s.querySelector('.foot-num'); if(fn) fn.textContent = String(idx+1).padStart(2,'0'); });
+  var stage = document.getElementById('stage');
+  var curEl = document.getElementById('cur');
+  var progress = document.getElementById('progress');
+  var menu = document.getElementById('menu');
+  var mgrid = document.getElementById('mgrid');
+  document.getElementById('total').textContent = String(N).padStart(2,'0');
+
+  // build jump menu
+  slides.forEach(function(s, idx){
+    var r = document.createElement('div');
+    r.className = 'mrow';
+    r.innerHTML = '<span class="mn">'+String(idx+1).padStart(2,'0')+'</span><span class="mt">'+(s.dataset.title||'')+'</span>';
+    r.addEventListener('click', function(){ go(idx); closeMenu(); });
+    mgrid.appendChild(r);
+  });
+  var mrows = mgrid.children;
+
+  function fit(){
+    var w = stage.clientWidth, h = stage.clientHeight;
+    var pad = w < 640 ? 12 : 40;
+    var s = Math.min((w-pad)/1280, (h-pad)/720);
+    document.documentElement.style.setProperty('--scale', s);
+  }
+
+  function go(n){
+    i = Math.max(0, Math.min(N-1, n));
+    slides.forEach(function(s,idx){ s.classList.toggle('active', idx===i); });
+    curEl.textContent = String(i+1).padStart(2,'0');
+    progress.style.width = ((i+1)/N*100)+'%';
+    for(var k=0;k<mrows.length;k++){ mrows[k].classList.toggle('on', k===i); }
+    try{ history.replaceState(null,'','#'+(i+1)); }catch(e){}
+  }
+  function next(){ go(i+1); }
+  function prev(){ go(i-1); }
+  function openMenu(){ menu.classList.add('open'); }
+  function closeMenu(){ menu.classList.remove('open'); }
+
+  document.getElementById('next').addEventListener('click', next);
+  document.getElementById('prev').addEventListener('click', prev);
+  document.getElementById('menuBtn').addEventListener('click', function(){ menu.classList.contains('open')?closeMenu():openMenu(); });
+  document.getElementById('menuClose').addEventListener('click', closeMenu);
+
+  // clickable TOC on contents slide
+  document.querySelectorAll('[data-goto]').forEach(function(el){
+    el.addEventListener('click', function(e){ e.stopPropagation(); go(parseInt(el.dataset.goto,10)-1); });
+  });
+
+  // click stage to advance / go back (ignore interactive targets & menu)
+  stage.addEventListener('click', function(e){
+    if(menu.classList.contains('open')) return;
+    if(e.target.closest('a,button,[data-goto],.panel,.menu')) return;
+    var x = e.clientX / stage.clientWidth;
+    if(x < 0.28) prev(); else next();
+  });
+
+  document.addEventListener('keydown', function(e){
+    if(e.key==='ArrowRight'||e.key==='PageDown'||e.key===' '){ e.preventDefault(); next(); }
+    else if(e.key==='ArrowLeft'||e.key==='PageUp'){ e.preventDefault(); prev(); }
+    else if(e.key==='Home'){ go(0); }
+    else if(e.key==='End'){ go(N-1); }
+    else if(e.key==='o'||e.key==='m'){ menu.classList.contains('open')?closeMenu():openMenu(); }
+    else if(e.key==='Escape'){ closeMenu(); }
+  });
+
+  window.addEventListener('resize', fit);
+  fit();
+  var start = 0;
+  try{ var h = parseInt((location.hash||'').replace('#',''),10); if(h>=1&&h<=N) start=h-1; }catch(e){}
+  go(start);
+  document.getElementById('app').classList.add('ready');
+})();
+</script>
+</body>
+</html>
