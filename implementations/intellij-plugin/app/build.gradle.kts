@@ -45,6 +45,11 @@ intellijPlatform {
     name = providers.gradleProperty("pluginName")
     ideaVersion {
       sinceBuild = providers.gradleProperty("pluginSinceBuild")
+      // Open-ended floor: one prebuilt zip that installs on the sinceBuild IDE
+      // and every newer build. The IntelliJ Platform Gradle Plugin 2.x otherwise
+      // defaults until-build to the sinceBuild branch ("262.*"), capping the zip
+      // to 2026.2.x only. See nw-plugin-zip-prebuilt-release.
+      untilBuild = provider { null }
     }
   }
 }

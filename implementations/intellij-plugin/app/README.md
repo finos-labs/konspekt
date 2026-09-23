@@ -31,12 +31,12 @@ The build fails with a clear message if it is unset. (The install whose
 ## Build and run
 
 ```
-./gradlew buildPlugin     # -> build/distributions/konspekt-intellij-0.0.1.zip
+./gradlew buildPlugin     # -> build/distributions/konspekt-intellij-0.0.10.zip
 ./gradlew runIde          # launches a sandbox IDE; open the "konspekt" tool window (right edge)
 ```
 
 Install the built zip into your own IDE: Settings → Plugins → ⚙ →
-*Install Plugin from Disk…* → `build/distributions/konspekt-intellij-0.0.1.zip`.
+*Install Plugin from Disk…* → `build/distributions/konspekt-intellij-0.0.10.zip`.
 
 ## Status
 
