@@ -332,3 +332,7 @@ proposal.
 | e-not-fleet-uniqueacceptor | notes | node:task-agent-fleet | noteworthy:nw-unique-acceptor-per-atom |  | proposed |
 | e-not-signed-acceptorunit | notes | node:task-signed-accepts | noteworthy:nw-acceptor-is-persona-capability |  | proposed |
 | e-not-signed-enforce | notes | node:task-signed-accepts | noteworthy:nw-accept-authority-enforced-not-gated |  | proposed |
+
+<!-- === plugin distribution changeset (proposed; usability) === -->
+| e-dec-usability-plugindist | decomposes | node:goal-usability | node:task-intellij-plugin-distribution |  | proposed |
+| e-link-plugindist-intellij | links | node:task-intellij-plugin-distribution | node:task-intellij-plugin | 0.8 | proposed |
