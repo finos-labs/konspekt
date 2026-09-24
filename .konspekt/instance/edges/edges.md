@@ -336,3 +336,9 @@ proposal.
 <!-- === plugin distribution changeset (proposed; usability) === -->
 | e-dec-usability-plugindist | decomposes | node:goal-usability | node:task-intellij-plugin-distribution |  | proposed |
 | e-link-plugindist-intellij | links | node:task-intellij-plugin-distribution | node:task-intellij-plugin | 0.8 | proposed |
+
+<!-- === plugin-zip release decision (proposed; usability) === -->
+| e-not-plugindist-ziprelease | notes | node:task-intellij-plugin-distribution | noteworthy:nw-plugin-zip-prebuilt-release |  | proposed |
+| e-not-intellij-ziprelease | notes | node:task-intellij-plugin | noteworthy:nw-plugin-zip-prebuilt-release |  | proposed |
+| e-not-plugindist-releaseonly | notes | node:task-intellij-plugin-distribution | noteworthy:nw-plugin-binary-release-only |  | proposed |
+| e-not-adoption-releaseonly | notes | node:task-adoption-path | noteworthy:nw-plugin-binary-release-only |  | proposed |

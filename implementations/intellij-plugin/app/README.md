@@ -5,6 +5,18 @@ JCEF, reading the open project's `.konspekt/instance` in-process (no Node). The
 design is in `../docs/DESIGN.md`; the graph tracks the work as
 `task-intellij-plugin`.
 
+## Install (no build)
+
+Most people do not build this. Download the prebuilt plugin zip from the latest
+release and install it from disk:
+
+1. Get `konspekt-intellij-<version>.zip` from the releases page:
+   <https://github.com/finos-labs/konspekt/releases/latest>
+2. In **IntelliJ IDEA 2026.2 or newer**: Settings → Plugins → ⚙ →
+   *Install Plugin from Disk…* → the downloaded zip, then restart when prompted.
+
+The sections below are for building the plugin from source.
+
 ## Requirements
 
 - **IntelliJ IDEA 2026.2 or newer** — this is the minimum supported IDE
@@ -31,12 +43,13 @@ The build fails with a clear message if it is unset. (The install whose
 ## Build and run
 
 ```
-./gradlew buildPlugin     # -> build/distributions/konspekt-intellij-0.0.1.zip
+./gradlew buildPlugin     # -> implementations/intellij-plugin/app/build/distributions/konspekt-intellij-0.0.10.zip
 ./gradlew runIde          # launches a sandbox IDE; open the "konspekt" tool window (right edge)
 ```
 
 Install the built zip into your own IDE: Settings → Plugins → ⚙ →
-*Install Plugin from Disk…* → `build/distributions/konspekt-intellij-0.0.1.zip`.
+*Install Plugin from Disk…* →
+`implementations/intellij-plugin/app/build/distributions/konspekt-intellij-0.0.10.zip`.
 
 ## Status
 
