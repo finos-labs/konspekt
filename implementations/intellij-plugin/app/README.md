@@ -43,13 +43,13 @@ The build fails with a clear message if it is unset. (The install whose
 ## Build and run
 
 ```
-./gradlew buildPlugin     # -> implementations/intellij-plugin/app/build/distributions/konspekt-intellij-0.0.10.zip
+./gradlew buildPlugin     # -> implementations/intellij-plugin/app/build/distributions/konspekt-intellij-0.0.11.zip
 ./gradlew runIde          # launches a sandbox IDE; open the "konspekt" tool window (right edge)
 ```
 
 Install the built zip into your own IDE: Settings → Plugins → ⚙ →
 *Install Plugin from Disk…* →
-`implementations/intellij-plugin/app/build/distributions/konspekt-intellij-0.0.10.zip`.
+`implementations/intellij-plugin/app/build/distributions/konspekt-intellij-0.0.11.zip`.
 
 ## Status
 
