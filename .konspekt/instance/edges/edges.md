@@ -351,3 +351,29 @@ proposal.
 | e-men-uiresolve-sep | mentions | node:task-ui-resolve-action | concept:concept-propose-accept-separation |  | accepted |
 | e-men-uiresolve-nofork | mentions | node:task-ui-resolve-action | concept:concept-view-no-fork |  | accepted |
 | e-not-uiresolve-verified | notes | node:task-ui-resolve-action | noteworthy:nw-ui-resolve-verified |  | accepted |
+
+<!-- === conversation-binding changeset (proposed; invariant V) === -->
+| e-dec-oploop-binding | decomposes | node:investigation-operating-loop | node:task-conversation-binding |  | proposed |
+| e-dec-account-binding | decomposes | node:goal-accountability | node:task-conversation-binding |  | proposed |
+| e-dec-binding-spec | decomposes | node:task-conversation-binding | node:task-binding-invariant-spec |  | proposed |
+| e-dec-binding-behavior | decomposes | node:task-conversation-binding | node:task-binding-operating-behavior |  | proposed |
+| e-not-binding-coldstart | notes | node:task-conversation-binding | noteworthy:nw-binding-cold-start |  | proposed |
+| e-not-binding-switch | notes | node:task-conversation-binding | noteworthy:nw-binding-active-switch |  | proposed |
+| e-not-binding-configurable | notes | node:task-conversation-binding | noteworthy:nw-binding-configurable |  | proposed |
+| e-not-binding-extraction | notes | node:task-conversation-binding | noteworthy:nw-binding-extraction-enforced |  | proposed |
+| e-not-binding-retroactive | notes | node:task-conversation-binding | noteworthy:nw-binding-retroactive |  | proposed |
+| e-not-binding-noartifacts | notes | node:task-conversation-binding | noteworthy:nw-no-artifacts-captured |  | proposed |
+| e-men-binding-completeness | mentions | node:task-conversation-binding | concept:concept-provenance-completeness |  | proposed |
+| e-men-binding-caprov | mentions | node:task-conversation-binding | concept:concept-content-addressed-provenance |  | proposed |
+| e-men-bindingspec-completeness | mentions | node:task-binding-invariant-spec | concept:concept-provenance-completeness |  | proposed |
+| e-prod-bindingspec-spec | produces | node:task-binding-invariant-spec | artifact:artifact-spec |  | proposed |
+| e-prod-bindingspec-review | produces | node:task-binding-invariant-spec | artifact:artifact-review |  | proposed |
+| e-mark-binding-task | marks | waypoint:wp-conversation-binding | node:task-conversation-binding |  | proposed |
+| e-link-binding-review | links | node:task-conversation-binding | node:task-review-ergonomics | 0.6 | proposed |
+
+<!-- === validation-experiment changeset (proposed; design direction under investigation-validation) === -->
+| e-not-valid-crossover | notes | node:investigation-validation | noteworthy:nw-crossover-over-parallel |  | proposed |
+| e-not-valid-pilot | notes | node:investigation-validation | noteworthy:nw-pilot-before-matrix |  | proposed |
+| e-not-valid-openitems | notes | node:investigation-validation | noteworthy:nw-experiment-open-items |  | proposed |
+| e-men-valid-compounding | mentions | node:investigation-validation | concept:concept-compounding-advantage |  | proposed |
+| e-mark-validexp-valid | marks | waypoint:wp-validation-experiment | node:investigation-validation |  | proposed |

@@ -61,6 +61,13 @@ export type EdgeKind =
                  // Persona layers add further EdgeKinds via their registry
                  // (see ../personas/); core carries none of them.
 
+// Per-instance policy for provenance completeness (see ../architecture/BINDING.md).
+// `optional` (the default when absent) permits a human to decline binding a
+// conversation, recorded as a waypoint; `required` admits no legal unbound state.
+// The mandatory-on-every-atom binding rule holds regardless of this value; this
+// field only decides whether an explicit non-binding is a legal answer.
+export type BindingPolicy = "required" | "optional";
+
 // ---------- Cross-cutting ----------
 
 // Where the maintainer extracted this from. Lets you trust, trace, and undo.
@@ -118,6 +125,8 @@ export interface Project {
   updatedAt: string;
   personas?: string[]; // persona layers this instance activates (see
                        // ../personas/). Absent = core-only. e.g. ["engineer"].
+  binding?: BindingPolicy; // provenance-completeness policy for this instance
+                       // (see ../architecture/BINDING.md). Absent = "optional".
 }
 
 export interface GraphNode extends Base {
