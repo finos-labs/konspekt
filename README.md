@@ -51,6 +51,7 @@ The layers compose rather than collide: a konspekt instance is a clean, human-va
 - `distribution/` — outward-facing release projections, **derived** from root by `build/distribute.mjs` (never hand-copied): the publishable subset (`spec/`, `setup/`, the konspekt skills) baked into a versioned, regenerable projection. The dogfood instance and `visual/` are excluded. Versions get cut once the spec settles.
 - `.konspekt/` — the konspekt umbrella. Holds `instance/` (konspekt eating its own dog food: the live state of building konspekt, in konspekt's own format — the first guinea pig) plus this repo's operating envelope (`OPERATING.md`, `NOTES.md`).
 - `visual/` — a read-only context explorer that bakes a snapshot of the instance and renders the `decomposes` DAG; parsing doubles as a conformance check.
+- `implementations/` — reference implementations of the read/act surface over one shared view: `implementation-zero` (a local Node + Electron UI with a filesystem watcher) and an IntelliJ plugin (an in-process reader in the IDE). Both are read-mostly, with human accept/resolve write actions.
 - `tools/` — zero-dependency Node CLIs that project the instance graph (`roadmap.mjs`, the posters) and query it (`views.mjs`), each a pure function of the instance. See `tools/README.md`. Conformance itself runs from `lib/validate.mjs`.
 - `docs/` — rendered visuals: the project overview and the generated posters under `docs/visuals/`.
 
@@ -66,7 +67,7 @@ That writes a `.konspekt/` umbrella — a seed instance (`project.md`, an empty 
 
 ## Status
 
-Pre–first-external-adopter. Schema and serialization are at **v1**. The format is being refined by dogfooding (see `.konspekt/instance/`); the next milestone is a second, independent implementer. A reference implementation is intended but deliberately not scaffolded yet — the conformance target today is `spec/` plus the dogfooded instance.
+Pre–first-external-adopter. Schema and serialization are at **v1**, now including provenance completeness — the fifth invariant (`spec/architecture/BINDING.md`): every atom binds to a source and an entity, so no conversation stays silent. The format is refined by dogfooding (see `.konspekt/instance/`). Reference implementations exist under `implementations/` — a local UI and an IntelliJ plugin, the latter a second, independent reader of the serialization (the second-implementer milestone) — each surfacing the same view with human accept/resolve. The conformance target is `spec/` plus the dogfooded instance.
 
 ## Open decisions
 

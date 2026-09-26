@@ -81,9 +81,9 @@
 <rect x="60" y="432" width="9" height="9" rx="2.5" fill="var(--accent)"/>
 <text x="78" y="440" class="primary m" font-size="15.5">Provenance — citations</text>
 <text x="450.0" y="440" text-anchor="end" class="muted mono" font-size="12">03</text>
-<text x="60" y="464" class="secondary" font-size="13">Every atom cites its source. Verbatim excerpts from</text>
-<text x="60" y="483" class="secondary" font-size="13">both sides of the exchange, content-addressed by git</text>
-<text x="60" y="502" class="secondary" font-size="13">blob SHA. A paraphrase would be an atom in disguise.</text>
+<text x="60" y="464" class="secondary" font-size="13">Every atom cites its source and binds to an entity.</text>
+<text x="60" y="483" class="secondary" font-size="13">Verbatim, both sides, content-addressed by git blob</text>
+<text x="60" y="502" class="secondary" font-size="13">SHA. Completeness is an invariant — none goes silent.</text>
 <rect x="60.0" y="532.0" width="95.2" height="21" rx="5" fill="var(--tag-bg)" stroke="var(--border)" stroke-width="1"/>
 <text x="107.6" y="547.0" text-anchor="middle" class="secondary mono" font-size="12">contentHash</text>
 <rect x="162.2" y="532.0" width="80.8" height="21" rx="5" fill="var(--tag-bg)" stroke="var(--border)" stroke-width="1"/>
@@ -91,7 +91,7 @@
 <rect x="250.0" y="532.0" width="116.8" height="21" rx="5" fill="var(--tag-bg)" stroke="var(--border)" stroke-width="1"/>
 <text x="308.4" y="547.0" text-anchor="middle" class="secondary mono" font-size="12">conversationId</text>
 <rect x="60.0" y="557.0" width="80.8" height="21" rx="5" fill="var(--tag-bg)" stroke="var(--border)" stroke-width="1"/>
-<text x="100.4" y="572.0" text-anchor="middle" class="secondary mono" font-size="12">timestamp</text>
+<text x="100.4" y="572.0" text-anchor="middle" class="secondary mono" font-size="12">binding</text>
 <rect x="490.0" y="410" width="430.0" height="178" rx="12" fill="var(--surface)" stroke="var(--border)" stroke-width="1"/>
 <rect x="510.0" y="432" width="9" height="9" rx="2.5" fill="var(--accent)"/>
 <text x="528.0" y="440" class="primary m" font-size="15.5">GitHub — backend</text>
@@ -144,19 +144,19 @@
 <text x="602.1" y="675.0" text-anchor="middle" class="accent" font-size="13.5">commit history</text>
 <line x1="40" y1="720" x2="920" y2="720" stroke="var(--border)" stroke-width="1"/>
 <text x="40.0" y="742.0" class="muted" font-size="12.5">Source: </text>
-<a href="https://github.com/denisurusov/konspekt" target="_blank">
-<text x="93.0" y="742.0" class="accent" font-size="12.5" text-decoration="underline">github.com/denisurusov/konspekt</text>
+<a href="https://github.com/finos-labs/konspekt" target="_blank">
+<text x="93.0" y="742.0" class="accent" font-size="12.5" text-decoration="underline">github.com/finos-labs/konspekt</text>
 </a>
 <text x="298.4" y="742.0" class="muted" font-size="12.5">  ·  </text>
-<a href="https://github.com/denisurusov/konspekt/blob/main/WHITEPAPER.md" target="_blank">
+<a href="https://github.com/finos-labs/konspekt/blob/main/WHITEPAPER.md" target="_blank">
 <text x="331.5" y="742.0" class="accent" font-size="12.5" text-decoration="underline">WHITEPAPER.md</text>
 </a>
 <text x="40.0" y="763.0" class="muted" font-size="12.5">Follow these steps to set up your GenAI project &amp; repo: </text>
-<a href="https://github.com/denisurusov/konspekt/tree/main/setup" target="_blank">
+<a href="https://github.com/finos-labs/konspekt/tree/main/setup" target="_blank">
 <text x="411.0" y="763.0" class="accent" font-size="12.5" text-decoration="underline">konspekt/setup</text>
 </a>
 <text x="40.0" y="784.0" class="muted" font-size="12.5">Visualize your GenAI project state record: </text>
-<a href="https://github.com/denisurusov/konspekt/tree/main/visual" target="_blank">
+<a href="https://github.com/finos-labs/konspekt/tree/main/visual" target="_blank">
 <text x="324.9" y="784.0" class="accent" font-size="12.5" text-decoration="underline">konspekt/visual</text>
 </a>
 </g>

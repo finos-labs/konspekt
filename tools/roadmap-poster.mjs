@@ -407,7 +407,7 @@ const doc = `<html lang="en">
     <div class="brand">
       <div class="mark"><b>konspekt</b> · typed knowledge graph for AI project state</div>
       <h1>Product roadmap</h1>
-      <p class="lede">Where a portable, human-readable record of AI work goes next.</p>
+      <p class="lede">Where a portable, human-readable record of AI work goes next &mdash; building on the local UI, the IDE plugin with accept &amp; resolve, and provenance completeness now shipped.</p>
     </div>
     <div class="status">
       <div><span class="dot pulse"></span><b>Proposed</b></div>
