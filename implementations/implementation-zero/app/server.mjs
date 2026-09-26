@@ -10,10 +10,12 @@
 //     signal over Server-Sent Events.
 //
 // Derived views reuse the shared query layer (lib/views.mjs) so semantics live
-// once, in the standard's shape (nw-derive-not-copy). The one write endpoint is
-// POST /api/accept: a human disposition (propose -> accept) that edits the
-// working tree only; the model still never self-accepts (concept-ui-human-
-// disposition). Local only: fs.watch sees local edits, not remote commits.
+// once, in the standard's shape (nw-derive-not-copy). The write endpoints are
+// POST /api/accept (a proposal disposition, propose -> accept) and POST
+// /api/resolve (the `resolve` authority verb, status -> resolved on a node) —
+// human dispositions that edit the working tree only; the model still never
+// self-accepts (concept-ui-human-disposition). Local only: fs.watch sees local
+// edits, not remote commits.
 //
 // Usage:
 //   node server.mjs [instanceDir]
@@ -110,11 +112,40 @@ function serveStatic(res, name) {
   res.end(readFileSync(file));
 }
 
-// ---------- accept (the one write) ----------
+// ---------- writes (human dispositions from the UI) ----------
+
+// Two-way auto-accept every proposed edge touching `id` whose other endpoint is
+// also accepted (mirrors what a human does by hand). The just-dispositioned id
+// counts as accepted; the other endpoint is checked against the current graph.
+// Provenance-ref endpoints (channel:hash, not entities) are left alone. Returns
+// the number of edge rows changed.
+function autoAcceptEdges(id) {
+  const edgesPath = join(instanceDir, "edges", "edges.md");
+  if (!existsSync(edgesPath)) return 0;
+  let edgesChanged = 0;
+  const lines = readFileSync(edgesPath, "utf8").split("\n").map((line) => {
+    const t = line.trim();
+    if (!t.startsWith("|")) return line;
+    const cells = t.split("|").slice(1, -1).map((c) => c.trim());
+    if (cells.length < 6 || cells[0] === "id" || /^-+$/.test(cells[0])) return line;
+    const [eid, kind, from, to, weight, review] = cells;
+    if (review !== "proposed") return line;
+    const fromId = from.includes(":") ? from.slice(from.indexOf(":") + 1) : from;
+    const toId = to.includes(":") ? to.slice(to.indexOf(":") + 1) : to;
+    if (fromId !== id && toId !== id) return line;
+    const other = fromId === id ? toId : fromId;
+    const oe = graph.byId.get(other);
+    const otherAccepted = other === id || (oe && oe.review === "accepted");
+    if (!otherAccepted) return line;
+    edgesChanged++;
+    return `| ${eid} | ${kind} | ${from} | ${to} | ${weight} | accepted |`;
+  });
+  if (edgesChanged) writeFileSync(edgesPath, lines.join("\n"));
+  return edgesChanged;
+}
 
 // A human disposition from the UI: flip one entity's review proposed -> accepted
-// in the working tree, then two-way auto-accept every proposed edge that touches
-// it whose other endpoint is also accepted (mirrors what a human does by hand).
+// in the working tree, then two-way auto-accept its now-both-accepted edges.
 // Working-tree only: no git commit. Idempotent — accepting an accepted entity is
 // a no-op. The model never calls this; only the human, through the UI.
 function acceptEntity(id) {
@@ -127,33 +158,34 @@ function acceptEntity(id) {
   const txt = readFileSync(abs, "utf8");
   const flipped = txt.replace(/^review:[ \t]*proposed[ \t]*$/m, "review: accepted");
   if (flipped !== txt) writeFileSync(abs, flipped);
+  return { entity: id, accepted: true, edges: autoAcceptEdges(id) };
+}
 
-  // Auto-accept edges: the accepted id counts as accepted; the other endpoint is
-  // checked against the current graph. Provenance-ref endpoints (channel:hash,
-  // not entities) are left alone.
-  const edgesPath = join(instanceDir, "edges", "edges.md");
-  let edgesChanged = 0;
-  if (existsSync(edgesPath)) {
-    const lines = readFileSync(edgesPath, "utf8").split("\n").map((line) => {
-      const t = line.trim();
-      if (!t.startsWith("|")) return line;
-      const cells = t.split("|").slice(1, -1).map((c) => c.trim());
-      if (cells.length < 6 || cells[0] === "id" || /^-+$/.test(cells[0])) return line;
-      const [eid, kind, from, to, weight, review] = cells;
-      if (review !== "proposed") return line;
-      const fromId = from.includes(":") ? from.slice(from.indexOf(":") + 1) : from;
-      const toId = to.includes(":") ? to.slice(to.indexOf(":") + 1) : to;
-      if (fromId !== id && toId !== id) return line;
-      const other = fromId === id ? toId : fromId;
-      const oe = graph.byId.get(other);
-      const otherAccepted = other === id || (oe && oe.review === "accepted");
-      if (!otherAccepted) return line;
-      edgesChanged++;
-      return `| ${eid} | ${kind} | ${from} | ${to} | ${weight} | accepted |`;
-    });
-    if (edgesChanged) writeFileSync(edgesPath, lines.join("\n"));
-  }
-  return { entity: id, accepted: true, edges: edgesChanged };
+// A human authority verb from the UI: resolve a work node -> status: resolved in
+// the working tree (spec/data-model authority verbs: `resolve <node>` sets
+// `status -> resolved`). A human verb carries its own acceptance, so a still-
+// proposed node is also flipped review -> accepted, with the same two-way edge
+// auto-accept. Nodes only; a no-op success on a node already resolved; refused on
+// an abandoned node. Working-tree only: no git commit. The model never calls this.
+function resolveEntity(id) {
+  if (!graph) return { error: "not loaded" };
+  const e = graph.byId.get(id);
+  if (!e || !e._file) return { error: "no such entity" };
+  if (e.entityType !== "node") return { error: "resolve applies to work nodes only" };
+  const abs = join(instanceDir, e._file);
+  if (!abs.startsWith(instanceDir) || !existsSync(abs)) return { error: "file missing" };
+  if (e.status === "resolved") return { entity: id, resolved: true, accepted: false, edges: 0 };
+  if (e.status === "abandoned") return { error: "an abandoned node cannot be resolved" };
+
+  let txt = readFileSync(abs, "utf8");
+  const withStatus = txt.replace(/^status:[ \t]*(?:open|active)[ \t]*$/m, "status: resolved");
+  if (withStatus === txt) return { error: "no open or active status line to resolve" };
+  txt = withStatus;
+  // The verb carries acceptance: a proposed node is accepted in the same step.
+  let accepted = false;
+  if (e.review === "proposed") { txt = txt.replace(/^review:[ \t]*proposed[ \t]*$/m, "review: accepted"); accepted = true; }
+  writeFileSync(abs, txt);
+  return { entity: id, resolved: true, accepted, edges: accepted ? autoAcceptEdges(id) : 0 };
 }
 
 // ---------- HTTP ----------
@@ -164,11 +196,18 @@ const server = createServer((req, res) => {
 
   if (path === "/" || path === "/view") return serveStatic(res, "index.html");
 
-  // The one write: accept a proposed entity (human disposition). POST only.
+  // Writes: accept a proposed entity, or resolve a work node (human dispositions).
+  // POST only.
   if (path === "/api/accept") {
     if (req.method !== "POST") { res.writeHead(405); return res.end("method not allowed"); }
     const result = acceptEntity(url.searchParams.get("entity") || "");
     if (!result.error) reload("accept");
+    return sendJson(res, result, result.error ? 400 : 200);
+  }
+  if (path === "/api/resolve") {
+    if (req.method !== "POST") { res.writeHead(405); return res.end("method not allowed"); }
+    const result = resolveEntity(url.searchParams.get("entity") || "");
+    if (!result.error) reload("resolve");
     return sendJson(res, result, result.error ? 400 : 200);
   }
 
@@ -197,7 +236,7 @@ const server = createServer((req, res) => {
     if (!abs.startsWith(instanceDir) || !existsSync(abs)) return sendJson(res, { error: "file missing" }, 404);
     const p = e.provenance || {};
     return sendJson(res, { id: e.id, file: e._file, markdown: readFileSync(abs, "utf8"),
-      review: e.review || null,
+      review: e.review || null, status: e.status || null, entityType: e.entityType || null,
       sourceRef: p.sourceRef || null, contentHash: p.contentHash || null });
   }
   // One provenance source excerpt by its content hash (git blob SHA). Confined to
