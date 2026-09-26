@@ -37,6 +37,20 @@ unless the human accepted the content itself.
 mechanical back-and-forth. A turn that decided something, named something,
 finished something, or changed the status of something is substantive.
 
+**Substantive is not only code.** Docs, presentation materials, releases, and
+announcements are deliverables that bind like any other work — a task that
+produces them, a milestone for a release. Do not classify them as exempt
+"maintenance": the persona layer exempts konspekt-upkeep *commands* from
+command-provenance, never *work* from binding.
+
+**Under `binding: required` (`spec/architecture/BINDING.md`), holding is not a
+legal disposition for a whole conversation.** The legal end states are: bind the
+work to an entity, or — only under `binding: optional` — record a deliberate
+non-binding. Check the instance's `binding` field before deciding to hold a
+substantive exchange. A lapse is not caught by conformance (an uncaptured
+conversation produces no file to validate); `tools/binding-audit.mjs` reconciles
+commits against the graph as a backstop, but the propose step is yours to run.
+
 ## Print the task text before working it
 
 Before you act on a task node — implementing it, investigating it, or venturing
