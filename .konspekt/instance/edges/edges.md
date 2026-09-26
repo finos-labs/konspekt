@@ -344,10 +344,10 @@ proposal.
 | e-not-adoption-releaseonly | notes | node:task-adoption-path | noteworthy:nw-plugin-binary-release-only |  | proposed |
 
 <!-- === UI resolve action (proposed; usability) === -->
-| e-dec-usability-uiresolve | decomposes | node:goal-usability | node:task-ui-resolve-action |  | proposed |
-| e-drv-humandisp-uiresolve | drives | concept:concept-ui-human-disposition | waypoint:wp-adr-ui-resolve-action |  | proposed |
-| e-mark-uiresolve-uitask | marks | waypoint:wp-adr-ui-resolve-action | node:task-ui-resolve-action |  | proposed |
-| e-lnk-uiresolve-workthrough | links | node:task-ui-resolve-action | node:task-task-workthrough-ui | 0.8 | proposed |
-| e-men-uiresolve-sep | mentions | node:task-ui-resolve-action | concept:concept-propose-accept-separation |  | proposed |
-| e-men-uiresolve-nofork | mentions | node:task-ui-resolve-action | concept:concept-view-no-fork |  | proposed |
-| e-not-uiresolve-verified | notes | node:task-ui-resolve-action | noteworthy:nw-ui-resolve-verified |  | proposed |
+| e-dec-usability-uiresolve | decomposes | node:goal-usability | node:task-ui-resolve-action |  | accepted |
+| e-drv-humandisp-uiresolve | drives | concept:concept-ui-human-disposition | waypoint:wp-adr-ui-resolve-action |  | accepted |
+| e-mark-uiresolve-uitask | marks | waypoint:wp-adr-ui-resolve-action | node:task-ui-resolve-action |  | accepted |
+| e-lnk-uiresolve-workthrough | links | node:task-ui-resolve-action | node:task-task-workthrough-ui | 0.8 | accepted |
+| e-men-uiresolve-sep | mentions | node:task-ui-resolve-action | concept:concept-propose-accept-separation |  | accepted |
+| e-men-uiresolve-nofork | mentions | node:task-ui-resolve-action | concept:concept-view-no-fork |  | accepted |
+| e-not-uiresolve-verified | notes | node:task-ui-resolve-action | noteworthy:nw-ui-resolve-verified |  | accepted |

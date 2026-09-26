@@ -1,7 +1,7 @@
 ```yaml
 id: nw-ui-resolve-verified
 kind: fact
-review: proposed
+review: accepted
 provenance:
   sourceRef: 44b51f8e3a332bf62e25beedafc51b8b21e8ce7b
   contentHash: 44b51f8e3a332bf62e25beedafc51b8b21e8ce7b
