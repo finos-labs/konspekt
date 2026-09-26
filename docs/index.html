@@ -232,12 +232,20 @@
   .pay-h{font-family:var(--disp);font-size:27px;line-height:1.06;color:var(--ink);margin:14px 0 12px;text-wrap:balance}
   .pay-b{font-size:16px;line-height:1.46;color:var(--ink-soft)}
   /* ---- proof / compounding ---- */
-  .proof{display:grid;grid-template-columns:1.06fr 0.94fr;gap:50px;flex:1;align-items:center;margin-top:10px}
-  .proof-cap{font-size:13px;color:var(--muted);font-style:italic;text-align:center;margin-top:8px;line-height:1.4;max-width:46ch;margin-left:auto;margin-right:auto}
-  .proof-pt{border-top:1px solid var(--rule);padding-top:16px;margin-bottom:22px}
-  .proof-pt:last-child{margin-bottom:0}
-  .proof-h{font-family:var(--disp);font-size:24px;color:var(--ochre);margin-bottom:8px}
-  .proof-b{font-size:16.5px;line-height:1.5;color:var(--ink-soft)}
+  .proof-cap{font-size:13px;color:var(--muted);font-style:italic;text-align:center;margin-top:10px;line-height:1.4;max-width:46ch;margin-left:auto;margin-right:auto}
+  .cmp{display:flex;flex-direction:column;flex:1;margin-top:14px}
+  .assume{border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);padding:14px 0;display:grid;grid-template-columns:auto 1fr;gap:30px;align-items:center}
+  .assume-l{font-family:var(--mono);font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ochre);white-space:nowrap;line-height:1.35}
+  .assume-items{display:grid;grid-template-columns:repeat(3,1fr);gap:0 30px}
+  .assume-items > div{font-size:14.5px;line-height:1.36;color:var(--ink-soft);padding-left:16px;position:relative}
+  .assume-items > div::before{content:"";position:absolute;left:0;top:8px;width:8px;height:1px;background:var(--ochre)}
+  .assume-items b{color:var(--ink);font-weight:400}
+  .cmp-body{display:grid;grid-template-columns:1.02fr 0.98fr;gap:48px;flex:1;align-items:center;margin-top:4px}
+  .arg{display:flex;flex-direction:column}
+  .arg-lead{font-size:17.5px;line-height:1.5;color:var(--ink);margin-bottom:4px}
+  .arg-item{border-top:1px solid var(--rule-soft);padding:13px 0 12px 22px;position:relative;font-size:15.5px;line-height:1.44;color:var(--ink-soft)}
+  .arg-item::before{content:"";position:absolute;left:0;top:21px;width:10px;height:1px;background:var(--ochre)}
+  .arg-item b{color:var(--ochre);font-weight:400}
   /* ---- faq ---- */
   .faq{display:grid;grid-template-columns:1fr 1fr;gap:26px 56px;flex:1;align-content:center;margin-top:14px}
   .faq-q{font-family:var(--disp);font-size:23px;color:var(--ochre);margin-bottom:8px;line-height:1.1}
@@ -360,6 +368,8 @@
 </style>
 </head>
 <body>
+
+
 <div class="app" id="app">
   <div class="stage" id="stage">
     <div class="deck" id="deck">
@@ -855,38 +865,44 @@ VFS-native change source, so the reader ships with the plugin …</pre>
         <div class="wrap">
           <div class="head-row">
             <h2 class="s-head">The advantage compounds</h2>
-            <div class="eyebrow">Why it holds up</div>
+            <div class="eyebrow">Hypothesis</div>
           </div>
           <hr class="rule" style="margin-top:20px">
-          <div class="proof">
-            <div>
-              <svg viewBox="0 0 520 350" style="width:100%;max-width:500px;display:block" font-family="'Source Serif 4', Georgia, serif">
-                <g stroke-width="1">
-                  <line x1="70" y1="140" x2="495" y2="140" stroke="#EAE5DB"/>
-                  <line x1="70" y1="215" x2="495" y2="215" stroke="#EAE5DB"/>
-                  <line x1="70" y1="290" x2="495" y2="290" stroke="#D7D0C3"/>
-                  <line x1="70" y1="45" x2="70" y2="290" stroke="#D7D0C3"/>
-                </g>
-                <path d="M70,275 L280,263 L495,251 L495,290 L70,290 Z" fill="rgba(169,116,42,0.08)"/>
-                <polyline points="70,278 123,274 175,263 228,244 280,219 333,186 385,147 438,101 495,57" fill="none" stroke="#7A6A56" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                <polyline points="70,275 280,263 495,251" fill="none" stroke="#A9742A" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
-                <circle cx="495" cy="57" r="4" fill="#7A6A56"/>
-                <circle cx="495" cy="251" r="4.5" fill="#A9742A"/>
-                <text x="360" y="112" text-anchor="middle" font-size="14.5" fill="#7A6A56">Native LLM memory</text>
-                <text x="405" y="278" text-anchor="middle" font-size="14.5" fill="#A9742A" font-weight="600">konspekt</text>
-                <text x="282" y="322" text-anchor="middle" font-size="12.5" fill="#8C8377">project complexity — edges in the graph →</text>
-                <text transform="translate(30,167) rotate(-90)" text-anchor="middle" font-size="12.5" fill="#8C8377">cost to re-establish context →</text>
-              </svg>
-              <p class="proof-cap">Directional. The number comes from an A/B — the same work run with and without konspekt, counting the tokens it takes to restore and hold fidelity.</p>
-            </div>
-            <div>
-              <div class="proof-pt">
-                <div class="proof-h">Built with konspekt</div>
-                <div class="proof-b">The konspekt instance tracks konspekt&rsquo;s own development — the standard is dogfooded against its own evolution.</div>
+          <div class="cmp">
+            <div class="assume">
+              <div class="assume-l">Holds<br>when</div>
+              <div class="assume-items">
+                <div><b>Across sessions</b> — within a single conversation, native context is cheaper.</div>
+                <div><b>Memory accretes ungated</b> — no human curation, no supersession.</div>
+                <div><b>The work has real structure</b> — interdependent decisions, provenance, things that supersede.</div>
               </div>
-              <div class="proof-pt">
-                <div class="proof-h">Why it compounds</div>
-                <div class="proof-b">Native memory re-derives context each time, and that cost climbs super-linearly as the graph grows. konspekt reads a typed record, so its cost stays roughly flat — the harder the project, the wider the gap.</div>
+            </div>
+            <div class="cmp-body">
+              <div class="arg">
+                <p class="arg-lead">Given these hold, a curated, fit&#8209;for&#8209;project structure turns recall into deterministic traversal — following typed edges to what&rsquo;s related, instead of re&#8209;deriving it or ranking by similarity.</p>
+                <div class="arg-item"><b>Size</b> — the graph grows only as the human accepts entries; native memory accretes on its own. The larger the project, the wider the size gap.</div>
+                <div class="arg-item"><b>Accuracy</b> — traversal reaches the related entries by construction; similarity retrieval guesses and drops the connective tissue. More edges, more that only structure recovers.</div>
+                <div class="arg-item"><b>Integrity</b> — curation and explicit supersession keep the record correct; uncurated memory drifts and corrupts. The longer it runs, the more drift the graph avoids.</div>
+              </div>
+              <div>
+                <svg viewBox="0 0 520 350" style="width:100%;max-width:480px;display:block;margin:0 auto" font-family="'Source Serif 4', Georgia, serif">
+                  <g stroke-width="1">
+                    <line x1="70" y1="140" x2="495" y2="140" stroke="#EAE5DB"/>
+                    <line x1="70" y1="215" x2="495" y2="215" stroke="#EAE5DB"/>
+                    <line x1="70" y1="290" x2="495" y2="290" stroke="#D7D0C3"/>
+                    <line x1="70" y1="45" x2="70" y2="290" stroke="#D7D0C3"/>
+                  </g>
+                  <path d="M70,275 L280,263 L495,251 L495,290 L70,290 Z" fill="rgba(169,116,42,0.08)"/>
+                  <polyline points="70,278 123,274 175,263 228,244 280,219 333,186 385,147 438,101 495,57" fill="none" stroke="#7A6A56" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <polyline points="70,275 280,263 495,251" fill="none" stroke="#A9742A" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+                  <circle cx="495" cy="57" r="4" fill="#7A6A56"/>
+                  <circle cx="495" cy="251" r="4.5" fill="#A9742A"/>
+                  <text x="360" y="112" text-anchor="middle" font-size="14.5" fill="#7A6A56">Native LLM memory</text>
+                  <text x="405" y="278" text-anchor="middle" font-size="14.5" fill="#A9742A" font-weight="600">konspekt</text>
+                  <text x="282" y="322" text-anchor="middle" font-size="12.5" fill="#8C8377">project complexity — edges in the graph →</text>
+                  <text transform="translate(30,167) rotate(-90)" text-anchor="middle" font-size="12.5" fill="#8C8377">cost to re-establish context →</text>
+                </svg>
+                <p class="proof-cap">Directional. The gap comes from an A/B — the same work run with and without konspekt, measuring what it takes to restore and hold fidelity.</p>
               </div>
             </div>
           </div>
@@ -1119,5 +1135,6 @@ VFS-native change source, so the reader ships with the plugin …</pre>
   document.getElementById('app').classList.add('ready');
 })();
 </script>
+
 </body>
 </html>
