@@ -3,7 +3,7 @@
      Check freshness with: node tools/roadmap.mjs --check
      This file is a pure function of .konspekt/instance/ (no timestamps baked in).
      Goals and tasks are graph nodes; the horizon is derived from node status/review.
-     contentHash: sha256:e4fd901a09e9d890 -->
+     contentHash: sha256:dbfea8d1c64f4f29 -->
 
 # konspekt roadmap
 
@@ -23,6 +23,9 @@ Make the facts a responsibility question needs answerable with evidence. The law
 **Later** — _proposed, not yet committed_
 
 - The responsibility report
+- Add the provenance-completeness invariant to the spec
+- Ask-at-open binding behavior in the operating loop
+- Bind every conversation to a graph entity
 - Signed accepts via a legally-bound persona
 
 **Shipped** — _resolved_
@@ -43,6 +46,12 @@ Make konspekt's record a high-quality *input* to the model, not only a human-rea
 - Central-service binding (MCP + REST over a dumb store)
 - Make notifications portable
 
+**Later** — _proposed, not yet committed_
+
+- Add the provenance-completeness invariant to the spec
+- Ask-at-open binding behavior in the operating loop
+- Bind every conversation to a graph entity
+
 **Shipped** — _resolved_
 
 - Provenance model — content-addressed source
@@ -62,6 +71,12 @@ Help people process gen-AI outputs and follow long conversations by externalizin
 
 - Central-service binding (MCP + REST over a dumb store)
 - Make notifications portable
+
+**Later** — _proposed, not yet committed_
+
+- Add the provenance-completeness invariant to the spec
+- Ask-at-open binding behavior in the operating loop
+- Bind every conversation to a graph entity
 
 **Shipped** — _resolved_
 
@@ -125,7 +140,6 @@ Make a konspekt instance operable by a human through a visual interface, not onl
 **Next** — _accepted and planned_
 
 - Navigate from a goal to its open tasks
-- Build the IntelliJ plugin shell over the one view
 - Work through and disposition tasks in the interface
 - Encode status and review as visual channels and filters
 
@@ -138,8 +152,11 @@ Make a konspekt instance operable by a human through a visual interface, not onl
 **Shipped** — _resolved_
 
 - An ASR/ADR view in the konspekt UI
+- Build the IntelliJ plugin shell over the one view
+- Distribute the IntelliJ plugin as an installable zip
 - Configurable popup mode for the IntelliJ plugin
 - Related-commands tab in the entity detail panel
+- Resolve a work node from the UI (POST /api/resolve)
 - Take simple actions from the UI (accept a proposed entity)
 
 ## Share authorship across a team _(proposed)_
@@ -154,4 +171,4 @@ Let several participants — people and agents — propose into and review one s
 
 ---
 
-Generated from 7 goal(s) and 50 task-listing(s) over the instance graph.
+Generated from 7 goal(s) and 61 task-listing(s) over the instance graph.

@@ -249,6 +249,14 @@ the blob SHA is the hash — so it can fail only on a dangling pointer or a corr
 store; `sourceRef` and `contentHash` are kept as two fields so a future binding
 whose addressed text can drift still has a real integrity gate.
 
+**Provenance completeness** is the invariant above the verify probe: every
+proposed atom must *bind* — carry a resolvable reference to a source and attach to
+the graph through an entity — and a whole conversation resolves to entities or is
+recorded as an explicit, auditable non-binding. There is no third state in which
+work happened and the graph shows nothing. Like `confidence`, it is enforced at
+extraction, not as a `persist` gate, and it is referential integrity, not
+acceptance judgment (`spec/architecture/BINDING.md`).
+
 After the ladder matches an atom that is not a duplicate, one test separates the
 remaining two cases — **is a second entity involved?**
 

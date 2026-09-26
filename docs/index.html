@@ -268,6 +268,13 @@
   .qn{font-family:var(--disp);font-size:19px;color:var(--ochre);letter-spacing:.06em}
   .qh{font-family:var(--disp);font-size:29px;color:var(--ink);margin:14px 0 12px}
   .qb{font-size:17.5px;line-height:1.5;color:var(--ink-soft)}
+  /* five-across variant (invariants) */
+  .quint{display:grid;grid-template-columns:repeat(5,1fr);flex:1;margin-top:16px}
+  .quint .qcell{padding:26px 22px;border-left:1px solid var(--rule)}
+  .quint .qcell:first-child{border-left:0;padding-left:0}
+  .quint .qcell:last-child{padding-right:0}
+  .quint .qh{font-size:22px;margin:12px 0 10px;line-height:1.12}
+  .quint .qb{font-size:14.5px;line-height:1.46}
 
   /* ---- roadmap descriptions (slide 15) ---- */
   .rmcols{display:grid;grid-template-columns:repeat(4,1fr);gap:40px;border-top:1px solid var(--rule);padding-top:22px}
@@ -458,7 +465,7 @@
             </div>
             <div class="refimpl-item">
               <div class="refimpl-h">Views</div>
-              <p>Project state, open tasks, and the change ledger — in a standalone Node.js UI or an IntelliJ plugin.</p>
+              <p>Project state, open tasks, and the change ledger — a standalone Node.js UI or an installable IntelliJ plugin, where you accept and resolve in place.</p>
             </div>
           </div>
           <div class="foot"><span class="foot-mark">konspekt · FINOS Labs</span><span class="foot-num">03</span></div>
@@ -599,7 +606,7 @@
               <div class="verb cmd"><div class="verb-w">sync_persist</div><div class="verb-c">both, in one durable step</div></div>
             </div>
           </div>
-          <p class="verb-note">You never have to remember the vocabulary: as you work, the assistant proposes the fitting verb and the interface surfaces it for a one&#8209;click accept. It runs on <b>recognition, not recall</b>.</p>
+          <p class="verb-note">You never have to remember the vocabulary: as you work, the assistant proposes the fitting verb and the interface surfaces it for a one&#8209;click disposition &mdash; accept a proposal, resolve a node. It runs on <b>recognition, not recall</b>.</p>
           <div class="foot"><span class="foot-mark">konspekt · FINOS Labs</span><span class="foot-num">07</span></div>
         </div>
       </section>
@@ -730,7 +737,7 @@
             </table>
             <div class="p-foot"><span>Showing <b>4</b> of <b>58</b> entities · window of 10, scroll for the rest</span><span><i class="dot d-green"></i>synced just now · 58 entities · 1 changed</span></div>
           </div>
-          <p class="cap">Read&#8209;only over the working tree, refreshed by a filesystem watcher. The one write is Accept on a proposed entity. A recreation of the shared view, drawn from its source.</p>
+          <p class="cap">A live view over the working tree, refreshed by a filesystem watcher. Two human writes &mdash; Accept a proposed atom, Resolve a work node &mdash; and nothing else; the model still only proposes. A recreation of the shared view, drawn from its source.</p>
         </div>
       </section>
 
@@ -745,7 +752,7 @@
           <div class="detail">
             <div class="panel">
               <div class="p-head"><div class="p-title"><b>task-second-implementer</b></div><span style="color:var(--ui-faint);font-size:18px">&times;</span></div>
-              <div class="banner"><span>Proposed — awaiting a human disposition.</span><button class="btn-acc">Accept</button></div>
+              <div class="banner"><span>Proposed — awaiting a human disposition.</span><span style="display:flex;gap:8px"><button class="btn-acc" style="background:transparent;color:#8fe0a6;border:1px solid rgba(135,215,163,.5)">Resolve</button><button class="btn-acc">Accept</button></span></div>
               <div class="tabs" style="padding:0 20px 12px;border-bottom:1px solid var(--ui-line)"><span>Details</span><span class="on">Provenance</span><span>Commands (2)</span><span>Changes (1)</span></div>
               <div class="src-lbl">SOURCES/4F1C9E27B3A8_.MD</div>
               <pre class="code">### human
@@ -916,11 +923,12 @@ VFS-native change source, so the reader ships with the plugin …</pre>
           <div class="eyebrow">Invariants</div>
           <h2 class="s-head" style="margin-top:10px;font-size:54px">Principles the design holds to</h2>
           <hr class="rule" style="margin-top:20px">
-          <div class="quad">
+          <div class="quint">
             <div class="qcell"><div class="qn">I</div><h4 class="qh">The store stays simple</h4><p class="qb">The backing store reads and writes. Judging a proposal happens in the review conversation, not in the storage layer.</p></div>
             <div class="qcell"><div class="qn">II</div><h4 class="qh">The read path is neutral</h4><p class="qb">An instance is plain files that anyone can re&#8209;read without an API, so adopting konspekt does not commit a project to one tool.</p></div>
             <div class="qcell"><div class="qn">III</div><h4 class="qh">Distribution is a projection</h4><p class="qb">Anything published is regenerated from the graph, so no second copy exists that can drift away from the record.</p></div>
             <div class="qcell"><div class="qn">IV</div><h4 class="qh">Merge converges, accept does not</h4><p class="qb">Anyone may propose, and proposals merge without conflict. Deciding what is accepted stays with a named authority.</p></div>
+            <div class="qcell"><div class="qn">V</div><h4 class="qh">Provenance completeness</h4><p class="qb">Every atom binds — to its source and to an entity. A conversation resolves to the graph or is recorded as a deliberate non&#8209;binding; none goes silent.</p></div>
           </div>
           <div class="foot" style="margin-top:8px"><span class="foot-mark">konspekt · FINOS Labs</span><span class="foot-num">12</span></div>
         </div>
