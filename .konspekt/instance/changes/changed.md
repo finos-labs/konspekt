@@ -59,3 +59,9 @@ commit order; the channel was not live during that work.
 | task-ui-simple-actions | c0e0b24206aaa512d7699bc335f9845b9a56dee6 | implementations/implementation-zero/app/view/app.js |
 | task-ui-simple-actions | c0e0b24206aaa512d7699bc335f9845b9a56dee6 | implementations/implementation-zero/app/view/app.css |
 | task-ui-simple-actions | c0e0b24206aaa512d7699bc335f9845b9a56dee6 | implementations/intellij-plugin/app/gradle.properties |
+| task-ui-resolve-action | 48bcc4df76f2d09a5f594f509fde97adc482e4ba | implementations/implementation-zero/app/server.mjs |
+| task-ui-resolve-action | 48bcc4df76f2d09a5f594f509fde97adc482e4ba | implementations/implementation-zero/app/view/app.js |
+| task-ui-resolve-action | 48bcc4df76f2d09a5f594f509fde97adc482e4ba | implementations/implementation-zero/app/test/server.test.mjs |
+| task-ui-resolve-action | 48bcc4df76f2d09a5f594f509fde97adc482e4ba | implementations/intellij-plugin/app/README.md |
+| task-ui-resolve-action | 48bcc4df76f2d09a5f594f509fde97adc482e4ba | implementations/intellij-plugin/app/src/main/kotlin/dev/konspekt/plugin/InstanceReader.kt |
+| task-ui-resolve-action | 48bcc4df76f2d09a5f594f509fde97adc482e4ba | implementations/intellij-plugin/app/src/main/kotlin/dev/konspekt/plugin/ViewServer.kt |
