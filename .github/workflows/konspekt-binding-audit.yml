@@ -1,0 +1,55 @@
+name: konspekt binding audit
+
+# Detects unbound work for an instance running binding: required
+# (spec/architecture/BINDING.md). Every non-bookkeeping commit since the baseline
+# in .konspekt/binding-audit.json must be bound to an entity via a row in the
+# changed-code log (.konspekt/instance/changes/changed.md). A commit that changed
+# surfaces outside .konspekt/instance/ but binds to nothing fails the job.
+#
+# This is detection at the commit boundary, not a persist gate: it reports after
+# the fact and never blocks a save. It complements lib/validate.mjs, which can
+# only check files that exist and so cannot see an uncaptured conversation
+# (nw-binding-enforcement-gap, task-binding-gap-audit).
+#
+# Runs on all pushes to main and all pull requests, because the work it audits is
+# outside the instance. Node-only, no network, no dependencies.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: konspekt-binding-audit-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # the audit walks baseline..HEAD; needs full history
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Binding audit
+        id: audit
+        run: |
+          set -o pipefail
+          node tools/binding-audit.mjs | tee "$RUNNER_TEMP/audit.txt"
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "### konspekt binding audit" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          cat "$RUNNER_TEMP/audit.txt" >> "$GITHUB_STEP_SUMMARY" 2>/dev/null || echo "(no output)" >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"

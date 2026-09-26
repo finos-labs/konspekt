@@ -65,3 +65,15 @@ commit order; the channel was not live during that work.
 | task-ui-resolve-action | 48bcc4df76f2d09a5f594f509fde97adc482e4ba | implementations/intellij-plugin/app/README.md |
 | task-ui-resolve-action | 48bcc4df76f2d09a5f594f509fde97adc482e4ba | implementations/intellij-plugin/app/src/main/kotlin/dev/konspekt/plugin/InstanceReader.kt |
 | task-ui-resolve-action | 48bcc4df76f2d09a5f594f509fde97adc482e4ba | implementations/intellij-plugin/app/src/main/kotlin/dev/konspekt/plugin/ViewServer.kt |
+| task-binding-gap-audit | bd2623854300df7f84c092f4e5bfb4c28518a050 | tools/binding-audit.mjs |
+| task-binding-gap-audit | bd2623854300df7f84c092f4e5bfb4c28518a050 | .konspekt/binding-audit.json |
+| task-binding-gap-audit | bd2623854300df7f84c092f4e5bfb4c28518a050 | .github/workflows/konspekt-binding-audit.yml |
+| task-binding-gap-audit | bd2623854300df7f84c092f4e5bfb4c28518a050 | spec/personas/engineer/AGENTS.md |
+| task-binding-gap-audit | bd2623854300df7f84c092f4e5bfb4c28518a050 | .claude/skills/konspekt-atom-readiness/SKILL.md |
+| task-linkedin-announce-2026-09 | ff1b2b86c668726ba6d2f075b28334b967c0cd17 | docs/announcements/linkedin/README.md |
+| task-linkedin-announce-2026-09 | ff1b2b86c668726ba6d2f075b28334b967c0cd17 | docs/announcements/linkedin/post_2026-09-26/images/CAPTURE.md |
+| task-linkedin-announce-2026-09 | ff1b2b86c668726ba6d2f075b28334b967c0cd17 | docs/announcements/linkedin/post_2026-09-26/post.md |
+| task-linkedin-announce-2026-09 | ff1b2b86c668726ba6d2f075b28334b967c0cd17 | docs/announcements/linkedin/post_2026-09-27/article.html |
+| task-linkedin-announce-2026-09 | ff1b2b86c668726ba6d2f075b28334b967c0cd17 | docs/announcements/linkedin/post_2026-09-27/article.md |
+| task-linkedin-announce-2026-09 | ff1b2b86c668726ba6d2f075b28334b967c0cd17 | docs/announcements/linkedin/post_2026-09-27/images/invariants.png |
+| task-linkedin-announce-2026-09 | ff1b2b86c668726ba6d2f075b28334b967c0cd17 | docs/announcements/linkedin/post_2026-09-27/post.md |

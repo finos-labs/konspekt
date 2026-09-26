@@ -220,12 +220,12 @@ proposal.
 | e-prod-nav-explorer | produces | node:task-goal-task-navigation | artifact:artifact-visual-explorer |  |  |
 
 <!-- === app design 101 changeset (proposed; konspekt UI application) === -->
-| e-dec-usability-uiapp | decomposes | node:goal-usability | node:task-konspekt-ui-app |  | proposed |
+| e-dec-usability-uiapp | decomposes | node:goal-usability | node:task-konspekt-ui-app |  | accepted |
 | e-dec-usability-mcpapp | decomposes | node:goal-usability | node:task-mcp-app-surface |  | proposed |
 | e-dec-collab-cas | decomposes | node:goal-collaboration | node:task-atom-versioning-cas |  | proposed |
-| e-link-uiapp-workthrough | links | node:task-konspekt-ui-app | node:task-task-workthrough-ui | 0.8 | proposed |
-| e-link-uiapp-nav | links | node:task-konspekt-ui-app | node:task-goal-task-navigation | 0.7 | proposed |
-| e-link-uiapp-filters | links | node:task-konspekt-ui-app | node:task-visual-status-filters | 0.7 | proposed |
+| e-link-uiapp-workthrough | links | node:task-konspekt-ui-app | node:task-task-workthrough-ui | 0.8 | accepted |
+| e-link-uiapp-nav | links | node:task-konspekt-ui-app | node:task-goal-task-navigation | 0.7 | accepted |
+| e-link-uiapp-filters | links | node:task-konspekt-ui-app | node:task-visual-status-filters | 0.7 | accepted |
 | e-link-uiapp-mcpapp | links | node:task-konspekt-ui-app | node:task-mcp-app-surface | 0.7 | proposed |
 | e-link-mcpapp-central | links | node:task-mcp-app-surface | node:task-central-service-binding | 0.6 | proposed |
 | e-link-cas-enterprise | links | node:task-atom-versioning-cas | node:task-enterprise-persistence | 0.7 | proposed |
@@ -233,7 +233,7 @@ proposal.
 | e-link-cas-reconciliation | links | node:task-atom-versioning-cas | node:task-reconciliation | 0.6 | proposed |
 | e-men-uiapp-companion | mentions | node:task-konspekt-ui-app | concept:concept-companion-surface |  | proposed |
 | e-men-mcpapp-companion | mentions | node:task-mcp-app-surface | concept:concept-companion-surface |  | proposed |
-| e-men-uiapp-sep | mentions | node:task-konspekt-ui-app | concept:concept-propose-accept-separation |  | proposed |
+| e-men-uiapp-sep | mentions | node:task-konspekt-ui-app | concept:concept-propose-accept-separation |  | accepted |
 | e-men-cas-sep | mentions | node:task-atom-versioning-cas | concept:concept-propose-accept-separation |  | proposed |
 | e-drv-vwseam-casadr | drives | concept:concept-versioned-write-seam | waypoint:wp-adr-cas-write-contract |  | proposed |
 | e-mark-casadr-castask | marks | waypoint:wp-adr-cas-write-contract | node:task-atom-versioning-cas |  | proposed |
@@ -267,9 +267,9 @@ proposal.
 | e-prod-enterprise-uidesign | produces | node:task-enterprise-persistence | artifact:artifact-ui-design |  | proposed |
 
 <!-- === implementations changeset (proposed; local-first layering) === -->
-| e-dec-uiapp-implzero | decomposes | node:task-konspekt-ui-app | node:task-implementation-zero |  | proposed |
-| e-dec-uiapp-intellij | decomposes | node:task-konspekt-ui-app | node:task-intellij-plugin |  | proposed |
-| e-not-uiapp-layering | notes | node:task-konspekt-ui-app | noteworthy:nw-implementation-layering |  | proposed |
+| e-dec-uiapp-implzero | decomposes | node:task-konspekt-ui-app | node:task-implementation-zero |  | accepted |
+| e-dec-uiapp-intellij | decomposes | node:task-konspekt-ui-app | node:task-intellij-plugin |  | accepted |
+| e-not-uiapp-layering | notes | node:task-konspekt-ui-app | noteworthy:nw-implementation-layering |  | accepted |
 | e-not-implzero-layering | notes | node:task-implementation-zero | noteworthy:nw-implementation-layering |  |  |
 | e-not-intellij-layering | notes | node:task-intellij-plugin | noteworthy:nw-implementation-layering |  |  |
 | e-not-implzero-pollfloor | notes | node:task-implementation-zero | noteworthy:nw-poll-is-the-floor-push-is-optional |  | proposed |
@@ -377,3 +377,11 @@ proposal.
 | e-not-valid-openitems | notes | node:investigation-validation | noteworthy:nw-experiment-open-items |  | proposed |
 | e-men-valid-compounding | mentions | node:investigation-validation | concept:concept-compounding-advantage |  | proposed |
 | e-mark-validexp-valid | marks | waypoint:wp-validation-experiment | node:investigation-validation |  | proposed |
+
+<!-- === bind loose 2026-09 session work + forcing-function gap (proposed) === -->
+| e-mark-plugindist-release011 | marks | waypoint:wp-plugin-release-0-0-11 | node:task-intellij-plugin-distribution |  | proposed |
+| e-dec-usability-presrefresh | decomposes | node:goal-usability | node:task-presentation-refresh |  | proposed |
+| e-dec-usability-linkedin0926 | decomposes | node:goal-usability | node:task-linkedin-announce-2026-09 |  | proposed |
+| e-dec-account-bindingaudit | decomposes | node:goal-accountability | node:task-binding-gap-audit |  | proposed |
+| e-not-bindingaudit-gap | notes | node:task-binding-gap-audit | noteworthy:nw-binding-enforcement-gap |  | proposed |
+| e-men-bindingaudit-completeness | mentions | node:task-binding-gap-audit | concept:concept-provenance-completeness |  | proposed |

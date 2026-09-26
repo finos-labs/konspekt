@@ -1,0 +1,72 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Nothing goes silent: provenance completeness in konspekt</title>
+<!--
+  PASTE-READY COPY of article.md for LinkedIn's Article editor.
+  LinkedIn has no Markdown/HTML/file import; it is a WYSIWYG editor. Pasting
+  rich text (this rendered page) carries headings, bold, links and bullet
+  lists across; pasting Markdown does not.
+
+  How to use:
+    1. Open this file in a browser.
+    2. Select all (Ctrl+A), copy (Ctrl+C).
+    3. In LinkedIn "Write article", paste into the body. The <h1> becomes the
+       article title (or move it into the title field).
+    4. Set the cover image to images/invariants.png via LinkedIn's cover button.
+       (Pasted images are stripped by LinkedIn.)
+  Verify formatting after pasting — LinkedIn sanitizes pasted markup.
+-->
+<style>
+  body{max-width:720px;margin:2rem auto;padding:0 1rem;font:17px/1.6 Georgia,serif;color:#1a1a1a}
+  h1{font-size:2rem;line-height:1.2}
+  h2{font-size:1.35rem;margin-top:2rem}
+  figure{margin:1.5rem 0}
+  figure img{width:100%;border:1px solid #ddd}
+  figcaption{font:14px/1.4 system-ui,sans-serif;color:#666;margin-top:.4rem}
+  .marker{font:13px/1.4 system-ui,sans-serif;color:#a00}
+</style>
+
+<h1>Nothing goes silent: provenance completeness in konspekt</h1>
+
+<p class="marker">[COVER images/invariants.png — set as the article cover via LinkedIn's cover button]</p>
+<figure>
+  <img src="images/invariants.png" alt="The five invariants konspekt's design holds to; the fifth is provenance completeness">
+  <figcaption>The five invariants konspekt's design holds to. Provenance completeness is the fifth.</figcaption>
+</figure>
+
+<p>konspekt keeps the state of an AI-driven project as a typed graph: goals, tasks, decisions, and the verbatim exchanges they came from. Last week's work put that graph in front of you — a local UI, and an IntelliJ plugin — and let you accept and resolve from it. This week's work is less visible, and for anyone who has to account for what an AI did, it matters more: konspekt added an invariant that closes the gap where a conversation produces nothing the record can see.</p>
+
+<h2>The failure it rules out</h2>
+
+<p>The failure is specific. You work through something with a model across a long exchange. Decisions are made, directions are set. The session ends and no atom was extracted, so the source text is referenced by nothing and the graph shows no sign the work happened. The record is not wrong; it is silent. For a project whose purpose is an auditable account of AI-driven work, a silent conversation is the one outcome the record must not allow.</p>
+
+<h2>The invariant</h2>
+
+<p>Provenance completeness is that guarantee. An atom is bound when it carries a resolvable reference to an entity: its provenance anchors it to a source, and it attaches to the graph through at least one entity — its own identity for a node, an edge endpoint for an edge. A conversation is bound when the atoms drawn from it bind to a live entity. A conversation may instead be recorded as unbound — a marker that a human declined to bind it — which is itself a bound atom. So a persisted conversation resolves to entities, or to an explicit, auditable record that it was left unbound. There is no third state in which work happened and the graph shows nothing.</p>
+
+<h2>Referential integrity, not judgment</h2>
+
+<p>Binding checks that an atom references an entity that exists, the way a foreign key requires a valid parent. It says nothing about whether the atom is correct or worth keeping — that judgment is acceptance, which stays human and lives in the review conversation. Because binding is integrity and acceptance is judgment, the two do not collide: the maintainer may propose a bound atom on its own; only accepting it remains a human move.</p>
+
+<h2>Enforced when an atom is extracted, not at save</h2>
+
+<p>Completeness is enforced the way a confidence value is: it is mandatory on every proposed atom, and the extraction layer enforces it. An atom with no binding is malformed and never becomes well-formed. It is deliberately not a gate at save time. A save-time gate that refused to write unbound atoms would block a proposal until it was bound, which contradicts another rule of the design — that review never blocks the save. Enforcing at extraction gives the same guarantee while leaving the save path open: proposals, already bound, are written and dispositioned later.</p>
+
+<h2>Optional, or required</h2>
+
+<p>Whether an unbound conversation is a legal state is set per instance.</p>
+
+<ul>
+  <li><b>Optional:</b> a human may decline to bind a conversation, and the decline is recorded as a waypoint, so the absence is auditable. This suits low-stakes and dogfooding use, where forcing a binding onto a trivial chat would push it out to an untracked tool.</li>
+  <li><b>Required:</b> there is no legal unbound state; every conversation must resolve to an entity. This suits audit and enterprise use, where an unrecorded AI-driven conversation is unacceptable.</li>
+</ul>
+
+<p>Absent the setting, optional is the default, so every existing instance stays valid. konspekt's own project now runs in required.</p>
+
+<h2>Where it sits</h2>
+
+<p>Provenance completeness is the fifth invariant konspekt's design holds to, alongside four already in the specification: the store stays simple, the read path is neutral, distribution is a projection, and merge converges while acceptance does not. The invariant is defined in the spec (<a href="https://github.com/finos-labs/konspekt/blob/main/spec/architecture/BINDING.md">spec/architecture/BINDING.md</a>); how and when a human is asked which entity a conversation attaches to is left to the host, so it can differ per instance.</p>
+
+<p>All of it is on main: <a href="https://github.com/finos-labs/konspekt">github.com/finos-labs/konspekt</a></p>
+
+<p>#AI #KnowledgeGraphs #Accountability #OpenSource #FINOS #konspekt</p>

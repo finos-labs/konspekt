@@ -49,6 +49,15 @@ persists the ledger itself. Recording those would make persisting a command
 itself a command, without end. Scope is bash only; MCP tool calls are out of
 scope. The target is engineering / app-building work, not konspekt upkeep.
 
+This exemption is about the **command-provenance channel only**. It never exempts
+*work* from binding. Under `binding: required` (`spec/architecture/BINDING.md`)
+every substantive deliverable — code, docs, presentation, releases, announcements
+— must still resolve to an entity, and every non-bookkeeping commit must carry a
+changed-code row that binds it. Do not read "a maintenance command is exempt from
+command-provenance" as "this kind of work need not be captured." The forcing
+function is `konspekt-atom-readiness`; the detection surface is
+`tools/binding-audit.mjs`.
+
 ## Boundaries
 
 - Everything here still lands `review: proposed`; the human accepts. The layer

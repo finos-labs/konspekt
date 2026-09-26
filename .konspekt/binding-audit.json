@@ -1,0 +1,5 @@
+{
+  "baseline": "99f2bcfd2a4055263670af2cf068a31b769daff4",
+  "note": "Enforce binding: required from this point (tools/binding-audit.mjs, task-binding-gap-audit, nw-binding-enforcement-gap). Commits at or before the baseline are the pre-enforcement backlog and are not audited. Bump the baseline only to accept a new backlog deliberately.",
+  "allow": []
+}
