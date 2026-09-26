@@ -2,7 +2,7 @@
 id: task-intellij-plugin
 type: task
 title: Build the IntelliJ plugin shell over the one view
-status: open
+status: resolved
 summary:
   origin: machine
   pinned: false

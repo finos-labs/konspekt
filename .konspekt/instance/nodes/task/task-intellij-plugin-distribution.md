@@ -2,12 +2,12 @@
 id: task-intellij-plugin-distribution
 type: task
 title: Distribute the IntelliJ plugin as an installable zip
-status: open
+status: resolved
 summary:
   origin: machine
   pinned: false
   updatedAt: 2026-09-23T13:10:00Z
-review: proposed
+review: accepted
 provenance:
   sourceRef: b81c3f97c5b8e5e7ba5e00c747479f41b76d39b6
   contentHash: b81c3f97c5b8e5e7ba5e00c747479f41b76d39b6

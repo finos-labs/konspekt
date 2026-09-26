@@ -334,14 +334,23 @@ proposal.
 | e-not-signed-enforce | notes | node:task-signed-accepts | noteworthy:nw-accept-authority-enforced-not-gated |  | proposed |
 
 <!-- === plugin distribution changeset (proposed; usability) === -->
-| e-dec-usability-plugindist | decomposes | node:goal-usability | node:task-intellij-plugin-distribution |  | proposed |
-| e-link-plugindist-intellij | links | node:task-intellij-plugin-distribution | node:task-intellij-plugin | 0.8 | proposed |
+| e-dec-usability-plugindist | decomposes | node:goal-usability | node:task-intellij-plugin-distribution |  | accepted |
+| e-link-plugindist-intellij | links | node:task-intellij-plugin-distribution | node:task-intellij-plugin | 0.8 | accepted |
 
 <!-- === plugin-zip release decision (proposed; usability) === -->
 | e-not-plugindist-ziprelease | notes | node:task-intellij-plugin-distribution | noteworthy:nw-plugin-zip-prebuilt-release |  | proposed |
 | e-not-intellij-ziprelease | notes | node:task-intellij-plugin | noteworthy:nw-plugin-zip-prebuilt-release |  | proposed |
 | e-not-plugindist-releaseonly | notes | node:task-intellij-plugin-distribution | noteworthy:nw-plugin-binary-release-only |  | proposed |
 | e-not-adoption-releaseonly | notes | node:task-adoption-path | noteworthy:nw-plugin-binary-release-only |  | proposed |
+
+<!-- === UI resolve action (proposed; usability) === -->
+| e-dec-usability-uiresolve | decomposes | node:goal-usability | node:task-ui-resolve-action |  | accepted |
+| e-drv-humandisp-uiresolve | drives | concept:concept-ui-human-disposition | waypoint:wp-adr-ui-resolve-action |  | accepted |
+| e-mark-uiresolve-uitask | marks | waypoint:wp-adr-ui-resolve-action | node:task-ui-resolve-action |  | accepted |
+| e-lnk-uiresolve-workthrough | links | node:task-ui-resolve-action | node:task-task-workthrough-ui | 0.8 | accepted |
+| e-men-uiresolve-sep | mentions | node:task-ui-resolve-action | concept:concept-propose-accept-separation |  | accepted |
+| e-men-uiresolve-nofork | mentions | node:task-ui-resolve-action | concept:concept-view-no-fork |  | accepted |
+| e-not-uiresolve-verified | notes | node:task-ui-resolve-action | noteworthy:nw-ui-resolve-verified |  | accepted |
 
 <!-- === conversation-binding changeset (proposed; invariant V) === -->
 | e-dec-oploop-binding | decomposes | node:investigation-operating-loop | node:task-conversation-binding |  | proposed |

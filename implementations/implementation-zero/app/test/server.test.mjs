@@ -5,17 +5,30 @@ import { test, before, after } from "node:test";
 import assert from "node:assert/strict";
 import { spawn } from "node:child_process";
 import { fileURLToPath } from "node:url";
+import { cpSync, mkdtempSync, rmSync } from "node:fs";
+import { join } from "node:path";
+import { tmpdir } from "node:os";
 
 const PORT = Number(process.env.KONSPEKT_TEST_PORT || 4757);
 const BASE = `http://127.0.0.1:${PORT}`;
 const serverPath = fileURLToPath(new URL("../server.mjs", import.meta.url));
+const repoRoot = fileURLToPath(new URL("../../../../", import.meta.url));
 let child;
 
+// A second server on its own port, pointed at a throwaway COPY of the instance,
+// so the write tests (accept / resolve) can mutate freely without touching the
+// dogfooded repo instance the read-only tests run against.
+const PORT2 = PORT + 1;
+const BASE2 = `http://127.0.0.1:${PORT2}`;
+let child2, tmpInstance;
+
 async function get(path) { return fetch(BASE + path, { cache: "no-store" }); }
-async function waitUp(timeoutMs = 8000) {
+async function get2(path) { return fetch(BASE2 + path, { cache: "no-store" }); }
+async function post2(path) { return fetch(BASE2 + path, { method: "POST", cache: "no-store" }); }
+async function waitUp(base, timeoutMs = 8000) {
   const start = Date.now();
   while (Date.now() - start < timeoutMs) {
-    try { const r = await get("/api/entities"); if (r.ok) return true; } catch { /* not up */ }
+    try { const r = await fetch(base + "/api/entities", { cache: "no-store" }); if (r.ok) return true; } catch { /* not up */ }
     await new Promise((r) => setTimeout(r, 120));
   }
   throw new Error("server did not start in time");
@@ -23,9 +36,16 @@ async function waitUp(timeoutMs = 8000) {
 
 before(async () => {
   child = spawn(process.execPath, [serverPath], { env: { ...process.env, KONSPEKT_PORT: String(PORT) }, stdio: "ignore" });
-  await waitUp();
+  tmpInstance = mkdtempSync(join(tmpdir(), "konspekt-resolve-"));
+  cpSync(join(repoRoot, ".konspekt", "instance"), tmpInstance, { recursive: true });
+  child2 = spawn(process.execPath, [serverPath], { env: { ...process.env, KONSPEKT_PORT: String(PORT2), KONSPEKT_INSTANCE: tmpInstance }, stdio: "ignore" });
+  await Promise.all([waitUp(BASE), waitUp(BASE2)]);
 });
-after(() => { if (child) child.kill(); });
+after(() => {
+  if (child) child.kill();
+  if (child2) child2.kill();
+  if (tmpInstance) rmSync(tmpInstance, { recursive: true, force: true });
+});
 
 test("GET /api/entities returns a sorted population", async () => {
   const snap = await (await get("/api/entities")).json();
@@ -75,6 +95,48 @@ test("GET /api/entity unknown id → 404; /api/source non-hex ref → 400", asyn
   assert.equal(e.status, 404);
   assert.ok((await e.json()).error);
   const r = await get("/api/source?ref=not-hex!");
+  assert.equal(r.status, 400);
+  assert.ok((await r.json()).error);
+});
+
+test("GET /api/entity exposes status and entityType", async () => {
+  const d = await (await get("/api/entity?id=task-implementation-zero")).json();
+  assert.equal(d.entityType, "node");
+  assert.ok(["open", "active", "resolved", "abandoned"].includes(d.status), "a node carries a status");
+});
+
+// Writes run against the throwaway copy (BASE2), never the repo instance.
+
+test("POST /api/resolve flips an open/active node to resolved, and is idempotent", async () => {
+  const snap = await (await get2("/api/entities")).json();
+  const NODE = new Set(["goal", "investigation", "experiment", "topic", "task", "note"]);
+  const target = snap.rows.find((r) => NODE.has(r.kind) && (r.status === "open" || r.status === "active"));
+  assert.ok(target, "the instance has at least one open/active node to resolve");
+
+  const r1 = await (await post2("/api/resolve?entity=" + encodeURIComponent(target.id))).json();
+  assert.equal(r1.resolved, true);
+  const d = await (await get2("/api/entity?id=" + encodeURIComponent(target.id))).json();
+  assert.equal(d.status, "resolved");
+  assert.match(d.markdown, /^status:\s*resolved\s*$/m);
+
+  const r2 = await (await post2("/api/resolve?entity=" + encodeURIComponent(target.id))).json();
+  assert.equal(r2.resolved, true, "resolving an already-resolved node is a no-op success");
+});
+
+test("POST /api/resolve refuses a non-node; GET is 405", async () => {
+  const snap = await (await get2("/api/entities")).json();
+  const concept = snap.rows.find((r) => r.kind === "concept");
+  if (concept) {
+    const r = await post2("/api/resolve?entity=" + encodeURIComponent(concept.id));
+    assert.equal(r.status, 400);
+    assert.ok((await r.json()).error, "resolve applies to work nodes only");
+  }
+  const g = await get2("/api/resolve?entity=whatever");
+  assert.equal(g.status, 405);
+});
+
+test("POST /api/resolve unknown id → 400 error", async () => {
+  const r = await post2("/api/resolve?entity=nope-nope");
   assert.equal(r.status, 400);
   assert.ok((await r.json()).error);
 });

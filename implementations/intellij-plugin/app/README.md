@@ -59,17 +59,22 @@ renders the shared view via JCEF. Data endpoints return an empty snapshot, so th
 view shows its chrome (tabs, filters) with "0 entities". Runtime (`runIde` /
 install) is the remaining manual check.
 
-**Increment 2 (implemented; runtime verification pending):** `InstanceReader.kt`
-parses the open project's `.konspekt/instance` (a second, independent
-implementation of the serialization — the `task-second-implementer` milestone)
-and backs `/api/entities`, `/api/stats`, `/api/goals`, `/api/graph`,
+**Increment 2 (implemented and runtime-verified against 2026.2):**
+`InstanceReader.kt` parses the open project's `.konspekt/instance` (a second,
+independent implementation of the serialization — the `task-second-implementer`
+milestone) and backs `/api/entities`, `/api/stats`, `/api/goals`, `/api/graph`,
 `/api/entity`, `/api/source`. A VFS listener pushes a fresh cursor over SSE on
 each instance change, so Changes / Stats / Goals and the entity detail drawer
 populate and refresh live. It reads the instance of whichever project is open in
-the IDE. Compiles green; confirm the data renders by reinstalling the zip (or
-`runIde`).
+the IDE. Confirmed rendering and live refresh from the installed-from-disk zip.
 
-**Later:** the write path and authority verbs (`task-task-workthrough-ui`).
+**Writes (human dispositions, working-tree only):** `POST /api/accept`
+(`task-ui-simple-actions`) and `POST /api/resolve` (`task-ui-resolve-action`, the
+`resolve` authority verb → `status: resolved`). Both are exercised from the tool
+window's entity drawer; the model never calls them.
+
+**Later:** the remaining authority verbs (`abandon` / `validate` / `refute` /
+`pin` / `lift`) and reject, under `task-task-workthrough-ui`.
 
 ## One-view guarantee
 

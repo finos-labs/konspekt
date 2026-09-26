@@ -27,3 +27,8 @@ New rows below this backfill are recorded live.
 | task-plugin-pop-mode | a507f620c5e3878fed269db1d24794cf843a8ee2 |
 | task-ui-simple-actions | a507f620c5e3878fed269db1d24794cf843a8ee2 |
 | task-ui-simple-actions | a507f620c5e3878fed269db1d24794cf843a8ee2 |
+| task-ui-resolve-action | 97ef8feeb2273fd18e82c9d8bb05d1b91699755a |
+| task-ui-resolve-action | b09be5556a9285dbab395d8e721e8bb31a6818f3 |
+| task-ui-resolve-action | 627f256bd9c8ba5d69e0359958b146787234648b |
+| task-ui-resolve-action | 665a4a190fbae07725ab359f16eb46eb09f8b24e |
+| wp-adr-ui-resolve-action | 548440faad4c5dc0f8571f4a3383dfd3b7a19b9d |
