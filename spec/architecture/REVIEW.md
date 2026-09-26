@@ -26,6 +26,22 @@ This is the robust choice, not merely the cautious one. The score is self-report
 
 Upstream consequence: because confidence is the sort key, it is **mandatory on every proposed atom** — a constraint the extraction-layer prompt must enforce. An atom missing a confidence value has no place in the ordering and defaults to the most-attention bucket (treated as lowest), never the least.
 
+## Binding is mandatory, the same way confidence is
+
+Provenance completeness (`BINDING.md`) rides on the same extraction-layer
+mechanism as confidence. Every proposed atom must **resolve to an entity binding,
+or to a recorded decision not to bind** — an atom with no binding is malformed and
+has no place in the graph, exactly as an atom with no confidence value has no
+place in the ordering. This is referential integrity, not judgment: it checks that
+an atom references an entity that exists, and makes no acceptance decision, so it
+leaves the machine-proposes-human-disposes invariant untouched.
+
+It is enforced here, at extraction, and **not** as a gate at persist — a persist
+gate that refused unbound atoms would break "review does not block persist"
+below. Whether an *unbound* conversation is legal at all is per-instance policy
+(the `binding` field); the mandatory-on-every-atom requirement holds regardless.
+See `BINDING.md` for the invariant and its scope boundary.
+
 ## Batched at the checkpoint
 
 Review is batched at the `persist` checkpoint, not run per-atom. Per-atom review is unworkable under self-maintenance: the model proposes continuously, and prompting after each proposal turns the conversation into a stream of *added X, ok? added Y, ok?* The persist unit is already the natural review unit — one checkpoint, one diff, sorted by confidence, dispositioned together.
@@ -42,6 +58,6 @@ The alternative — persist `accepted` only, hold proposals in the working copy 
 
 ## Scope
 
-**In:** the discipline — machine-proposes-only, human-accepts-only, confidence-triages-attention, batch-at-checkpoint, persist-proposed. Binding-neutral; identical on GitHub, Drive, or paper.
+**In:** the discipline — machine-proposes-only, human-accepts-only, confidence-triages-attention, binding-mandatory-at-extraction, batch-at-checkpoint, persist-proposed. Binding-neutral; identical on GitHub, Drive, or paper.
 
-**Out:** the review *surface* — how the diff is shown, how the human is prompted, what a click does. Host policy — host discretion with no designated home in the standard — and may differ per binding: an inline conversational diff today; a queue or dashboard for an asynchronous binding later, which is also where the `accept` / `reject` verbs and any pull-request projection live (see `TRANSPORT.md`).
+**Out:** the review *surface* — how the diff is shown, how the human is prompted, what a click does, and how the human is asked which entity a conversation binds to (`BINDING.md`). Host policy — host discretion with no designated home in the standard — and may differ per binding: an inline conversational diff today; a queue or dashboard for an asynchronous binding later, which is also where the `accept` / `reject` verbs and any pull-request projection live (see `TRANSPORT.md`).

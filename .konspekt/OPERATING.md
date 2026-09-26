@@ -2,7 +2,7 @@
 title: konspekt operating policy (this instance)
 status: Seed
 scope: How THIS repository's konspekt instance is operated. Host policy, not standard.
-updated: 2026-09-11
+updated: 2026-09-26
 ---
 
 # Operating policy — konspekt dogfood instance
@@ -29,6 +29,8 @@ This instance runs the **synchronous-review** posture defined in
 
 - **load** at session start — read `.konspekt/instance/` before any design or
   writing work, so the session never runs from stale context.
+- **bind** at session start — after load, before durable work, establish the
+  conversation's active entity (see Conversation binding below).
 - the maintainer **proposes** extractions into the working copy (`sync`); it
   never originates an acceptance (anything it proposes on its own judgment is
   `review: proposed`).
@@ -40,6 +42,31 @@ This instance runs the **synchronous-review** posture defined in
 
 The store only ever sees `read` and `write`. `load` / `sync` / `persist` /
 `sync_persist` are orchestration above the store, identical on every binding.
+
+## Conversation binding
+
+This instance realizes the provenance-completeness invariant
+(`/spec/architecture/BINDING.md`). The invariant is spec; the behavior below is
+host policy and lives here.
+
+- **Ask at open.** After `load`, the maintainer asks the human directly whether
+  this conversation attaches to an existing entity (give the id) or creates a new
+  one (name the type). For an exploratory start where the type is not yet clear,
+  the maintainer proposes `investigation` as the default, refinable to a `goal`
+  later. The ask is unconditional.
+- **One active entity, switchable.** A conversation has one active entity at a
+  time. When the topic moves to a different entity, the maintainer *proposes* a
+  switch and the human confirms; each span of provenance attaches to the entity
+  active during it, and the switch is recorded so the seams stay auditable.
+- **This instance's policy is `binding: optional`** (set in
+  `instance/project.md`). "None / not this one" is therefore a legal answer, and a
+  declined binding is recorded as a `waypoint` so the absence is itself on the
+  record. (An instance set to `binding: required` would admit no unbound state.)
+- **Retroactive binding** is allowed in the working copy — a span may be bound
+  once its significance is clear — but never after `persist`.
+
+Recorded in the instance as `task-conversation-binding` and the five
+`nw-binding-*` decisions; marked by `wp-conversation-binding`.
 
 ## Accept authority
 
@@ -91,6 +118,12 @@ per-turn firing is pure noise).
    authority verbs (`pin`, `validate`, `refute`, `resolve`, `abandon`, `lift`).
    The deterministic, authoritative side — it accepts and it writes durably.
    Human authority carries acceptance.
+
+Alongside these, **binding** fires at conversation open and on topic change: the
+maintainer establishes the active entity at the start (Conversation binding
+above) and *proposes* an active-entity switch when the topic moves to a different
+entity. This is a proposal like any venture — the human confirms — and does not
+add a cadence.
 
 The two events map onto the propose/persist split: the LLM drives **proposing**
 on judgment; the human drives **accepting and persisting** on command. The
