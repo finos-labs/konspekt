@@ -58,10 +58,11 @@ host policy and lives here.
   time. When the topic moves to a different entity, the maintainer *proposes* a
   switch and the human confirms; each span of provenance attaches to the entity
   active during it, and the switch is recorded so the seams stay auditable.
-- **This instance's policy is `binding: optional`** (set in
-  `instance/project.md`). "None / not this one" is therefore a legal answer, and a
-  declined binding is recorded as a `waypoint` so the absence is itself on the
-  record. (An instance set to `binding: required` would admit no unbound state.)
+- **This instance's policy is `binding: required`** (set in
+  `instance/project.md`). There is no legal unbound state: every conversation
+  must resolve to an entity, so "none / not this one" is not an accepted answer
+  here. (An instance set to `binding: optional` would instead allow a decline,
+  recorded as a `waypoint` so the absence stays on the record.)
 - **Retroactive binding** is allowed in the working copy — a span may be bound
   once its significance is clear — but never after `persist`.
 

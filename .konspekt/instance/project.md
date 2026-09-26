@@ -8,9 +8,9 @@ summary:
   pinned: false
   updatedAt: 2026-06-21T13:00:00Z
 personas: [engineer]
-binding: optional
+binding: required
 createdAt: 2026-06-21T13:00:00Z
-updatedAt: 2026-09-26T18:16:00Z
+updatedAt: 2026-09-26T18:55:00Z
 ```
 # konspekt
 
