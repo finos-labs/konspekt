@@ -88,3 +88,4 @@ commit order; the channel was not live during that work.
 | task-linkedin-announce-2026-09 | 1ecad2645ee531eb7179bc58b0480f55f2e1af8e | docs/announcements/linkedin/post_2026-09-26/images/files_changed.png |
 | task-atom-vocabulary | b90b2d82dd45fa0be84bf61b31bb5224b03c5b43 | ROADMAP.md |
 | task-presentation-refresh | b90b2d82dd45fa0be84bf61b31bb5224b03c5b43 | ROADMAP.md |
+| task-binding-operating-behavior | d45926ef45acc417aacebfc18c6e2429fa94b48e | .claude/hooks/load-mandatory-skills.sh |
