@@ -3,7 +3,7 @@
      Check freshness with: node tools/roadmap.mjs --check
      This file is a pure function of .konspekt/instance/ (no timestamps baked in).
      Goals and tasks are graph nodes; the horizon is derived from node status/review.
-     contentHash: sha256:6b308358c3609dbf -->
+     contentHash: sha256:f87731bc8ddc1445 -->
 
 # konspekt roadmap
 
@@ -18,12 +18,12 @@ Make the facts a responsibility question needs answerable with evidence. The law
 **Next** — _accepted and planned_
 
 - Design a richer accept-authority mechanism
+- Detect unbound work — reconcile commits against the graph
 - Protect changes to who carries legal weight
 
 **Later** — _proposed, not yet committed_
 
 - The responsibility report
-- Detect unbound work — reconcile commits against the graph
 - Add the provenance-completeness invariant to the spec
 - Ask-at-open binding behavior in the operating loop
 - Bind every conversation to a graph entity
@@ -148,17 +148,17 @@ Make a konspekt instance operable by a human through a visual interface, not onl
 
 **Later** — _proposed, not yet committed_
 
-- Settle "atom" in the vocabulary
 - September 2026 LinkedIn announcements — plugin/UI, and binding
 - Serve the konspekt view as an MCP Apps ui:// resource
-- Refresh presentation materials for the plugin, UI writes, and binding
 
 **Shipped** — _resolved_
 
 - An ASR/ADR view in the konspekt UI
+- Settle "atom" in the vocabulary
 - Build the IntelliJ plugin shell over the one view
 - Distribute the IntelliJ plugin as an installable zip
 - Configurable popup mode for the IntelliJ plugin
+- Refresh presentation materials for the plugin, UI writes, and binding
 - Related-commands tab in the entity detail panel
 - Resolve a work node from the UI (POST /api/resolve)
 - Take simple actions from the UI (accept a proposed entity)
