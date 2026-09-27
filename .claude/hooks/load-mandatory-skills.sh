@@ -60,6 +60,20 @@ if [[ -f "$project_md" ]]; then
   done
 fi
 
+# konspekt operating policy (OPERATING.md). The instance's operating envelope
+# carries obligations that no skill restates: the unconditional Conversation
+# binding "Ask at open", the two-event trigger policy, and the ROADMAP.md
+# freshness gate. A prior session read this file only via `grep` for one field
+# and skipped the binding ask; injecting it here makes those directives active
+# from message one, the same way persona briefs are (konspekt-read-operating-at-open).
+operating_md="${CLAUDE_PROJECT_DIR:-.}/.konspekt/OPERATING.md"
+if [[ -f "$operating_md" ]]; then
+  context+=$'\n\n===== BEGIN OPERATING POLICY: '"$operating_md"$' =====\n\n'
+  context+="$(cat "$operating_md")"
+  context+=$'\n\n===== END OPERATING POLICY: '"$operating_md"$' =====\n'
+  context+=$'\n\nMANDATORY — Conversation binding "Ask at open" (OPERATING.md § Conversation\nbinding): before any durable work this session, your FIRST user-facing message\nMUST ask the human which graph entity this conversation attaches to — an\nexisting entity (give the id) or a new one (name the type), proposing\n`investigation` as the default for an exploratory start. This instance is\n`binding: required`, so the ask is unconditional and "none" is not a legal\nanswer. Do not begin implementation, edits, or research before issuing the ask.\n'
+fi
+
 # Escape a string for embedding as a JSON string value (no jq dependency).
 json_escape() {
   local s="$1"
@@ -71,5 +85,14 @@ json_escape() {
   printf '%s' "$s"
 }
 
-printf '{"hookSpecificOutput":{"hookEventName":"SessionStart","additionalContext":"%s"}}\n' \
+# Visible session-open notice. `systemMessage` is the hook-output field that
+# surfaces a one-line message to the human (the additionalContext above is seen
+# only by the model). This tells the user, before their first prompt, that the
+# conversation-binding ask is pending — so the binding step is observable, not
+# silent. If a future Claude Code build does not render systemMessage at
+# SessionStart, the turn-one ask (driven by the directive above) is still visible.
+notice='konspekt: conversation binding not yet established — Claude will ask which graph entity this conversation attaches to before any durable work (OPERATING.md § Conversation binding).'
+
+printf '{"systemMessage":"%s","hookSpecificOutput":{"hookEventName":"SessionStart","additionalContext":"%s"}}\n' \
+  "$(json_escape "$notice")" \
   "$(json_escape "$context")"
