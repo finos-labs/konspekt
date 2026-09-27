@@ -394,3 +394,6 @@ proposal.
 | e-link-edgelayout-enterprise | links | node:task-edge-traversal-layout | node:task-enterprise-persistence | 0.6 |  |
 | e-link-edgelayout-serial | links | node:task-edge-traversal-layout | node:task-serialization-format | 0.6 |  |
 | e-not-edgelayout-contention | notes | node:task-edge-traversal-layout | noteworthy:nw-edge-table-contends-under-cas |  |  |
+
+<!-- === native-staleness finding (accepted 2026-09-27) === -->
+| e-not-valid-restorestale | notes | node:investigation-validation | noteworthy:nw-native-restore-stale-on-live-state |  |  |
