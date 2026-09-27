@@ -375,7 +375,7 @@ proposal.
 | e-not-valid-crossover | notes | node:investigation-validation | noteworthy:nw-crossover-over-parallel |  | proposed |
 | e-not-valid-pilot | notes | node:investigation-validation | noteworthy:nw-pilot-before-matrix |  | proposed |
 | e-not-valid-openitems | notes | node:investigation-validation | noteworthy:nw-experiment-open-items |  | proposed |
-| e-men-valid-compounding | mentions | node:investigation-validation | concept:concept-compounding-advantage |  | proposed |
+| e-men-valid-compounding | mentions | node:investigation-validation | concept:concept-compounding-advantage |  |  |
 | e-mark-validexp-valid | marks | waypoint:wp-validation-experiment | node:investigation-validation |  | proposed |
 
 <!-- === bind loose 2026-09 session work + forcing-function gap (proposed) === -->

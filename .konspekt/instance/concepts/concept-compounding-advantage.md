@@ -2,7 +2,7 @@
 id: concept-compounding-advantage
 label: Compounding-advantage hypothesis
 aliases: [slide 14 hypothesis, super-linear advantage]
-review: proposed
+review: accepted
 provenance:
   sourceRef: 6fec4005beceb83b562d7641b9d4f0c81f24fba1
   contentHash: 6fec4005beceb83b562d7641b9d4f0c81f24fba1
@@ -10,7 +10,7 @@ provenance:
   conversationId: conversation-binding-and-validation-experiment
   confidence: 0.6
 createdAt: 2026-09-26T18:16:00Z
-updatedAt: 2026-09-26T18:16:00Z
+updatedAt: 2026-09-27T03:05:00Z
 ```
 # Concept: Compounding-advantage hypothesis
 
