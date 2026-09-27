@@ -92,3 +92,5 @@ commit order; the channel was not live during that work.
 | task-adoption-path | b6698c594a79cfedc6c7e9c873df45fc5e094112 | setup/WEBMOBILE_SEED.md |
 | task-presentation-refresh | 2660a08e72e71d32e4d6853c176bf28ebfb3e19f | docs/index.html |
 | task-presentation-refresh | 7f0fa63b055b30c1895430dbb5ffd19950bbaf24 | docs/index.html |
+| investigation-validation | 03c1a8c4a1f30ded46a836d9dcad41d38d4a4c58 | VALIDATION.md |
+| task-presentation-refresh | 03c1a8c4a1f30ded46a836d9dcad41d38d4a4c58 | docs/index.html |
