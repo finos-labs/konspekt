@@ -35,6 +35,35 @@ arms × 10 — pinned to one frozen commit.
   (primary) and whole-file total (secondary).
 - Four question tiers: single-fact, multi-hop, rationale-chain, and live-state.
 
+## Probe questions
+
+The twelve questions, by tier. Both arms answered the same wording; neither arm
+was shown entity ids or file locations.
+
+**Tier 1 — single-fact**
+
+1. Which storage backends does konspekt support, and which is the reference implementation?
+2. What are the six human authority verbs?
+3. Which agent files does setup write by default, and which is canonical?
+
+**Tier 2 — multi-hop**
+
+4. How does per-entity compare-and-swap relate to the write-scope split — what is versioned, and what is not?
+5. How does the notifier deliver, and what is in its payload?
+6. What fires the operating loop, and why is it event-based rather than per-turn or per-session?
+7. What is the conversation-binding invariant, and what are the rules for an open conversation (bind-at-open, the active entity, retroactive binding)?
+
+**Tier 3 — rationale-chain**
+
+8. Trace how `goal-accountability` leads to the persona-change gate: what is accepted, and what is the current open item?
+9. Reconstruct how `ROADMAP.md` is generated and why regeneration is coupled to accept authority; what is automated today, and what is deferred?
+10. Trace the provenance model: how is content addressed, why is the source excerpt kept verbatim on both sides, and how does the enterprise storage interface change the content-address scheme?
+
+**Tier 4 — live-state**
+
+11. What is the current now/next/later roadmap — which tasks are open or proposed, and which are blocked, and why?
+12. Is the binding-enforcement gap open or resolved? What enforces `binding: required` today (a persist-gate or detection-only, and where does it run), and what was the most recent decision about it?
+
 ## Results
 
 Correctness — konspekt 120/120; native ~90/120. Every native miss is a freshness
