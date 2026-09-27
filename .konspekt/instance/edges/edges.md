@@ -85,6 +85,7 @@ proposal.
 | e-not-trigger-skillpickup | notes | node:task-trigger-transport | noteworthy:nw-skill-pickup-transport-bound |  |  |
 | e-not-review-skillpickup | notes | node:task-review-ergonomics | noteworthy:nw-skill-pickup-transport-bound |  |  |
 | e-not-adoption-webmobile-seed | notes | node:task-adoption-path | noteworthy:nw-webmobile-seed-is-pointer-not-payload |  |  |
+| e-not-adoption-webmobile-bindopen | notes | node:task-adoption-path | noteworthy:nw-webmobile-seed-binds-at-open |  | proposed |
 | e-not-adoption-whitepaper | notes | node:task-adoption-path | noteworthy:nw-whitepaper-non-normative |  |  |
 | e-not-trigger-notifyconfig | notes | node:task-trigger-transport | noteworthy:nw-subscriptions-are-config-not-graph |  |  |
 | e-not-trigger-notifyevents | notes | node:task-trigger-transport | noteworthy:nw-notify-events-are-creation-and-supersedes |  |  |
