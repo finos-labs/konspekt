@@ -1,27 +1,30 @@
-# Screenshots to capture for the 2026-09-26 post
+# Screenshots for the 2026-09-26 post
 
-Capture these from the running IntelliJ plugin (install the prebuilt zip, or
-`./gradlew runIde`, then open the **konspekt** tool window on the right edge).
-Filenames must match the `assets:` list in `post.md`. Once captured, assemble a
-`carousel.pdf` (one page per image, in the order below) and place it in the post
-directory — LinkedIn uploads it as a swipeable document.
+Captured from the running IntelliJ plugin (install the prebuilt zip, or
+`./gradlew runIde`, then open the **konspekt** tool window on the right edge)
+against konspekt's own `.konspekt/instance`, so every tab is populated.
+
+Filenames must match the `assets:` list in `post.md`. The carousel is assembled
+as `carousel.pdf`, one page per image, in the order below; LinkedIn uploads it
+as a swipeable document.
 
 Order and filenames:
 
-1. `tool-window.png` — the konspekt tool window docked on the right, **Changes**
-   tab, over a real project's graph (konspekt's own instance).
-2. `goals.png` — the **Goals** tab, a goal decomposed into its subgraph as a
-   layered diagram.
-3. `detail-provenance.png` — the entity detail drawer, **Provenance** tab,
-   showing the verbatim human/assistant exchange.
-4. `dispositions.png` — the detail drawer's disposition bar showing the write
-   actions: **Accept** on a proposed atom and/or **Resolve** on an open/active
-   work node. Open a proposed, open node so both controls appear.
-5. `detail-commands-changes.png` — the entity detail drawer, **Commands** and
-   **Changes** tabs, showing commands run and files changed.
+1. `plugin_tool_button.png` — the konspekt view docked as a tool window on the
+   right edge, **Decisions** tab, with the pop-out and pin controls in the title
+   bar (`task-plugin-pop-mode`).
+2. `plugin_popup_mode.png` — the same view detached into a floating window over
+   the IDE, **Goals** tab (a goal decomposed into its subgraph), with the Dock
+   and pin controls at the top left.
+3. `task_write_commands.png` — the entity detail drawer on a proposed node,
+   showing the write actions: **Accept** a proposed atom and **Resolve** a work
+   node (`task-ui-resolve-action`).
+4. `files_changed.png` — the entity detail drawer, **Changes** tab, listing the
+   files changed in the commit recorded for a work node
+   (`task-record-code-changes`).
 
 Notes:
-- Prefer a real instance (konspekt's own) over an empty one, so the tabs are
-  populated.
+- Capture against a real instance (konspekt's own), not an empty one, so the
+  tabs are populated.
 - The binding invariant (invariant V) is a guarantee, not a screen — it lives in
-  the body copy, not the carousel.
+  the body copy of `post_2026-09-27/`, not this carousel.

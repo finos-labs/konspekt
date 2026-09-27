@@ -6,7 +6,7 @@ status: active
 summary:
   origin: machine
   pinned: false
-  updatedAt: 2026-09-26T17:00:00Z
+  updatedAt: 2026-09-27T12:00:00Z
 review: proposed
 provenance:
   sourceRef: 4395f3ccb8e1747ca13f2869046c1cc71972422a
@@ -15,7 +15,7 @@ provenance:
   timestamp: 2026-09-26T17:00:00Z
   confidence: 0.6
 createdAt: 2026-09-26T17:00:00Z
-updatedAt: 2026-09-26T17:00:00Z
+updatedAt: 2026-09-27T12:00:00Z
 ```
 # Task: September 2026 LinkedIn announcements — plugin/UI, and binding
 
@@ -26,5 +26,8 @@ invariant — as a feed teaser plus a long-form article, `post_2026-09-27/`). Dr
 live under `docs/announcements/linkedin/`; a post is published when its directory
 merges into `main`.
 
-Decomposes [[goal-usability]]. Still open: the interface post's plugin
-screenshots and carousel; publishing both and filling in the live URLs.
+Decomposes [[goal-usability]]. The interface post `post_2026-09-26/` is drafted,
+its four plugin screenshots captured, `carousel.pdf` assembled, and it is
+published on LinkedIn (`url:` recorded 2026-09-27). Still open: merging
+`post_2026-09-26/` into `main`; drafting and publishing the binding post
+`post_2026-09-27/` and filling in its live URL.
