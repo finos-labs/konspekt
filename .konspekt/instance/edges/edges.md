@@ -382,7 +382,7 @@ proposal.
 | e-mark-plugindist-release011 | marks | waypoint:wp-plugin-release-0-0-11 | node:task-intellij-plugin-distribution |  | proposed |
 | e-dec-usability-presrefresh | decomposes | node:goal-usability | node:task-presentation-refresh |  | proposed |
 | e-dec-usability-linkedin0926 | decomposes | node:goal-usability | node:task-linkedin-announce-2026-09 |  | proposed |
-| e-dec-account-bindingaudit | decomposes | node:goal-accountability | node:task-binding-gap-audit |  | proposed |
+| e-dec-account-bindingaudit | decomposes | node:goal-accountability | node:task-binding-gap-audit |  | accepted |
 | e-not-bindingaudit-gap | notes | node:task-binding-gap-audit | noteworthy:nw-binding-enforcement-gap |  | proposed |
 | e-men-bindingaudit-completeness | mentions | node:task-binding-gap-audit | concept:concept-provenance-completeness |  | proposed |
 
