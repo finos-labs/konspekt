@@ -385,3 +385,12 @@ proposal.
 | e-dec-account-bindingaudit | decomposes | node:goal-accountability | node:task-binding-gap-audit |  | proposed |
 | e-not-bindingaudit-gap | notes | node:task-binding-gap-audit | noteworthy:nw-binding-enforcement-gap |  | proposed |
 | e-men-bindingaudit-completeness | mentions | node:task-binding-gap-audit | concept:concept-provenance-completeness |  | proposed |
+
+<!-- === restore-finding + edge-traversal task (accepted 2026-09-26) === -->
+| e-not-valid-verbatimrestore | notes | node:investigation-validation | noteworthy:nw-native-restore-needs-verbatim |  |  |
+| e-men-valid-memorylayer | mentions | node:investigation-validation | concept:concept-konspekt-vs-memory-layer |  |  |
+| e-dec-usability-edgelayout | decomposes | node:goal-usability | node:task-edge-traversal-layout |  |  |
+| e-link-edgelayout-cas | links | node:task-edge-traversal-layout | node:task-atom-versioning-cas | 0.7 |  |
+| e-link-edgelayout-enterprise | links | node:task-edge-traversal-layout | node:task-enterprise-persistence | 0.6 |  |
+| e-link-edgelayout-serial | links | node:task-edge-traversal-layout | node:task-serialization-format | 0.6 |  |
+| e-not-edgelayout-contention | notes | node:task-edge-traversal-layout | noteworthy:nw-edge-table-contends-under-cas |  |  |
