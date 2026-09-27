@@ -95,3 +95,4 @@ commit order; the channel was not live during that work.
 | investigation-validation | 03c1a8c4a1f30ded46a836d9dcad41d38d4a4c58 | VALIDATION.md |
 | task-presentation-refresh | 03c1a8c4a1f30ded46a836d9dcad41d38d4a4c58 | docs/index.html |
 | investigation-validation | b6187edec5f1f9456a0cc6562f4580d00d0e9035 | VALIDATION.md |
+| goal-bounded-cost | c559ee7181d2893a8fbe06b90763b047425e6993 | ROADMAP.md |
