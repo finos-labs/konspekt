@@ -904,12 +904,12 @@ VFS-native change source, so the reader ships with the plugin …</pre>
                   <polyline points="70,275 280,263 495,251" fill="none" stroke="#A9742A" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
                   <circle cx="495" cy="57" r="4" fill="#7A6A56"/>
                   <circle cx="495" cy="251" r="4.5" fill="#A9742A"/>
-                  <text x="360" y="112" text-anchor="middle" font-size="14.5" fill="#7A6A56">Native LLM memory</text>
+                  <text x="248" y="104" text-anchor="middle" font-size="14.5" fill="#7A6A56">Native LLM memory</text>
                   <text x="405" y="278" text-anchor="middle" font-size="14.5" fill="#A9742A" font-weight="600">konspekt</text>
                   <text x="282" y="322" text-anchor="middle" font-size="12.5" fill="#8C8377">project complexity — edges in the graph →</text>
                   <text transform="translate(30,167) rotate(-90)" text-anchor="middle" font-size="12.5" fill="#8C8377">cost to re-establish project context →</text>
                 </svg>
-                <p class="proof-cap">The shape is now backed by a 240&#8209;trial A/B (12 questions, native memory vs. graph traversal). Graph traversal is 3&#8209;10&#215; cheaper on multi&#8209;hop. On live, evolving state native is systematically wrong (stale snapshots and conflated workstreams), while the graph stays correct (120/120). The gap widens as the project grows. Method and full results: validation&#8209;run summary.</p>
+                <p class="proof-cap">The shape is now backed by a 240&#8209;trial A/B (12 questions, native memory vs. graph traversal). Graph traversal is 3&#8209;10&#215; cheaper on multi&#8209;hop. On live, evolving state native is systematically wrong (stale snapshots and conflated workstreams), while the graph stays correct (120/120). The gap widens as the project grows. Full method in the appendix.</p>
               </div>
             </div>
           </div>
@@ -1044,6 +1044,25 @@ VFS-native change source, so the reader ships with the plugin …</pre>
             </div>
           </div>
           <div class="foot"><span class="foot-mark">konspekt · FINOS Labs</span><span class="foot-num">17</span></div>
+        </div>
+      </section>
+
+      <!-- APPENDIX · VALIDATION RUN -->
+      <section class="slide" data-bg="paper" data-title="Validation run (appendix)">
+        <div class="wrap">
+          <div class="head-row">
+            <h2 class="s-head">Validation run — native memory vs. the graph</h2>
+            <div class="eyebrow">Appendix</div>
+          </div>
+          <hr class="rule" style="margin-top:20px">
+          <div class="arg" style="flex:1;justify-content:center;gap:2px">
+            <p class="arg-lead">A re&#8209;establishment A/B: 240 tool&#8209;gated trials — 12 probe questions &#215; 2 arms &#215; 10 — pinned to one frozen commit. Arm A restores from native memory plus conversation search; Arm B restores by traversing the konspekt graph. Correctness is scored first; token cost is reported as relevant subgraph (primary) and whole&#8209;file total (secondary).</p>
+            <div class="arg-item"><b>Correctness</b> — graph 120/120. Native ~90/120: correct on every simple fact, wrong on every live&#8209;state question — stale accepted&#8209;state snapshots (Q8, Q11) and, where two workstreams overlap, the wrong one (Q12).</div>
+            <div class="arg-item"><b>Cost</b> — a tie on single facts. On multi&#8209;hop questions the graph&rsquo;s relevant subgraph is 3&#8209;10&#215; cheaper. Two caveats kept honest: the whole&#8209;file total carries transport overhead (one edge table, large spec files), and native is cheaper for a fact that sits in a single large file.</div>
+            <div class="arg-item"><b>Reading</b> — the separation is correctness on evolving state, and it grows two ways: native memory drifts from accepted state over time, and blends overlapping workstreams as they accumulate. Traversal reads current typed state at bounded cost.</div>
+          </div>
+          <p class="proof-cap">Measured on this project, 2026&#8209;09&#8209;26/27. Full per&#8209;question results: <b>claude/validation&#8209;run&#8209;summary.md</b>. The finding is accepted in the graph as <b>nw&#8209;native&#8209;restore&#8209;stale&#8209;on&#8209;live&#8209;state</b>.</p>
+          <div class="foot"><span class="foot-mark">konspekt · FINOS Labs</span><span class="foot-num">18</span></div>
         </div>
       </section>
 
