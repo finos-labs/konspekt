@@ -78,3 +78,4 @@ commit order; the channel was not live during that work.
 | task-linkedin-announce-2026-09 | ff1b2b86c668726ba6d2f075b28334b967c0cd17 | docs/announcements/linkedin/post_2026-09-27/images/invariants.png |
 | task-linkedin-announce-2026-09 | ff1b2b86c668726ba6d2f075b28334b967c0cd17 | docs/announcements/linkedin/post_2026-09-27/post.md |
 | task-edge-traversal-layout | 869f0bf28bd818708674fa20ea84a63257935c04 | ROADMAP.md |
+| task-presentation-refresh | 4fbd9c8016ced9dbbe886a6c8f2d411159bd6e89 | docs/index.html |
