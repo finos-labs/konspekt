@@ -2,12 +2,12 @@
 id: task-atom-vocabulary
 type: task
 title: Settle "atom" in the vocabulary
-status: open
+status: resolved
 summary:
   origin: machine
   pinned: false
   updatedAt: 2026-09-14T17:45:00Z
-review: proposed
+review: accepted
 provenance:
   sourceRef: de0d9f28163201c628544e1982b1184588da2ec8
   contentHash: de0d9f28163201c628544e1982b1184588da2ec8

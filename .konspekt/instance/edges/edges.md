@@ -254,9 +254,9 @@ proposal.
 | e-not-enterprise-appendonly | notes | node:task-enterprise-persistence | noteworthy:nw-db-backend-needs-append-only-record |  | proposed |
 | e-not-provenance-appendonly | notes | node:task-provenance-model | noteworthy:nw-db-backend-needs-append-only-record |  | proposed |
 | e-not-mcpapp-cardv1 | notes | node:task-mcp-app-surface | noteworthy:nw-card-v1-is-last-ten-changed |  | proposed |
-| e-dec-usability-atomvocab | decomposes | node:goal-usability | node:task-atom-vocabulary |  | proposed |
-| e-link-atomvocab-serial | links | node:task-atom-vocabulary | node:task-serialization-format | 0.6 | proposed |
-| e-link-atomvocab-reconcile | links | node:task-atom-vocabulary | node:task-reconcile-schema | 0.6 | proposed |
+| e-dec-usability-atomvocab | decomposes | node:goal-usability | node:task-atom-vocabulary |  | accepted |
+| e-link-atomvocab-serial | links | node:task-atom-vocabulary | node:task-serialization-format | 0.6 | accepted |
+| e-link-atomvocab-reconcile | links | node:task-atom-vocabulary | node:task-reconcile-schema | 0.6 | accepted |
 | e-not-trigger-pollfloor | notes | node:task-trigger-transport | noteworthy:nw-poll-is-the-floor-push-is-optional |  | proposed |
 | e-not-cas-pollfloor | notes | node:task-atom-versioning-cas | noteworthy:nw-poll-is-the-floor-push-is-optional |  | proposed |
 | e-not-uiapp-pollfloor | notes | node:task-konspekt-ui-app | noteworthy:nw-poll-is-the-floor-push-is-optional |  | proposed |
@@ -380,7 +380,7 @@ proposal.
 
 <!-- === bind loose 2026-09 session work + forcing-function gap (proposed) === -->
 | e-mark-plugindist-release011 | marks | waypoint:wp-plugin-release-0-0-11 | node:task-intellij-plugin-distribution |  | proposed |
-| e-dec-usability-presrefresh | decomposes | node:goal-usability | node:task-presentation-refresh |  | proposed |
+| e-dec-usability-presrefresh | decomposes | node:goal-usability | node:task-presentation-refresh |  | accepted |
 | e-dec-usability-linkedin0926 | decomposes | node:goal-usability | node:task-linkedin-announce-2026-09 |  | proposed |
 | e-dec-account-bindingaudit | decomposes | node:goal-accountability | node:task-binding-gap-audit |  | accepted |
 | e-not-bindingaudit-gap | notes | node:task-binding-gap-audit | noteworthy:nw-binding-enforcement-gap |  | proposed |
