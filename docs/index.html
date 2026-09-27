@@ -889,7 +889,7 @@ VFS-native change source, so the reader ships with the plugin …</pre>
                 <p class="arg-lead">Given these hold, a curated, fit&#8209;for&#8209;project structure turns recall into deterministic traversal — following typed edges to what&rsquo;s related, instead of re&#8209;deriving it or ranking by similarity.</p>
                 <div class="arg-item"><b>Size</b> — the graph grows only as the human accepts entries; native memory accretes on its own. The larger the project, the wider the size gap.</div>
                 <div class="arg-item"><b>Accuracy</b> — traversal reaches the related entries by construction; similarity retrieval guesses and drops the connective tissue. More edges, more that only structure recovers.</div>
-                <div class="arg-item"><b>Integrity</b> — curation and explicit supersession keep the record correct; uncurated memory drifts and corrupts. The longer it runs, the more drift the graph avoids.</div>
+                <div class="arg-item"><b>Correctness</b> — curation and explicit supersession keep the record correct; uncurated memory drifts and corrupts. The longer it runs, the more drift the graph avoids.</div>
               </div>
               <div>
                 <svg viewBox="0 0 520 350" style="width:100%;max-width:480px;display:block;margin:0 auto" font-family="'Source Serif 4', Georgia, serif">
@@ -907,9 +907,9 @@ VFS-native change source, so the reader ships with the plugin …</pre>
                   <text x="360" y="112" text-anchor="middle" font-size="14.5" fill="#7A6A56">Native LLM memory</text>
                   <text x="405" y="278" text-anchor="middle" font-size="14.5" fill="#A9742A" font-weight="600">konspekt</text>
                   <text x="282" y="322" text-anchor="middle" font-size="12.5" fill="#8C8377">project complexity — edges in the graph →</text>
-                  <text transform="translate(30,167) rotate(-90)" text-anchor="middle" font-size="12.5" fill="#8C8377">cost to re-establish context →</text>
+                  <text transform="translate(30,167) rotate(-90)" text-anchor="middle" font-size="12.5" fill="#8C8377">cost to re-establish project context →</text>
                 </svg>
-                <p class="proof-cap">The shape is now backed by a 240&#8209;trial A/B (12 questions, native memory vs. graph traversal). Simple facts tie; traversal runs 3&#8209;10&#215; cheaper on multi&#8209;hop; and on live, evolving state native is systematically wrong — stale snapshots and conflated workstreams — while the graph stays correct (120/120). The gap is correctness on evolving state, and it widens as the project grows. Method and full results: validation&#8209;run summary.</p>
+                <p class="proof-cap">The shape is now backed by a 240&#8209;trial A/B (12 questions, native memory vs. graph traversal). Graph traversal is 3&#8209;10&#215; cheaper on multi&#8209;hop. On live, evolving state native is systematically wrong (stale snapshots and conflated workstreams), while the graph stays correct (120/120). The gap widens as the project grows. Method and full results: validation&#8209;run summary.</p>
               </div>
             </div>
           </div>
