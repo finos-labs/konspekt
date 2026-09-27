@@ -1061,7 +1061,7 @@ VFS-native change source, so the reader ships with the plugin …</pre>
             <div class="arg-item"><b>Cost</b> — a tie on single facts. On multi&#8209;hop questions the graph&rsquo;s relevant subgraph is 3&#8209;10&#215; cheaper. Two caveats kept honest: the whole&#8209;file total carries transport overhead (one edge table, large spec files), and native is cheaper for a fact that sits in a single large file.</div>
             <div class="arg-item"><b>Reading</b> — the separation is correctness on evolving state, and it grows two ways: native memory drifts from accepted state over time, and blends overlapping workstreams as they accumulate. Traversal reads current typed state at bounded cost.</div>
           </div>
-          <p class="proof-cap">Measured on this project, 2026&#8209;09&#8209;26/27. Full per&#8209;question results: <b>claude/validation&#8209;run&#8209;summary.md</b>. The finding is accepted in the graph as <b>nw&#8209;native&#8209;restore&#8209;stale&#8209;on&#8209;live&#8209;state</b>.</p>
+          <p class="proof-cap">Measured on this project, 2026&#8209;09&#8209;26/27. Full method and results: <b>VALIDATION.md</b>. The finding is accepted in the graph as <b>nw&#8209;native&#8209;restore&#8209;stale&#8209;on&#8209;live&#8209;state</b>.</p>
           <div class="foot"><span class="foot-mark">konspekt · FINOS Labs</span><span class="foot-num">18</span></div>
         </div>
       </section>
