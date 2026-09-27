@@ -398,3 +398,6 @@ proposal.
 
 <!-- === native-staleness finding (accepted 2026-09-27) === -->
 | e-not-valid-restorestale | notes | node:investigation-validation | noteworthy:nw-native-restore-stale-on-live-state |  |  |
+
+<!-- === validation writeup artifact (proposed 2026-09-27) === -->
+| e-prod-valid-validation | produces | node:investigation-validation | artifact:artifact-validation |  | proposed |
