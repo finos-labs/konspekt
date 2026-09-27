@@ -3,7 +3,7 @@
      Check freshness with: node tools/roadmap.mjs --check
      This file is a pure function of .konspekt/instance/ (no timestamps baked in).
      Goals and tasks are graph nodes; the horizon is derived from node status/review.
-     contentHash: sha256:f87731bc8ddc1445 -->
+     contentHash: sha256:9cc14210c36f67f8 -->
 
 # konspekt roadmap
 
@@ -33,6 +33,15 @@ Make the facts a responsibility question needs answerable with evidence. The law
 
 - Serialize executed-command provenance as an ordered log
 - Record the source and config changes associated with a task
+
+## Restore cost stays bounded as the graph grows
+
+Keep the cost of restoring project context from a konspekt instance roughly flat as the graph grows: a query reads the relevant subgraph, never the whole store. This is the property konspekt controls, and the widening advantage over native LLM memory (see [[concept-compounding-advantage]]) follows from it — native's transcript corpus grows with the project while a bounded-cost graph does not.
+
+**Next** — _accepted and planned_
+
+- Edges traversable by node
+- Subgraph-first retrieval as the default read path
 
 ## Curated context as a quality input to the LLM
 
@@ -140,7 +149,6 @@ Make a konspekt instance operable by a human through a visual interface, not onl
 
 **Next** — _accepted and planned_
 
-- Edges traversable by node
 - Navigate from a goal to its open tasks
 - Build the konspekt UI app as one view with two shells
 - Work through and disposition tasks in the interface
@@ -175,4 +183,4 @@ Let several participants — people and agents — propose into and review one s
 
 ---
 
-Generated from 7 goal(s) and 65 task-listing(s) over the instance graph.
+Generated from 8 goal(s) and 66 task-listing(s) over the instance graph.

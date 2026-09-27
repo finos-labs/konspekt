@@ -390,7 +390,6 @@ proposal.
 <!-- === restore-finding + edge-traversal task (accepted 2026-09-26) === -->
 | e-not-valid-verbatimrestore | notes | node:investigation-validation | noteworthy:nw-native-restore-needs-verbatim |  |  |
 | e-men-valid-memorylayer | mentions | node:investigation-validation | concept:concept-konspekt-vs-memory-layer |  |  |
-| e-dec-usability-edgelayout | decomposes | node:goal-usability | node:task-edge-traversal-layout |  |  |
 | e-link-edgelayout-cas | links | node:task-edge-traversal-layout | node:task-atom-versioning-cas | 0.7 |  |
 | e-link-edgelayout-enterprise | links | node:task-edge-traversal-layout | node:task-enterprise-persistence | 0.6 |  |
 | e-link-edgelayout-serial | links | node:task-edge-traversal-layout | node:task-serialization-format | 0.6 |  |
@@ -401,3 +400,10 @@ proposal.
 
 <!-- === validation writeup artifact (proposed 2026-09-27) === -->
 | e-prod-valid-validation | produces | node:investigation-validation | artifact:artifact-validation |  | proposed |
+
+<!-- === bounded-cost goal + edge-layout reparent + scale-hold finding (accepted 2026-09-27) === -->
+| e-dec-boundedcost-edgelayout | decomposes | node:goal-bounded-cost | node:task-edge-traversal-layout |  |  |
+| e-dec-boundedcost-subgraphfirst | decomposes | node:goal-bounded-cost | node:task-subgraph-first-retrieval |  |  |
+| e-men-boundedcost-compounding | mentions | node:goal-bounded-cost | concept:concept-compounding-advantage |  |  |
+| e-not-valid-scalehold | notes | node:investigation-validation | noteworthy:nw-scale-sufficient-hold-optimization |  |  |
+| e-not-edgelayout-scalehold | notes | node:task-edge-traversal-layout | noteworthy:nw-scale-sufficient-hold-optimization |  |  |
