@@ -407,3 +407,20 @@ proposal.
 | e-men-boundedcost-compounding | mentions | node:goal-bounded-cost | concept:concept-compounding-advantage |  |  |
 | e-not-valid-scalehold | notes | node:investigation-validation | noteworthy:nw-scale-sufficient-hold-optimization |  |  |
 | e-not-edgelayout-scalehold | notes | node:task-edge-traversal-layout | noteworthy:nw-scale-sufficient-hold-optimization |  |  |
+
+<!-- === fleet git implementation changeset (six decisions + spec + migration; conversation fleet-implementation) === -->
+| e-not-fleet-committer | notes | node:task-agent-fleet | noteworthy:nw-fleet-serialized-committer |  | proposed |
+| e-not-fleet-rolesplit | notes | node:task-agent-fleet | noteworthy:nw-fleet-committer-role-split |  | proposed |
+| e-not-fleet-durableref | notes | node:task-agent-fleet | noteworthy:nw-fleet-durable-proposed-ref |  | proposed |
+| e-not-fleet-perproposal | notes | node:task-agent-fleet | noteworthy:nw-fleet-per-proposal-admission |  | proposed |
+| e-not-fleet-sandboxegress | notes | node:task-agent-fleet | noteworthy:nw-fleet-sandbox-committer-egress |  | proposed |
+| e-not-fleet-sha256 | notes | node:task-agent-fleet | noteworthy:nw-fleet-sha256-source-addressing |  | proposed |
+| e-not-account-durableref | notes | node:goal-accountability | noteworthy:nw-fleet-durable-proposed-ref |  | proposed |
+| e-not-review-perproposal | notes | node:task-review-ergonomics | noteworthy:nw-fleet-per-proposal-admission |  | proposed |
+| e-not-provenance-sha256 | notes | node:task-provenance-model | noteworthy:nw-fleet-sha256-source-addressing |  | proposed |
+| e-not-enterprise-sha256 | notes | node:task-enterprise-persistence | noteworthy:nw-fleet-sha256-source-addressing |  | proposed |
+| e-men-fleet-caprov | mentions | node:task-agent-fleet | concept:concept-content-addressed-provenance |  | proposed |
+| e-prod-fleet-spec | produces | node:task-agent-fleet | artifact:artifact-fleet-spec |  | proposed |
+| e-dec-collab-sourcesmigration | decomposes | node:goal-collaboration | node:task-sources-sha256-migration |  | proposed |
+| e-link-sourcesmigration-enterprise | links | node:task-sources-sha256-migration | node:task-enterprise-persistence | 0.6 | proposed |
+| e-link-sourcesmigration-provenance | links | node:task-sources-sha256-migration | node:task-provenance-model | 0.6 | proposed |
