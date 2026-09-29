@@ -60,7 +60,7 @@
 
   /* header block used on most content slides: title left, section tag right */
   .head-row{display:flex;justify-content:space-between;align-items:flex-end;gap:24px}
-  .head-row .eyebrow{padding-bottom:9px}
+  .head-row .eyebrow{padding-bottom:9px;white-space:nowrap;flex:0 0 auto}
 
   /* footer */
   .foot{margin-top:auto;display:flex;justify-content:space-between;align-items:center;
@@ -71,14 +71,14 @@
   .footline{border-top:1px solid var(--rule-soft);margin-top:auto;padding-top:14px;
             display:flex;justify-content:space-between;align-items:center}
   /* uniform, fixed-position slide footer injected by JS on every content slide */
-  .slide-foot{position:absolute;left:92px;right:92px;bottom:34px;display:flex;
+  .slide-foot{position:absolute;left:92px;right:92px;bottom:28px;display:flex;
               justify-content:space-between;align-items:center;font-size:14.5px;
               color:var(--muted);pointer-events:none}
   [data-bg="night"] .slide-foot{color:var(--cream-soft)}
   .slide-foot .sf-mark{font-variant:small-caps;letter-spacing:.02em}
   .slide-foot .sf-num{font-family:var(--mono);font-size:13px;letter-spacing:.05em}
   /* reserve space so slide bodies never collide with the fixed footer */
-  .slide[data-foot] .wrap{padding-bottom:58px}
+  .slide[data-foot] .wrap{padding-bottom:96px}
 
   /* ---- Slide 1: title ---- */
   .brand-top{display:flex;justify-content:space-between;align-items:center;
@@ -145,15 +145,15 @@
 
   /* ---- three pillars (approach overview) ---- */
   .pillars{display:grid;grid-template-columns:repeat(3,1fr);flex:1;align-items:stretch;margin-top:10px}
-  .pillar{padding:34px 44px;display:flex;flex-direction:column}
+  .pillar{padding:18px 44px;display:flex;flex-direction:column}
   .pillar + .pillar{border-left:1px solid var(--rule)}
   .pillar:first-child{padding-left:0}
   .pillar:last-child{padding-right:0}
-  .pillar-h{font-family:var(--disp);font-size:29px;color:var(--ink);position:relative;padding-top:22px}
+  .pillar-h{font-family:var(--disp);font-size:29px;color:var(--ink);position:relative;padding-top:14px}
   .pillar-h::before{content:"";position:absolute;top:0;left:0;width:36px;height:2px;background:var(--ochre)}
-  .pillar-d{font-size:17px;line-height:1.5;color:var(--ink-soft);margin-top:16px}
-  .pillar-k{font-family:var(--mono);font-size:13px;letter-spacing:.02em;color:var(--ochre);margin-top:auto;padding-top:20px}
-  .refimpl{flex:0 0 auto;border-top:1px solid var(--rule);margin-top:18px;padding-top:20px;
+  .pillar-d{font-size:17px;line-height:1.5;color:var(--ink-soft);margin-top:12px}
+  .pillar-k{font-family:var(--mono);font-size:13px;letter-spacing:.02em;color:var(--ochre);margin-top:auto;padding-top:14px}
+  .refimpl{flex:0 0 auto;border-top:1px solid var(--rule);margin-top:12px;padding-top:14px;
            display:grid;grid-template-columns:190px 1fr 1fr;gap:44px;align-items:start}
   .refimpl-label{font-family:var(--mono);font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;
                  color:var(--ochre);line-height:1.6}
@@ -248,18 +248,20 @@
   .pay-b{font-size:16px;line-height:1.46;color:var(--ink-soft)}
   /* ---- proof / compounding ---- */
   .proof-cap{font-size:13px;color:var(--muted);font-style:italic;text-align:center;margin-top:10px;line-height:1.4;max-width:46ch;margin-left:auto;margin-right:auto}
-  .cmp{display:flex;flex-direction:column;flex:1;margin-top:14px}
-  .assume{border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);padding:14px 0;display:grid;grid-template-columns:auto 1fr;gap:30px;align-items:center}
+  /* slide 15: the method caption spans the chart column and sits closer to it */
+  .proof-cap.wide{max-width:none;text-align:left;margin-top:2px;line-height:1.5}
+  .cmp{display:flex;flex-direction:column;flex:1;margin-top:8px}
+  .assume{border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);padding:10px 0;display:grid;grid-template-columns:auto 1fr;gap:30px;align-items:center}
   .assume-l{font-family:var(--mono);font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ochre);white-space:nowrap;line-height:1.35}
   .assume-items{display:grid;grid-template-columns:repeat(3,1fr);gap:0 30px}
   .assume-items > div{font-size:14.5px;line-height:1.36;color:var(--ink-soft);padding-left:16px;position:relative}
   .assume-items > div::before{content:"";position:absolute;left:0;top:8px;width:8px;height:1px;background:var(--ochre)}
   .assume-items b{color:var(--ink);font-weight:400}
-  .cmp-body{display:grid;grid-template-columns:1.02fr 0.98fr;gap:48px;flex:1;align-items:center;margin-top:4px}
+  .cmp-body{display:grid;grid-template-columns:1.02fr 0.98fr;gap:40px;flex:1;align-items:center;margin-top:0}
   .arg{display:flex;flex-direction:column}
   .arg-lead{font-size:17.5px;line-height:1.5;color:var(--ink);margin-bottom:4px}
-  .arg-item{border-top:1px solid var(--rule-soft);padding:13px 0 12px 22px;position:relative;font-size:15.5px;line-height:1.44;color:var(--ink-soft)}
-  .arg-item::before{content:"";position:absolute;left:0;top:21px;width:10px;height:1px;background:var(--ochre)}
+  .arg-item{border-top:1px solid var(--rule-soft);padding:10px 0 9px 22px;position:relative;font-size:15.5px;line-height:1.44;color:var(--ink-soft)}
+  .arg-item::before{content:"";position:absolute;left:0;top:18px;width:10px;height:1px;background:var(--ochre)}
   .arg-item b{color:var(--ochre);font-weight:400}
   /* ---- faq ---- */
   .faq{display:grid;grid-template-columns:1fr 1fr;gap:26px 56px;flex:1;align-content:center;margin-top:14px}
@@ -291,22 +293,22 @@
   .quint .qb{font-size:14.5px;line-height:1.46}
 
   /* ---- binding slide ---- */
-  .bind-lede{font-size:18px;line-height:1.45;color:var(--ink-soft);max-width:92ch;margin-top:16px}
-  .bind-body{display:grid;grid-template-columns:1fr 1fr;gap:0;flex:0 0 auto;margin-top:18px}
+  .bind-lede{font-size:16.5px;line-height:1.4;color:var(--ink-soft);max-width:92ch;margin-top:10px}
+  .bind-body{display:grid;grid-template-columns:1fr 1fr;gap:0;flex:0 0 auto;margin-top:10px}
   .bind-col{padding:0 0 4px}
   .bind-col.a{padding-right:52px}
   .bind-col.b{padding-left:52px;border-left:1px solid var(--rule)}
   .bind-k{font-family:var(--mono);font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ochre)}
-  .bind-lead{font-size:17px;line-height:1.42;color:var(--ink);margin:12px 0 0}
+  .bind-lead{font-size:17px;line-height:1.42;color:var(--ink);margin:8px 0 0}
   .bind-lead b{color:var(--ochre);font-weight:400}
   .bind-list{display:flex;flex-direction:column;margin-top:8px}
-  .bind-item{border-top:1px solid var(--rule-soft);padding:9px 0 8px 22px;position:relative;
+  .bind-item{border-top:1px solid var(--rule-soft);padding:6px 0 6px 22px;position:relative;
              font-size:15px;line-height:1.4;color:var(--ink-soft)}
-  .bind-item::before{content:"";position:absolute;left:0;top:17px;width:10px;height:1px;background:var(--ochre)}
+  .bind-item::before{content:"";position:absolute;left:0;top:14px;width:10px;height:1px;background:var(--ochre)}
   .bind-item b{color:var(--ink);font-weight:400}
   .bind-item code{font-family:var(--mono);font-size:13px;color:var(--ochre)}
   .ladder{display:grid;grid-template-columns:auto 1fr auto 1fr auto 1fr;gap:0 14px;align-items:center;
-          border-top:1px solid var(--rule);padding-top:16px;margin-top:20px}
+          border-top:1px solid var(--rule);padding-top:12px;margin-top:12px}
   .rung{display:flex;flex-direction:column;gap:3px}
   .rung-k{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
   .rung-t{font-family:var(--disp);font-size:18px;color:var(--ink);line-height:1.1}
@@ -322,7 +324,7 @@
   /* ---- product UI mockups (slides 12,13) ---- */
   .panel{background:var(--ui-panel);border:1px solid var(--ui-line);border-radius:12px;color:var(--ui-text);
          font-family:var(--body);overflow:hidden;box-shadow:0 20px 50px -22px rgba(0,0,0,.6);flex:0 0 auto}
-  .p-head{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;
+  .p-head{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;
           border-bottom:1px solid var(--ui-line)}
   .p-title{display:flex;align-items:baseline;gap:12px}
   .p-title b{font-family:var(--mono);font-weight:500;font-size:15px;color:var(--ui-text)}
@@ -332,7 +334,7 @@
   .tabs .on::after{content:"";position:absolute;left:0;right:0;bottom:-17px;height:2px;background:var(--ui-blue)}
   .filterbox{font-family:var(--mono);font-size:12.5px;color:var(--ui-faint);border:1px solid var(--ui-line);
              border-radius:7px;padding:8px 12px;min-width:210px;background:rgba(0,0,0,.15)}
-  .frow{display:flex;align-items:center;gap:10px;padding:6px 20px;flex-wrap:wrap}
+  .frow{display:flex;align-items:center;gap:10px;padding:4px 20px;flex-wrap:wrap}
   .flabel{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--ui-faint);width:60px;flex:0 0 auto}
   .chip{font-size:13px;padding:5px 12px;border-radius:20px;border:1px solid var(--ui-line);color:var(--ui-soft)}
   .chip.act{color:#c9d3ff;border-color:rgba(138,160,255,.5);background:rgba(138,160,255,.1)}
@@ -341,8 +343,8 @@
   .d-blue{background:var(--ui-blue)}.d-amber{background:var(--ui-amber)}.d-green{background:var(--ui-green)}.d-grey{background:var(--ui-grey)}
   table.ent{width:100%;border-collapse:collapse;font-size:14px}
   table.ent th{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;color:var(--ui-faint);
-                text-align:left;font-weight:400;padding:11px 20px 8px}
-  table.ent td{padding:11px 20px;border-top:1px solid var(--ui-line);color:var(--ui-text);vertical-align:middle}
+                text-align:left;font-weight:400;padding:9px 20px 7px}
+  table.ent td{padding:8px 20px;border-top:1px solid var(--ui-line);color:var(--ui-text);vertical-align:middle}
   table.ent td.id{font-family:var(--mono);font-size:13.5px}
   .kind-tag{font-family:var(--mono);font-size:11px;color:var(--ui-soft);background:rgba(255,255,255,.05);
             padding:3px 9px;border-radius:5px}
@@ -357,24 +359,24 @@
   .u-updated{font-family:var(--mono);font-size:12.5px;color:var(--ui-faint)}
 
   /* slide 13 detail */
-  .detail{display:grid;grid-template-columns:1.15fr 1fr;gap:24px;flex:1;margin-top:4px}
-  .banner{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:16px 20px;
-          padding:14px 16px;border-radius:8px;background:rgba(224,162,75,.1);border:1px solid rgba(224,162,75,.32)}
+  .detail{display:grid;grid-template-columns:1.15fr 1fr;gap:20px;flex:1;margin-top:0}
+  .banner{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:10px 20px;
+          padding:10px 16px;border-radius:8px;background:rgba(224,162,75,.1);border:1px solid rgba(224,162,75,.32)}
   .banner span{color:#e6b877;font-size:14.5px}
   .btn-acc{background:var(--ui-green);color:#0d2417;font-size:13.5px;font-weight:600;border:0;
            padding:9px 18px;border-radius:7px;font-family:var(--body)}
   .code{font-family:var(--mono);font-size:12.5px;line-height:1.65;color:#c7cddb;white-space:pre-wrap;
-        background:var(--ui-panel-2);border:1px solid var(--ui-line);border-radius:8px;padding:16px 18px;margin:0 20px}
-  .src-lbl{font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--ui-faint);margin:16px 20px 8px}
-  .cap-in{font-size:12.5px;color:var(--ui-faint);margin:12px 20px 18px;font-style:italic}
+        background:var(--ui-panel-2);border:1px solid var(--ui-line);border-radius:8px;padding:12px 16px;margin:0 20px}
+  .src-lbl{font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--ui-faint);margin:10px 20px 6px}
+  .cap-in{font-size:12.5px;color:var(--ui-faint);margin:8px 20px 12px;font-style:italic}
   .cmd{font-family:var(--mono)}
   .cmd-n{font-size:11px;letter-spacing:.08em;color:var(--ui-faint);margin:0 0 6px}
   .cmd-box{font-family:var(--mono);font-size:13px;color:#cdd3e1;background:var(--ui-panel-2);
-           border:1px solid var(--ui-line);border-radius:7px;padding:11px 14px;margin-bottom:14px}
-  .chg{font-family:var(--mono);font-size:12.5px;color:#c7cddb;line-height:1.9}
+           border:1px solid var(--ui-line);border-radius:7px;padding:9px 14px;margin-bottom:10px}
+  .chg{font-family:var(--mono);font-size:12.5px;color:#c7cddb;line-height:1.7}
   .chg .ar{color:var(--ochre-bright)}
 
-  .cap{font-size:16px;color:var(--muted);line-height:1.45;margin-top:auto;padding-top:22px;max-width:92ch}
+  .cap{font-size:15px;color:var(--muted);line-height:1.4;margin-top:auto;padding-top:12px;max-width:none;text-wrap:pretty}
 
   /* ---- chrome ---- */
   .bar{flex:0 0 auto;display:flex;align-items:center;gap:14px;height:54px;padding:0 18px;
@@ -452,7 +454,7 @@
               <div class="prob-side a">
                 <div class="prob-label">Gen&nbsp;AI</div>
                 <p class="prob-lead">Moves fast, generates a lot of output, starts threads, maintains its own context, and can be hard to control.</p>
-                <p class="prob-slip">so the project starts to slip &mdash;</p>
+                <p class="prob-slip">so the project starts to slip —</p>
                 <ul class="prob-losses">
                   <li>losing track of the goals and outcomes</li>
                   <li>losing track of to&#8209;dos</li>
@@ -463,10 +465,10 @@
               <div class="prob-side b">
                 <div class="prob-label">The human</div>
                 <p class="prob-lead">Works slower, generates less output, and manages their own context by hand.</p>
-                <p class="prob-lead">They carry the project across memory, local notes, and scattered chat history &mdash; and can&rsquo;t keep track of everything the model produces.</p>
+                <p class="prob-lead">They carry the project across memory, local notes, and scattered chat history — and can&rsquo;t keep track of everything the model produces.</p>
               </div>
             </div>
-            <p class="prob-friction">One produces more than can be tracked; the other can&rsquo;t keep up &mdash; and the combination creates a lot of <em>friction</em>.</p>
+            <p class="prob-friction">One produces more than can be tracked; the other can&rsquo;t keep up — and the combination creates a lot of <em>friction</em>.</p>
           </div>
         </div>
       </section>
@@ -475,8 +477,8 @@
       <section class="slide" data-bg="paper" data-title="The solution">
         <div class="wrap">
           <div class="eyebrow">The solution</div>
-          <h2 class="s-head" style="margin-top:10px;font-size:54px">This is how konspekt helps</h2>
-          <hr class="rule" style="margin-top:24px">
+          <h2 class="s-head" style="margin-top:10px;font-size:46px">This is how konspekt helps</h2>
+          <hr class="rule" style="margin-top:18px">
           <div class="pillars">
             <div class="pillar">
               <div class="pillar-h">The graph</div>
@@ -485,7 +487,7 @@
             </div>
             <div class="pillar">
               <div class="pillar-h">Record keeping</div>
-              <p class="pillar-d">konspekt keeps an immutable, auditable ledger of project activity &mdash; from the verbatim record of who proposed what, to the decisions made, and finally the commands run and files changed.</p>
+              <p class="pillar-d">konspekt keeps an immutable, auditable ledger of project activity — from the verbatim record of who proposed what, to the decisions made, and finally the commands run and files changed.</p>
               <div class="pillar-k">verbatim · hashing · commands · changes</div>
             </div>
             <div class="pillar">
@@ -502,7 +504,7 @@
             </div>
             <div class="refimpl-item">
               <div class="refimpl-h">Views</div>
-              <p>Project state, open tasks, and the change ledger &mdash; a standalone Node.js UI or an IntelliJ plugin; accept and resolve in place.</p>
+              <p>Project state, open tasks, and the change ledger — a standalone Node.js UI or an IntelliJ plugin; accept and resolve in place.</p>
             </div>
           </div>
         </div>
@@ -522,16 +524,16 @@
                 <div class="ben-item">fewer dropped tasks and forgotten decisions</div>
                 <div class="ben-item">you stay in control of what gets accepted</div>
                 <div class="ben-item">works alongside your existing tools</div>
-                <div class="ben-item">portable across LLM vendors &mdash; no lock&#8209;in</div>
+                <div class="ben-item">portable across LLM vendors — no lock&#8209;in</div>
               </div>
             </div>
             <div class="ben-col">
               <div class="ben-h">For the enterprise</div>
               <div class="ben-list">
-                <div class="ben-item"><span class="ben-lead">Accountability</span> &mdash; an audit record of the actual prompts and decision chains</div>
-                <div class="ben-item"><span class="ben-lead">Optimization</span> &mdash; analytics that show where to improve</div>
-                <div class="ben-item"><span class="ben-lead">Risk reduction</span> &mdash; real&#8209;time monitoring</div>
-                <div class="ben-item"><span class="ben-lead">Beehive mind</span> &mdash; sharing context across thousands of engineering projects</div>
+                <div class="ben-item"><span class="ben-lead">Accountability</span> — an audit record of the actual prompts and decision chains</div>
+                <div class="ben-item"><span class="ben-lead">Optimization</span> — analytics that show where to improve</div>
+                <div class="ben-item"><span class="ben-lead">Risk reduction</span> — real&#8209;time monitoring</div>
+                <div class="ben-item"><span class="ben-lead">Beehive mind</span> — sharing context across thousands of engineering projects</div>
               </div>
             </div>
           </div>
@@ -565,7 +567,7 @@
                 <div class="etype"><b>artifact</b><span>a produced output</span></div>
                 <div class="etype"><b>waypoint</b><span>a marked point in the record</span></div>
               </div>
-              <p class="types-note">Entities are the nodes. Every relationship is a typed edge &mdash; one row in a single table, and inventories are queries over it.</p>
+              <p class="types-note">Entities are the nodes. Every relationship is a typed edge — one row in a single table, and inventories are queries over it.</p>
             </div>
             <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px">
               <svg viewBox="0 0 760 455" style="width:100%;max-width:565px" font-family="'IBM Plex Mono', ui-monospace, monospace">
@@ -608,7 +610,7 @@
                   <text x="630" y="330" fill="#211D18">artifact-mongodb</text>
                 </g>
               </svg>
-              <p style="font-size:15.5px;color:var(--muted);text-align:center;max-width:54ch;line-height:1.4">A slice of konspekt&rsquo;s own graph &mdash; one node of each type, linked by typed edges.</p>
+              <p style="font-size:15.5px;color:var(--muted);text-align:center;max-width:54ch;line-height:1.4">A slice of konspekt&rsquo;s own graph — one node of each type, linked by typed edges.</p>
             </div>
           </div>
         </div>
@@ -623,7 +625,7 @@
           </div>
           <p class="lede" style="margin-top:14px;max-width:88ch">The maintainer&rsquo;s command vocabulary, in two families.</p>
           <div class="vgroup" style="margin-top:20px">
-            <div class="vgroup-h"><b>Standing</b><span>act on an entity &mdash; each recorded with its reasoning</span></div>
+            <div class="vgroup-h"><b>Standing</b><span>act on an entity — each recorded with its reasoning</span></div>
             <div class="vrow six">
               <div class="verb"><div class="verb-w">pin</div><div class="verb-c">fix an entity as settled</div></div>
               <div class="verb"><div class="verb-w">validate</div><div class="verb-c">confirm it still holds</div></div>
@@ -722,10 +724,10 @@
       <section class="slide" data-bg="paper" data-title="Binding">
         <div class="wrap">
           <div class="head-row">
-            <h2 class="s-head">Every conversation is bound</h2>
+            <h2 class="s-head" style="font-size:46px">Every conversation is bound</h2>
             <div class="eyebrow">Invariant&nbsp;V · provenance completeness</div>
           </div>
-          <hr class="rule" style="margin-top:18px">
+          <hr class="rule" style="margin-top:14px">
           <p class="bind-lede">Left to itself, a conversation is captured from outside &mdash; after it happens, if someone remembers. The default outcome is that nothing is captured. Binding inverts that: the conversation attaches to a graph entity while it is live, so its record exists before there is anything to lose.</p>
           <div class="bind-body">
             <div class="bind-col a">
@@ -775,13 +777,13 @@
             <h2 class="s-head">Provenance</h2>
             <div class="eyebrow">Three content&#8209;addressed channels</div>
           </div>
-          <p style="font-family:var(--disp);font-weight:400;font-size:26px;line-height:1.22;color:var(--ink);text-wrap:balance;margin:16px 0 0;max-width:58ch">An action journal and decision-making trail: who did what, when and how &mdash; and who accepted each proposal.</p>
+          <p style="font-family:var(--disp);font-weight:400;font-size:26px;line-height:1.22;color:var(--ink);text-wrap:balance;margin:16px 0 0;max-width:58ch">An action journal and decision-making trail: who did what, when and how — and who accepted each proposal.</p>
           <p class="lede" style="margin-top:10px;max-width:96ch;font-size:19px;color:var(--muted)">Each channel stores its text under a filename that is the hash of that text. An entry verifies when hashing the file again returns the hash it was stored under, so an altered record stops resolving.</p>
           <div class="chan">
             <div class="chan-col">
               <div class="chan-file">sources/&lt;hash&gt;.md</div>
               <h4 class="chan-h">Verbatim excerpts</h4>
-              <p class="chan-b">The text an entry was drawn from, covering every participating turn &mdash; human prompts and assistant responses, copied as written. Selecting which spans to include is allowed; rewriting or summarizing a span is not.</p>
+              <p class="chan-b">The text an entry was drawn from, covering every participating turn — human prompts and assistant responses, copied as written. Selecting which spans to include is allowed; rewriting or summarizing a span is not.</p>
             </div>
             <div class="chan-col">
               <div class="chan-file">commands/&lt;hash&gt;.md</div>
@@ -804,13 +806,13 @@
             <h2 class="s-head" style="font-size:46px">The context is visible to the human</h2>
             <div class="eyebrow">Side&#8209;car UI · IntelliJ tool window</div>
           </div>
-          <hr class="rule" style="margin:14px 0 16px">
+          <hr class="rule" style="margin:10px 0 12px">
           <div class="panel" style="background:var(--ui-bg)">
             <div class="p-head">
               <div class="p-title"><b>konspekt</b><span>local · read-mostly</span></div>
               <div class="tabs"><span class="on">Changes</span><span>Stats</span><span>Goals</span><span>Decisions</span></div>
             </div>
-            <div style="padding:8px 0 4px">
+            <div style="padding:4px 0 2px">
               <div class="frow"><span class="flabel">PRESETS</span><span class="chip act pill">Open + accepted work</span><span class="chip pill">Proposed review queue</span>
                 <span style="flex:1"></span><span class="filterbox">&#9906; Filter by id…</span></div>
               <div class="frow"><span class="flabel">KIND</span>
@@ -841,11 +843,11 @@
             <h2 class="s-head" style="font-size:46px">Every atom opens onto its record</h2>
             <div class="eyebrow">Entity detail · provenance tabs</div>
           </div>
-          <hr class="rule" style="margin:18px 0 20px">
+          <hr class="rule" style="margin:12px 0 14px">
           <div class="detail">
             <div class="panel">
               <div class="p-head"><div class="p-title"><b>task-second-implementer</b></div><span style="color:var(--ui-faint);font-size:18px">&times;</span></div>
-              <div class="banner"><span>Proposed &mdash; awaiting a human disposition.</span><span style="display:flex;gap:8px"><button class="btn-acc" style="background:transparent;color:#8fe0a6;border:1px solid rgba(135,215,163,.5)">Resolve</button><button class="btn-acc">Accept</button></span></div>
+              <div class="banner"><span>Proposed — awaiting a human disposition.</span><span style="display:flex;gap:8px"><button class="btn-acc" style="background:transparent;color:#8fe0a6;border:1px solid rgba(135,215,163,.5)">Resolve</button><button class="btn-acc">Accept</button></span></div>
               <div class="tabs" style="padding:0 20px 12px;border-bottom:1px solid var(--ui-line)"><span>Details</span><span class="on">Provenance</span><span>Commands (2)</span><span>Changes (1)</span></div>
               <div class="src-lbl">SOURCES/4F1C9E27B3A8_.MD</div>
               <pre class="code">### human
@@ -902,7 +904,7 @@ VFS-native change source, so the reader ships with the plugin …</pre>
             <div class="pay">
               <div class="pay-m">Switch models</div>
               <div class="pay-h">It comes with you</div>
-              <div class="pay-b">Move to another LLM mid-project and the context travels &mdash; nothing re-explained.</div>
+              <div class="pay-b">Move to another LLM mid-project and the context travels — nothing re-explained.</div>
             </div>
             <div class="pay">
               <div class="pay-m">Next week</div>
@@ -912,7 +914,7 @@ VFS-native change source, so the reader ships with the plugin …</pre>
             <div class="pay">
               <div class="pay-m">A teammate joins</div>
               <div class="pay-h">They&rsquo;re caught up</div>
-              <div class="pay-b">They read the same graph &mdash; no re-briefing.</div>
+              <div class="pay-b">They read the same graph — no re-briefing.</div>
             </div>
           </div>
         </div>
@@ -944,14 +946,14 @@ VFS-native change source, so the reader ships with the plugin …</pre>
               <div class="tree-row"><span class="tname">   └─ <span class="d">changes/</span></span><span class="tgloss">changed code</span></div>
             </div>
             <div>
-              <p class="dog-lead">Its own development lives in a konspekt instance &mdash; the same plain files the standard defines.</p>
+              <p class="dog-lead">Its own development lives in a konspekt instance — the same plain files the standard defines.</p>
               <div class="proof-pt">
                 <div class="proof-h">Same discipline</div>
-                <div class="proof-b">Every change to the standard is proposed, accepted, and recorded &mdash; the same way konspekt asks of your project.</div>
+                <div class="proof-b">Every change to the standard is proposed, accepted, and recorded — the same way konspekt asks of your project.</div>
               </div>
               <div class="proof-pt">
                 <div class="proof-h">Not slideware</div>
-                <div class="proof-b">The roadmap ahead &mdash; goal-portability, goal-collaboration, goal-accountability &mdash; are live entities in this instance.</div>
+                <div class="proof-b">The roadmap ahead — goal-portability, goal-collaboration, goal-accountability — are live entities in this instance.</div>
               </div>
             </div>
           </div>
@@ -965,25 +967,25 @@ VFS-native change source, so the reader ships with the plugin …</pre>
             <h2 class="s-head">The advantage compounds</h2>
             <div class="eyebrow">Hypothesis, now measured</div>
           </div>
-          <hr class="rule" style="margin-top:20px">
+          <hr class="rule" style="margin-top:14px">
           <div class="cmp">
             <div class="assume">
               <div class="assume-l">Holds<br>when</div>
               <div class="assume-items">
-                <div><b>Across sessions</b> &mdash; within a single conversation, native context is cheaper.</div>
-                <div><b>Memory accretes ungated</b> &mdash; no human curation, no supersession.</div>
-                <div><b>The work has real structure</b> &mdash; interdependent decisions, provenance, things that supersede.</div>
+                <div><b>Across sessions</b> — within a single conversation, native context is cheaper.</div>
+                <div><b>Memory accretes ungated</b> — no human curation, no supersession.</div>
+                <div><b>The work has real structure</b> — interdependent decisions, provenance, things that supersede.</div>
               </div>
             </div>
             <div class="cmp-body">
               <div class="arg">
-                <p class="arg-lead">Given these hold, a curated, fit&#8209;for&#8209;project structure turns recall into deterministic traversal &mdash; following typed edges to what&rsquo;s related, instead of re&#8209;deriving it or ranking by similarity.</p>
-                <div class="arg-item"><b>Size</b> &mdash; the graph grows only as the human accepts entries; native memory accretes on its own. The larger the project, the wider the size gap.</div>
-                <div class="arg-item"><b>Accuracy</b> &mdash; traversal reaches the related entries by construction; similarity retrieval guesses and drops the connective tissue. More edges, more that only structure recovers.</div>
-                <div class="arg-item"><b>Correctness</b> &mdash; curation and explicit supersession keep the record correct; uncurated memory drifts and corrupts. The longer it runs, the more drift the graph avoids.</div>
+                <p class="arg-lead">Given these hold, a curated, fit&#8209;for&#8209;project structure turns recall into deterministic traversal — following typed edges to what&rsquo;s related, instead of re&#8209;deriving it or ranking by similarity.</p>
+                <div class="arg-item"><b>Size</b> — the graph grows only as the human accepts entries; native memory accretes on its own. The larger the project, the wider the size gap.</div>
+                <div class="arg-item"><b>Accuracy</b> — traversal reaches the related entries by construction; similarity retrieval guesses and drops the connective tissue. More edges, more that only structure recovers.</div>
+                <div class="arg-item"><b>Correctness</b> — curation and explicit supersession keep the record correct; uncurated memory drifts and corrupts. The longer it runs, the more drift the graph avoids.</div>
               </div>
               <div>
-                <svg viewBox="0 0 520 350" style="width:100%;max-width:480px;display:block;margin:0 auto" font-family="'Source Serif 4', Georgia, serif">
+                <svg viewBox="0 0 520 350" style="width:100%;max-width:440px;display:block;margin:0 auto" font-family="'Source Serif 4', Georgia, serif">
                   <g stroke-width="1">
                     <line x1="70" y1="140" x2="495" y2="140" stroke="#EAE5DB"/>
                     <line x1="70" y1="215" x2="495" y2="215" stroke="#EAE5DB"/>
@@ -997,10 +999,10 @@ VFS-native change source, so the reader ships with the plugin …</pre>
                   <circle cx="495" cy="251" r="4.5" fill="#A9742A"/>
                   <text x="248" y="104" text-anchor="middle" font-size="14.5" fill="#7A6A56">Native LLM memory</text>
                   <text x="405" y="278" text-anchor="middle" font-size="14.5" fill="#A9742A" font-weight="600">konspekt</text>
-                  <text x="282" y="322" text-anchor="middle" font-size="12.5" fill="#8C8377">project complexity &mdash; edges in the graph →</text>
+                  <text x="282" y="322" text-anchor="middle" font-size="12.5" fill="#8C8377">project complexity — edges in the graph →</text>
                   <text transform="translate(30,167) rotate(-90)" text-anchor="middle" font-size="12.5" fill="#8C8377">cost to re-establish project context →</text>
                 </svg>
-                <p class="proof-cap">The shape is now backed by a 240&#8209;trial A/B (12 questions, native memory vs. graph traversal). Graph traversal is 3&#8209;10&#215; cheaper on multi&#8209;hop. On live, evolving state native is systematically wrong (stale snapshots and conflated workstreams), while the graph stays correct (120/120). The gap widens as the project grows. Full method in the appendix.</p>
+                <p class="proof-cap wide">The shape is now backed by a 240&#8209;trial A/B (12 questions, native memory vs. graph traversal). Graph traversal is 3&#8209;10&#215; cheaper on multi&#8209;hop. On live, evolving state native is systematically wrong (stale snapshots and conflated workstreams), while the graph stays correct (120/120). The gap widens as the project grows. Full method in the appendix.</p>
               </div>
             </div>
           </div>
@@ -1018,7 +1020,7 @@ VFS-native change source, so the reader ships with the plugin …</pre>
             <div class="qcell"><div class="qn">II</div><h4 class="qh">The read path is neutral</h4><p class="qb">An instance is plain files that anyone can re&#8209;read without an API, so adopting konspekt does not commit a project to one tool.</p></div>
             <div class="qcell"><div class="qn">III</div><h4 class="qh">Distribution is a projection</h4><p class="qb">Anything published is regenerated from the graph, so no second copy exists that can drift away from the record.</p></div>
             <div class="qcell"><div class="qn">IV</div><h4 class="qh">Merge converges, accept does not</h4><p class="qb">Anyone may propose, and proposals merge without conflict. Deciding what is accepted stays with a named authority.</p></div>
-            <div class="qcell"><div class="qn">V</div><h4 class="qh">Provenance completeness</h4><p class="qb">Every atom binds &mdash; to its source and to an entity. A conversation resolves to the graph or is recorded as a deliberate non&#8209;binding; none goes silent.</p></div>
+            <div class="qcell"><div class="qn">V</div><h4 class="qh">Provenance completeness</h4><p class="qb">Every atom binds — to its source and to an entity. A conversation resolves to the graph or is recorded as a deliberate non&#8209;binding; none goes silent.</p></div>
           </div>
         </div>
       </section>
@@ -1082,7 +1084,7 @@ VFS-native change source, so the reader ships with the plugin …</pre>
           <div class="rmcols">
             <div><h4>Collaboration</h4><p>Several people and agents work one project while acceptance stays with the named maintainers.</p></div>
             <div><h4>Observability</h4><p>Read the state and history of a project through queries.</p></div>
-            <div><h4>Portability</h4><p>Run on enterprise persistence &mdash; a database or object store &mdash; behind one storage interface.</p></div>
+            <div><h4>Portability</h4><p>Run on enterprise persistence — a database or object store — behind one storage interface.</p></div>
             <div><h4>Accountability</h4><p>Report the chain behind an accepted decision: what was proposed, by which model, and who accepted it.</p></div>
           </div>
         </div>
@@ -1117,11 +1119,11 @@ VFS-native change source, so the reader ships with the plugin …</pre>
           <div class="faq">
             <div class="faq-item">
               <div class="faq-q">Why not the model&rsquo;s built-in memory?</div>
-              <div class="faq-a">Native memory re-derives context, and the cost grows super-linearly with complexity. konspekt keeps a typed, verifiable record whose cost stays flat &mdash; and it&rsquo;s portable across vendors.</div>
+              <div class="faq-a">Native memory re-derives context, and the cost grows super-linearly with complexity. konspekt keeps a typed, verifiable record whose cost stays flat — and it&rsquo;s portable across vendors.</div>
             </div>
             <div class="faq-item">
               <div class="faq-q">Why not a wiki or a doc?</div>
-              <div class="faq-a">A doc drifts from what actually happened. konspekt&rsquo;s entries are content-addressed with verbatim provenance, so the record can&rsquo;t silently diverge &mdash; and each one is accepted by a named maintainer.</div>
+              <div class="faq-a">A doc drifts from what actually happened. konspekt&rsquo;s entries are content-addressed with verbatim provenance, so the record can&rsquo;t silently diverge — and each one is accepted by a named maintainer.</div>
             </div>
             <div class="faq-item">
               <div class="faq-q">Why not Jira or a tracker?</div>
@@ -1139,15 +1141,15 @@ VFS-native change source, so the reader ships with the plugin …</pre>
       <section class="slide" data-bg="paper" data-title="Validation run (appendix)">
         <div class="wrap">
           <div class="head-row">
-            <h2 class="s-head">Validation run &mdash; native memory vs. the graph</h2>
+            <h2 class="s-head">Validation run — native memory vs. the graph</h2>
             <div class="eyebrow">Appendix</div>
           </div>
           <hr class="rule" style="margin-top:20px">
           <div class="arg" style="flex:1;justify-content:center;gap:2px">
-            <p class="arg-lead">A re&#8209;establishment A/B: 240 tool&#8209;gated trials &mdash; 12 probe questions &#215; 2 arms &#215; 10 &mdash; pinned to one frozen commit. Arm A restores from native memory plus conversation search; Arm B restores by traversing the konspekt graph. Correctness is scored first; token cost is reported as relevant subgraph (primary) and whole&#8209;file total (secondary).</p>
-            <div class="arg-item"><b>Correctness</b> &mdash; graph 120/120. Native ~90/120: correct on every simple fact, wrong on every live&#8209;state question &mdash; stale accepted&#8209;state snapshots (Q8, Q11) and, where two workstreams overlap, the wrong one (Q12).</div>
-            <div class="arg-item"><b>Cost</b> &mdash; a tie on single facts. On multi&#8209;hop questions the graph&rsquo;s relevant subgraph is 3&#8209;10&#215; cheaper. Two caveats kept honest: the whole&#8209;file total carries transport overhead (one edge table, large spec files), and native is cheaper for a fact that sits in a single large file.</div>
-            <div class="arg-item"><b>Reading</b> &mdash; the separation is correctness on evolving state, and it grows two ways: native memory drifts from accepted state over time, and blends overlapping workstreams as they accumulate. Traversal reads current typed state at bounded cost.</div>
+            <p class="arg-lead">A re&#8209;establishment A/B: 240 tool&#8209;gated trials — 12 probe questions &#215; 2 arms &#215; 10 — pinned to one frozen commit. Arm A restores from native memory plus conversation search; Arm B restores by traversing the konspekt graph. Correctness is scored first; token cost is reported as relevant subgraph (primary) and whole&#8209;file total (secondary).</p>
+            <div class="arg-item"><b>Correctness</b> — graph 120/120. Native ~90/120: correct on every simple fact, wrong on every live&#8209;state question — stale accepted&#8209;state snapshots (Q8, Q11) and, where two workstreams overlap, the wrong one (Q12).</div>
+            <div class="arg-item"><b>Cost</b> — a tie on single facts. On multi&#8209;hop questions the graph&rsquo;s relevant subgraph is 3&#8209;10&#215; cheaper. Two caveats kept honest: the whole&#8209;file total carries transport overhead (one edge table, large spec files), and native is cheaper for a fact that sits in a single large file.</div>
+            <div class="arg-item"><b>Reading</b> — the separation is correctness on evolving state, and it grows two ways: native memory drifts from accepted state over time, and blends overlapping workstreams as they accumulate. Traversal reads current typed state at bounded cost.</div>
           </div>
           <p class="proof-cap">Measured on this project, 2026&#8209;09&#8209;26/27. Full method and results: <b>VALIDATION.md</b>. The finding is accepted in the graph as <b>nw&#8209;native&#8209;restore&#8209;stale&#8209;on&#8209;live&#8209;state</b>.</p>
         </div>
