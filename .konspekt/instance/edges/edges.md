@@ -424,3 +424,7 @@ proposal.
 | e-dec-collab-sourcesmigration | decomposes | node:goal-collaboration | node:task-sources-sha256-migration |  | proposed |
 | e-link-sourcesmigration-enterprise | links | node:task-sources-sha256-migration | node:task-enterprise-persistence | 0.6 | proposed |
 | e-link-sourcesmigration-provenance | links | node:task-sources-sha256-migration | node:task-provenance-model | 0.6 | proposed |
+
+<!-- === fleet-spec review: canonical-authoritative amendment (accepted 2026-09-28; conversation fleet-spec-review) === -->
+| e-sup-canonauth-durableref | supersedes | noteworthy:nw-fleet-canonical-authoritative | noteworthy:nw-fleet-durable-proposed-ref |  |  |
+| e-not-fleet-canonauth | notes | node:task-agent-fleet | noteworthy:nw-fleet-canonical-authoritative |  | proposed |
