@@ -97,3 +97,4 @@ commit order; the channel was not live during that work.
 | investigation-validation | b6187edec5f1f9456a0cc6562f4580d00d0e9035 | VALIDATION.md |
 | goal-bounded-cost | c559ee7181d2893a8fbe06b90763b047425e6993 | ROADMAP.md |
 | task-agent-fleet | 03d27b157746fac106ae39e10e4f8798b4ebc938 | docs/design/fleet-spec.md |
+| task-presentation-refresh | c7bf98761555f7dd958666c73c14518ef6853d61 | docs/index.html |
