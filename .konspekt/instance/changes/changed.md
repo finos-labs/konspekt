@@ -98,3 +98,4 @@ commit order; the channel was not live during that work.
 | goal-bounded-cost | c559ee7181d2893a8fbe06b90763b047425e6993 | ROADMAP.md |
 | task-agent-fleet | 03d27b157746fac106ae39e10e4f8798b4ebc938 | docs/design/fleet-spec.md |
 | task-presentation-refresh | c7bf98761555f7dd958666c73c14518ef6853d61 | docs/index.html |
+| task-presentation-refresh | 8ffc64fe9a3fbc55a9bac32ad2981e76a28b556f | docs/index.html |
