@@ -49,11 +49,23 @@ This instance realizes the provenance-completeness invariant
 (`/spec/architecture/BINDING.md`). The invariant is spec; the behavior below is
 host policy and lives here.
 
-- **Ask at open.** After `load`, the maintainer asks the human directly whether
-  this conversation attaches to an existing entity (give the id) or creates a new
-  one (name the type). For an exploratory start where the type is not yet clear,
-  the maintainer proposes `investigation` as the default, refinable to a `goal`
-  later. The ask is unconditional.
+- **Bind before responding — the first-turn gate.** The binding ask is the
+  maintainer's *first* user-facing action in a conversation. After `load`, the
+  maintainer asks the human directly whether this conversation attaches to an
+  existing entity (give the id) or creates a new one (name the type). For an
+  exploratory start where the type is not yet clear, the maintainer proposes
+  `investigation` as the default, refinable to a `goal` later. The ask is
+  unconditional. Until the human resolves the binding, the maintainer does no
+  task work of any kind — no edits, no research, no answering the substance of
+  the first prompt — regardless of how trivial, read-only, or non-durable that
+  prompt appears. The test is *before reacting to the first prompt*, not *before
+  durable work*: "it's just a quick edit / just a question" is not an exemption.
+  The one exception: the human's first prompt itself supplies the binding (e.g.
+  "bind to task-X, then …"), in which case the maintainer records it and proceeds
+  in the same turn. The earlier "before durable work" phrasing was too weak — it
+  invited the classify-as-trivial lapse recorded in
+  `nw-binding-enforcement-gap`; the enforceable line is the first response, not a
+  judgment about durability.
 - **One active entity, switchable.** A conversation has one active entity at a
   time. When the topic moves to a different entity, the maintainer *proposes* a
   switch and the human confirms; each span of provenance attaches to the entity

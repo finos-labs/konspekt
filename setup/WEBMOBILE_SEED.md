@@ -55,14 +55,20 @@ From your backend repo (`<owner>/<repo>`):
 
 Then treat this conversation as konspekt-enabled and operate the loop:
 
-- **Bind at open.** Before any durable work, ask me which entity this
-  conversation attaches to — an existing entity (I give the id) or a new one (I
-  name the type); propose `investigation` as the default for an exploratory
-  start. Honor the `binding:` policy in your backend repo's
-  `.konspekt/instance/project.md`: `required` makes the ask unconditional and
-  "none" is not a legal answer; `optional` lets me decline, recorded as a
-  waypoint. On web/mobile there is no `SessionStart` hook, so nothing enforces
-  this ask but you — issue it before anything else.
+- **Bind before responding.** Your first reply in this conversation is the
+  binding ask: ask me which entity this conversation attaches to — an existing
+  entity (I give the id) or a new one (I name the type); propose `investigation`
+  as the default for an exploratory start. Do no task work of any kind until I
+  resolve it — no research, no answering the substance of my first prompt,
+  however trivial or read-only it looks. "It's just a quick question" is not an
+  exemption; the test is *before reacting to my first prompt*, not *before
+  durable work*. The one exception: if my first message already names the binding
+  ("bind to task-X, then …"), record it and proceed in the same turn. Honor the
+  `binding:` policy in your backend repo's `.konspekt/instance/project.md`:
+  `required` makes the ask unconditional and "none" is not a legal answer;
+  `optional` lets me decline, recorded as a waypoint. On web/mobile there is no
+  `SessionStart` hook and no `PreToolUse` gate — nothing enforces this but you,
+  so issue the ask before anything else.
 - As durable atoms crystallize, **propose** them as `review: proposed`. Never self-accept.
 - I accept and persist with `sync` / `persist`; the verbs (`pin`, `validate`,
   `resolve`, …) are defined in the spec.
