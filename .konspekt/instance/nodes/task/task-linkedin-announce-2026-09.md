@@ -22,7 +22,7 @@ updatedAt: 2026-09-27T12:00:00Z
 Draft and publish the 2026-09 LinkedIn announcement wave as two posts: an
 interface post (the IntelliJ plugin plus accept/resolve write actions,
 `post_2026-09-26/`) and a binding post (provenance completeness — the fifth
-invariant — as a feed teaser plus a long-form article, `post_2026-09-27/`). Drafts
+invariant — as a feed teaser plus a long-form article, `post_2026-09-30/`). Drafts
 live under `docs/announcements/linkedin/`; a post is published when its directory
 merges into `main`.
 
@@ -30,4 +30,4 @@ Decomposes [[goal-usability]]. The interface post `post_2026-09-26/` is drafted,
 its four plugin screenshots captured, `carousel.pdf` assembled, and it is
 published on LinkedIn (`url:` recorded 2026-09-27). Still open: merging
 `post_2026-09-26/` into `main`; drafting and publishing the binding post
-`post_2026-09-27/` and filling in its live URL.
+`post_2026-09-30/` and filling in its live URL.

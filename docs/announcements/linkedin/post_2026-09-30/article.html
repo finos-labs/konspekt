@@ -44,13 +44,17 @@
 
 <p>Provenance completeness is that guarantee. An atom is bound when it carries a resolvable reference to an entity: its provenance anchors it to a source, and it attaches to the graph through at least one entity — its own identity for a node, an edge endpoint for an edge. A conversation is bound when the atoms drawn from it bind to a live entity. A conversation may instead be recorded as unbound — a marker that a human declined to bind it — which is itself a bound atom. So a persisted conversation resolves to entities, or to an explicit, auditable record that it was left unbound. There is no third state in which work happened and the graph shows nothing.</p>
 
-<h2>Referential integrity, not judgment</h2>
+<h2>Binding checks integrity; acceptance stays human</h2>
 
 <p>Binding checks that an atom references an entity that exists, the way a foreign key requires a valid parent. It says nothing about whether the atom is correct or worth keeping — that judgment is acceptance, which stays human and lives in the review conversation. Because binding is integrity and acceptance is judgment, the two do not collide: the maintainer may propose a bound atom on its own; only accepting it remains a human move.</p>
 
-<h2>Enforced when an atom is extracted, not at save</h2>
+<h2>Enforced at extraction time</h2>
 
 <p>Completeness is enforced the way a confidence value is: it is mandatory on every proposed atom, and the extraction layer enforces it. An atom with no binding is malformed and never becomes well-formed. It is deliberately not a gate at save time. A save-time gate that refused to write unbound atoms would block a proposal until it was bound, which contradicts another rule of the design — that review never blocks the save. Enforcing at extraction gives the same guarantee while leaving the save path open: proposals, already bound, are written and dispositioned later.</p>
+
+<h2>Audited in CI</h2>
+
+<p>Extraction keeps every proposed atom bound, but it cannot see a conversation that produced no atom at all: there is no file to check. A binding audit closes that gap from the other side, and under <code>binding: required</code> it breaks the build. The check is a CI workflow, <code>.github/workflows/konspekt-binding-audit.yml</code>, which runs <code>tools/binding-audit.mjs</code> on every push to main and every pull request. The script walks each commit from the recorded baseline to HEAD; for any commit that changed a surface outside <code>.konspekt/instance/</code>, it looks for a row in the changed-code log (<code>.konspekt/instance/changes/changed.md</code>) that binds that change to an entity. A commit that changed the project but binds to nothing fails the job, and the build goes red. This is detection at the commit boundary, not a persist gate: it reports after the fact and never blocks a save, so an uncaptured conversation is caught in CI rather than stopped at the moment of writing.</p>
 
 <h2>Optional, or required</h2>
 
@@ -61,11 +65,11 @@
   <li><b>Required:</b> there is no legal unbound state; every conversation must resolve to an entity. This suits audit and enterprise use, where an unrecorded AI-driven conversation is unacceptable.</li>
 </ul>
 
-<p>Absent the setting, optional is the default, so every existing instance stays valid. konspekt's own project now runs in required.</p>
+<p>Absent the setting, optional is the default, so every existing instance stays valid. konspekt's own project now runs in required, and its operating loop is written down in the instance's operating policy (<code>.konspekt/OPERATING.md</code>): load the instance, then bind before any durable work, then propose and persist. Binding is the second step of that loop. Before any durable work, the maintainer asks which entity the conversation attaches to: an existing entity by its id, or a new one of a stated type — an investigation by default for an exploratory start. A conversation carries one active entity at a time; when the topic moves, the maintainer proposes a switch, and each span of provenance keeps the entity it was under. No session begins unbound.</p>
 
 <h2>Where it sits</h2>
 
-<p>Provenance completeness is the fifth invariant konspekt's design holds to, alongside four already in the specification: the store stays simple, the read path is neutral, distribution is a projection, and merge converges while acceptance does not. The invariant is defined in the spec (<a href="https://github.com/finos-labs/konspekt/blob/main/spec/architecture/BINDING.md">spec/architecture/BINDING.md</a>); how and when a human is asked which entity a conversation attaches to is left to the host, so it can differ per instance.</p>
+<p>Provenance completeness is the fifth invariant konspekt's design holds to, alongside four already in the specification: the store stays simple, the read path is neutral, distribution is a projection, and merge converges while acceptance does not. The invariant is defined in the spec (<a href="https://github.com/finos-labs/konspekt/blob/main/spec/architecture/BINDING.md">spec/architecture/BINDING.md</a>); how and when a human is asked which entity a conversation attaches to, and the commit-boundary audit, are host behavior, so both can differ per instance. The project deck now carries a dedicated Binding slide (invariant V) that shows the three layers together: the ask at the open, the extraction constraint, and the audit.</p>
 
 <p>All of it is on main: <a href="https://github.com/finos-labs/konspekt">github.com/finos-labs/konspekt</a></p>
 

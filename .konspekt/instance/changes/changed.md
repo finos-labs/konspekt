@@ -106,3 +106,10 @@ commit order; the channel was not live during that work.
 | task-binding-gap-audit | 01eb116c2b9ef786a51b62dbb15c94bbd76028b6 | .claude/settings.json |
 | task-binding-gap-audit | 01eb116c2b9ef786a51b62dbb15c94bbd76028b6 | .gitignore |
 | task-binding-gap-audit | 01eb116c2b9ef786a51b62dbb15c94bbd76028b6 | ROADMAP.md |
+| task-linkedin-announce-2026-09 | c501ddddce709be1429d81405359d85410d548b5 | docs/announcements/linkedin/post_2026-09-30/article.md |
+| task-linkedin-announce-2026-09 | c501ddddce709be1429d81405359d85410d548b5 | docs/announcements/linkedin/post_2026-09-30/article.html |
+| task-linkedin-announce-2026-09 | c501ddddce709be1429d81405359d85410d548b5 | docs/announcements/linkedin/post_2026-09-30/post.md |
+| task-linkedin-announce-2026-09 | c501ddddce709be1429d81405359d85410d548b5 | docs/announcements/linkedin/post_2026-09-26/images/CAPTURE.md |
+| task-linkedin-announce-2026-09 | c988a1ae2039c3c7018fd6e3b26cb2259a86ad0e | docs/announcements/linkedin/post_2026-09-30/article.md |
+| task-linkedin-announce-2026-09 | c988a1ae2039c3c7018fd6e3b26cb2259a86ad0e | docs/announcements/linkedin/post_2026-09-30/article.html |
+| task-linkedin-announce-2026-09 | c988a1ae2039c3c7018fd6e3b26cb2259a86ad0e | docs/announcements/linkedin/post_2026-09-30/post.md |

@@ -27,4 +27,4 @@ Notes:
 - Capture against a real instance (konspekt's own), not an empty one, so the
   tabs are populated.
 - The binding invariant (invariant V) is a guarantee, not a screen — it lives in
-  the body copy of `post_2026-09-27/`, not this carousel.
+  the body copy of `post_2026-09-30/`, not this carousel.
