@@ -428,3 +428,6 @@ proposal.
 <!-- === fleet-spec review: canonical-authoritative amendment (accepted 2026-09-28; conversation fleet-spec-review) === -->
 | e-sup-canonauth-durableref | supersedes | noteworthy:nw-fleet-canonical-authoritative | noteworthy:nw-fleet-durable-proposed-ref |  |  |
 | e-not-fleet-canonauth | notes | node:task-agent-fleet | noteworthy:nw-fleet-canonical-authoritative |  | proposed |
+
+<!-- === first-turn binding gate + edit-boundary backstop (proposed 2026-09-29; conversation binding-firstturn-gate) === -->
+| e-not-bindinggap-firstturn | notes | node:task-binding-gap-audit | noteworthy:nw-binding-firstturn-gate |  |  |

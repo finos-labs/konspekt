@@ -3,7 +3,7 @@
      Check freshness with: node tools/roadmap.mjs --check
      This file is a pure function of .konspekt/instance/ (no timestamps baked in).
      Goals and tasks are graph nodes; the horizon is derived from node status/review.
-     contentHash: sha256:9cc14210c36f67f8 -->
+     contentHash: sha256:6a96a186c410a11d -->
 
 # konspekt roadmap
 
@@ -180,7 +180,8 @@ Let several participants — people and agents — propose into and review one s
 - One reviewer over a fleet of agents
 - Per-atom compare-and-swap and a store cursor
 - Support multiple human authors on one instance
+- Re-address existing sources from git blob SHA to SHA-256
 
 ---
 
-Generated from 8 goal(s) and 66 task-listing(s) over the instance graph.
+Generated from 8 goal(s) and 67 task-listing(s) over the instance graph.

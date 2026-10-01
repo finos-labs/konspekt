@@ -100,6 +100,12 @@ commit order; the channel was not live during that work.
 | task-presentation-refresh | c7bf98761555f7dd958666c73c14518ef6853d61 | docs/index.html |
 | task-presentation-refresh | 8ffc64fe9a3fbc55a9bac32ad2981e76a28b556f | docs/index.html |
 | artifact-fleet-spec | 933985e010d25d20328285c861a987003440b4a4 | docs/design/fleet-spec.md |
+| task-binding-gap-audit | 01eb116c2b9ef786a51b62dbb15c94bbd76028b6 | .konspekt/OPERATING.md |
+| task-binding-gap-audit | 01eb116c2b9ef786a51b62dbb15c94bbd76028b6 | setup/WEBMOBILE_SEED.md |
+| task-binding-gap-audit | 01eb116c2b9ef786a51b62dbb15c94bbd76028b6 | .claude/hooks/require-binding.sh |
+| task-binding-gap-audit | 01eb116c2b9ef786a51b62dbb15c94bbd76028b6 | .claude/settings.json |
+| task-binding-gap-audit | 01eb116c2b9ef786a51b62dbb15c94bbd76028b6 | .gitignore |
+| task-binding-gap-audit | 01eb116c2b9ef786a51b62dbb15c94bbd76028b6 | ROADMAP.md |
 | task-linkedin-announce-2026-09 | c501ddddce709be1429d81405359d85410d548b5 | docs/announcements/linkedin/post_2026-09-30/article.md |
 | task-linkedin-announce-2026-09 | c501ddddce709be1429d81405359d85410d548b5 | docs/announcements/linkedin/post_2026-09-30/article.html |
 | task-linkedin-announce-2026-09 | c501ddddce709be1429d81405359d85410d548b5 | docs/announcements/linkedin/post_2026-09-30/post.md |
