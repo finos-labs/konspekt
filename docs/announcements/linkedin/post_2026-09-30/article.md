@@ -2,7 +2,7 @@
 platform: linkedin
 format: article
 date: 2026-09-30
-url:                      # article's permanent URL, filled in once published
+url: https://www.linkedin.com/pulse/provenance-completeness-konspekt-denis-urusov-gbzic
 title: "Nothing goes silent: provenance completeness in konspekt"
 cover: images/invariants.png
 assets:
@@ -43,7 +43,7 @@ Completeness is enforced the way a confidence value is: it is mandatory on every
 
 ## Audited in CI
 
-Extraction keeps every proposed atom bound, but it cannot see a conversation that produced no atom at all: there is no file to check. A binding audit closes that gap from the other side. On every push and pull request it walks the new commits and flags any that changed the project outside the instance while binding to no entity. It runs after the commit and never blocks a save, so it detects an uncaptured conversation without standing in the save path.
+Extraction keeps every proposed atom bound, but it cannot see a conversation that produced no atom at all: there is no file to check. A binding audit closes that gap from the other side, and under `binding: required` it breaks the build. The check is a CI workflow, `.github/workflows/konspekt-binding-audit.yml`, which runs `tools/binding-audit.mjs` on every push to main and every pull request. The script walks each commit from the recorded baseline to HEAD; for any commit that changed a surface outside `.konspekt/instance/`, it looks for a row in the changed-code log (`.konspekt/instance/changes/changed.md`) that binds that change to an entity. A commit that changed the project but binds to nothing fails the job, and the build goes red. This is detection at the commit boundary, not a persist gate: it reports after the fact and never blocks a save, so an uncaptured conversation is caught in CI rather than stopped at the moment of writing.
 
 ## Optional, or required
 
@@ -52,7 +52,7 @@ Whether an unbound conversation is a legal state is set per instance.
 - Optional: a human may decline to bind a conversation, and the decline is recorded as a waypoint, so the absence is auditable. This suits low-stakes and dogfooding use, where forcing a binding onto a trivial chat would push it out to an untracked tool.
 - Required: there is no legal unbound state; every conversation must resolve to an entity. This suits audit and enterprise use, where an unrecorded AI-driven conversation is unacceptable.
 
-Absent the setting, optional is the default, so every existing instance stays valid. konspekt's own project now runs in required. There, before any durable work, the maintainer asks which entity the conversation attaches to: an existing entity by its id, or a new one of a stated type — an investigation by default for an exploratory start. A conversation carries one active entity at a time; when the topic moves, the maintainer proposes a switch, and each span of provenance keeps the entity it was under. No session begins unbound.
+Absent the setting, optional is the default, so every existing instance stays valid. konspekt's own project now runs in required, and its operating loop is written down in the instance's operating policy (`.konspekt/OPERATING.md`): load the instance, then bind before any durable work, then propose and persist. Binding is the second step of that loop. Before any durable work, the maintainer asks which entity the conversation attaches to: an existing entity by its id, or a new one of a stated type — an investigation by default for an exploratory start. A conversation carries one active entity at a time; when the topic moves, the maintainer proposes a switch, and each span of provenance keeps the entity it was under. No session begins unbound.
 
 ## Where it sits
 

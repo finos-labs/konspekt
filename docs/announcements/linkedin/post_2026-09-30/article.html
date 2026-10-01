@@ -54,7 +54,7 @@
 
 <h2>Audited in CI</h2>
 
-<p>Extraction keeps every proposed atom bound, but it cannot see a conversation that produced no atom at all: there is no file to check. A binding audit closes that gap from the other side. On every push and pull request it walks the new commits and flags any that changed the project outside the instance while binding to no entity. It runs after the commit and never blocks a save, so it detects an uncaptured conversation without standing in the save path.</p>
+<p>Extraction keeps every proposed atom bound, but it cannot see a conversation that produced no atom at all: there is no file to check. A binding audit closes that gap from the other side, and under <code>binding: required</code> it breaks the build. The check is a CI workflow, <code>.github/workflows/konspekt-binding-audit.yml</code>, which runs <code>tools/binding-audit.mjs</code> on every push to main and every pull request. The script walks each commit from the recorded baseline to HEAD; for any commit that changed a surface outside <code>.konspekt/instance/</code>, it looks for a row in the changed-code log (<code>.konspekt/instance/changes/changed.md</code>) that binds that change to an entity. A commit that changed the project but binds to nothing fails the job, and the build goes red. This is detection at the commit boundary, not a persist gate: it reports after the fact and never blocks a save, so an uncaptured conversation is caught in CI rather than stopped at the moment of writing.</p>
 
 <h2>Optional, or required</h2>
 
@@ -65,7 +65,7 @@
   <li><b>Required:</b> there is no legal unbound state; every conversation must resolve to an entity. This suits audit and enterprise use, where an unrecorded AI-driven conversation is unacceptable.</li>
 </ul>
 
-<p>Absent the setting, optional is the default, so every existing instance stays valid. konspekt's own project now runs in required. There, before any durable work, the maintainer asks which entity the conversation attaches to: an existing entity by its id, or a new one of a stated type — an investigation by default for an exploratory start. A conversation carries one active entity at a time; when the topic moves, the maintainer proposes a switch, and each span of provenance keeps the entity it was under. No session begins unbound.</p>
+<p>Absent the setting, optional is the default, so every existing instance stays valid. konspekt's own project now runs in required, and its operating loop is written down in the instance's operating policy (<code>.konspekt/OPERATING.md</code>): load the instance, then bind before any durable work, then propose and persist. Binding is the second step of that loop. Before any durable work, the maintainer asks which entity the conversation attaches to: an existing entity by its id, or a new one of a stated type — an investigation by default for an exploratory start. A conversation carries one active entity at a time; when the topic moves, the maintainer proposes a switch, and each span of provenance keeps the entity it was under. No session begins unbound.</p>
 
 <h2>Where it sits</h2>
 
