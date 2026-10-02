@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>konspekt — fleet of agents</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* Layout concept: two stacked SVG figures (proposal flow, then repository layout),
+     followed by text panels; one teal accent marks the single canonical write path,
+     amber/green/red carry the three konspekt review states. */
+  :root {
+    --bg: #f4f6f8; --surface: #ffffff; --surface-2: #eef1f5; --line: #c7ccd6;
+    --fg: #1a1d24; --muted: #59606e;
+    --accent: #0e7c86;      /* canonical write path / authority */
+    --accent-2: #4b5bd6;    /* MCP signal */
+    --proposed: #9c6612; --proposed-bg: #f6e8cb;
+    --accepted: #2f7d4f; --accepted-bg: #d8edda;
+    --rejected: #b0432d; --rejected-bg: #f0dad3;
+    --sans: "IBM Plex Sans", system-ui, sans-serif;
+    --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #13161b; --surface: #1c212a; --surface-2: #232b35; --line: #38414e;
+      --fg: #e7eaf0; --muted: #99a2b1;
+      --accent: #3fb6c0; --accent-2: #8a96f0;
+      --proposed: #e0a94a; --proposed-bg: #392f18;
+      --accepted: #5fc487; --accepted-bg: #173120;
+      --rejected: #e0795f; --rejected-bg: #35201a;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #13161b; --surface: #1c212a; --surface-2: #232b35; --line: #38414e;
+    --fg: #e7eaf0; --muted: #99a2b1;
+    --accent: #3fb6c0; --accent-2: #8a96f0;
+    --proposed: #e0a94a; --proposed-bg: #392f18;
+    --accepted: #5fc487; --accepted-bg: #173120;
+    --rejected: #e0795f; --rejected-bg: #35201a;
+    color-scheme: dark;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--sans); line-height: 1.5; }
+  img { max-width: 100%; }
+  .wrap { max-width: 1200px; margin: 0 auto; padding-inline: 16px; padding-block: 40px 64px; }
+  header { margin-bottom: 36px; }
+  .eyebrow { font-family: var(--mono); font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); margin: 0 0 10px; }
+  h1 { font-size: clamp(28px, 4.4vw, 44px); font-weight: 600; letter-spacing: -.02em; text-wrap: balance; margin: 0 0 12px; }
+  .lede { font-size: 17px; color: var(--muted); max-width: 70ch; margin: 0; }
+  h2 { font-size: 13px; font-family: var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin: 44px 0 16px; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  figure { margin: 0; }
+  .fig-shell { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 18px; overflow-x: auto; }
+  svg { display: block; width: 100%; height: auto; min-width: 720px; color: var(--fg); }
+  figcaption { font-size: 13.5px; color: var(--muted); margin-top: 12px; max-width: 78ch; }
+  figcaption b { color: var(--fg); font-weight: 600; }
+
+  /* SVG element classes */
+  .panel { fill: var(--surface); stroke: var(--line); stroke-width: 1.5; }
+  .sub { fill: var(--surface-2); stroke: var(--line); stroke-width: 1.2; }
+  .store { fill: var(--surface-2); stroke: var(--accent); stroke-width: 1.6; }
+  .t { fill: var(--fg); font-family: var(--sans); }
+  .mono { fill: var(--fg); font-family: var(--mono); }
+  .mut { fill: var(--muted); font-family: var(--sans); }
+  .mutm { fill: var(--muted); font-family: var(--mono); }
+  .ttl { fill: var(--fg); font-family: var(--sans); font-weight: 600; }
+  .num { fill: var(--accent); font-family: var(--mono); font-weight: 600; }
+  .write { stroke: var(--accent); stroke-width: 2; fill: none; }
+  .read { stroke: var(--muted); stroke-width: 1.6; stroke-dasharray: 5 4; fill: none; }
+  .mcp { stroke: var(--accent-2); stroke-width: 2; fill: none; }
+  .fa { fill: var(--accent); } .fm { fill: var(--muted); } .fm2 { fill: var(--accent-2); }
+  .chip-p { fill: var(--proposed-bg); stroke: var(--proposed); stroke-width: 1; }
+  .chip-a { fill: var(--accepted-bg); stroke: var(--accepted); stroke-width: 1; }
+  .chip-r { fill: var(--rejected-bg); stroke: var(--rejected); stroke-width: 1; }
+  .tp { fill: var(--proposed); font-family: var(--mono); font-weight: 600; }
+  .ta { fill: var(--accepted); font-family: var(--mono); font-weight: 600; }
+  .tr { fill: var(--rejected); font-family: var(--mono); font-weight: 600; }
+
+  .legend { display: flex; flex-wrap: wrap; gap: 8px 22px; margin-top: 14px; font-size: 12.5px; color: var(--muted); font-family: var(--mono); }
+  .legend span { display: inline-flex; align-items: center; gap: 8px; }
+  .swatch { width: 26px; height: 0; border-top-width: 2px; border-top-style: solid; display: inline-block; }
+
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  @media (max-width: 760px) { .grid2 { grid-template-columns: 1fr; } }
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 20px 22px; }
+  .card h3 { margin: 0 0 14px; font-size: 15px; font-weight: 600; }
+  ol.steps { margin: 0; padding: 0; list-style: none; counter-reset: s; }
+  ol.steps li { position: relative; padding: 9px 0 9px 44px; border-top: 1px solid var(--line); font-size: 14px; min-width: 0; }
+  ol.steps li:first-child { border-top: none; }
+  ol.steps li::before { counter-increment: s; content: counter(s); position: absolute; left: 0; top: 9px; width: 26px; height: 26px; border-radius: 7px; background: var(--surface-2); border: 1px solid var(--line); color: var(--accent); font-family: var(--mono); font-weight: 600; font-size: 13px; display: grid; place-items: center; }
+  ol.steps code, .card code, li code { font-family: var(--mono); font-size: 12.5px; background: var(--surface-2); padding: 1px 5px; border-radius: 4px; }
+  ul.inv { margin: 0; padding: 0; list-style: none; }
+  ul.inv li { position: relative; padding: 9px 0 9px 22px; border-top: 1px solid var(--line); font-size: 14px; }
+  ul.inv li:first-child { border-top: none; }
+  ul.inv li::before { content: ""; position: absolute; left: 0; top: 16px; width: 9px; height: 9px; border-radius: 2px; background: var(--accent); }
+  .state-tag { font-family: var(--mono); font-size: 12px; font-weight: 600; padding: 1px 7px; border-radius: 4px; }
+  .st-p { color: var(--proposed); background: var(--proposed-bg); }
+  .st-a { color: var(--accepted); background: var(--accepted-bg); }
+  .st-r { color: var(--rejected); background: var(--rejected-bg); }
+
+  .note { margin-top: 40px; background: var(--surface); border: 1px solid var(--accent); border-left-width: 4px; border-radius: 10px; padding: 22px 24px; }
+  .note h3 { margin: 0 0 10px; font-size: 15px; font-weight: 600; color: var(--accent); font-family: var(--mono); letter-spacing: .02em; }
+  .note p { margin: 0 0 10px; font-size: 14.5px; max-width: 86ch; }
+  .note p:last-child { margin-bottom: 0; }
+  .note code { font-family: var(--mono); font-size: 13px; background: var(--surface-2); padding: 1px 5px; border-radius: 4px; }
+  strong { font-weight: 600; }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <p class="eyebrow">konspekt · task-agent-fleet</p>
+    <h1>One reviewer over a fleet of agents</h1>
+    <p class="lede">Three proposer agents — a coder, a tester, and a doc writer — propose into one konspekt
+      instance. A single committer agent verifies, folds, and (on one human's acceptance) blesses every
+      proposal. Agents never write canonical; the committer is the only writer.</p>
+  </header>
+
+  <h2>Figure 1 — How a proposal moves</h2>
+  <figure>
+    <div class="fig-shell">
+      <svg viewBox="0 0 1180 700" role="img" aria-label="Three proposer agents commit content-addressed proposals to their own outbox branches and signal the committer over MCP. The committer's deterministic writer verifies and folds each proposal onto the canonical branch as review proposed, indexing it on a derived proposed ref. An LLM review assistant presents the queue to one human acceptor, who accepts per proposal; the deterministic writer then blesses accepted atoms in place, or records a rejected tombstone.">
+        <defs>
+          <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="fm"/></marker>
+          <marker id="ahw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="fa"/></marker>
+          <marker id="ahm" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="fm2"/></marker>
+        </defs>
+
+        <!-- column headers -->
+        <text x="36" y="34" class="mutm" font-size="12" letter-spacing="1.5">3 PROPOSER AGENTS</text>
+        <text x="452" y="34" class="mutm" font-size="12" letter-spacing="1.5">1 KONSPEKT COMMITTER AGENT</text>
+        <text x="936" y="34" class="mutm" font-size="12" letter-spacing="1.5">1 HUMAN</text>
+
+        <!-- proposer cards -->
+        <!-- coder -->
+        <rect class="panel" x="36" y="48" width="300" height="150" rx="10"/>
+        <text x="54" y="72" class="ttl" font-size="16">Coder agent</text>
+        <text x="54" y="91" class="t" font-size="11">authors its own proposals: code decisions, ADRs</text>
+        <text x="54" y="108" class="mut" font-size="11.5">own worktree · reads canonical</text>
+        <text x="54" y="126" class="mutm" font-size="12">branch: outbox/coder</text>
+        <line x1="54" y1="136" x2="318" y2="136" stroke="var(--line)"/>
+        <text x="54" y="155" class="mutm" font-size="12">proposals/&lt;id&gt;/</text>
+        <text x="66" y="172" class="mutm" font-size="11.5">proposal.md · source.md</text>
+        <text x="54" y="189" class="mut" font-size="11">content-addressed · origin-tagged</text>
+
+        <!-- tester -->
+        <rect class="panel" x="36" y="214" width="300" height="150" rx="10"/>
+        <text x="54" y="238" class="ttl" font-size="16">Tester agent</text>
+        <text x="54" y="257" class="t" font-size="11">authors its own proposals: test findings</text>
+        <text x="54" y="274" class="mut" font-size="11.5">own worktree · reads canonical</text>
+        <text x="54" y="292" class="mutm" font-size="12">branch: outbox/tester</text>
+        <line x1="54" y1="302" x2="318" y2="302" stroke="var(--line)"/>
+        <text x="54" y="321" class="mutm" font-size="12">proposals/&lt;id&gt;/</text>
+        <text x="66" y="338" class="mutm" font-size="11.5">proposal.md · source.md</text>
+        <text x="54" y="355" class="mut" font-size="11">content-addressed · origin-tagged</text>
+
+        <!-- doc writer -->
+        <rect class="panel" x="36" y="380" width="300" height="150" rx="10"/>
+        <text x="54" y="404" class="ttl" font-size="16">Doc-writer agent</text>
+        <text x="54" y="423" class="t" font-size="11">authors its own proposals: artifacts, notes</text>
+        <text x="54" y="440" class="mut" font-size="11.5">own worktree · reads canonical</text>
+        <text x="54" y="458" class="mutm" font-size="12">branch: outbox/doc-writer</text>
+        <line x1="54" y1="468" x2="318" y2="468" stroke="var(--line)"/>
+        <text x="54" y="487" class="mutm" font-size="12">proposals/&lt;id&gt;/</text>
+        <text x="66" y="504" class="mutm" font-size="11.5">proposal.md · source.md</text>
+        <text x="54" y="521" class="mut" font-size="11">content-addressed · origin-tagged</text>
+
+        <!-- committer box -->
+        <rect class="panel" x="430" y="48" width="446" height="482" rx="12"/>
+        <text x="452" y="76" class="ttl" font-size="16">konspekt committer agent</text>
+        <text x="452" y="96" class="mut" font-size="12">serialized single writer · sole holder of the DCO signing key</text>
+
+        <!-- deterministic writer sub-box -->
+        <rect class="sub" x="446" y="112" width="414" height="232" rx="9"/>
+        <text x="462" y="134" class="ttl" font-size="13.5">deterministic writer — no model</text>
+        <text x="462" y="152" class="mut" font-size="11.5">sole writer to canonical</text>
+        <text x="462" y="180" class="num" font-size="12">4</text>
+        <text x="478" y="180" class="t" font-size="12">verify: recompute hash · origin = owner ·</text>
+        <text x="478" y="196" class="t" font-size="12">scope ⊆ grant · confidence + binding · depends_on</text>
+        <text x="462" y="224" class="num" font-size="12">5</text>
+        <text x="478" y="224" class="t" font-size="12">fold onto canonical as <tspan class="tp">review: proposed</tspan></text>
+        <text x="478" y="240" class="mut" font-size="11.5">one commit: source excerpt + entity + edge rows</text>
+        <text x="478" y="256" class="mut" font-size="11.5">index on derived proposed ref</text>
+        <text x="462" y="286" class="num" font-size="12">8</text>
+        <text x="478" y="286" class="t" font-size="12">bless: field-only flip → <tspan class="ta">accepted</tspan> + accept record</text>
+        <text x="478" y="302" class="mut" font-size="11.5">DCO trailer · hash-object verify · post-write SHA recheck</text>
+        <text x="478" y="322" class="t" font-size="12">reject → <tspan class="tr">review: rejected</tspan> tombstone (kept, with reason)</text>
+
+        <!-- review assistant sub-box -->
+        <rect class="sub" x="446" y="360" width="414" height="150" rx="9"/>
+        <text x="462" y="382" class="ttl" font-size="13.5">LLM review assistant — no write authority</text>
+        <text x="462" y="400" class="mut" font-size="11.5">reads the queue; never writes canonical</text>
+        <text x="462" y="430" class="num" font-size="12">6</text>
+        <text x="478" y="430" class="t" font-size="12">cluster · summarize · surface dependency &amp;</text>
+        <text x="478" y="446" class="t" font-size="12">near-duplicate hints · present the queue</text>
+        <text x="462" y="476" class="mut" font-size="11.5">relays the human's per-proposal selection to the</text>
+        <text x="462" y="492" class="mut" font-size="11.5">deterministic writer</text>
+
+        <!-- human box -->
+        <rect class="panel" x="922" y="112" width="222" height="200" rx="11"/>
+        <text x="940" y="140" class="ttl" font-size="15">Human reviewer</text>
+        <text x="940" y="162" class="mut" font-size="12">single acceptor</text>
+        <line x1="940" y1="176" x2="1126" y2="176" stroke="var(--line)"/>
+        <text x="940" y="200" class="num" font-size="12">7</text>
+        <text x="956" y="200" class="t" font-size="12">accept per proposal</text>
+        <text x="956" y="218" class="mut" font-size="11.5">records inspection | batch</text>
+        <text x="940" y="248" class="t" font-size="12">the only path to</text>
+        <text x="940" y="264" class="t" font-size="12"><tspan class="ta">review: accepted</tspan></text>
+        <text x="940" y="290" class="mutm" font-size="11.5">carries Signed-off-by</text>
+
+        <!-- canonical store strip -->
+        <rect class="store" x="36" y="572" width="1108" height="104" rx="11"/>
+        <text x="54" y="600" class="ttl" font-size="14">canonical branch — authoritative store</text>
+        <text x="330" y="600" class="mutm" font-size="12">.konspekt/instance/</text>
+        <!-- state chips -->
+        <rect class="chip-p" x="54" y="614" width="104" height="24" rx="6"/>
+        <text x="106" y="630" class="tp" font-size="12" text-anchor="middle">proposed</text>
+        <rect class="chip-a" x="168" y="614" width="104" height="24" rx="6"/>
+        <text x="220" y="630" class="ta" font-size="12" text-anchor="middle">accepted</text>
+        <rect class="chip-r" x="282" y="614" width="150" height="24" rx="6"/>
+        <text x="357" y="630" class="tr" font-size="12" text-anchor="middle">rejected (tombstone)</text>
+        <text x="54" y="662" class="mut" font-size="12">proposed ref — derived index: pending · accepted · rejected + canonical-commit pointers · rebuildable from canonical</text>
+
+        <!-- ARROWS -->
+        <!-- 1 read: canonical up the far left into proposers -->
+        <polyline class="read" points="150,572 150,552 22,552 22,289 34,289" marker-end="url(#ah)"/>
+        <text x="30" y="545" class="num" font-size="12">1</text>
+        <text x="46" y="545" class="mut" font-size="11.5">read canonical (accepted + folded proposed)</text>
+
+        <!-- 2,3 proposers -> committer -->
+        <polyline class="mcp" points="336,289 428,289" marker-end="url(#ahm)"/>
+        <text x="382" y="256" font-size="11" text-anchor="middle"><tspan class="num">2</tspan><tspan class="mut">  commit</tspan></text>
+        <text x="382" y="269" class="mut" font-size="10.5" text-anchor="middle">to outbox</text>
+        <text x="382" y="311" font-size="11" text-anchor="middle"><tspan class="num">3</tspan><tspan class="mut">  call MCP</tspan></text>
+        <text x="382" y="324" class="mut" font-size="10.5" text-anchor="middle">→ pointer</text>
+
+        <!-- 5 fold + 8 bless: committer down to canonical -->
+        <polyline class="write" points="560,530 560,570" marker-end="url(#ahw)"/>
+        <text x="572" y="552" class="num" font-size="12">5</text>
+        <text x="588" y="552" class="t" font-size="11.5">fold → proposed</text>
+        <polyline class="write" points="720,530 720,570" marker-end="url(#ahw)"/>
+        <text x="732" y="552" class="num" font-size="12">8</text>
+        <text x="748" y="552" class="t" font-size="11.5">bless → accepted / reject</text>
+
+        <!-- 6 assistant -> human -->
+        <polyline class="read" points="860,392 894,392 894,250 920,250" marker-end="url(#ah)"/>
+        <text x="866" y="384" class="num" font-size="12">6</text>
+        <text x="882" y="384" class="mut" font-size="11.5">present</text>
+
+        <!-- 7 human -> writer -->
+        <polyline class="write" points="922,196 890,196 890,214 862,214" marker-end="url(#ahw)"/>
+        <text x="876" y="188" class="num" font-size="12">7</text>
+        <text x="892" y="188" class="t" font-size="11.5">accept</text>
+      </svg>
+    </div>
+    <div class="legend">
+      <span><i class="swatch" style="border-top-color: var(--accent);"></i> canonical write (committer only)</span>
+      <span><i class="swatch" style="border-top-color: var(--accent-2);"></i> MCP signal (pointer)</span>
+      <span><i class="swatch" style="border-top-color: var(--muted); border-top-style: dashed;"></i> read</span>
+    </div>
+    <figcaption>Sync is one-directional: <b>outbox → committer → canonical</b>. The MCP call carries a pointer,
+      not the payload; the committer reads the bytes from the store it already trusts and verifies the hash, so a
+      replayed call resolves to the same proposal and is deduplicated. The <b>review: accepted</b> transition is
+      human-only; the review assistant organizes the queue but holds no write authority.</figcaption>
+  </figure>
+
+  <h2>Figure 2 — Repository layout: N+1 worktrees off one object store</h2>
+  <figure>
+    <div class="fig-shell">
+      <svg viewBox="0 0 1180 470" role="img" aria-label="One shared git object store backs four linked worktrees: one per proposer agent bound to its own outbox branch holding a proposals directory, plus one committer worktree bound to the canonical branch holding the .konspekt/instance tree and the proposed ref.">
+        <!-- object store band -->
+        <rect class="store" x="24" y="40" width="1132" height="408" rx="12"/>
+        <text x="44" y="68" class="ttl" font-size="14">one git object store (.git) — shared by every worktree</text>
+        <text x="44" y="88" class="mut" font-size="12">a linked worktree binds to exactly one branch → one outbox branch per agent, by construction</text>
+
+        <!-- three proposer worktrees -->
+        <!-- coder -->
+        <rect class="sub" x="44" y="108" width="258" height="150" rx="9"/>
+        <text x="60" y="132" class="ttl" font-size="13">worktree: coder</text>
+        <text x="60" y="151" class="mutm" font-size="11.5">→ refs/konspekt/outbox/coder/*</text>
+        <line x1="60" y1="162" x2="286" y2="162" stroke="var(--line)"/>
+        <text x="60" y="182" class="mutm" font-size="11.5">proposals/&lt;proposal-id&gt;/</text>
+        <text x="72" y="200" class="mutm" font-size="11">├ proposal.md</text>
+        <text x="92" y="216" class="mut" font-size="10.5">frontmatter + entity + edge rows</text>
+        <text x="72" y="233" class="mutm" font-size="11">└ source.md</text>
+        <text x="92" y="249" class="mut" font-size="10.5">verbatim excerpt (git blob SHA)</text>
+
+        <!-- tester -->
+        <rect class="sub" x="316" y="108" width="258" height="150" rx="9"/>
+        <text x="332" y="132" class="ttl" font-size="13">worktree: tester</text>
+        <text x="332" y="151" class="mutm" font-size="11.5">→ refs/konspekt/outbox/tester/*</text>
+        <line x1="332" y1="162" x2="558" y2="162" stroke="var(--line)"/>
+        <text x="332" y="182" class="mutm" font-size="11.5">proposals/&lt;proposal-id&gt;/</text>
+        <text x="344" y="200" class="mutm" font-size="11">├ proposal.md</text>
+        <text x="344" y="217" class="mutm" font-size="11">└ source.md</text>
+        <text x="332" y="243" class="mut" font-size="11">write scope: its own</text>
+        <text x="332" y="258" class="mut" font-size="11">outbox namespace only</text>
+
+        <!-- doc writer -->
+        <rect class="sub" x="588" y="108" width="258" height="150" rx="9"/>
+        <text x="604" y="132" class="ttl" font-size="13">worktree: doc-writer</text>
+        <text x="604" y="151" class="mutm" font-size="11.5">→ refs/konspekt/outbox/doc-writer/*</text>
+        <line x1="604" y1="162" x2="830" y2="162" stroke="var(--line)"/>
+        <text x="604" y="182" class="mutm" font-size="11.5">proposals/&lt;proposal-id&gt;/</text>
+        <text x="616" y="200" class="mutm" font-size="11">├ proposal.md</text>
+        <text x="616" y="217" class="mutm" font-size="11">└ source.md</text>
+        <text x="604" y="243" class="mut" font-size="11">never writes canonical;</text>
+        <text x="604" y="258" class="mut" font-size="11">reads it as a sibling dir</text>
+
+        <!-- committer worktree -->
+        <rect class="panel" x="860" y="108" width="280" height="316" rx="9" stroke="var(--accent)"/>
+        <text x="876" y="132" class="ttl" font-size="13">worktree: committer</text>
+        <text x="876" y="151" class="mono" font-size="11.5" style="fill:var(--accent)">→ canonical branch</text>
+        <line x1="876" y1="162" x2="1124" y2="162" stroke="var(--line)"/>
+        <text x="876" y="182" class="mutm" font-size="11.5">.konspekt/instance/</text>
+        <text x="888" y="199" class="mutm" font-size="10.5">├ project.md</text>
+        <text x="888" y="215" class="mutm" font-size="10.5">├ nodes/&lt;type&gt;/&lt;id&gt;.md</text>
+        <text x="888" y="231" class="mutm" font-size="10.5">├ concepts/ noteworthy/</text>
+        <text x="888" y="247" class="mutm" font-size="10.5">├ artifacts/ waypoints/</text>
+        <text x="888" y="263" class="mutm" font-size="10.5">├ sources/&lt;hash&gt;.md</text>
+        <text x="888" y="279" class="mutm" font-size="10.5">├ commands/ · changes/changed.md</text>
+        <text x="888" y="295" class="mutm" font-size="10.5">└ edges/edges.md</text>
+        <line x1="876" y1="308" x2="1124" y2="308" stroke="var(--line)"/>
+        <text x="876" y="328" class="mono" font-size="11" style="fill:var(--accent)">proposed ref → derived index</text>
+        <text x="876" y="345" class="mut" font-size="10.5">pending · accepted · rejected</text>
+        <text x="876" y="360" class="mut" font-size="10.5">+ canonical-commit pointers</text>
+        <text x="876" y="384" class="mut" font-size="10.5">sole canonical writer here;</text>
+        <text x="876" y="399" class="mut" font-size="10.5">holds the DCO signing key</text>
+
+        <!-- note at base -->
+        <text x="44" y="300" class="mut" font-size="11.5">Proposer worktrees hold only their outbox (the proposals directory). The committer worktree holds canonical —</text>
+        <text x="44" y="318" class="mut" font-size="11.5">the one .konspekt/instance/ tree every reader opens. Fold and bless are commits the committer makes on the canonical branch.</text>
+      </svg>
+    </div>
+    <figcaption>The same shared object store backs all four worktrees, so a proposer reads canonical as a local
+      sibling-directory read while writing only to its own outbox branch. <b>Canonical is authoritative</b> for
+      proposal state; the <b>proposed ref</b> is a derived index the committer can rebuild by scanning
+      <code>review</code> fields and accept records.</figcaption>
+  </figure>
+
+  <h2>The committer protocol, step by step</h2>
+  <div class="grid2">
+    <div class="card">
+      <h3>Proposer side</h3>
+      <ol class="steps">
+        <li><strong>Read canonical.</strong> The agent reads the accepted graph plus every peer proposal folded so far, as a local sibling-directory read.</li>
+        <li><strong>Commit the payload.</strong> It writes <code>proposal.md</code> and <code>source.md</code> under <code>proposals/&lt;id&gt;/</code> on its own outbox branch. The commit gives the proposal durability before any call.</li>
+        <li><strong>Call over MCP.</strong> It signals the committer with a pointer (content hash or outbox ref). Commit-then-call is the proposer's choice; an agent with no writable store sends the payload in the call instead.</li>
+      </ol>
+    </div>
+    <div class="card">
+      <h3>Committer side</h3>
+      <ol class="steps" style="counter-reset: s 3;">
+        <li><strong>Verify.</strong> Recompute the hash, confirm <code>origin</code> equals the namespace owner, confirm scope is within the agent's grant, confirm <code>confidence</code> and a resolved <code>binding</code> are present, resolve <code>depends_on</code>. A failed check sets the proposal aside with a reason.</li>
+        <li><strong>Fold.</strong> Fold the verified proposal onto canonical as <span class="state-tag st-p">review: proposed</span> in one commit — source excerpt, entity file, edge rows — and index it on the proposed ref.</li>
+        <li><strong>Present.</strong> The review assistant clusters and summarizes the queue and puts it to the human. It holds no write authority.</li>
+        <li><strong>Accept.</strong> The human names the subset to admit, per proposal, recording whether the decision was by inspection or by batch, carrying <code>Signed-off-by</code>.</li>
+        <li><strong>Bless or reject.</strong> For each admitted proposal, a field-only commit flips <code>review</code> to <span class="state-tag st-a">accepted</span> and appends the accept record. A declined proposal becomes a <span class="state-tag st-r">rejected</span> tombstone, retained with its reason.</li>
+      </ol>
+    </div>
+  </div>
+
+  <h2>Invariants the layout holds</h2>
+  <div class="card">
+    <ul class="inv">
+      <li><strong>Proposers never write canonical.</strong> Sync is one-directional: outbox → committer → canonical. The committer is the only writer to canonical and the only holder of the DCO signing key.</li>
+      <li><strong>Least-privilege write scope.</strong> A proposer holds write to its own outbox namespace only (<code>refs/konspekt/outbox/&lt;agent-id&gt;/*</code>); canonical and the proposed ref stay committer-only.</li>
+      <li><strong>Canonical is authoritative.</strong> Proposal state lives in each atom's <code>review</code> field on canonical; the proposed ref is a derived, rebuildable index, so a crash between a fold commit and a ref update cannot make the store disagree with itself.</li>
+      <li><strong>Content-addressed, idempotent delivery.</strong> The MCP call carries a pointer; the committer fetches the bytes and verifies the hash on read, so a replayed call resolves to the same proposal and is deduplicated.</li>
+      <li><strong>Origin is stamped, not trusted.</strong> The committer records <code>origin</code> from the authenticated owner of the outbox namespace, and checks scope against the grant as triage — not as an enforcement boundary.</li>
+      <li><strong>Human-only acceptance.</strong> One acceptor makes every <code>review: accepted</code> transition; rejection is a retained tombstone, never a delete.</li>
+      <li><strong>Contained egress.</strong> The fleet runs inside an egress sandbox with the committer host as the single declared egress; konspekt supplies the accountable payload on that egress.</li>
+    </ul>
+  </div>
+
+  <div class="note">
+    <h3>Not tied to one agent framework</h3>
+    <p>This layout is not specific to any one agent runtime. Any multi-agent framework can drive it, as long as
+      each proposer agent is given a local repository, branch, and worktree that are set up correctly and that
+      carry a <code>.konspekt</code> instance — the framework's only job is to provision those and point each
+      agent at its own outbox branch.</p>
+    <p>An agent that has no local worktree (a web or mobile conversation, for example) is not excluded: it reaches
+      the committer over MCP and sends its proposal in the call. The committer, the propose-then-accept flow, and
+      the content-addressed payload are identical in both cases. Only how each agent is provisioned changes.</p>
+  </div>
+</div>
+
+</body>
+</html>
