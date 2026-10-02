@@ -431,3 +431,10 @@ proposal.
 
 <!-- === first-turn binding gate + edit-boundary backstop (proposed 2026-09-29; conversation binding-firstturn-gate) === -->
 | e-not-bindinggap-firstturn | notes | node:task-binding-gap-audit | noteworthy:nw-binding-firstturn-gate |  |  |
+
+<!-- === fleet ingest generalization: MCP decoupling, commit-then-call, outbox write scope, retraction (proposed 2026-10-02; conversation fleet-design-ingest) === -->
+| e-sup-ingest-serialized | supersedes | noteworthy:nw-fleet-committer-ingest-contract | noteworthy:nw-fleet-serialized-committer |  | proposed |
+| e-not-fleet-ingest | notes | node:task-agent-fleet | noteworthy:nw-fleet-committer-ingest-contract |  | proposed |
+| e-not-fleet-committhencall | notes | node:task-agent-fleet | noteworthy:nw-fleet-commit-then-call |  | proposed |
+| e-not-fleet-outboxscope | notes | node:task-agent-fleet | noteworthy:nw-fleet-proposer-outbox-write-scope |  | proposed |
+| e-not-fleet-retraction | notes | node:task-agent-fleet | noteworthy:nw-fleet-retraction-is-rejection |  | proposed |
