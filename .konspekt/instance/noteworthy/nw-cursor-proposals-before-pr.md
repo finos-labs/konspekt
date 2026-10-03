@@ -9,7 +9,7 @@ provenance:
   timestamp: 2026-10-03T14:00:00Z
   confidence: 0.8
 createdAt: 2026-10-03T14:00:00Z
-updatedAt: 2026-10-03T14:00:00Z
+updatedAt: 2026-10-03T15:35:00Z
 ```
 # Noteworthy: Cursor proposers send konspekt proposals before raising their code PR
 
@@ -25,6 +25,16 @@ and provenance behind that diff — folded onto canonical as `review: proposed` 
 admitted by the human acceptor. konspekt does not replace code review; it captures
 the record alongside it. Sending proposals before the PR lets the PR reference the
 folded proposal ids and the canonical context.
+
+**The committer's write scope does not change; the ordinary agent's does.** The
+committer writes canonical graph state and nothing else, exactly as in the general
+model ([[nw-fleet-committer-ingest-contract]]). What this runtime widens is the
+ordinary agent's scope: it also commits and pushes code to its own branch for the
+PR. So an ordinary agent drives two channels — code to its branch, integrated by
+the host PR, and a proposal to the committer, integrated by acceptance — while the
+committer's authority stays graph-only. The code channel is the only thing added
+over the general model; it comes from the runtime doing code work, not from the
+proposal path.
 
 Three constraints make it work:
 
