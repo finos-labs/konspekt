@@ -114,3 +114,4 @@ commit order; the channel was not live during that work.
 | task-linkedin-announce-2026-09 | c988a1ae2039c3c7018fd6e3b26cb2259a86ad0e | docs/announcements/linkedin/post_2026-09-30/article.html |
 | task-linkedin-announce-2026-09 | c988a1ae2039c3c7018fd6e3b26cb2259a86ad0e | docs/announcements/linkedin/post_2026-09-30/post.md |
 | task-agent-fleet | ce28d20132eaecabbd5ffee4c77a668e1cf55302 | docs/visuals/posters/konspekt-fleet-poster.html |
+| task-cursor-implementation | 9cd74886219cd48d9509e7db797a040705a0a3fa | docs/visuals/posters/konspekt-fleet-dual-channel-poster.html |
