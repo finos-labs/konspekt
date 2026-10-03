@@ -438,3 +438,7 @@ proposal.
 | e-not-fleet-committhencall | notes | node:task-agent-fleet | noteworthy:nw-fleet-commit-then-call |  | proposed |
 | e-not-fleet-outboxscope | notes | node:task-agent-fleet | noteworthy:nw-fleet-proposer-outbox-write-scope |  | proposed |
 | e-not-fleet-retraction | notes | node:task-agent-fleet | noteworthy:nw-fleet-retraction-is-rejection |  | proposed |
+
+<!-- === cursor-specific fleet implementation (proposed 2026-10-03; conversation fleet-cursor-impl) === -->
+| e-dec-fleet-cursor | decomposes | node:task-agent-fleet | node:task-cursor-implementation |  | proposed |
+| e-not-cursorimpl-beforepr | notes | node:task-cursor-implementation | noteworthy:nw-cursor-proposals-before-pr |  | proposed |
