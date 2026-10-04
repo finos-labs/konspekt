@@ -188,6 +188,26 @@ export interface Edge extends Base {
   weight?: number;     // only meaningful for "relates"/"links" — link strength
 }
 
+// ---------- State history ----------
+//
+// One row of the append-only transition log (transitions/transitions.md; see
+// ../architecture/SERIALIZATION.md § Transitions). `review` and `status` on an
+// entity or edge store the CURRENT value; a Transition records when a value was
+// written. Every entity and edge has a birth row (from = null), each later row's
+// `from` equals the previous row's `to`, and the last row's `to` equals the
+// current value. A Transition is not a graph entity: it has no id, no
+// provenance block, and no review state.
+export type TransitionField = "review" | "status";
+export interface Transition {
+  ref: string;             // "type:id" for an entity, "edge:<id>" for an edge
+  field: TransitionField;  // an edge has only "review"
+  from: string | null;     // previous value; null on the birth row
+  to: string;              // value written
+  timestamp: string;       // ISO 8601 — when the value was WRITTEN
+  source?: string;         // contentHash of the sources/ excerpt holding the
+                           // human acceptance or authority verb, if any
+}
+
 // ---------- Derived views (never stored) ----------
 //
 //   project concept inventory
@@ -202,6 +222,11 @@ export interface Edge extends Base {
 //     = noteworthy where kind="assumption" and status="unvalidated"
 //   current items
 //     = entities with no inbound edge(kind="supersedes")
+//   acceptance latency
+//     = for a ref, timestamp(review -> "accepted") minus timestamp of the
+//       preceding review -> "proposed" transition
+//   cycle time
+//     = for a node, the interval between two status transitions
 
 export interface Konspekt {
   project: Project;
@@ -211,4 +236,5 @@ export interface Konspekt {
   artifacts: Artifact[];
   waypoints: Waypoint[];
   edges: Edge[];
+  transitions?: Transition[];  // absent when the instance records no history
 }

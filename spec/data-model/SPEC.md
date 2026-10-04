@@ -99,6 +99,10 @@ One typed table; `from` / `to` are `EntityRef`s — or, for a persona layer that
 - `marks` — waypoint → node (the branch the waypoint sits on / opened)
 - `supersedes` — entity → entity (a new entity replaces an old one; the superseded entity is the `to`). A **proposed** edge is a flagged contradiction awaiting review; **accepting** it confirms the replacement. Both entities stay in the graph — append over rewrite — so the reversal stays legible.
 
+## State history
+
+`review` and `status` store current state only. The time each value was written is recorded in an append-only **transition log**, one row per assignment, for entities and edges (`../architecture/SERIALIZATION.md` § Transitions). The entity file and the edge table are the authority for current state; the log records its history. With the log, the interval between a proposal and its acceptance, and the time a node spends in each `status`, can be computed from the instance without store history.
+
 ## Derived views (never stored)
 
 - project concept inventory = concepts with any inbound `mentions` edge
@@ -107,6 +111,8 @@ One typed table; `from` / `to` are `EntityRef`s — or, for a persona layer that
 - timeline = waypoints ordered by `timestamp`
 - open assumptions = noteworthy where `kind = "assumption"` and `status = "unvalidated"`
 - current items = entities with no inbound `supersedes` edge (e.g. the live decision among superseded ones)
+- acceptance latency = for an entity or edge, the interval between a `review` transition to `proposed` and the next transition to `accepted`
+- cycle time = for a node, the interval between two `status` transitions (e.g. `open` to `resolved`)
 
 ### Composite views
 
