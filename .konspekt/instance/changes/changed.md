@@ -123,3 +123,9 @@ commit order; the channel was not live during that work.
 | task-transition-log | 3832f492761b8a55513e269d9ae0eac533429271 | spec/data-model/SPEC.md |
 | task-transition-log | 3832f492761b8a55513e269d9ae0eac533429271 | spec/data-model/schema.ts |
 | task-transition-log | 3832f492761b8a55513e269d9ae0eac533429271 | test/conformance-transitions.test.mjs |
+| task-transition-log-writers | 1b5ea14b39373b194d543bbfa57507fbf5de3650 | implementations/implementation-zero/app/server.mjs |
+| task-transition-log-writers | 1b5ea14b39373b194d543bbfa57507fbf5de3650 | implementations/implementation-zero/app/test/server.test.mjs |
+| task-transition-log-writers | 1b5ea14b39373b194d543bbfa57507fbf5de3650 | implementations/intellij-plugin/app/src/main/kotlin/dev/konspekt/plugin/InstanceReader.kt |
+| task-transition-log | 1b5ea14b39373b194d543bbfa57507fbf5de3650 | setup/init.mjs |
+| task-transition-log | 1b5ea14b39373b194d543bbfa57507fbf5de3650 | setup/templates/transitions.md |
+| task-transition-log | 1b5ea14b39373b194d543bbfa57507fbf5de3650 | test/setup-init.test.mjs |

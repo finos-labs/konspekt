@@ -2,7 +2,7 @@
 id: nw-components-are-not-the-standard
 kind: constraint
 status: active
-review: proposed
+review: accepted
 provenance:
   sourceRef: 251cd946ae4ba674a64d19978484c5ef49120d93
   contentHash: 251cd946ae4ba674a64d19978484c5ef49120d93

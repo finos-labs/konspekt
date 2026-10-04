@@ -5,9 +5,19 @@ import { test, before, after } from "node:test";
 import assert from "node:assert/strict";
 import { spawn } from "node:child_process";
 import { fileURLToPath } from "node:url";
-import { cpSync, mkdtempSync, rmSync } from "node:fs";
+import { cpSync, mkdtempSync, rmSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
+import { loadInstance } from "../../../../lib/conformance.mjs";
+
+// The transition-log errors the three rules raise (SERIALIZATION.md § Transitions).
+// After any UI write, none of these may be present: the write must have appended a
+// matching row in the same operation.
+const transitionErrors = (dir) =>
+  loadInstance(dir, {}).problems
+    .filter((p) => p.severity === "error" && p.code.includes("transition"))
+    .map((p) => p.code);
+const transitionsText = () => readFileSync(join(tmpInstance, "transitions", "transitions.md"), "utf8");
 
 const PORT = Number(process.env.KONSPEKT_TEST_PORT || 4757);
 const BASE = `http://127.0.0.1:${PORT}`;
@@ -139,4 +149,48 @@ test("POST /api/resolve unknown id → 400 error", async () => {
   const r = await post2("/api/resolve?entity=nope-nope");
   assert.equal(r.status, 400);
   assert.ok((await r.json()).error);
+});
+
+// task-transition-log-writers: a write that sets status/review must append a
+// matching transition row in the same operation, keeping the instance conformant.
+
+test("POST /api/resolve appends a status transition row and stays conformant", async () => {
+  const snap = await (await get2("/api/entities")).json();
+  const NODE = new Set(["goal", "investigation", "experiment", "topic", "task", "note"]);
+  const target = snap.rows.find((r) => NODE.has(r.kind) && (r.status === "open" || r.status === "active"));
+  assert.ok(target, "the instance has an open/active node to resolve");
+
+  const r = await (await post2("/api/resolve?entity=" + encodeURIComponent(target.id))).json();
+  assert.equal(r.resolved, true);
+
+  // A status row for this node, ending at resolved, is the last row for (ref,status).
+  const rows = transitionsText().split("\n")
+    .filter((l) => l.includes(`| node:${target.id} |`) && l.includes("| status |"));
+  assert.ok(rows.length >= 1, "a status transition row was appended for the node");
+  assert.match(rows[rows.length - 1], /\|\s*resolved\s*\|/, "the last status row ends at resolved");
+
+  // The agreement/continuity/birth rules all hold after the write.
+  assert.deepEqual(transitionErrors(tmpInstance), [], "no transition errors after resolve");
+});
+
+test("POST /api/accept appends a review transition row and stays conformant", async () => {
+  const snap = await (await get2("/api/entities")).json();
+  // A proposed entity that is not an open/active node, so accept (not resolve) is
+  // what disposes it — isolating the pure review flip.
+  const NODE = new Set(["goal", "investigation", "experiment", "topic", "task", "note"]);
+  const target = snap.rows.find((r) => r.review === "proposed" &&
+    !(NODE.has(r.kind) && (r.status === "open" || r.status === "active")));
+  if (!target) return; // nothing to accept in this instance; the resolve test covers the path
+
+  const r = await (await post2("/api/accept?entity=" + encodeURIComponent(target.id))).json();
+  assert.equal(r.accepted, true);
+
+  const d = await (await get2("/api/entity?id=" + encodeURIComponent(target.id))).json();
+  const ref = `${d.entityType}:${target.id}`;
+  const rows = transitionsText().split("\n")
+    .filter((l) => l.includes(`| ${ref} |`) && l.includes("| review |"));
+  assert.ok(rows.length >= 1, "a review transition row exists for the accepted entity");
+  assert.match(rows[rows.length - 1], /\|\s*accepted\s*\|/, "the last review row ends at accepted");
+
+  assert.deepEqual(transitionErrors(tmpInstance), [], "no transition errors after accept");
 });
