@@ -18,6 +18,7 @@ This is the locked, lowest-common-denominator on-disk form: human-readable files
   commands/<contentHash>.md # content-addressed executed-command provenance (persona layer)
   changes/changed.md        # append-only changed-code log (persona layer)
   edges/edges.md            # single typed edge table
+  transitions/transitions.md # append-only review/status transition log
 ```
 
 ## File format
@@ -53,6 +54,26 @@ Rules:
 **An excerpt is verbatim, and covers every participating turn.** Capture the source text as it was written — human prompts *and* assistant responses — copied, never paraphrased. Curation is permitted only as **selection**: choosing which spans to include and eliding the rest (e.g. with `...`). Rewriting a span — summarizing, condensing, "synthesizing" — is **prohibited**, because it reintroduces interpretation at the one layer whose job is to be the *near-deterministic* anchor: copied text reproduces byte-for-byte and so hashes stably, while a paraphrase does not. A summarized excerpt is an **atom in disguise** — it cannot serve as the stable source the atoms above it are reconciled against, and it silently breaks the guarantee that the stored text *is* what the extraction was drawn from. The specific failure to guard against is **asymmetry**: capturing the human verbatim while compressing the assistant. Both sides are source.
 
 Entities predating the mechanism may carry provenance without `sourceRef` / `contentHash`; their backfill is a separate, human-assisted pass.
+
+## Transitions
+
+`transitions/transitions.md` is an append-only table, `| ref | field | from | to | timestamp | source |`. It contains one row for every assignment of a state field: one row when an entity or edge is first written, and one row each time its `review` or `status` value changes. Rows appear in the order they were written.
+
+- `ref` is `type:id` for an entity (the form the edge table uses) or `edge:<id>` for an edge. Every `ref` MUST resolve to an entity file or an edge row.
+- `field` is `review` or `status`. An edge has only `review`.
+- `from` is the previous value. It is empty on the first row for a `ref` and `field` (the **birth row**). `to` is the value written.
+- `timestamp` is ISO 8601 and records when the value was written. No other field records when a state value changed: `updatedAt` changes on every edit to the entity, and the edge table has no timestamp column.
+- `source` is optional. When present, it is the `contentHash` of the `sources/` excerpt containing the exchange in which a human issued the acceptance or the authority verb. It is resolved and verified by the same probe as `provenance.sourceRef`.
+
+Three rules relate the log to the graph:
+
+1. **Birth row required.** Every entity and every edge has a `review` birth row. Every entity that has a `status` has a `status` birth row. An atom that is `accepted` in the write that creates it also has one.
+2. **Continuity.** Within one `ref` and `field`, each row's `from` equals the previous row's `to`.
+3. **Agreement.** The last row's `to` equals the value currently stored in the entity file or the edge row.
+
+A row is written **push-based**, in the same write that sets the value, by the writer that sets it: the maintainer, or a client acting on a human verb. The entity file and the edge table are the authority for current state. The log records the history of that state, and rule 3 detects a difference between the two.
+
+The log is part of the instance and is copied with it between stores. No reader resolves it against a version-control history. An instance without the file is v1-conformant and records no state history. When the file exists, the three rules are enforced. A log reconstructed from earlier history states in the file's prose header how its timestamps were derived.
 
 ## Commands
 

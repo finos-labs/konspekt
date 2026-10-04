@@ -12,6 +12,7 @@ Per-entity files and directories per `../spec/SERIALIZATION.md`:
 - `nodes/<type>/` — one directory per NodeType (`goal/`, `investigation/`, `task/`, …).
 - `concepts/`, `noteworthy/`, `artifacts/`, `waypoints/` — one file per entity.
 - `edges/edges.md` — the single typed edge table.
+- `transitions/transitions.md` — append-only log of every `review` and `status` assignment, for entities and edges.
 - `sources/` — content-addressed source excerpts that entities cite through `provenance.sourceRef` (`sources/README.md`).
 
 Each file is YAML front-matter plus a Markdown body that holds the entity's primary prose field (a node's `summary.text`, a concept's `definition`, and so on).

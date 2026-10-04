@@ -32,3 +32,6 @@ New rows below this backfill are recorded live.
 | task-ui-resolve-action | 627f256bd9c8ba5d69e0359958b146787234648b |
 | task-ui-resolve-action | 665a4a190fbae07725ab359f16eb46eb09f8b24e |
 | wp-adr-ui-resolve-action | 548440faad4c5dc0f8571f4a3383dfd3b7a19b9d |
+| task-transition-log | f269e73dc6171ce3a0378cbc8c37275912e1f9e8 |
+| task-transition-log | 3abc97780ac0a917faa0cb182109f8b659b171f2 |
+| task-transition-log | 97ef8feeb2273fd18e82c9d8bb05d1b91699755a |

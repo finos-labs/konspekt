@@ -146,6 +146,14 @@ One venture can carry several proposals; present them together.
   addressed the content. When in doubt, persist it `proposed`; that costs the
   human one queue entry, while a wrong `accepted` silently launders your
   judgment as theirs.
+- When the instance contains `.konspekt/instance/transitions/transitions.md`,
+  append a row to it in the same write that sets a `review` or `status` value:
+  a birth row (empty `from`) for each new entity and edge, and a change row
+  each time you change an existing value. When the value is set by a human
+  acceptance or authority verb, set the row's `source` to the excerpt that
+  contains it. The conformance checker reports an error when the log's last
+  row for an entity or edge differs from its current value
+  (`spec/architecture/SERIALIZATION.md` § Transitions).
 - Give every atom you persist — proposed or accepted — content-addressed
   provenance: a verbatim both-sides source excerpt in
   `.konspekt/instance/sources/`, its git blob SHA as `contentHash`, cited from
