@@ -835,3 +835,29 @@ are recorded live.
 | edge:e-prod-transitionlog-schema | review |  | proposed | 2026-10-04T16:24:34Z |  |
 | edge:e-prod-transitionlog-conformance | review |  | proposed | 2026-10-04T16:24:34Z |  |
 | edge:e-sup-observed-reviewonly | review |  | proposed | 2026-10-04T16:52:09Z |  |
+| node:task-transition-log | review | proposed | accepted | 2026-10-04T20:14:52Z |  |
+| edge:e-dec-obs-transition-log | review | proposed | accepted | 2026-10-04T20:14:52Z |  |
+| edge:e-prod-transitionlog-serialization | review | proposed | accepted | 2026-10-04T20:14:52Z |  |
+| edge:e-prod-transitionlog-schema | review | proposed | accepted | 2026-10-04T20:14:52Z |  |
+| noteworthy:nw-transition-log-append-only | review | proposed | accepted | 2026-10-04T20:17:09Z |  |
+| edge:e-not-transitionlog-appendonly | review | proposed | accepted | 2026-10-04T20:17:09Z |  |
+| noteworthy:nw-transition-log-backfill-from-history | review | proposed | accepted | 2026-10-04T20:17:15Z |  |
+| edge:e-not-transitionlog-backfill | review | proposed | accepted | 2026-10-04T20:17:15Z |  |
+| noteworthy:nw-transition-log-birth-rows-required | review | proposed | accepted | 2026-10-04T20:17:22Z |  |
+| edge:e-not-transitionlog-birthrows | review | proposed | accepted | 2026-10-04T20:17:22Z |  |
+| noteworthy:nw-transitions-observed-in-history | review | proposed | accepted | 2026-10-04T20:17:31Z |  |
+| edge:e-not-transitionlog-observed | review | proposed | accepted | 2026-10-04T20:17:31Z |  |
+| edge:e-not-notifications-observed | review | proposed | accepted | 2026-10-04T20:17:31Z |  |
+| edge:e-sup-observed-reviewonly | review | proposed | accepted | 2026-10-04T20:17:31Z |  |
+| noteworthy:nw-updatedat-not-acceptance-time | review | proposed | accepted | 2026-10-04T20:17:38Z |  |
+| edge:e-not-transitionlog-updatedat | review | proposed | accepted | 2026-10-04T20:17:38Z |  |
+| noteworthy:nw-components-are-not-the-standard | review | proposed | accepted | 2026-10-04T20:18:24Z |  |
+| edge:e-not-adoption-componentsnotstandard | review | proposed | accepted | 2026-10-04T20:18:24Z |  |
+| edge:e-not-notifications-componentsnotstandard | review | proposed | accepted | 2026-10-04T20:18:24Z |  |
+| node:task-transition-log-writers | review | proposed | accepted | 2026-10-04T20:19:58Z |  |
+| edge:e-dec-obs-transition-log-writers | review | proposed | accepted | 2026-10-04T20:19:58Z |  |
+| edge:e-link-transitionlog-writers | review | proposed | accepted | 2026-10-04T20:19:58Z |  |
+| edge:e-link-tlwriters-uiresolve | review | proposed | accepted | 2026-10-04T20:19:58Z |  |
+| edge:e-link-tlwriters-intellij | review | proposed | accepted | 2026-10-04T20:19:58Z |  |
+| node:task-transition-log | status | active | resolved | 2026-10-04T20:26:45Z |  |
+| node:task-transition-log-writers | status | open | resolved | 2026-10-04T20:26:50Z |  |

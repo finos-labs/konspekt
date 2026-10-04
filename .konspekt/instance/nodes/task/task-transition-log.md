@@ -2,12 +2,12 @@
 id: task-transition-log
 type: task
 title: Append-only transition log for review and status
-status: active
+status: resolved
 summary:
   origin: machine
   pinned: false
   updatedAt: 2026-10-04T16:24:34Z
-review: proposed
+review: accepted
 provenance:
   sourceRef: 60b283e07d6fad5738561d91d4fc9a2345235814
   contentHash: 60b283e07d6fad5738561d91d4fc9a2345235814

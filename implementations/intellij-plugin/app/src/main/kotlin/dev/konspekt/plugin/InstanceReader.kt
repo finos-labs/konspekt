@@ -246,13 +246,18 @@ object InstanceReader {
     return "{\"id\":${q(e.id)},\"file\":${q(e.file)},\"markdown\":${q(f.readText())},\"review\":${q(e.review)},\"status\":${q(e.status)},\"entityType\":${q(e.entityType)},\"sourceRef\":${q(e.sourceRef)},\"contentHash\":${q(e.contentHash)}}"
   }
 
+  // One transition-log row to append: an assignment of `field` on `ref`.
+  private data class TransRow(val ref: String, val field: String, val from: String, val to: String)
+
   // Two-way auto-accept every proposed edge touching `id` whose other endpoint is
   // also accepted (the just-dispositioned id counts as accepted). Mirrors the
-  // implementation-zero server. Returns the number of edge rows changed.
-  private fun autoAcceptEdges(instanceDir: File, g: Graph, id: String): Int {
+  // implementation-zero server. Returns the ids of the edges whose review was
+  // flipped, so the caller can log a transition row for each (their prior review
+  // is always "proposed").
+  private fun autoAcceptEdges(instanceDir: File, g: Graph, id: String): List<String> {
     val edgesFile = File(File(instanceDir, "edges"), "edges.md")
-    if (!edgesFile.isFile) return 0
-    var edgesChanged = 0
+    if (!edgesFile.isFile) return emptyList()
+    val flippedEdges = mutableListOf<String>()
     val out = edgesFile.readText().replace("\r\n", "\n").split("\n").map { line ->
       val t = line.trim()
       if (!t.startsWith("|")) return@map line
@@ -266,11 +271,28 @@ object InstanceReader {
       val other = if (fromId == id) toId else fromId
       val otherAccepted = other == id || (g.byId[other]?.review == "accepted")
       if (!otherAccepted) return@map line
-      edgesChanged++
+      flippedEdges.add(cells[0])
       "| ${cells[0]} | ${cells[1]} | $from | $to | ${cells[4]} | accepted |"
     }
-    if (edgesChanged > 0) edgesFile.writeText(out.joinToString("\n"))
-    return edgesChanged
+    if (flippedEdges.isNotEmpty()) edgesFile.writeText(out.joinToString("\n"))
+    return flippedEdges
+  }
+
+  // Append one transition-log row per state assignment, in the SAME write that
+  // set the value (spec/architecture/SERIALIZATION.md § Transitions). `timestamp`
+  // is now, `source` is empty (a UI write is not tied to a sources/ excerpt).
+  // No-op when the instance ships no log: an instance without
+  // transitions/transitions.md records no history and is v1-conformant, and
+  // writing a partial log here would strand every other entity against the
+  // agreement rule. The scaffolder seeds an empty log into a new instance.
+  // Mirrors the implementation-zero server's appendTransitions.
+  private fun appendTransitions(instanceDir: File, rows: List<TransRow>) {
+    if (rows.isEmpty()) return
+    val file = File(File(instanceDir, "transitions"), "transitions.md")
+    if (!file.isFile) return
+    val ts = Instant.now().truncatedTo(java.time.temporal.ChronoUnit.SECONDS).toString()
+    val appended = rows.joinToString("\n") { "| ${it.ref} | ${it.field} | ${it.from} | ${it.to} | $ts |  |" }
+    file.writeText(file.readText().trimEnd('\n') + "\n" + appended + "\n")
   }
 
   // A human disposition from the UI: accept a proposed entity — flip its review
@@ -280,10 +302,17 @@ object InstanceReader {
     val e = g.byId[id] ?: return "{\"error\":\"no such entity\"}"
     val f = File(instanceDir, e.file)
     if (!f.isFile) return "{\"error\":\"file missing\"}"
+    val prevReview = e.review ?: ""
     val txt = f.readText()
     val flipped = txt.replace(Regex("(?m)^review:[ \\t]*proposed[ \\t]*$"), "review: accepted")
-    if (flipped != txt) f.writeText(flipped)
-    return "{\"entity\":${q(id)},\"accepted\":true,\"edges\":${autoAcceptEdges(instanceDir, g, id)}}"
+    val didFlip = flipped != txt
+    if (didFlip) f.writeText(flipped)
+    val flippedEdges = autoAcceptEdges(instanceDir, g, id)
+    val rows = mutableListOf<TransRow>()
+    if (didFlip) rows.add(TransRow("${e.entityType}:$id", "review", prevReview, "accepted"))
+    for (eid in flippedEdges) rows.add(TransRow("edge:$eid", "review", "proposed", "accepted"))
+    appendTransitions(instanceDir, rows)
+    return "{\"entity\":${q(id)},\"accepted\":true,\"edges\":${flippedEdges.size}}"
   }
 
   // A human authority verb from the UI: resolve a work node -> status: resolved in
@@ -299,6 +328,8 @@ object InstanceReader {
     if (!f.isFile) return "{\"error\":\"file missing\"}"
     if (e.status == "resolved") return "{\"entity\":${q(id)},\"resolved\":true,\"accepted\":false,\"edges\":0}"
     if (e.status == "abandoned") return "{\"error\":\"an abandoned node cannot be resolved\"}"
+    val prevStatus = e.status ?: ""
+    val prevReview = e.review ?: ""
     var txt = f.readText()
     val withStatus = txt.replace(Regex("(?m)^status:[ \\t]*(?:open|active)[ \\t]*$"), "status: resolved")
     if (withStatus == txt) return "{\"error\":\"no open or active status line to resolve\"}"
@@ -306,8 +337,14 @@ object InstanceReader {
     var accepted = false
     if (e.review == "proposed") { txt = txt.replace(Regex("(?m)^review:[ \\t]*proposed[ \\t]*$"), "review: accepted"); accepted = true }
     f.writeText(txt)
-    val edges = if (accepted) autoAcceptEdges(instanceDir, g, id) else 0
-    return "{\"entity\":${q(id)},\"resolved\":true,\"accepted\":$accepted,\"edges\":$edges}"
+    val flippedEdges = if (accepted) autoAcceptEdges(instanceDir, g, id) else emptyList()
+    val rows = mutableListOf(TransRow("${e.entityType}:$id", "status", prevStatus, "resolved"))
+    if (accepted) {
+      rows.add(TransRow("${e.entityType}:$id", "review", prevReview, "accepted"))
+      for (eid in flippedEdges) rows.add(TransRow("edge:$eid", "review", "proposed", "accepted"))
+    }
+    appendTransitions(instanceDir, rows)
+    return "{\"entity\":${q(id)},\"resolved\":true,\"accepted\":$accepted,\"edges\":${flippedEdges.size}}"
   }
 
   fun sourceJson(instanceDir: File, ref: String): String {

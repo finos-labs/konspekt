@@ -1,7 +1,7 @@
 ```yaml
 id: nw-transitions-observed-in-history
 kind: fact
-review: proposed
+review: accepted
 provenance:
   sourceRef: 60b283e07d6fad5738561d91d4fc9a2345235814
   contentHash: 60b283e07d6fad5738561d91d4fc9a2345235814

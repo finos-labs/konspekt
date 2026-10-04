@@ -118,11 +118,12 @@ function serveStatic(res, name) {
 // also accepted (mirrors what a human does by hand). The just-dispositioned id
 // counts as accepted; the other endpoint is checked against the current graph.
 // Provenance-ref endpoints (channel:hash, not entities) are left alone. Returns
-// the number of edge rows changed.
+// the ids of the edges whose review was flipped, so the caller can log a
+// transition row for each (their prior review is always "proposed").
 function autoAcceptEdges(id) {
   const edgesPath = join(instanceDir, "edges", "edges.md");
-  if (!existsSync(edgesPath)) return 0;
-  let edgesChanged = 0;
+  if (!existsSync(edgesPath)) return [];
+  const flippedEdges = [];
   const lines = readFileSync(edgesPath, "utf8").split("\n").map((line) => {
     const t = line.trim();
     if (!t.startsWith("|")) return line;
@@ -137,11 +138,29 @@ function autoAcceptEdges(id) {
     const oe = graph.byId.get(other);
     const otherAccepted = other === id || (oe && oe.review === "accepted");
     if (!otherAccepted) return line;
-    edgesChanged++;
+    flippedEdges.push(eid);
     return `| ${eid} | ${kind} | ${from} | ${to} | ${weight} | accepted |`;
   });
-  if (edgesChanged) writeFileSync(edgesPath, lines.join("\n"));
-  return edgesChanged;
+  if (flippedEdges.length) writeFileSync(edgesPath, lines.join("\n"));
+  return flippedEdges;
+}
+
+// Append one transition-log row per state assignment, in the SAME write that set
+// the value (spec/architecture/SERIALIZATION.md § Transitions). Each row is
+// { ref, field, from, to }; `timestamp` is now, `source` is empty (a UI write is
+// not tied to a sources/ excerpt). No-op when the instance ships no log: an
+// instance without transitions/transitions.md records no history and is v1-
+// conformant, and writing a partial log here would strand every other entity
+// against the agreement rule. The log must already exist for a row to be added;
+// the scaffolder is what seeds an empty log into a new instance.
+function appendTransitions(rows) {
+  if (!rows.length) return;
+  const file = join(instanceDir, "transitions", "transitions.md");
+  if (!existsSync(file)) return;
+  const ts = new Date().toISOString().replace(/\.\d{3}Z$/, "Z");
+  const line = (r) => `| ${r.ref} | ${r.field} | ${r.from || ""} | ${r.to} | ${ts} |  |`;
+  const body = readFileSync(file, "utf8").replace(/\n+$/, "") + "\n" + rows.map(line).join("\n") + "\n";
+  writeFileSync(file, body);
 }
 
 // A human disposition from the UI: flip one entity's review proposed -> accepted
@@ -155,10 +174,17 @@ function acceptEntity(id) {
   const abs = join(instanceDir, e._file);
   if (!abs.startsWith(instanceDir) || !existsSync(abs)) return { error: "file missing" };
 
+  const prevReview = e.review;
   const txt = readFileSync(abs, "utf8");
   const flipped = txt.replace(/^review:[ \t]*proposed[ \t]*$/m, "review: accepted");
-  if (flipped !== txt) writeFileSync(abs, flipped);
-  return { entity: id, accepted: true, edges: autoAcceptEdges(id) };
+  const didFlip = flipped !== txt;
+  if (didFlip) writeFileSync(abs, flipped);
+  const flippedEdges = autoAcceptEdges(id);
+  const rows = [];
+  if (didFlip) rows.push({ ref: `${e.entityType}:${id}`, field: "review", from: prevReview, to: "accepted" });
+  for (const eid of flippedEdges) rows.push({ ref: `edge:${eid}`, field: "review", from: "proposed", to: "accepted" });
+  appendTransitions(rows);
+  return { entity: id, accepted: true, edges: flippedEdges.length };
 }
 
 // A human authority verb from the UI: resolve a work node -> status: resolved in
@@ -177,6 +203,8 @@ function resolveEntity(id) {
   if (e.status === "resolved") return { entity: id, resolved: true, accepted: false, edges: 0 };
   if (e.status === "abandoned") return { error: "an abandoned node cannot be resolved" };
 
+  const prevStatus = e.status;
+  const prevReview = e.review;
   let txt = readFileSync(abs, "utf8");
   const withStatus = txt.replace(/^status:[ \t]*(?:open|active)[ \t]*$/m, "status: resolved");
   if (withStatus === txt) return { error: "no open or active status line to resolve" };
@@ -185,7 +213,14 @@ function resolveEntity(id) {
   let accepted = false;
   if (e.review === "proposed") { txt = txt.replace(/^review:[ \t]*proposed[ \t]*$/m, "review: accepted"); accepted = true; }
   writeFileSync(abs, txt);
-  return { entity: id, resolved: true, accepted, edges: accepted ? autoAcceptEdges(id) : 0 };
+  const flippedEdges = accepted ? autoAcceptEdges(id) : [];
+  const rows = [{ ref: `${e.entityType}:${id}`, field: "status", from: prevStatus, to: "resolved" }];
+  if (accepted) {
+    rows.push({ ref: `${e.entityType}:${id}`, field: "review", from: prevReview, to: "accepted" });
+    for (const eid of flippedEdges) rows.push({ ref: `edge:${eid}`, field: "review", from: "proposed", to: "accepted" });
+  }
+  appendTransitions(rows);
+  return { entity: id, resolved: true, accepted, edges: flippedEdges.length };
 }
 
 // ---------- HTTP ----------

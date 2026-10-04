@@ -105,8 +105,8 @@ proposal.
 | e-not-trigger-reviewtransitions | notes | node:task-trigger-transport | noteworthy:nw-review-is-the-only-field-that-transitions |  |  |
 | e-not-trigger-nocredential | notes | node:task-trigger-transport | noteworthy:nw-delivery-channel-should-need-no-credential |  |  |
 | e-not-notifications-nocredential | notes | node:task-portable-notifications | noteworthy:nw-delivery-channel-should-need-no-credential |  |  |
-| e-not-adoption-componentsnotstandard | notes | node:task-adoption-path | noteworthy:nw-components-are-not-the-standard |  | proposed |
-| e-not-notifications-componentsnotstandard | notes | node:task-portable-notifications | noteworthy:nw-components-are-not-the-standard |  | proposed |
+| e-not-adoption-componentsnotstandard | notes | node:task-adoption-path | noteworthy:nw-components-are-not-the-standard |  | accepted |
+| e-not-notifications-componentsnotstandard | notes | node:task-portable-notifications | noteworthy:nw-components-are-not-the-standard |  | accepted |
 | e-not-trigger-statustransitions | notes | node:task-trigger-transport | noteworthy:nw-node-status-does-transition |  | proposed |
 | e-not-notifications-statustransitions | notes | node:task-portable-notifications | noteworthy:nw-node-status-does-transition |  | proposed |
 | e-not-reconcile-statustransitions | notes | node:task-reconcile-schema | noteworthy:nw-node-status-does-transition |  | proposed |
@@ -444,20 +444,20 @@ proposal.
 | e-not-cursorimpl-beforepr | notes | node:task-cursor-implementation | noteworthy:nw-cursor-proposals-before-pr |  | proposed |
 
 <!-- === transition log (proposed 2026-10-04; conversation transition-log-design) === -->
-| e-dec-obs-transition-log | decomposes | node:goal-observability | node:task-transition-log |  | proposed |
-| e-dec-obs-transition-log-writers | decomposes | node:goal-observability | node:task-transition-log-writers |  | proposed |
-| e-link-transitionlog-writers | links | node:task-transition-log | node:task-transition-log-writers | 0.5 | proposed |
+| e-dec-obs-transition-log | decomposes | node:goal-observability | node:task-transition-log |  | accepted |
+| e-dec-obs-transition-log-writers | decomposes | node:goal-observability | node:task-transition-log-writers |  | accepted |
+| e-link-transitionlog-writers | links | node:task-transition-log | node:task-transition-log-writers | 0.5 | accepted |
 | e-link-transitionlog-analytics | links | node:task-transition-log | node:task-graph-analytics | 0.5 | proposed |
 | e-link-transitionlog-signedaccepts | links | node:task-transition-log | node:task-signed-accepts | 0.5 | proposed |
-| e-link-tlwriters-uiresolve | links | node:task-transition-log-writers | node:task-ui-resolve-action | 0.5 | proposed |
-| e-link-tlwriters-intellij | links | node:task-transition-log-writers | node:task-intellij-plugin | 0.5 | proposed |
-| e-not-transitionlog-updatedat | notes | node:task-transition-log | noteworthy:nw-updatedat-not-acceptance-time |  | proposed |
-| e-not-transitionlog-appendonly | notes | node:task-transition-log | noteworthy:nw-transition-log-append-only |  | proposed |
-| e-not-transitionlog-birthrows | notes | node:task-transition-log | noteworthy:nw-transition-log-birth-rows-required |  | proposed |
-| e-not-transitionlog-backfill | notes | node:task-transition-log | noteworthy:nw-transition-log-backfill-from-history |  | proposed |
-| e-not-transitionlog-observed | notes | node:task-transition-log | noteworthy:nw-transitions-observed-in-history |  | proposed |
-| e-not-notifications-observed | notes | node:task-portable-notifications | noteworthy:nw-transitions-observed-in-history |  | proposed |
-| e-prod-transitionlog-serialization | produces | node:task-transition-log | artifact:artifact-serialization |  | proposed |
-| e-prod-transitionlog-schema | produces | node:task-transition-log | artifact:artifact-schema |  | proposed |
+| e-link-tlwriters-uiresolve | links | node:task-transition-log-writers | node:task-ui-resolve-action | 0.5 | accepted |
+| e-link-tlwriters-intellij | links | node:task-transition-log-writers | node:task-intellij-plugin | 0.5 | accepted |
+| e-not-transitionlog-updatedat | notes | node:task-transition-log | noteworthy:nw-updatedat-not-acceptance-time |  | accepted |
+| e-not-transitionlog-appendonly | notes | node:task-transition-log | noteworthy:nw-transition-log-append-only |  | accepted |
+| e-not-transitionlog-birthrows | notes | node:task-transition-log | noteworthy:nw-transition-log-birth-rows-required |  | accepted |
+| e-not-transitionlog-backfill | notes | node:task-transition-log | noteworthy:nw-transition-log-backfill-from-history |  | accepted |
+| e-not-transitionlog-observed | notes | node:task-transition-log | noteworthy:nw-transitions-observed-in-history |  | accepted |
+| e-not-notifications-observed | notes | node:task-portable-notifications | noteworthy:nw-transitions-observed-in-history |  | accepted |
+| e-prod-transitionlog-serialization | produces | node:task-transition-log | artifact:artifact-serialization |  | accepted |
+| e-prod-transitionlog-schema | produces | node:task-transition-log | artifact:artifact-schema |  | accepted |
 | e-prod-transitionlog-conformance | produces | node:task-transition-log | artifact:artifact-conformance-checker |  | proposed |
-| e-sup-observed-reviewonly | supersedes | noteworthy:nw-transitions-observed-in-history | noteworthy:nw-review-is-the-only-field-that-transitions |  | proposed |
+| e-sup-observed-reviewonly | supersedes | noteworthy:nw-transitions-observed-in-history | noteworthy:nw-review-is-the-only-field-that-transitions |  | accepted |

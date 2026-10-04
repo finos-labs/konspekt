@@ -11,17 +11,19 @@
 import { mkdtempSync, existsSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, dirname } from "node:path";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 import { execFileSync } from "node:child_process";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const INIT = join(HERE, "..", "setup", "init.mjs");
+const { loadInstance } = await import(pathToFileURL(join(HERE, "..", "lib", "conformance.mjs")));
 
 // Every path a default (no-arg) scaffold must create, relative to the repo root
 // it runs in. Mirrors the put()/appendStanza() calls in setup/init.mjs.
 const EXPECTED = [
   ".konspekt/instance/project.md",
   ".konspekt/instance/edges/edges.md",
+  ".konspekt/instance/transitions/transitions.md",
   ".konspekt/instance/sources/README.md",
   ".konspekt/instance/nodes/.gitkeep",
   ".konspekt/instance/concepts/.gitkeep",
@@ -50,6 +52,18 @@ try {
   // Every expected file is present in the right place.
   for (const rel of EXPECTED) {
     if (!existsSync(join(tmp, rel))) failures.push(`missing: ${rel}`);
+  }
+
+  // The scaffolded instance ships an empty transition log and is conformant: the
+  // file exists (so it is not "no-transition-log"), it holds no rows, and a fresh
+  // instance with no atoms raises no transition errors (task-transition-log-writers).
+  try {
+    const r = loadInstance(join(tmp, ".konspekt", "instance"), {});
+    const errs = r.problems.filter((p) => p.severity === "error" && p.code.includes("transition"));
+    if (errs.length) failures.push(`scaffolded log is not conformant: ${errs.map((p) => p.code).join(", ")}`);
+    if (r.meta.counts.transitions !== 0) failures.push(`scaffolded log should start empty, has ${r.meta.counts.transitions} rows`);
+  } catch (e) {
+    failures.push(`could not load scaffolded instance: ${e.message}`);
   }
 
   // A second scaffold into the same directory must refuse (non-zero exit),
