@@ -8,7 +8,7 @@ const stDot = { ...stColor };
 
 const state = {
   tab: "changes",
-  kinds: new Set(), statuses: new Set(), reviews: new Set(), q: "", preset: null,
+  kinds: new Set(), statuses: new Set(), reviews: new Set(), q: "", preset: null, sort: "updated", dir: "desc",
   goal: null, asr: null, statsLoaded: false, goalsLoaded: false, decisionsLoaded: false,
 };
 
@@ -51,6 +51,18 @@ function toggle(set, val, btn) {
   clearPreset();
 }
 $("q").addEventListener("input", (e) => { state.q = e.target.value.trim().toLowerCase(); renderChanges(); });
+// Scroll the row window back to the top so a sort change is visible: the first
+// rows that actually move can sit below the 10-row fold (created/updated agree
+// for the most-recently-touched entities), so without this the list looks inert.
+function scrollRowsTop() { const sc = document.querySelector("#panel-changes .tablescroll"); if (sc) sc.scrollTop = 0; }
+$("sortSel").addEventListener("change", (e) => { state.sort = e.target.value; renderChanges(); scrollRowsTop(); });
+$("sortDir").addEventListener("click", (e) => {
+  state.dir = state.dir === "asc" ? "desc" : "asc";
+  const asc = state.dir === "asc";
+  e.currentTarget.setAttribute("aria-pressed", String(asc));
+  e.currentTarget.textContent = asc ? "Oldest first" : "Newest first";
+  renderChanges(); scrollRowsTop();
+});
 document.querySelectorAll(".preset").forEach((p) => p.addEventListener("click", () => applyPreset(p.dataset.preset, p)));
 function applyPreset(name, btn) {
   const active = state.preset === name; resetFilters();
@@ -86,7 +98,12 @@ function ago(iso) {
   return iso.slice(0, 10);
 }
 function renderChanges() {
-  const list = rows.filter(passes); const el = $("rows"); el.innerHTML = "";
+  const field = state.sort === "created" ? "createdAt" : "updatedAt";
+  const dir = state.dir === "asc" ? 1 : -1; // desc (newest first) is the default
+  const list = rows.filter(passes)
+    .sort((a, b) => dir * ((Date.parse(a[field]) || 0) - (Date.parse(b[field]) || 0)) || (a.id < b.id ? -1 : 1));
+  const hdr = $("tsHdr"); if (hdr) hdr.textContent = state.sort === "created" ? "Created" : "Updated";
+  const el = $("rows"); el.innerHTML = "";
   if (!list.length) { const tr = document.createElement("tr"); tr.innerHTML = '<td class="empty" colspan="5">No entities match these filters.</td>'; el.appendChild(tr); }
   else for (const e of list) el.appendChild(rowEl(e));
   $("totN").textContent = list.length; $("visN").textContent = Math.min(10, list.length);
@@ -107,7 +124,7 @@ function rowEl(e) {
   else { const s = document.createElement("span"); s.className = "status none"; s.textContent = "—"; tdS.appendChild(s); }
   tr.appendChild(tdS);
   const tdR = document.createElement("td"); const r = document.createElement("span"); r.className = "rev " + (e.review || ""); r.textContent = e.review || "—"; tdR.appendChild(r); tr.appendChild(tdR);
-  const tdU = document.createElement("td"); tdU.className = "upd mono"; tdU.textContent = ago(e.updatedAt); tr.appendChild(tdU);
+  const tdU = document.createElement("td"); tdU.className = "upd mono"; tdU.textContent = ago(state.sort === "created" ? e.createdAt : e.updatedAt); tr.appendChild(tdU);
   tr.classList.add("clickable"); tr.tabIndex = 0; tr.setAttribute("role", "button"); tr.title = "Open " + e.id;
   tr.addEventListener("click", () => openDetail(e.id));
   tr.addEventListener("keydown", (ev) => { if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); openDetail(e.id); } });
@@ -316,6 +333,17 @@ function renderDisposition(d) {
   showActions();
 }
 
+// When an entity is already accepted, show who accepted it — the `by` of its
+// review -> accepted transition row, surfaced by the backend as acceptedBy.
+// Renders for both shells from this one view.
+function renderAcceptance(d) {
+  if (d.review !== "accepted") return;
+  const bar = document.createElement("div"); bar.className = "accept-bar accepted";
+  const note = document.createElement("span"); note.className = "accept-note";
+  note.textContent = d.acceptedBy ? ("Accepted by " + d.acceptedBy + ".") : "Accepted.";
+  bar.appendChild(note); drawerBody.appendChild(bar);
+}
+
 // The detail drawer is a tab panel: Details (the file), Provenance (the source),
 // Commands, and Changes — the last two shown only when the entity has recorded
 // commands / code changes (surface follows data). Tabs render for both shells
@@ -359,6 +387,7 @@ function renderDrawer(d, source, cmds, chgs) {
 
   drawerBody.innerHTML = "";
   renderDisposition(d);
+  renderAcceptance(d);
   const strip = document.createElement("div"); strip.className = "drawer-tabs"; strip.setAttribute("role", "tablist");
   const panel = document.createElement("div"); panel.className = "drawer-panel";
   const show = (t, btn) => { strip.querySelectorAll(".dtab").forEach((x) => x.setAttribute("aria-selected", "false")); btn.setAttribute("aria-selected", "true"); panel.innerHTML = ""; panel.appendChild(t.build()); };

@@ -62,6 +62,14 @@ body{margin:0;background:var(--ground);color:var(--ink);font-family:"IBM Plex Sa
 .search svg{flex:none;color:var(--ink-3)}
 .clearall{appearance:none;border:0;background:none;cursor:pointer;font:inherit;font-size:12px;color:var(--ink-3);text-decoration:underline;text-underline-offset:2px;padding:4px}
 .clearall:hover{color:var(--ink)}
+.sortsel{display:flex;align-items:center;gap:7px}
+.sortsel select{appearance:none;cursor:pointer;font:inherit;font-size:12px;color:var(--ink-2);background:var(--surface);border:1px solid var(--line);border-radius:7px;padding:5px 10px}
+.sortsel select:hover{border-color:var(--ink-3);color:var(--ink)}
+.sortsel select:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.sortdir{appearance:none;cursor:pointer;font:inherit;font-size:12px;color:var(--ink-2);background:var(--surface);border:1px solid var(--line);border-radius:7px;padding:5px 10px}
+.sortdir:hover{border-color:var(--ink-3);color:var(--ink)}
+.sortdir:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.sortdir[aria-pressed="true"]{color:var(--accent);border-color:var(--accent)}
 .err{margin:0;padding:8px 18px;background:rgba(192,57,43,.1);color:var(--bad);font-size:12px;border-bottom:1px solid var(--line)}
 
 /* ---- table (Changes) ---- */
@@ -185,6 +193,8 @@ svg.dag text{font-family:"IBM Plex Mono",monospace}
 .chg-files li::before{content:"›";color:var(--ink-3);margin-right:6px}
 .accept-bar{display:flex;align-items:center;gap:10px;padding:10px 12px;margin-bottom:12px;border:1px solid var(--rev-proposed-line);background:var(--rev-proposed-bg);border-radius:8px}
 .accept-note{font-size:12px;color:var(--rev-proposed-ink);flex:1}
+.accept-bar.accepted{border-color:var(--rev-accepted-bg);background:var(--rev-accepted-bg)}
+.accept-bar.accepted .accept-note{color:var(--rev-accepted-ink)}
 .accept-btn{appearance:none;cursor:pointer;font:inherit;font-size:12.5px;font-weight:600;padding:6px 14px;border-radius:7px;border:1px solid var(--st-resolved);background:var(--st-resolved);color:#fff}
 .accept-btn:hover{filter:brightness(1.05)}
 .accept-btn[disabled]{opacity:.6;cursor:default}

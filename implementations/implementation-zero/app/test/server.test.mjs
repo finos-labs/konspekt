@@ -213,6 +213,7 @@ test("POST /api/accept appends a review transition row and stays conformant", as
   assert.ok(rows.length >= 1, "a review transition row exists for the accepted entity");
   assert.match(rows[rows.length - 1], /\|\s*accepted\s*\|/, "the last review row ends at accepted");
   assert.ok(rows[rows.length - 1].trim().endsWith(`| ${ACCEPTOR} |`), "the acceptance row names the acting principal in `by`");
+  assert.equal(d.acceptedBy, ACCEPTOR, "the entity detail surfaces the accepting principal as acceptedBy");
 
   assert.deepEqual(transitionErrors(tmpInstance), [], "no transition errors after accept");
   assert.deepEqual(authorityErrors(tmpInstance), [], "no authority errors after accept");

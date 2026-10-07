@@ -29,7 +29,7 @@ export const bestTs = (e) => e.updatedAt || (e.summary && e.summary.updatedAt) |
 export function rowsFrom(g) {
   const out = [];
   eachEntity(g, (e, kind, status) =>
-    out.push({ id: e.id, kind, status: status ?? null, review: e.review ?? null, updatedAt: bestTs(e) }));
+    out.push({ id: e.id, kind, status: status ?? null, review: e.review ?? null, updatedAt: bestTs(e), createdAt: e.createdAt ?? null }));
   const ts = (r) => (r.updatedAt ? Date.parse(r.updatedAt) || 0 : 0);
   out.sort((a, b) => ts(b) - ts(a) || (a.id < b.id ? -1 : 1));
   return out;

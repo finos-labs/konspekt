@@ -211,6 +211,24 @@ function appendTransitions(rows, by) {
   writeFileSync(file, body);
 }
 
+// The principal that accepted `ref` (type:id), from the latest review -> accepted
+// row in the transition log, or null when none is recorded (or no log / no `by`
+// column ships). Powers the view's "Accepted by".
+function acceptedByOf(ref) {
+  const file = join(instanceDir, "transitions", "transitions.md");
+  if (!existsSync(file)) return null;
+  let by = null;
+  for (const line of readFileSync(file, "utf8").split("\n")) {
+    const t = line.trim();
+    if (!t.startsWith("|")) continue;
+    const cells = t.split("|").slice(1, -1).map((c) => c.trim());
+    if (cells.length < 4 || cells[0] === "ref" || /^-+$/.test(cells[0])) continue;
+    if (cells[0] !== ref || cells[1] !== "review" || cells[3] !== "accepted") continue;
+    by = cells.length >= 7 && cells[6] ? cells[6] : null;
+  }
+  return by;
+}
+
 // A human disposition from the UI: flip one entity's review proposed -> accepted
 // in the working tree, then two-way auto-accept its now-both-accepted edges.
 // Working-tree only: no git commit. Idempotent — accepting an accepted entity is
@@ -324,7 +342,8 @@ const server = createServer((req, res) => {
     const p = e.provenance || {};
     return sendJson(res, { id: e.id, file: e._file, markdown: readFileSync(abs, "utf8"),
       review: e.review || null, status: e.status || null, entityType: e.entityType || null,
-      sourceRef: p.sourceRef || null, contentHash: p.contentHash || null });
+      sourceRef: p.sourceRef || null, contentHash: p.contentHash || null,
+      acceptedBy: acceptedByOf(`${e.entityType}:${e.id}`) });
   }
   // One provenance source excerpt by its content hash (git blob SHA). Confined to
   // sources/ and gated on a hex ref, so no path traversal.
