@@ -73,6 +73,13 @@ the IDE. Confirmed rendering and live refresh from the installed-from-disk zip.
 `resolve` authority verb → `status: resolved`). Both are exercised from the tool
 window's entity drawer; the model never calls them.
 
+Under an instance that declares principals (`authority/principals.md`), an accept
+or resolve must name a declared principal. The plugin acts as the principal in the
+`KONSPEKT_PRINCIPAL` environment variable, read from the IDE's environment at
+startup — set it (for example `KONSPEKT_PRINCIPAL=denisurusov`) and restart the
+IDE, or the write is refused with a message saying so. An instance that declares
+no principals needs nothing.
+
 **Later:** the remaining authority verbs (`abandon` / `validate` / `refute` /
 `pin` / `lift`) and reject, under `task-task-workthrough-ui`.
 
