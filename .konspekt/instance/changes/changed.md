@@ -130,3 +130,33 @@ commit order; the channel was not live during that work.
 | task-transition-log | 1b5ea14b39373b194d543bbfa57507fbf5de3650 | setup/init.mjs |
 | task-transition-log | 1b5ea14b39373b194d543bbfa57507fbf5de3650 | setup/templates/transitions.md |
 | task-transition-log | 1b5ea14b39373b194d543bbfa57507fbf5de3650 | test/setup-init.test.mjs |
+| task-acceptance-before-work | 87ba592409563050bdf20feeeba1f1964a4f51b3 | .claude/hooks/require-binding.sh | 2026-10-07T13:09:01Z |
+| task-authority-mechanism | 87ba592409563050bdf20feeeba1f1964a4f51b3 | .claude/skills/konspekt-atom-readiness/SKILL.md | 2026-10-07T13:09:01Z |
+| task-acceptance-before-work | 87ba592409563050bdf20feeeba1f1964a4f51b3 | .claude/skills/konspekt-atom-readiness/SKILL.md | 2026-10-07T13:09:01Z |
+| task-authority-mechanism | 87ba592409563050bdf20feeeba1f1964a4f51b3 | .konspekt/OPERATING.md | 2026-10-07T13:09:01Z |
+| task-acceptance-before-work | 87ba592409563050bdf20feeeba1f1964a4f51b3 | .konspekt/OPERATING.md | 2026-10-07T13:09:01Z |
+| task-authority-mechanism | 87ba592409563050bdf20feeeba1f1964a4f51b3 | ROADMAP.md | 2026-10-07T13:09:01Z |
+| task-authority-mechanism | 87ba592409563050bdf20feeeba1f1964a4f51b3 | implementations/implementation-zero/app/server.mjs | 2026-10-07T13:09:01Z |
+| task-authority-mechanism | 87ba592409563050bdf20feeeba1f1964a4f51b3 | implementations/implementation-zero/app/test/server.test.mjs | 2026-10-07T13:09:01Z |
+| task-authority-mechanism | 87ba592409563050bdf20feeeba1f1964a4f51b3 | lib/authority.mjs | 2026-10-07T13:09:01Z |
+| task-authority-mechanism | 87ba592409563050bdf20feeeba1f1964a4f51b3 | lib/conformance.mjs | 2026-10-07T13:09:01Z |
+| task-acceptance-before-work | 87ba592409563050bdf20feeeba1f1964a4f51b3 | lib/conformance.mjs | 2026-10-07T13:09:01Z |
+| task-authority-mechanism | 87ba592409563050bdf20feeeba1f1964a4f51b3 | setup/templates/transitions.md | 2026-10-07T13:09:01Z |
+| task-authority-mechanism | 87ba592409563050bdf20feeeba1f1964a4f51b3 | spec/architecture/AUTHORITY.md | 2026-10-07T13:09:01Z |
+| task-authority-mechanism | 87ba592409563050bdf20feeeba1f1964a4f51b3 | spec/architecture/BINDING.md | 2026-10-07T13:09:01Z |
+| task-authority-mechanism | 87ba592409563050bdf20feeeba1f1964a4f51b3 | spec/architecture/README.md | 2026-10-07T13:09:01Z |
+| task-authority-mechanism | 87ba592409563050bdf20feeeba1f1964a4f51b3 | spec/architecture/REVIEW.md | 2026-10-07T13:09:01Z |
+| task-acceptance-before-work | 87ba592409563050bdf20feeeba1f1964a4f51b3 | spec/architecture/REVIEW.md | 2026-10-07T13:09:01Z |
+| task-authority-mechanism | 87ba592409563050bdf20feeeba1f1964a4f51b3 | spec/architecture/SERIALIZATION.md | 2026-10-07T13:09:01Z |
+| task-acceptance-before-work | 87ba592409563050bdf20feeeba1f1964a4f51b3 | spec/architecture/SERIALIZATION.md | 2026-10-07T13:09:01Z |
+| task-authority-mechanism | 87ba592409563050bdf20feeeba1f1964a4f51b3 | spec/data-model/SPEC.md | 2026-10-07T13:09:01Z |
+| task-acceptance-before-work | 87ba592409563050bdf20feeeba1f1964a4f51b3 | spec/data-model/SPEC.md | 2026-10-07T13:09:01Z |
+| task-authority-mechanism | 87ba592409563050bdf20feeeba1f1964a4f51b3 | spec/data-model/schema.ts | 2026-10-07T13:09:01Z |
+| task-acceptance-before-work | 87ba592409563050bdf20feeeba1f1964a4f51b3 | spec/data-model/schema.ts | 2026-10-07T13:09:01Z |
+| task-acceptance-before-work | 87ba592409563050bdf20feeeba1f1964a4f51b3 | spec/personas/engineer/AGENTS.md | 2026-10-07T13:09:01Z |
+| task-acceptance-before-work | 87ba592409563050bdf20feeeba1f1964a4f51b3 | spec/personas/engineer/SPEC.md | 2026-10-07T13:09:01Z |
+| task-acceptance-before-work | 87ba592409563050bdf20feeeba1f1964a4f51b3 | spec/personas/engineer/registry.mjs | 2026-10-07T13:09:01Z |
+| task-authority-mechanism | 87ba592409563050bdf20feeeba1f1964a4f51b3 | test/conformance-authority.test.mjs | 2026-10-07T13:09:01Z |
+| task-acceptance-before-work | 87ba592409563050bdf20feeeba1f1964a4f51b3 | test/conformance-authority.test.mjs | 2026-10-07T13:09:01Z |
+| task-acceptance-before-work | 87ba592409563050bdf20feeeba1f1964a4f51b3 | test/require-binding-hook.test.mjs | 2026-10-07T13:09:01Z |
+| task-acceptance-before-work | 87ba592409563050bdf20feeeba1f1964a4f51b3 | tools/binding-audit.mjs | 2026-10-07T13:09:01Z |
