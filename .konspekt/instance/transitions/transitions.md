@@ -980,3 +980,9 @@ proposing agent was not recorded.
 | edge:e-dec-authverbs-spectask | review |  | proposed | 2026-10-07T17:05:00Z |  | claude |
 | edge:e-dec-authverbs-spectask | review | proposed | accepted | 2026-10-07T17:05:00Z |  | denisurusov |
 | node:task-spec-acceptance-prose | status | open | resolved | 2026-10-07T17:15:00Z |  | denisurusov |
+| node:task-deck-acceptance-prose | review |  | proposed | 2026-10-07T17:20:00Z |  | claude |
+| node:task-deck-acceptance-prose | review | proposed | accepted | 2026-10-07T17:20:00Z |  | denisurusov |
+| node:task-deck-acceptance-prose | status |  | open | 2026-10-07T17:20:00Z |  | claude |
+| edge:e-dec-authverbs-decktask | review |  | proposed | 2026-10-07T17:20:00Z |  | claude |
+| edge:e-dec-authverbs-decktask | review | proposed | accepted | 2026-10-07T17:20:00Z |  | denisurusov |
+| node:task-deck-acceptance-prose | status | open | resolved | 2026-10-07T17:30:00Z |  | denisurusov |

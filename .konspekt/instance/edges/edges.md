@@ -491,3 +491,4 @@ proposal.
 | e-dec-usability-authverbs | decomposes | node:goal-usability | node:investigation-authority-verb-usage |  | accepted |
 | e-note-authverbs-prose | notes | node:investigation-authority-verb-usage | noteworthy:nw-acceptance-is-prose |  | accepted |
 | e-dec-authverbs-spectask | decomposes | node:investigation-authority-verb-usage | node:task-spec-acceptance-prose |  | accepted |
+| e-dec-authverbs-decktask | decomposes | node:investigation-authority-verb-usage | node:task-deck-acceptance-prose |  | accepted |
