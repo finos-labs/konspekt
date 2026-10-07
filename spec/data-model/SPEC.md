@@ -143,6 +143,8 @@ A small set of **distinct verbs** a human issues to assert judgments the reactiv
 
 A human-issued verb **carries its own acceptance**: the resulting change lands `review: accepted`, not `proposed`. The command *is* the acceptance. (The reactive maintainer, by contrast, only ever proposes.)
 
+**Plain acceptance is prose, not one of these verbs.** A human accepting a proposal as it stands says so in the conversation — "yes", "accept that", "looks good" — and the atom lands `review: accepted` with no status change. Acceptance is a data-level `review` transition the entity already carries, asserted where the human is working and identical on every binding (`../architecture/REVIEW.md`, `../architecture/TRANSPORT.md`); it needs no vocabulary. A host may offer an Accept control for it and display the result as status `accepted` — the button and the status are that one transition seen from the UI and from the data. A named `accept <ref>` verb is **deferred** to an asynchronous binding, where no human is present to accept in prose and a statusless atom (a concept, a fact, an edge) has no authority verb to carry acceptance (`../architecture/TRANSPORT.md`).
+
 These are **authority verbs** — the override/guarantee moments, and precisely the status transitions reconciliation detects poorly from prose:
 
 | verb | reference | effect |
