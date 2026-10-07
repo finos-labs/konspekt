@@ -1,0 +1,73 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Who accepted this: accountable acceptance in konspekt</title>
+<!--
+  PASTE-READY COPY of article.md for LinkedIn's Article editor.
+  LinkedIn has no Markdown/HTML/file import; it is a WYSIWYG editor. Pasting
+  rich text (this rendered page) carries headings, bold, links and bullet
+  lists across; pasting Markdown does not.
+
+  How to use:
+    1. Open this file in a browser.
+    2. Select all (Ctrl+A), copy (Ctrl+C).
+    3. In LinkedIn "Write article", paste into the body. The <h1> becomes the
+       article title (or move it into the title field).
+    4. Set the cover image to images/acceptance.png via LinkedIn's cover button.
+       (Pasted images are stripped by LinkedIn.)
+  Verify formatting after pasting — LinkedIn sanitizes pasted markup.
+-->
+<style>
+  body{max-width:720px;margin:2rem auto;padding:0 1rem;font:17px/1.6 Georgia,serif;color:#1a1a1a}
+  h1{font-size:2rem;line-height:1.2}
+  h2{font-size:1.35rem;margin-top:2rem}
+  figure{margin:1.5rem 0}
+  figure img{width:100%;border:1px solid #ddd}
+  figcaption{font:14px/1.4 system-ui,sans-serif;color:#666;margin-top:.4rem}
+  .marker{font:13px/1.4 system-ui,sans-serif;color:#a00}
+</style>
+
+<h1>Who accepted this: accountable acceptance in konspekt</h1>
+
+<p class="marker">[COVER images/acceptance.png — set as the article cover via LinkedIn's cover button]</p>
+<figure>
+  <img src="images/acceptance.png" alt="Accountable acceptance: the transition log, authority, and basis: accepted">
+  <figcaption>Accountable acceptance — the append-only transition log, who may accept, and acceptance before work.</figcaption>
+</figure>
+
+<p>konspekt keeps the state of an AI-driven project as a typed graph: goals, tasks, decisions, and the verbatim exchanges they came from. The last wave of work closed the gap where a whole conversation could happen and leave nothing the record can see — every piece of work now binds to the graph. But binding only establishes that an atom points at something real. It makes no claim that the work was approved. That claim is acceptance, and acceptance stays human. The work since then is about making that human judgment accountable: recording who accepted what, deciding who is allowed to, and requiring that acceptance come before the work.</p>
+
+<h2>Binding said what exists; acceptance says what was approved</h2>
+
+<p>Binding is referential integrity — an atom references an entity that exists, the way a foreign key requires a valid parent. It is deliberately silent on correctness. Acceptance is the separate, human act of saying "yes, this is right, keep it" — in plain words, in the conversation. There is no special accept command to learn: you say it, and the entry is marked accepted. The two were always distinct in the design; what was missing was a durable, attributable record of the second one. A graph that shows a decision as accepted should also answer: accepted by whom, and when?</p>
+
+<h2>The transition log</h2>
+
+<p>konspekt now keeps an append-only transition log. Every assignment of an atom's review or its status is one row, written in the same step that made the change, in order: a decision moving proposed → accepted, a task moving open → active → resolved. The log is the history the entity files themselves do not carry — a file shows the current state, the log shows how it got there. Three rules keep it honest and the validator enforces them: every entity and edge has a birth row for each field it uses, each row's "from" equals the previous row's "to", and the last row agrees with the value the file currently stores. No silent edits; no state the log cannot explain.</p>
+
+<h2>Attribution: accepted by whom</h2>
+
+<p>Each row that records an acceptance names the principal who made it — a "by" column on the log. An atom's birth row (its first, proposed) names the proposer; the row that flips it to accepted names the acceptor. From that, the interface answers the question directly: open any atom in the local UI or the IntelliJ plugin and its details show "Accepted by —". The attribution is not a UI decoration computed on the fly; it is read back from the log, so it is exactly as durable and portable as the rest of the graph.</p>
+
+<h2>Authority: who may accept</h2>
+
+<p>Who is allowed to accept is declared by the instance, not assumed by the tool. Two small tables under the instance say it: principals (the identities — each human or agent, some holding a grantor role) and grants (an append-only log of who may accept which part of the graph, by scope). The scope is the whole graph or one entity and its subgraph. Two rules follow from this and the validator checks them: an acceptance must name a principal that held a grant over that atom when the row was written, and an agent may accept only an atom someone else proposed — never its own. So the maintainer model is intact at the data layer: the agent proposes, a granted human accepts.</p>
+
+<p>konspekt's own project runs the simplest shape of this — single-individual authority: one human is the sole principal with a grant on the entire graph; the agent principal holds none. Adding a second acceptor is one new row in the grants table, issued by a grantor. A second adopter copies the instance and writes its own two tables.</p>
+
+<h2>Acceptance before work</h2>
+
+<p>The last piece is ordering. An instance can set <code>basis: accepted</code>, under which an entity must be accepted before any work binds to it — a commit, an executed command, or a resolved status. Three checks enforce it: the validator reports work bound to an unaccepted entity (and a resolved node whose attached decision is still proposed); a commit-time audit reports a commit authored before its entity was accepted; and an edit-time hook declines a change outside the instance while the conversation's bound entity is not yet accepted. The default stays <code>basis: proposed</code>, so existing instances are unaffected; an instance adopts <code>accepted</code> deliberately, and a recorded baseline marks the point from which the ordering is enforced, leaving the pre-adoption history alone.</p>
+
+<p>konspekt's own project now runs <code>basis: accepted</code>. Turning it on was itself the test: the decisions and tasks that had work already bound to them were reviewed and accepted, each acceptance written to the log under the one human's authority, before the switch would pass.</p>
+
+<h2>Why it matters for a fleet</h2>
+
+<p>This governance layer is what lets konspekt's agent model scale past a single assistant. The direction is an MCP-mode fleet: several agents working a project in parallel, each proposing atoms into the same graph. Many proposers are only safe when acceptance is named and constrained — one human (or a defined set) holds the grant, every acceptance is attributed, and no agent can accept its own proposal. The authority model and the transition log are the floor that makes a fleet auditable rather than a crowd.</p>
+
+<h2>Where it sits</h2>
+
+<p>Acceptance, authority, and ordering are defined in the specification — the authority model in <a href="https://github.com/finos-labs/konspekt/blob/main/spec/architecture/AUTHORITY.md">spec/architecture/AUTHORITY.md</a> and acceptance-before-work in <a href="https://github.com/finos-labs/konspekt/blob/main/spec/architecture/REVIEW.md">spec/architecture/REVIEW.md</a>. Which identities an instance declares, who holds a grant, and whether it runs <code>basis: accepted</code> are host choices, so they differ per instance; the rules that check them are the same everywhere.</p>
+
+<p>All of it is on main: <a href="https://github.com/finos-labs/konspekt">github.com/finos-labs/konspekt</a></p>
+
+<p>#AI #KnowledgeGraphs #Accountability #OpenSource #FINOS #konspekt</p>
