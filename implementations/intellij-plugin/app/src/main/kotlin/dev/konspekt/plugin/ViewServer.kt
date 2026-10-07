@@ -52,13 +52,13 @@ class ViewServer(private val project: Project) {
       // dispositions). POST only.
       if (path.startsWith("/api/accept")) {
         if (ex.requestMethod != "POST") { ex.sendResponseHeaders(405, -1); ex.close(); return@createContext }
-        val result = InstanceReader.acceptEntity(dir, g, param(ex, "entity") ?: "")
+        val result = InstanceReader.acceptEntity(dir, g, param(ex, "entity") ?: "", principal())
         cursor = "${System.currentTimeMillis()}-${++seq}"; notifyClients()
         sendJson(ex, result); return@createContext
       }
       if (path.startsWith("/api/resolve")) {
         if (ex.requestMethod != "POST") { ex.sendResponseHeaders(405, -1); ex.close(); return@createContext }
-        val result = InstanceReader.resolveEntity(dir, g, param(ex, "entity") ?: "")
+        val result = InstanceReader.resolveEntity(dir, g, param(ex, "entity") ?: "", principal())
         cursor = "${System.currentTimeMillis()}-${++seq}"; notifyClients()
         sendJson(ex, result); return@createContext
       }
@@ -132,6 +132,12 @@ class ViewServer(private val project: Project) {
   }
 
   private fun event(c: String) = "event: change\ndata: {\"cursor\":\"$c\"}\n\n".toByteArray()
+
+  // The principal the write endpoints act as, from KONSPEKT_PRINCIPAL in the IDE's
+  // environment (spec/architecture/AUTHORITY.md; mirrors the implementation-zero
+  // server). Empty when unset — acceptEntity/resolveEntity then refuse the write if
+  // the instance declares principals.
+  private fun principal(): String = (System.getenv("KONSPEKT_PRINCIPAL") ?: "").trim()
 
   private fun param(ex: HttpExchange, key: String): String? {
     val qs = ex.requestURI.query ?: return null

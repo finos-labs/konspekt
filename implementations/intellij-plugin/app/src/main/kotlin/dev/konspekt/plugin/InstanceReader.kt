@@ -243,11 +243,47 @@ object InstanceReader {
     val e = g.byId[id] ?: return "{\"error\":\"no such entity\"}"
     val f = File(instanceDir, e.file)
     if (!f.isFile) return "{\"error\":\"file missing\"}"
-    return "{\"id\":${q(e.id)},\"file\":${q(e.file)},\"markdown\":${q(f.readText())},\"review\":${q(e.review)},\"status\":${q(e.status)},\"entityType\":${q(e.entityType)},\"sourceRef\":${q(e.sourceRef)},\"contentHash\":${q(e.contentHash)}}"
+    val acceptedBy = acceptedByOf(instanceDir, "${e.entityType}:${e.id}")
+    return "{\"id\":${q(e.id)},\"file\":${q(e.file)},\"markdown\":${q(f.readText())},\"review\":${q(e.review)},\"status\":${q(e.status)},\"entityType\":${q(e.entityType)},\"sourceRef\":${q(e.sourceRef)},\"contentHash\":${q(e.contentHash)},\"acceptedBy\":${q(acceptedBy)}}"
   }
 
   // One transition-log row to append: an assignment of `field` on `ref`.
   private data class TransRow(val ref: String, val field: String, val from: String, val to: String)
+
+  // Declared principals (authority/principals.md, `id` column). Empty when the
+  // instance ships no authority table — then writes record no `by` and need no
+  // principal, matching the implementation-zero server's authorize().
+  private fun declaredPrincipals(instanceDir: File): List<String> {
+    val f = File(File(instanceDir, "authority"), "principals.md")
+    if (!f.isFile) return emptyList()
+    val ids = mutableListOf<String>()
+    for (line in f.readText().replace("\r\n", "\n").split("\n")) {
+      val t = line.trim()
+      if (!t.startsWith("|")) continue
+      val cells = t.trim('|').split("|").map { it.trim() }
+      if (cells.isEmpty() || cells[0] == "id" || cells[0].startsWith("---")) continue
+      if (cells[0].isNotEmpty()) ids.add(cells[0])
+    }
+    return ids
+  }
+
+  // The principal that accepted `ref` (type:id), read from the latest review ->
+  // accepted row in the transition log, or null when none is recorded (or the
+  // instance ships no log / no `by` column). Powers the view's "Accepted by".
+  private fun acceptedByOf(instanceDir: File, ref: String): String? {
+    val f = File(File(instanceDir, "transitions"), "transitions.md")
+    if (!f.isFile) return null
+    var by: String? = null
+    for (line in f.readText().replace("\r\n", "\n").split("\n")) {
+      val t = line.trim()
+      if (!t.startsWith("|")) continue
+      val cells = t.trim('|').split("|").map { it.trim() }
+      if (cells.size < 4 || cells[0] == "ref" || cells[0].startsWith("---")) continue
+      if (cells[0] != ref || cells[1] != "review" || cells[3] != "accepted") continue
+      by = if (cells.size >= 7 && cells[6].isNotEmpty()) cells[6] else null
+    }
+    return by
+  }
 
   // Two-way auto-accept every proposed edge touching `id` whose other endpoint is
   // also accepted (the just-dispositioned id counts as accepted). Mirrors the
@@ -285,23 +321,30 @@ object InstanceReader {
   // transitions/transitions.md records no history and is v1-conformant, and
   // writing a partial log here would strand every other entity against the
   // agreement rule. The scaffolder seeds an empty log into a new instance.
-  // Mirrors the implementation-zero server's appendTransitions.
-  private fun appendTransitions(instanceDir: File, rows: List<TransRow>) {
+  // Mirrors the implementation-zero server's appendTransitions. `by` is the acting
+  // principal; its cell is written only when the instance declares principals, so a
+  // log in an instance without them keeps its six-column rows (server parity).
+  private fun appendTransitions(instanceDir: File, rows: List<TransRow>, by: String, authorityPresent: Boolean) {
     if (rows.isEmpty()) return
     val file = File(File(instanceDir, "transitions"), "transitions.md")
     if (!file.isFile) return
     val ts = Instant.now().truncatedTo(java.time.temporal.ChronoUnit.SECONDS).toString()
-    val appended = rows.joinToString("\n") { "| ${it.ref} | ${it.field} | ${it.from} | ${it.to} | $ts |  |" }
+    val tail = if (authorityPresent) " $by |" else ""
+    val appended = rows.joinToString("\n") { "| ${it.ref} | ${it.field} | ${it.from} | ${it.to} | $ts |  |$tail" }
     file.writeText(file.readText().trimEnd('\n') + "\n" + appended + "\n")
   }
 
   // A human disposition from the UI: accept a proposed entity — flip its review
   // proposed -> accepted in the working tree, then two-way auto-accept its now-
   // both-accepted edges. Working-tree only; no git commit. Idempotent.
-  fun acceptEntity(instanceDir: File, g: Graph, id: String): String {
+  fun acceptEntity(instanceDir: File, g: Graph, id: String, principal: String): String {
     val e = g.byId[id] ?: return "{\"error\":\"no such entity\"}"
     val f = File(instanceDir, e.file)
     if (!f.isFile) return "{\"error\":\"file missing\"}"
+    val principals = declaredPrincipals(instanceDir)
+    val authorityPresent = principals.isNotEmpty()
+    val authErr = authorizeWrite(principals, authorityPresent, principal)
+    if (authErr != null) return authErr
     val prevReview = e.review ?: ""
     val txt = f.readText()
     val flipped = txt.replace(Regex("(?m)^review:[ \\t]*proposed[ \\t]*$"), "review: accepted")
@@ -311,8 +354,23 @@ object InstanceReader {
     val rows = mutableListOf<TransRow>()
     if (didFlip) rows.add(TransRow("${e.entityType}:$id", "review", prevReview, "accepted"))
     for (eid in flippedEdges) rows.add(TransRow("edge:$eid", "review", "proposed", "accepted"))
-    appendTransitions(instanceDir, rows)
+    appendTransitions(instanceDir, rows, principal, authorityPresent)
     return "{\"entity\":${q(id)},\"accepted\":true,\"edges\":${flippedEdges.size}}"
+  }
+
+  // Accept authority guard before a write (spec/architecture/AUTHORITY.md). Returns
+  // an error-JSON string to refuse, or null to allow. When the instance declares
+  // principals, the acting principal is required and must be declared — mirroring
+  // the implementation-zero server's authorize(), which refuses a write without
+  // KONSPEKT_PRINCIPAL. Full grant-scope checking stays in lib/conformance.mjs
+  // (acceptance-without-grant), which runs on persist.
+  private fun authorizeWrite(principals: List<String>, authorityPresent: Boolean, principal: String): String? {
+    if (!authorityPresent) return null
+    if (principal.isEmpty())
+      return "{\"error\":${q("this instance declares principals; set KONSPEKT_PRINCIPAL=<principal id> for the IDE")}}"
+    if (!principals.contains(principal))
+      return "{\"error\":${q("$principal is not declared in authority/principals.md")}}"
+    return null
   }
 
   // A human authority verb from the UI: resolve a work node -> status: resolved in
@@ -321,13 +379,17 @@ object InstanceReader {
   // flipped review -> accepted, with the same two-way edge auto-accept. Nodes only;
   // a no-op success on a node already resolved; refused on an abandoned node.
   // Working-tree only; no git commit. Mirrors the implementation-zero server.
-  fun resolveEntity(instanceDir: File, g: Graph, id: String): String {
+  fun resolveEntity(instanceDir: File, g: Graph, id: String, principal: String): String {
     val e = g.byId[id] ?: return "{\"error\":\"no such entity\"}"
     if (e.entityType != "node") return "{\"error\":\"resolve applies to work nodes only\"}"
     val f = File(instanceDir, e.file)
     if (!f.isFile) return "{\"error\":\"file missing\"}"
     if (e.status == "resolved") return "{\"entity\":${q(id)},\"resolved\":true,\"accepted\":false,\"edges\":0}"
     if (e.status == "abandoned") return "{\"error\":\"an abandoned node cannot be resolved\"}"
+    val principals = declaredPrincipals(instanceDir)
+    val authorityPresent = principals.isNotEmpty()
+    val authErr = authorizeWrite(principals, authorityPresent, principal)
+    if (authErr != null) return authErr
     val prevStatus = e.status ?: ""
     val prevReview = e.review ?: ""
     var txt = f.readText()
@@ -343,7 +405,7 @@ object InstanceReader {
       rows.add(TransRow("${e.entityType}:$id", "review", prevReview, "accepted"))
       for (eid in flippedEdges) rows.add(TransRow("edge:$eid", "review", "proposed", "accepted"))
     }
-    appendTransitions(instanceDir, rows)
+    appendTransitions(instanceDir, rows, principal, authorityPresent)
     return "{\"entity\":${q(id)},\"resolved\":true,\"accepted\":$accepted,\"edges\":${flippedEdges.size}}"
   }
 
