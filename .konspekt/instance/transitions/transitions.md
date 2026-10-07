@@ -965,3 +965,18 @@ proposing agent was not recorded.
 | edge:e-dec-account-authoritywriters | review | proposed | accepted | 2026-10-07T16:08:59Z |  | denisurusov |
 | edge:e-link-authwriters-plugin | review | proposed | accepted | 2026-10-07T16:08:59Z |  | denisurusov |
 | edge:e-link-authwriters-authority | review | proposed | accepted | 2026-10-07T16:08:59Z |  | denisurusov |
+| node:investigation-authority-verb-usage | review |  | proposed | 2026-10-07T16:27:35Z |  | claude |
+| node:investigation-authority-verb-usage | review | proposed | accepted | 2026-10-07T16:27:35Z |  | denisurusov |
+| node:investigation-authority-verb-usage | status |  | active | 2026-10-07T16:27:35Z |  | claude |
+| edge:e-dec-usability-authverbs | review |  | proposed | 2026-10-07T16:27:35Z |  | claude |
+| edge:e-dec-usability-authverbs | review | proposed | accepted | 2026-10-07T16:27:35Z |  | denisurusov |
+| noteworthy:nw-acceptance-is-prose | review |  | proposed | 2026-10-07T17:05:00Z |  | claude |
+| noteworthy:nw-acceptance-is-prose | review | proposed | accepted | 2026-10-07T17:05:00Z |  | denisurusov |
+| node:task-spec-acceptance-prose | review |  | proposed | 2026-10-07T17:05:00Z |  | claude |
+| node:task-spec-acceptance-prose | review | proposed | accepted | 2026-10-07T17:05:00Z |  | denisurusov |
+| node:task-spec-acceptance-prose | status |  | open | 2026-10-07T17:05:00Z |  | claude |
+| edge:e-note-authverbs-prose | review |  | proposed | 2026-10-07T17:05:00Z |  | claude |
+| edge:e-note-authverbs-prose | review | proposed | accepted | 2026-10-07T17:05:00Z |  | denisurusov |
+| edge:e-dec-authverbs-spectask | review |  | proposed | 2026-10-07T17:05:00Z |  | claude |
+| edge:e-dec-authverbs-spectask | review | proposed | accepted | 2026-10-07T17:05:00Z |  | denisurusov |
+| node:task-spec-acceptance-prose | status | open | resolved | 2026-10-07T17:15:00Z |  | denisurusov |

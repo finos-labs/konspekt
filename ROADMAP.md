@@ -3,7 +3,7 @@
      Check freshness with: node tools/roadmap.mjs --check
      This file is a pure function of .konspekt/instance/ (no timestamps baked in).
      Goals and tasks are graph nodes; the horizon is derived from node status/review.
-     contentHash: sha256:4297ad04e2f2612b -->
+     contentHash: sha256:03140689a2d6e9ce -->
 
 # konspekt roadmap
 
@@ -176,6 +176,7 @@ Make a konspekt instance operable by a human through a visual interface, not onl
 - Configurable popup mode for the IntelliJ plugin
 - Refresh presentation materials for the plugin, UI writes, and binding
 - Related-commands tab in the entity detail panel
+- State in the spec that acceptance is prose
 - Resolve a work node from the UI (POST /api/resolve)
 - Take simple actions from the UI (accept a proposed entity)
 
@@ -196,4 +197,4 @@ Let several participants — people and agents — propose into and review one s
 
 ---
 
-Generated from 8 goal(s) and 73 task-listing(s) over the instance graph.
+Generated from 8 goal(s) and 74 task-listing(s) over the instance graph.

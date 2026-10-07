@@ -488,3 +488,6 @@ proposal.
 | e-link-authwriters-plugin | links | node:task-authority-writers-intellij | node:task-intellij-plugin | 0.5 | accepted |
 | e-link-authwriters-authority | links | node:task-authority-writers-intellij | node:task-authority-mechanism | 0.5 | accepted |
 | e-dec-usability-linkedin1007 | decomposes | node:goal-usability | node:task-linkedin-announce-2026-10 |  | accepted |
+| e-dec-usability-authverbs | decomposes | node:goal-usability | node:investigation-authority-verb-usage |  | accepted |
+| e-note-authverbs-prose | notes | node:investigation-authority-verb-usage | noteworthy:nw-acceptance-is-prose |  | accepted |
+| e-dec-authverbs-spectask | decomposes | node:investigation-authority-verb-usage | node:task-spec-acceptance-prose |  | accepted |
