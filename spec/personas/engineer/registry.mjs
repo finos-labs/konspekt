@@ -45,9 +45,11 @@ export const commandLog = {
 };
 
 // Changed-code log (not edges). changes/changed.md is an append-only table
-// `| entity | commit | file |` binding each committed code change to the entity
-// it was about — any entity type — one row per (entity, commit, file), in commit
-// order. Unlike the command log, the change itself is NOT stored here: it already
+// `| entity | commit | file | timestamp |` binding each committed code change to
+// the entity it was about — any entity type — one row per (entity, commit, file),
+// in commit order. `timestamp` records when the row was written; under
+// `basis: accepted` the checker requires it to be later than the acceptance of
+// the entity (spec/architecture/REVIEW.md § Acceptance before work). Unlike the command log, the change itself is NOT stored here: it already
 // lives in git, recoverable by `commit` (nw-derive-not-copy). `commit` is an
 // OPAQUE revision token to every reader — conformance validates its shape and
 // never resolves it against a VCS — so the format stays VCS-neutral

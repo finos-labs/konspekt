@@ -92,16 +92,37 @@ coupling recorded as `nw-roadmap-generation-coupled-to-authority`, and it is why
 `ROADMAP.md` automation may use the simplest trigger (see Roadmap regeneration
 below).
 
-This shape is host policy for this instance, not the konspekt standard —
-`spec/architecture/REVIEW.md` keeps who-accepts out of the standard. It is
-recorded here in the envelope, not in the portable `project.md`, because no
-spec-defined config field for it exists yet. A second adopter carries
-`.konspekt/instance/` and sets its own accept authority.
+The standard defines how an instance declares who may accept
+(`spec/architecture/AUTHORITY.md`), and this instance declares it in
+`.konspekt/instance/authority/`. `principals.md` lists one human principal,
+who holds the `grantor` role, and one agent principal. `grants.md` holds one
+grant: the human principal on the entire graph. The agent principal holds no
+grant, so it proposes and never accepts. A second adopter copies
+`.konspekt/instance/` and writes its own two tables.
 
-Richer shapes — a designated approver, a consensus syndicate, or non-human
-acceptors — and a spec-defined field to declare the shape per instance are
-deferred to `task-authority-mechanism` under `goal-accountability`. Recorded in
-the instance as `nw-instance-single-individual-authority`.
+A client that writes an acceptance acts as a declared principal. The local UI
+server reads the principal id from the `KONSPEKT_PRINCIPAL` environment
+variable and refuses to accept without it.
+
+Adding a second acceptor is one new row in `grants.md`, issued by the grantor.
+Signed acceptance and the rule for changing grantors are tracked by
+`task-signed-accepts` and `task-persona-change-gate`. Recorded in the instance
+as `nw-instance-single-individual-authority` and `task-authority-mechanism`.
+
+## Acceptance before work
+
+`project.md` has no `basis` field, so this instance runs `basis: proposed`:
+work may be bound to a proposed entity (`spec/architecture/REVIEW.md` §
+Acceptance before work). The instance moves to `basis: accepted` after the
+entities that have bound commits and are still `proposed`, and the decisions
+attached to resolved nodes that are still `proposed`, are reviewed. That move
+is tracked by `task-acceptance-before-work`.
+
+Under `basis: accepted`, three checks apply: `lib/validate.mjs` reports work
+bound to an entity that is not accepted, `tools/binding-audit.mjs` reports a
+commit authored before its entity was accepted, and
+`.claude/hooks/require-binding.sh` denies an edit outside
+`.konspekt/instance/` while the bound entity is not accepted.
 
 ## Human vocabulary
 

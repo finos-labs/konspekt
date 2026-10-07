@@ -32,8 +32,8 @@ is no third state in which work happened and the graph shows nothing.
 Binding is a **referential-integrity** constraint: it checks that an atom
 references an entity that exists, the way a foreign key requires a valid parent.
 It makes no judgment about whether the atom is *correct* or *worth keeping* —
-that judgment is acceptance, which stays exclusively human and lives in the
-review conversation (`REVIEW.md`). Because binding is integrity and not judgment,
+that judgment is acceptance, which is originated only by an acceptor
+(`AUTHORITY.md`) and lives in the review conversation (`REVIEW.md`). Because binding is integrity and not judgment,
 it does not collide with the machine-proposes-human-disposes invariant: the
 maintainer may propose a bound atom on its own; only *accepting* it remains the
 human's move.

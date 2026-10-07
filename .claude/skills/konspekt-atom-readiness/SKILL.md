@@ -154,6 +154,18 @@ One venture can carry several proposals; present them together.
   contains it. The conformance checker reports an error when the log's last
   row for an entity or edge differs from its current value
   (`spec/architecture/SERIALIZATION.md` § Transitions).
+- When the instance contains `.konspekt/instance/authority/principals.md`, write
+  the `by` cell of each transition row you append: your own principal id on a
+  row that writes `proposed`, and the accepting principal's id on a row that
+  writes `accepted`. Write `accepted` only for a principal that holds a grant in
+  `authority/grants.md` on the scope that applies to the atom
+  (`spec/architecture/AUTHORITY.md`). If no declared principal is yours, report
+  that to the human and leave `by` empty on your proposals.
+- When `.konspekt/instance/project.md` sets `basis: accepted`, an entity is
+  accepted before work is bound to it. Before you edit a file outside the
+  instance for a task, check that the task node is `accepted`. If it is not,
+  print its text and request acceptance. An instruction to start work is not an
+  acceptance (`spec/architecture/REVIEW.md` § Acceptance before work).
 - Give every atom you persist — proposed or accepted — content-addressed
   provenance: a verbatim both-sides source excerpt in
   `.konspekt/instance/sources/`, its git blob SHA as `contentHash`, cited from

@@ -35,3 +35,9 @@ New rows below this backfill are recorded live.
 | task-transition-log | f269e73dc6171ce3a0378cbc8c37275912e1f9e8 |
 | task-transition-log | 3abc97780ac0a917faa0cb182109f8b659b171f2 |
 | task-transition-log | 97ef8feeb2273fd18e82c9d8bb05d1b91699755a |
+| task-authority-mechanism | 36d928599fb936e2ac5e29d02dd35f01ea4569b6 |
+| task-authority-mechanism | 3abc97780ac0a917faa0cb182109f8b659b171f2 |
+| task-authority-mechanism | 97ef8feeb2273fd18e82c9d8bb05d1b91699755a |
+| task-acceptance-before-work | 36d928599fb936e2ac5e29d02dd35f01ea4569b6 |
+| task-acceptance-before-work | 1813fed8007a190b1c0ee2276372c12845b2fe67 |
+| task-acceptance-before-work | 89f98fb741e6b425a3505ff77afc8bc78364d75b |

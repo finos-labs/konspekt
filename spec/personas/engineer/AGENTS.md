@@ -58,6 +58,24 @@ command-provenance" as "this kind of work need not be captured." The forcing
 function is `konspekt-atom-readiness`; the detection surface is
 `tools/binding-audit.mjs`.
 
+## Changed-code rows and acceptance before work
+
+After each non-bookkeeping commit, append one row per changed file to
+`changes/changed.md`: `| <entity-id> | <commit> | <file> | <timestamp> |`, where
+`timestamp` is the ISO 8601 time you write the row.
+
+Read the `basis` field of `.konspekt/instance/project.md`. When it is
+`accepted` (`spec/architecture/REVIEW.md` § Acceptance before work):
+
+- Before you edit a file outside `.konspekt/instance/`, run a command for the
+  task, or write a changed-code row, read the bound entity's `review`. If it is
+  not `accepted`, stop. Print the entity's text to the human and request its
+  acceptance.
+- An instruction to start work is not an acceptance. Do not write
+  `review: accepted` on the entity because you were told to begin.
+- Before you set a node to `resolved`, check that each decision attached to it
+  is `accepted`. Request acceptance of any that is not.
+
 ## Boundaries
 
 - Everything here still lands `review: proposed`; the human accepts. The layer

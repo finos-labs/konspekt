@@ -92,7 +92,8 @@ export interface Provenance {
                        // host-injected, never minted by the maintainer.
 }
 
-// Everything the maintainer extracts is PROPOSED, then a human accepts/rejects.
+// Everything the maintainer extracts is PROPOSED, then an acceptor accepts or
+// rejects (../architecture/REVIEW.md, ../architecture/AUTHORITY.md).
 export type Review = "proposed" | "accepted" | "rejected";
 
 // Summaries are regenerated on change — unless a human pins an edit.
@@ -127,7 +128,15 @@ export interface Project {
                        // ../personas/). Absent = core-only. e.g. ["engineer"].
   binding?: BindingPolicy; // provenance-completeness policy for this instance
                        // (see ../architecture/BINDING.md). Absent = "optional".
+  basis?: Basis;       // whether an entity is accepted before work is bound to
+                       // it (../architecture/REVIEW.md § Acceptance before
+                       // work). Absent = "proposed".
+  grantorAccepts?: GrantorAccepts; // whether a grantor may also hold an accept
+                       // grant (../architecture/AUTHORITY.md). Absent = "allowed".
 }
+
+export type Basis = "proposed" | "accepted";
+export type GrantorAccepts = "allowed" | "forbidden";
 
 export interface GraphNode extends Base {
   type: NodeType;
@@ -206,6 +215,35 @@ export interface Transition {
   timestamp: string;       // ISO 8601 — when the value was WRITTEN
   source?: string;         // contentHash of the sources/ excerpt holding the
                            // human acceptance or authority verb, if any
+  by?: string;             // id of the Principal that wrote the value: the
+                           // proposer on "proposed", the acceptor on "accepted"
+}
+
+// ---------- Authority ----------
+//
+// Who may accept (../architecture/AUTHORITY.md; table formats in
+// ../architecture/SERIALIZATION.md § Authority). Both are optional: an instance
+// that declares no principals has a human acceptor and records no `by`.
+export type PrincipalKind = "human" | "agent";
+export type PrincipalRole = "grantor";       // held by a human only
+export interface Principal {
+  id: string;              // unique within the instance
+  kind: PrincipalKind;
+  roles: PrincipalRole[];
+  key?: string;            // reserved for a signing key; unused in v1
+}
+
+export type GrantAction = "grant" | "revoke";
+export interface Grant {
+  scope: string;           // "*" (the entire graph) or "type:id" (one entity
+                           // and its subgraph)
+  acceptor: string;        // Principal id that may accept inside the scope
+  action: GrantAction;     // "revoke" ends the grant for this scope + acceptor
+  grantor: string;         // id of a human Principal with the grantor role
+  timestamp: string;       // ISO 8601 — when the row was written; the grant is
+                           // in force from this time
+  source?: string;         // contentHash of the sources/ excerpt holding the
+                           // grantor's statement, if any
 }
 
 // ---------- Derived views (never stored) ----------
@@ -237,4 +275,6 @@ export interface Konspekt {
   waypoints: Waypoint[];
   edges: Edge[];
   transitions?: Transition[];  // absent when the instance records no history
+  principals?: Principal[];    // absent when the instance declares none
+  grants?: Grant[];
 }
