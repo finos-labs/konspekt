@@ -15,7 +15,7 @@
     <header class="topbar">
       <div class="brand"><b>konspekt</b><span>local · read-only</span></div>
       <nav class="tabs" role="tablist" aria-label="Views">
-        <button class="tab" role="tab" data-tab="changes" aria-selected="true">Changes</button>
+        <button class="tab" role="tab" data-tab="changes" aria-selected="true">Desktop</button>
         <button class="tab" role="tab" data-tab="stats" aria-selected="false">Stats</button>
         <button class="tab" role="tab" data-tab="goals" aria-selected="false">Goals</button>
         <button class="tab" role="tab" data-tab="decisions" aria-selected="false" hidden>Decisions</button>
@@ -41,14 +41,22 @@
         <div class="frow">
           <span class="flabel">Status</span><div class="chips" id="statusChips"></div>
           <span class="flabel" style="min-width:auto;margin-left:8px">Review</span><div class="chips" id="reviewChips"></div>
-          <span class="spacer"></span><button class="clearall" id="clearAll" hidden>Clear filters</button>
+          <span class="spacer"></span>
+          <label class="sortsel"><span class="flabel" style="min-width:auto">Sort</span>
+            <select id="sortSel" aria-label="Sort entities">
+              <option value="updated">Updated</option>
+              <option value="created">Created</option>
+            </select>
+            <button type="button" id="sortDir" class="sortdir" aria-label="Sort direction" aria-pressed="false">Newest first</button>
+          </label>
+          <button class="clearall" id="clearAll" hidden>Clear filters</button>
         </div>
       </div>
       <p class="err" id="err" hidden></p>
       <div class="tablescroll">
         <table>
           <colgroup><col class="c-id"><col class="c-kind"><col class="c-status"><col class="c-review"><col class="c-upd"></colgroup>
-          <thead><tr><th>Entity id</th><th>Kind</th><th>Status</th><th>Review</th><th class="upd">Updated</th></tr></thead>
+          <thead><tr><th>Entity id</th><th>Kind</th><th>Status</th><th>Review</th><th class="upd" id="tsHdr">Updated</th></tr></thead>
           <tbody id="rows"></tbody>
         </table>
       </div>
@@ -108,7 +116,7 @@
     </div>
   </div>
 
-  <p class="note">Read-only over the local working tree, refreshed by a filesystem watcher over Server-Sent Events. Changes is a window over every entity; Stats is a projection of counts and unaccepted-proposal age; Goals walks the <span class="mono">decomposes</span> subgraph. Click any entity for its file. The only write is Accept on a proposed entity — a human disposition that edits the working tree.</p>
+  <p class="note">Read-only over the local working tree, refreshed by a filesystem watcher over Server-Sent Events. Desktop is a window over every entity; Stats is a projection of counts and unaccepted-proposal age; Goals walks the <span class="mono">decomposes</span> subgraph. Click any entity for its file. The only write is Accept on a proposed entity — a human disposition that edits the working tree.</p>
 </div>
 
 <div class="drawer-backdrop" id="drawerBackdrop" hidden></div>

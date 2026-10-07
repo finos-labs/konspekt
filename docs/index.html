@@ -770,6 +770,46 @@
         </div>
       </section>
 
+      <!-- 8c · ACCOUNTABLE ACCEPTANCE -->
+      <section class="slide" data-bg="paper" data-title="Accountable acceptance">
+        <div class="wrap">
+          <div class="head-row">
+            <h2 class="s-head" style="font-size:46px">Who accepted this</h2>
+            <div class="eyebrow">Authority &middot; transition log &middot; basis</div>
+          </div>
+          <hr class="rule" style="margin-top:14px">
+          <div style="flex:1;display:flex;flex-direction:column;justify-content:center">
+          <p class="bind-lede">Binding says an atom points at something real. It makes no claim the work was approved. That is acceptance, and acceptance stays human. The record now answers who accepted what, who is allowed to, and that acceptance comes first.</p>
+          <div class="bind-body" style="grid-template-columns:1fr 1fr 1fr;margin-top:16px">
+            <div class="bind-col a" style="padding:0 36px 4px 0">
+              <div class="bind-k">The log &mdash; append-only</div>
+              <p class="bind-lead">Every change of review or status is one row, in order &mdash; <b>proposed&nbsp;&rarr;&nbsp;accepted</b>, <b>open&nbsp;&rarr;&nbsp;resolved</b> &mdash; written in the step that made it.</p>
+              <div class="bind-list">
+                <div class="bind-item">Each acceptance row names the principal who made the call &mdash; a <code>by</code> column the UI reads back as <b>Accepted&nbsp;by</b>.</div>
+                <div class="bind-item">The validator keeps it honest: a birth row per field, each row&rsquo;s <b>from</b> equals the prior <b>to</b>, the last row matches the file. No silent edits.</div>
+              </div>
+            </div>
+            <div class="bind-col b" style="padding:0 36px 4px;border-left:1px solid var(--rule)">
+              <div class="bind-k">Authority &mdash; who may accept</div>
+              <p class="bind-lead">Declared by the instance, not assumed: two tables &mdash; <b>principals</b> and <b>grants</b>, scoped to the whole graph or one entity&rsquo;s subgraph.</p>
+              <div class="bind-list">
+                <div class="bind-item">An agent <b>proposes</b>; it never accepts its own work.</div>
+                <div class="bind-item">This project runs single&#8209;individual authority &mdash; one human holds the grant. A second acceptor is one new grant row.</div>
+              </div>
+            </div>
+            <div class="bind-col c" style="padding:0 0 4px 36px;border-left:1px solid var(--rule)">
+              <div class="bind-k">Order &mdash; <code style="font-size:11.5px">basis: accepted</code></div>
+              <p class="bind-lead">An entity is accepted <b>before</b> any work binds to it &mdash; a commit, a command, a resolved status.</p>
+              <div class="bind-list">
+                <div class="bind-item">Three checks: the <b>validator</b>, a <b>commit&#8209;time audit</b>, and an <b>edit&#8209;time hook</b>.</div>
+                <div class="bind-item">Default stays <code>basis: proposed</code>; a recorded baseline leaves pre&#8209;adoption history alone. This instance now runs <code>accepted</code>.</div>
+              </div>
+            </div>
+          </div>
+          </div>
+        </div>
+      </section>
+
       <!-- 9 · PROVENANCE -->
       <section class="slide" data-bg="paper" data-title="Provenance">
         <div class="wrap">
@@ -846,9 +886,9 @@
           <hr class="rule" style="margin:12px 0 14px">
           <div class="detail">
             <div class="panel">
-              <div class="p-head"><div class="p-title"><b>task-second-implementer</b></div><span style="color:var(--ui-faint);font-size:18px">&times;</span></div>
+              <div class="p-head"><div class="p-title"><b>task-second-implementer</b><span>proposed by claude</span></div><span style="color:var(--ui-faint);font-size:18px">&times;</span></div>
               <div class="banner"><span>Proposed — awaiting a human disposition.</span><span style="display:flex;gap:8px"><button class="btn-acc" style="background:transparent;color:#8fe0a6;border:1px solid rgba(135,215,163,.5)">Resolve</button><button class="btn-acc">Accept</button></span></div>
-              <div class="tabs" style="padding:0 20px 12px;border-bottom:1px solid var(--ui-line)"><span>Details</span><span class="on">Provenance</span><span>Commands (2)</span><span>Changes (1)</span></div>
+              <div class="tabs" style="padding:0 20px 12px;border-bottom:1px solid var(--ui-line)"><span>Details</span><span class="on">Provenance</span><span>Commands (2)</span><span>Changes (1)</span><span>History</span></div>
               <div class="src-lbl">SOURCES/4F1C9E27B3A8_.MD</div>
               <pre class="code">### human
 Two options for the tool window: have JCEF load the local Node
@@ -883,7 +923,7 @@ VFS-native change source, so the reader ships with the plugin …</pre>
               </div>
             </div>
           </div>
-          <p class="cap" style="padding-top:16px">The Commands and Changes tabs appear only when the entity has them recorded. Sample instance, recreated from the view source.</p>
+          <p class="cap" style="padding-top:16px">The Commands and Changes tabs appear only when the entity has them recorded. The <b>History</b> tab lists every transition in order; once this atom is accepted, its details read <b>Accepted&nbsp;by&nbsp;&mdash;</b> its maintainer, straight from the log. Sample instance, recreated from the view source.</p>
         </div>
       </section>
 

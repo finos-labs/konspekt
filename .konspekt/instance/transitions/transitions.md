@@ -907,3 +907,61 @@ proposing agent was not recorded.
 | edge:e-dec-account-authoritywriters | review |  | proposed | 2026-10-07T12:33:57Z |  | claude |
 | edge:e-link-authwriters-plugin | review |  | proposed | 2026-10-07T12:33:57Z |  | claude |
 | edge:e-link-authwriters-authority | review |  | proposed | 2026-10-07T12:33:57Z |  | claude |
+| node:task-linkedin-announce-2026-09 | review | proposed | accepted | 2026-10-07T13:38:32Z |  | denisurusov |
+| edge:e-dec-usability-linkedin0926 | review | proposed | accepted | 2026-10-07T13:38:32Z |  | denisurusov |
+| node:task-linkedin-announce-2026-09 | status | active | resolved | 2026-10-07T13:38:34Z |  |
+| node:task-agent-fleet | review | proposed | accepted | 2026-10-07T13:38:44Z |  | denisurusov |
+| edge:e-men-fleet-sep | review | proposed | accepted | 2026-10-07T13:38:44Z |  | denisurusov |
+| edge:e-link-fleet-review | review | proposed | accepted | 2026-10-07T13:38:44Z |  | denisurusov |
+| edge:e-not-fleet-firstlevel | review | proposed | accepted | 2026-10-07T13:38:44Z |  | denisurusov |
+| edge:e-not-fleet-uniqueacceptor | review | proposed | accepted | 2026-10-07T13:38:44Z |  | denisurusov |
+| edge:e-not-fleet-committer | review | proposed | accepted | 2026-10-07T13:38:44Z |  | denisurusov |
+| edge:e-not-fleet-rolesplit | review | proposed | accepted | 2026-10-07T13:38:44Z |  | denisurusov |
+| edge:e-not-fleet-durableref | review | proposed | accepted | 2026-10-07T13:38:44Z |  | denisurusov |
+| edge:e-not-fleet-perproposal | review | proposed | accepted | 2026-10-07T13:38:44Z |  | denisurusov |
+| edge:e-not-fleet-sandboxegress | review | proposed | accepted | 2026-10-07T13:38:44Z |  | denisurusov |
+| edge:e-not-fleet-sha256 | review | proposed | accepted | 2026-10-07T13:38:44Z |  | denisurusov |
+| edge:e-men-fleet-caprov | review | proposed | accepted | 2026-10-07T13:38:44Z |  | denisurusov |
+| edge:e-not-fleet-canonauth | review | proposed | accepted | 2026-10-07T13:38:44Z |  | denisurusov |
+| artifact:artifact-fleet-spec | review | proposed | accepted | 2026-10-07T13:38:54Z |  | denisurusov |
+| edge:e-prod-fleet-spec | review | proposed | accepted | 2026-10-07T13:38:54Z |  | denisurusov |
+| node:task-binding-operating-behavior | review | proposed | accepted | 2026-10-07T13:39:03Z |  | denisurusov |
+| node:task-cursor-implementation | review | proposed | accepted | 2026-10-07T13:39:13Z |  | denisurusov |
+| edge:e-dec-fleet-cursor | review | proposed | accepted | 2026-10-07T13:39:13Z |  | denisurusov |
+| noteworthy:nw-one-view-two-transports | review | proposed | accepted | 2026-10-07T13:40:45Z |  | denisurusov |
+| edge:e-not-uiapp-oneview | review | proposed | accepted | 2026-10-07T13:40:45Z |  | denisurusov |
+| edge:e-not-implzero-oneview | review | proposed | accepted | 2026-10-07T13:40:45Z |  | denisurusov |
+| edge:e-not-intellij-oneview | review | proposed | accepted | 2026-10-07T13:40:45Z |  | denisurusov |
+| noteworthy:nw-plugin-zip-prebuilt-release | review | proposed | accepted | 2026-10-07T13:40:54Z |  | denisurusov |
+| edge:e-not-plugindist-ziprelease | review | proposed | accepted | 2026-10-07T13:40:54Z |  | denisurusov |
+| edge:e-not-intellij-ziprelease | review | proposed | accepted | 2026-10-07T13:40:54Z |  | denisurusov |
+| noteworthy:nw-plugin-binary-release-only | review | proposed | accepted | 2026-10-07T13:41:04Z |  | denisurusov |
+| edge:e-not-plugindist-releaseonly | review | proposed | accepted | 2026-10-07T13:41:04Z |  | denisurusov |
+| edge:e-not-adoption-releaseonly | review | proposed | accepted | 2026-10-07T13:41:04Z |  | denisurusov |
+| waypoint:wp-links-edge-kind | review | proposed | accepted | 2026-10-07T13:41:15Z |  | denisurusov |
+| edge:e-mark-links-serial | review | proposed | accepted | 2026-10-07T13:41:15Z |  | denisurusov |
+| noteworthy:nw-payload-reference-only-admits-enums | review | proposed | accepted | 2026-10-07T13:41:26Z |  | denisurusov |
+| edge:e-not-trigger-payloadenums | review | proposed | accepted | 2026-10-07T13:41:26Z |  | denisurusov |
+| edge:e-not-notifications-payloadenums | review | proposed | accepted | 2026-10-07T13:41:26Z |  | denisurusov |
+| edge:e-sup-payloadenums-payloadref | review | proposed | accepted | 2026-10-07T13:41:26Z |  | denisurusov |
+| noteworthy:nw-poll-is-the-floor-push-is-optional | review | proposed | accepted | 2026-10-07T13:41:35Z |  | denisurusov |
+| edge:e-not-trigger-pollfloor | review | proposed | accepted | 2026-10-07T13:41:35Z |  | denisurusov |
+| edge:e-not-uiapp-pollfloor | review | proposed | accepted | 2026-10-07T13:41:35Z |  | denisurusov |
+| edge:e-not-implzero-pollfloor | review | proposed | accepted | 2026-10-07T13:41:35Z |  | denisurusov |
+| node:task-acceptance-before-work | status | open | resolved | 2026-10-07T13:57:53Z |  | denisurusov |
+| noteworthy:nw-acceptance-precedes-binding | review | proposed | accepted | 2026-10-07T13:57:53Z |  | denisurusov |
+| noteworthy:nw-basis-policy-field | review | proposed | accepted | 2026-10-07T13:57:53Z |  | denisurusov |
+| noteworthy:nw-binding-rows-have-timestamp | review | proposed | accepted | 2026-10-07T13:57:53Z |  | denisurusov |
+| edge:e-not-abw-precedes | review | proposed | accepted | 2026-10-07T13:57:53Z |  | denisurusov |
+| edge:e-not-abw-basis | review | proposed | accepted | 2026-10-07T13:57:53Z |  | denisurusov |
+| edge:e-not-abw-timestamp | review | proposed | accepted | 2026-10-07T13:57:53Z |  | denisurusov |
+| node:task-linkedin-announce-2026-10 | review |  | proposed | 2026-10-07T13:58:00Z |  | claude |
+| node:task-linkedin-announce-2026-10 | status |  | active | 2026-10-07T13:58:00Z |  | claude |
+| edge:e-dec-usability-linkedin1007 | review |  | proposed | 2026-10-07T13:58:00Z |  | claude |
+| node:task-linkedin-announce-2026-10 | review | proposed | accepted | 2026-10-07T13:58:30Z |  | denisurusov |
+| edge:e-dec-usability-linkedin1007 | review | proposed | accepted | 2026-10-07T13:58:30Z |  | denisurusov |
+| node:task-authority-writers-intellij | review | proposed | accepted | 2026-10-07T16:08:59Z |  | denisurusov |
+| node:task-authority-writers-intellij | status | open | resolved | 2026-10-07T16:08:59Z |  | denisurusov |
+| edge:e-dec-account-authoritywriters | review | proposed | accepted | 2026-10-07T16:08:59Z |  | denisurusov |
+| edge:e-link-authwriters-plugin | review | proposed | accepted | 2026-10-07T16:08:59Z |  | denisurusov |
+| edge:e-link-authwriters-authority | review | proposed | accepted | 2026-10-07T16:08:59Z |  | denisurusov |

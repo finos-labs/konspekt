@@ -2,12 +2,12 @@
 id: task-authority-writers-intellij
 type: task
 title: Accept authority in the IntelliJ plugin
-status: open
+status: resolved
 summary:
   origin: machine
   pinned: false
-  updatedAt: 2026-10-07T12:33:57Z
-review: proposed
+  updatedAt: 2026-10-07T16:08:59Z
+review: accepted
 provenance:
   sourceRef: 1d195ff1d54002f160df6c3ccf8439f6d382c9f7
   contentHash: 1d195ff1d54002f160df6c3ccf8439f6d382c9f7
@@ -15,7 +15,7 @@ provenance:
   timestamp: 2026-10-07T12:20:00Z
   confidence: 0.85
 createdAt: 2026-10-07T12:33:57Z
-updatedAt: 2026-10-07T12:33:57Z
+updatedAt: 2026-10-07T16:08:59Z
 ```
 # Task: Accept authority in the IntelliJ plugin
 

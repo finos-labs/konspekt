@@ -3,7 +3,7 @@
      Check freshness with: node tools/roadmap.mjs --check
      This file is a pure function of .konspekt/instance/ (no timestamps baked in).
      Goals and tasks are graph nodes; the horizon is derived from node status/review.
-     contentHash: sha256:97c15d964b76732a -->
+     contentHash: sha256:4297ad04e2f2612b -->
 
 # konspekt roadmap
 
@@ -15,9 +15,12 @@ Horizon: **Now** — in progress · **Next** — accepted and planned · **Later
 
 Make the facts a responsibility question needs answerable with evidence. The law decides who is responsible; konspekt records, verbatim and unaltered, what an AI proposed and which named human accepted it, so the underlying account is not in dispute. Responsibility attaches to a human by construction: an AI proposes, and only a named maintainer accepts.
 
+**Now** — _in progress_
+
+- Ask-at-open binding behavior in the operating loop
+
 **Next** — _accepted and planned_
 
-- Require acceptance before work is bound
 - Design a richer accept-authority mechanism
 - Detect unbound work — reconcile commits against the graph
 - Protect changes to who carries legal weight
@@ -25,14 +28,14 @@ Make the facts a responsibility question needs answerable with evidence. The law
 **Later** — _proposed, not yet committed_
 
 - The responsibility report
-- Accept authority in the IntelliJ plugin
 - Add the provenance-completeness invariant to the spec
-- Ask-at-open binding behavior in the operating loop
 - Bind every conversation to a graph entity
 - Signed accepts via a legally-bound persona
 
 **Shipped** — _resolved_
 
+- Require acceptance before work is bound
+- Accept authority in the IntelliJ plugin
 - Serialize executed-command provenance as an ordered log
 - Record the source and config changes associated with a task
 
@@ -51,6 +54,7 @@ Make konspekt's record a high-quality *input* to the model, not only a human-rea
 
 **Now** — _in progress_
 
+- Ask-at-open binding behavior in the operating loop
 - Ingestion mode
 
 **Next** — _accepted and planned_
@@ -61,7 +65,6 @@ Make konspekt's record a high-quality *input* to the model, not only a human-rea
 **Later** — _proposed, not yet committed_
 
 - Add the provenance-completeness invariant to the spec
-- Ask-at-open binding behavior in the operating loop
 - Bind every conversation to a graph entity
 
 **Shipped** — _resolved_
@@ -77,6 +80,7 @@ Help people process gen-AI outputs and follow long conversations by externalizin
 
 **Now** — _in progress_
 
+- Ask-at-open binding behavior in the operating loop
 - Ingestion mode
 
 **Next** — _accepted and planned_
@@ -87,7 +91,6 @@ Help people process gen-AI outputs and follow long conversations by externalizin
 **Later** — _proposed, not yet committed_
 
 - Add the provenance-completeness invariant to the spec
-- Ask-at-open binding behavior in the operating loop
 - Bind every conversation to a graph entity
 
 **Shipped** — _resolved_
@@ -150,6 +153,7 @@ Make a konspekt instance operable by a human through a visual interface, not onl
 **Now** — _in progress_
 
 - Build implementation_zero — a local watcher and floating read-only view
+- October 2026 LinkedIn announcement — acceptance & authority
 
 **Next** — _accepted and planned_
 
@@ -160,7 +164,6 @@ Make a konspekt instance operable by a human through a visual interface, not onl
 
 **Later** — _proposed, not yet committed_
 
-- September 2026 LinkedIn announcements — plugin/UI, and binding
 - Serve the konspekt view as an MCP Apps ui:// resource
 
 **Shipped** — _resolved_
@@ -169,6 +172,7 @@ Make a konspekt instance operable by a human through a visual interface, not onl
 - Settle "atom" in the vocabulary
 - Build the IntelliJ plugin shell over the one view
 - Distribute the IntelliJ plugin as an installable zip
+- September 2026 LinkedIn announcements — plugin/UI, and binding
 - Configurable popup mode for the IntelliJ plugin
 - Refresh presentation materials for the plugin, UI writes, and binding
 - Related-commands tab in the entity detail panel
@@ -179,14 +183,17 @@ Make a konspekt instance operable by a human through a visual interface, not onl
 
 Let several participants — people and agents — propose into and review one shared instance without weakening propose→accept, with accept authority named in config so it survives a change of backing store. Platforms build collaboration into their own closed state; the version that works across a neutral, portable record is the one no single vendor is incentivized to build. The hardest open part is concurrency control on the single edge table, unresolved and shared by both the human and the agent case.
 
-**Later** — _proposed, not yet committed_
+**Next** — _accepted and planned_
 
 - One reviewer over a fleet of agents
-- Per-atom compare-and-swap and a store cursor
 - Cursor implementation of the fleet
+
+**Later** — _proposed, not yet committed_
+
+- Per-atom compare-and-swap and a store cursor
 - Support multiple human authors on one instance
 - Re-address existing sources from git blob SHA to SHA-256
 
 ---
 
-Generated from 8 goal(s) and 72 task-listing(s) over the instance graph.
+Generated from 8 goal(s) and 73 task-listing(s) over the instance graph.

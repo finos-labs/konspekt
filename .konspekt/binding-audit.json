@@ -1,5 +1,6 @@
 {
   "baseline": "99f2bcfd2a4055263670af2cf068a31b769daff4",
-  "note": "Enforce binding: required from this point (tools/binding-audit.mjs, task-binding-gap-audit, nw-binding-enforcement-gap). Commits at or before the baseline are the pre-enforcement backlog and are not audited. Bump the baseline only to accept a new backlog deliberately.",
+  "basisBaseline": "486785c24153a55ae8966554ec7ce9f1e59c00a9",
+  "note": "baseline: enforce binding: required from this point (tools/binding-audit.mjs, task-binding-gap-audit, nw-binding-enforcement-gap). Commits at or before the baseline are the pre-enforcement backlog and are not audited. basisBaseline: start the acceptance-before-work check from the authority-and-basis merge (PR #73, 2026-10-07), when this instance adopted basis: accepted. The 12 bound commits before it were authored under basis: proposed and are not audited for acceptance ordering (task-acceptance-before-work). Bump either baseline only to accept a new backlog deliberately.",
   "allow": []
 }

@@ -1,7 +1,7 @@
 ```yaml
 id: nw-poll-is-the-floor-push-is-optional
 kind: decision
-review: proposed
+review: accepted
 provenance:
   sourceRef: fabe5755d9192324d0f0eea6a61cb13c66d65105
   contentHash: fabe5755d9192324d0f0eea6a61cb13c66d65105

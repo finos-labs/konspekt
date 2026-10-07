@@ -100,9 +100,15 @@ grant: the human principal on the entire graph. The agent principal holds no
 grant, so it proposes and never accepts. A second adopter copies
 `.konspekt/instance/` and writes its own two tables.
 
-A client that writes an acceptance acts as a declared principal. The local UI
-server reads the principal id from the `KONSPEKT_PRINCIPAL` environment
-variable and refuses to accept without it.
+A client that writes an acceptance acts as a declared principal. Both UI
+clients — the implementation-zero server and the IntelliJ plugin — read the
+principal id from the `KONSPEKT_PRINCIPAL` environment variable, record it in
+the transition row's `by` column, and refuse to accept when the instance
+declares principals and the variable is unset or names an undeclared principal.
+Full grant-scope enforcement at write time lives in the implementation-zero
+server; the plugin enforces the declared-principal rule and relies on
+`lib/conformance.mjs` (`acceptance-without-grant`) to catch a missing grant on
+persist.
 
 Adding a second acceptor is one new row in `grants.md`, issued by the grantor.
 Signed acceptance and the rule for changing grantors are tracked by
@@ -111,16 +117,19 @@ as `nw-instance-single-individual-authority` and `task-authority-mechanism`.
 
 ## Acceptance before work
 
-`project.md` has no `basis` field, so this instance runs `basis: proposed`:
-work may be bound to a proposed entity (`spec/architecture/REVIEW.md` §
-Acceptance before work). The instance moves to `basis: accepted` after the
-entities that have bound commits and are still `proposed`, and the decisions
-attached to resolved nodes that are still `proposed`, are reviewed. That move
-is tracked by `task-acceptance-before-work`.
+`project.md` sets `basis: accepted` (since 2026-10-07): work may be bound only
+to an accepted entity (`spec/architecture/REVIEW.md` § Acceptance before work).
+The instance adopted this after the entities that had bound commits and were
+still `proposed`, and the decisions attached to resolved nodes that were still
+`proposed`, were accepted; the move is recorded by `task-acceptance-before-work`
+(now resolved). The twelve commits authored before adoption, under the earlier
+`basis: proposed`, are the pre-adoption backlog: `basisBaseline` in
+`.konspekt/binding-audit.json` starts the acceptance-ordering check at the
+authority-and-basis merge (`486785c`), so they are not audited for ordering.
 
 Under `basis: accepted`, three checks apply: `lib/validate.mjs` reports work
 bound to an entity that is not accepted, `tools/binding-audit.mjs` reports a
-commit authored before its entity was accepted, and
+commit authored (after `basisBaseline`) before its entity was accepted, and
 `.claude/hooks/require-binding.sh` denies an edit outside
 `.konspekt/instance/` while the bound entity is not accepted.
 

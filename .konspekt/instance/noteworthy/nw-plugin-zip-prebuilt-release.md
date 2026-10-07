@@ -1,7 +1,7 @@
 ```yaml
 id: nw-plugin-zip-prebuilt-release
 kind: decision
-review: proposed
+review: accepted
 provenance:
   sourceRef: d880e928f6971045863a1798a8a6585adfb011b9
   contentHash: d880e928f6971045863a1798a8a6585adfb011b9

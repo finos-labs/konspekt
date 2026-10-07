@@ -160,3 +160,16 @@ commit order; the channel was not live during that work.
 | task-acceptance-before-work | 87ba592409563050bdf20feeeba1f1964a4f51b3 | test/conformance-authority.test.mjs | 2026-10-07T13:09:01Z |
 | task-acceptance-before-work | 87ba592409563050bdf20feeeba1f1964a4f51b3 | test/require-binding-hook.test.mjs | 2026-10-07T13:09:01Z |
 | task-acceptance-before-work | 87ba592409563050bdf20feeeba1f1964a4f51b3 | tools/binding-audit.mjs | 2026-10-07T13:09:01Z |
+| task-acceptance-before-work | 2a9785257f567c66b6cec6739a314231c1a3232a | .konspekt/binding-audit.json | 2026-10-07T16:13:12Z |
+| task-acceptance-before-work | 2a9785257f567c66b6cec6739a314231c1a3232a | ROADMAP.md | 2026-10-07T16:13:12Z |
+| task-authority-mechanism | 75f11de5de5fb74014ce71c788567ab7eafe835b | .konspekt/OPERATING.md | 2026-10-07T16:13:12Z |
+| task-authority-mechanism | 75f11de5de5fb74014ce71c788567ab7eafe835b | docs/announcements/linkedin/README.md | 2026-10-07T16:13:12Z |
+| task-transition-log-writers | 5c3928ff68964b099f6b6eeaca76f2f02da6868f | implementations/implementation-zero/app/projections.mjs | 2026-10-07T16:13:12Z |
+| task-transition-log-writers | 5c3928ff68964b099f6b6eeaca76f2f02da6868f | implementations/implementation-zero/app/server.mjs | 2026-10-07T16:13:12Z |
+| task-transition-log-writers | 5c3928ff68964b099f6b6eeaca76f2f02da6868f | implementations/implementation-zero/app/test/server.test.mjs | 2026-10-07T16:13:12Z |
+| task-transition-log-writers | 5c3928ff68964b099f6b6eeaca76f2f02da6868f | implementations/implementation-zero/app/view/app.css | 2026-10-07T16:13:12Z |
+| task-transition-log-writers | 5c3928ff68964b099f6b6eeaca76f2f02da6868f | implementations/implementation-zero/app/view/app.js | 2026-10-07T16:13:12Z |
+| task-transition-log-writers | 5c3928ff68964b099f6b6eeaca76f2f02da6868f | implementations/implementation-zero/app/view/index.html | 2026-10-07T16:13:12Z |
+| task-authority-writers-intellij | f8dd2d24e716a9ff1f59865b49509704b8d1b593 | implementations/intellij-plugin/app/src/main/kotlin/dev/konspekt/plugin/InstanceReader.kt | 2026-10-07T16:13:12Z |
+| task-authority-writers-intellij | f8dd2d24e716a9ff1f59865b49509704b8d1b593 | implementations/intellij-plugin/app/src/main/kotlin/dev/konspekt/plugin/ViewServer.kt | 2026-10-07T16:13:12Z |
+| task-presentation-refresh | 40a47d5659f6cf724b061b24180fb35b8b7c203b | docs/index.html | 2026-10-07T16:13:12Z |

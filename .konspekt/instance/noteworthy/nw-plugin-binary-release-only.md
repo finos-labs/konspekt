@@ -1,7 +1,7 @@
 ```yaml
 id: nw-plugin-binary-release-only
 kind: decision
-review: proposed
+review: accepted
 provenance:
   sourceRef: 43e6b92f9ae97a2e0aca9e3c889bd21b3f991009
   contentHash: 43e6b92f9ae97a2e0aca9e3c889bd21b3f991009
