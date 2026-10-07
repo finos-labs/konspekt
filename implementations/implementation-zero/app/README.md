@@ -46,9 +46,16 @@ Core only, in any browser (no install):
 node server.mjs                 # serves this repo's instance on http://127.0.0.1:4319
 node server.mjs <instanceDir>   # point at a different instance
 KONSPEKT_PORT=5000 node server.mjs
+KONSPEKT_PRINCIPAL=denisurusov node server.mjs   # act as this principal for accept/resolve
 ```
 
 Then open `http://127.0.0.1:4319`.
+
+`KONSPEKT_PRINCIPAL` names the principal the write endpoints act as. Under an
+instance that declares principals (`authority/principals.md`) it is required for a
+write, and must be a declared principal, or the accept/resolve is refused with a
+message saying so. An instance that declares no principals writes with no
+principal.
 
 Always-on-top shell (after `npm install`):
 
@@ -80,6 +87,9 @@ npm test        # runs node --test over test/
 
 ## Scope
 
-Read-only: no write endpoint, so nothing here affects `propose→accept`. Local
-only: the watcher sees local edits, not remote commits. Writes and the authority
-verbs are a later layer (`task-task-workthrough-ui`).
+Writes: the server exposes human dispositions — `POST /api/accept` and
+`POST /api/resolve` (the `resolve` authority verb) — against the working tree, each
+recorded with its acting principal (`KONSPEKT_PRINCIPAL`, see Start). Local only:
+the watcher sees local edits, not remote commits. The remaining authority verbs
+(`abandon` / `validate` / `refute` / `pin` / `lift`) and reject are a later layer
+(`task-task-workthrough-ui`).
