@@ -2,7 +2,8 @@
 
 Append-only log binding each committed code change to the entity it was about,
 one row per (entity, commit, file) in commit order (top to bottom is the
-timeline; there is no stored timestamp). `commit` is the git commit SHA;
+timeline). `timestamp` is the time the row was written; rows written before
+2026-10-07 have none. `commit` is the git commit SHA;
 `file` is a repo-relative path that commit touched for that entity. The diff
 itself is not stored here — it already lives in git, recoverable by the SHA
 (nw-derive-not-copy) — only the legible projection (which files) and the pointer
@@ -18,8 +19,8 @@ subject prefix are dropped.
 Backfill note: these rows reconstruct the branch's task-mapped code commits in
 commit order; the channel was not live during that work.
 
-| entity | commit | file |
-|--------|--------|------|
+| entity | commit | file | timestamp |
+|--------|--------|------|-----------|
 | task-related-commands-view | ba45f45766b15b7074cd3d79fa2739657fdf89c7 | implementations/implementation-zero/app/server.mjs |
 | task-related-commands-view | ba45f45766b15b7074cd3d79fa2739657fdf89c7 | implementations/implementation-zero/app/view/app.css |
 | task-related-commands-view | ba45f45766b15b7074cd3d79fa2739657fdf89c7 | implementations/implementation-zero/app/view/app.js |

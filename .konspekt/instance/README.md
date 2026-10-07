@@ -13,6 +13,7 @@ Per-entity files and directories per `../spec/SERIALIZATION.md`:
 - `concepts/`, `noteworthy/`, `artifacts/`, `waypoints/` — one file per entity.
 - `edges/edges.md` — the single typed edge table.
 - `transitions/transitions.md` — append-only log of every `review` and `status` assignment, for entities and edges.
+- `authority/principals.md`, `authority/grants.md` — the declared principals and the append-only log of accept grants.
 - `sources/` — content-addressed source excerpts that entities cite through `provenance.sourceRef` (`sources/README.md`).
 
 Each file is YAML front-matter plus a Markdown body that holds the entity's primary prose field (a node's `summary.text`, a concept's `definition`, and so on).

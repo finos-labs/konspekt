@@ -13,7 +13,7 @@ The konspekt standard: the entity set, the single edge table, and the derived vi
 
 ## Entities
 
-- **Project** — root: `goal`, a composed `summary`, timestamps, an optional `personas` list, and an optional `binding` policy (`required | optional`, default `optional`; the provenance-completeness policy — see `../architecture/BINDING.md`). No stored aggregates; they're views.
+- **Project** — root: `goal`, a composed `summary`, timestamps, an optional `personas` list, an optional `binding` policy (`required | optional`, default `optional`; the provenance-completeness policy — see `../architecture/BINDING.md`), an optional `basis` policy (`proposed | accepted`, default `proposed`; whether an entity is accepted before work is bound to it — see `../architecture/REVIEW.md` § Acceptance before work), and an optional `grantorAccepts` policy (`allowed | forbidden`, default `allowed`; whether a grantor may also hold an accept grant — see `../architecture/AUTHORITY.md`). No stored aggregates; they're views.
 - **GraphNode** — a unit of work, typed `goal | investigation | experiment | topic | task | note`. Carries its own `summary` and a `status` (`open | active | resolved | abandoned`). Hierarchy lives in edges, so a node can sit under more than one parent.
 - **Concept** — `label`, `definition`, `aliases` (surface forms for dedup / merge). Referenced via edges, never copied.
 - **Noteworthy** — `kind` (`fact | statement | decision | assumption | constraint`) and `text`, with a `status` that matters for some kinds (an assumption is unvalidated / validated / refuted; a constraint is active / lifted).
@@ -101,7 +101,7 @@ One typed table; `from` / `to` are `EntityRef`s — or, for a persona layer that
 
 ## State history
 
-`review` and `status` store current state only. The time each value was written is recorded in an append-only **transition log**, one row per assignment, for entities and edges (`../architecture/SERIALIZATION.md` § Transitions). The entity file and the edge table are the authority for current state; the log records its history. With the log, the interval between a proposal and its acceptance, and the time a node spends in each `status`, can be computed from the instance without store history.
+`review` and `status` store current state only. The time each value was written is recorded in an append-only **transition log**, one row per assignment, for entities and edges (`../architecture/SERIALIZATION.md` § Transitions). The entity file and the edge table are the authority for current state; the log records its history. Each row may name the principal that wrote the value, which is how an instance records who proposed and who accepted an atom (`../architecture/AUTHORITY.md`). With the log, the interval between a proposal and its acceptance, and the time a node spends in each `status`, can be computed from the instance without store history.
 
 ## Derived views (never stored)
 

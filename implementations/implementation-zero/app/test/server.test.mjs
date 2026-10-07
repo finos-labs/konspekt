@@ -18,6 +18,17 @@ const transitionErrors = (dir) =>
     .filter((p) => p.severity === "error" && p.code.includes("transition"))
     .map((p) => p.code);
 const transitionsText = () => readFileSync(join(tmpInstance, "transitions", "transitions.md"), "utf8");
+// The authority errors a write could introduce (spec/architecture/AUTHORITY.md):
+// an acceptance with no principal, or by a principal that holds no grant.
+const authorityErrors = (dir) =>
+  loadInstance(dir, {}).problems
+    .filter((p) => p.severity === "error" && (p.code.startsWith("acceptance-") || p.code === "unknown-principal"))
+    .map((p) => p.code);
+// This repo's instance declares principals, so the write server acts as its human
+// acceptor. The two servers below act as no principal and as a principal with no
+// grant; both must refuse to accept.
+const ACCEPTOR = "denisurusov";
+const NO_GRANT = "claude";
 
 const PORT = Number(process.env.KONSPEKT_TEST_PORT || 4757);
 const BASE = `http://127.0.0.1:${PORT}`;
@@ -31,6 +42,9 @@ let child;
 const PORT2 = PORT + 1;
 const BASE2 = `http://127.0.0.1:${PORT2}`;
 let child2, tmpInstance;
+const PORT3 = PORT + 2, PORT4 = PORT + 3;
+let child3, child4;
+const postAt = (port, path) => fetch(`http://127.0.0.1:${port}${path}`, { method: "POST", cache: "no-store" });
 
 async function get(path) { return fetch(BASE + path, { cache: "no-store" }); }
 async function get2(path) { return fetch(BASE2 + path, { cache: "no-store" }); }
@@ -48,12 +62,19 @@ before(async () => {
   child = spawn(process.execPath, [serverPath], { env: { ...process.env, KONSPEKT_PORT: String(PORT) }, stdio: "ignore" });
   tmpInstance = mkdtempSync(join(tmpdir(), "konspekt-resolve-"));
   cpSync(join(repoRoot, ".konspekt", "instance"), tmpInstance, { recursive: true });
-  child2 = spawn(process.execPath, [serverPath], { env: { ...process.env, KONSPEKT_PORT: String(PORT2), KONSPEKT_INSTANCE: tmpInstance }, stdio: "ignore" });
-  await Promise.all([waitUp(BASE), waitUp(BASE2)]);
+  const writer = (port, principal) => spawn(process.execPath, [serverPath], {
+    env: { ...process.env, KONSPEKT_PORT: String(port), KONSPEKT_INSTANCE: tmpInstance, KONSPEKT_PRINCIPAL: principal },
+    stdio: "ignore",
+  });
+  child2 = writer(PORT2, ACCEPTOR);
+  child3 = writer(PORT3, "");
+  child4 = writer(PORT4, NO_GRANT);
+  await Promise.all([waitUp(BASE), waitUp(BASE2),
+    waitUp(`http://127.0.0.1:${PORT3}`), waitUp(`http://127.0.0.1:${PORT4}`)]);
 });
 after(() => {
   if (child) child.kill();
-  if (child2) child2.kill();
+  for (const c of [child2, child3, child4]) if (c) c.kill();
   if (tmpInstance) rmSync(tmpInstance, { recursive: true, force: true });
 });
 
@@ -191,6 +212,30 @@ test("POST /api/accept appends a review transition row and stays conformant", as
     .filter((l) => l.includes(`| ${ref} |`) && l.includes("| review |"));
   assert.ok(rows.length >= 1, "a review transition row exists for the accepted entity");
   assert.match(rows[rows.length - 1], /\|\s*accepted\s*\|/, "the last review row ends at accepted");
+  assert.ok(rows[rows.length - 1].trim().endsWith(`| ${ACCEPTOR} |`), "the acceptance row names the acting principal in `by`");
 
   assert.deepEqual(transitionErrors(tmpInstance), [], "no transition errors after accept");
+  assert.deepEqual(authorityErrors(tmpInstance), [], "no authority errors after accept");
+});
+
+// task-authority-mechanism: the accepting client enforces accept authority before
+// it writes. With principals declared, a write needs a principal, and an
+// acceptance needs a grant on the atom's scope. A refused write changes nothing.
+test("POST /api/accept is refused without a principal and without a grant", async () => {
+  const snap = await (await get2("/api/entities")).json();
+  const target = snap.rows.find((r) => r.review === "proposed");
+  if (!target) return; // nothing proposed in this instance
+  const before = transitionsText();
+
+  const none = await postAt(PORT3, "/api/accept?entity=" + encodeURIComponent(target.id));
+  assert.equal(none.status, 400);
+  assert.match((await none.json()).error, /KONSPEKT_PRINCIPAL/);
+
+  const ungranted = await postAt(PORT4, "/api/accept?entity=" + encodeURIComponent(target.id));
+  assert.equal(ungranted.status, 400);
+  assert.match((await ungranted.json()).error, /holds no grant/);
+
+  assert.equal(transitionsText(), before, "a refused accept appends no transition row");
+  const d = await (await get2("/api/entity?id=" + encodeURIComponent(target.id))).json();
+  assert.equal(d.review, "proposed", "a refused accept leaves the entity proposed");
 });

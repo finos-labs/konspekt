@@ -3,7 +3,7 @@
      Check freshness with: node tools/roadmap.mjs --check
      This file is a pure function of .konspekt/instance/ (no timestamps baked in).
      Goals and tasks are graph nodes; the horizon is derived from node status/review.
-     contentHash: sha256:0774cd8476e47e74 -->
+     contentHash: sha256:97c15d964b76732a -->
 
 # konspekt roadmap
 
@@ -17,6 +17,7 @@ Make the facts a responsibility question needs answerable with evidence. The law
 
 **Next** — _accepted and planned_
 
+- Require acceptance before work is bound
 - Design a richer accept-authority mechanism
 - Detect unbound work — reconcile commits against the graph
 - Protect changes to who carries legal weight
@@ -24,6 +25,7 @@ Make the facts a responsibility question needs answerable with evidence. The law
 **Later** — _proposed, not yet committed_
 
 - The responsibility report
+- Accept authority in the IntelliJ plugin
 - Add the provenance-completeness invariant to the spec
 - Ask-at-open binding behavior in the operating loop
 - Bind every conversation to a graph entity
@@ -107,13 +109,13 @@ Make the state and history of an instance legible enough to act on. Read as quer
 
 - Analytics and mining over the graph
 - Continuous monitoring of an instance
-- Append-only transition log for review and status
-- Transition-log rows from the UI and the IntelliJ plugin
 
 **Shipped** — _resolved_
 
 - Generate ROADMAP.md as a graph projection with a conformance freshness gate
 - Regenerate the roadmap poster from the graph
+- Append-only transition log for review and status
+- Transition-log rows from the UI and the IntelliJ plugin
 
 ## Port across platforms
 
@@ -187,4 +189,4 @@ Let several participants — people and agents — propose into and review one s
 
 ---
 
-Generated from 8 goal(s) and 70 task-listing(s) over the instance graph.
+Generated from 8 goal(s) and 72 task-listing(s) over the instance graph.

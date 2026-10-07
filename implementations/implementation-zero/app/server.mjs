@@ -20,6 +20,13 @@
 // Usage:
 //   node server.mjs [instanceDir]
 //   KONSPEKT_PORT=4319 node server.mjs
+//   KONSPEKT_PRINCIPAL=<principal id> node server.mjs
+//
+// KONSPEKT_PRINCIPAL names the principal the write endpoints act as. It is
+// required for a write when the instance declares principals
+// (authority/principals.md); an instance without that file accepts writes with
+// no principal, as before. The id is declared by whoever starts the server and
+// is not verified here (spec/architecture/AUTHORITY.md § What is not verified).
 //
 // Defaults: this repo's instance at <repo>/.konspekt/instance, port 4319.
 
@@ -41,6 +48,7 @@ const instanceDir = resolve(
 );
 const personasDir = join(REPO_ROOT, "spec", "personas");
 const PORT = Number(process.env.KONSPEKT_PORT || 4319);
+const PRINCIPAL = (process.env.KONSPEKT_PRINCIPAL || "").trim();
 const FILENAME_RULE = process.env.KONSPEKT_FILENAME_RULE || "strict";
 
 // Personas are static config; load once. The graph reloads on file change.
@@ -114,8 +122,44 @@ function serveStatic(res, name) {
 
 // ---------- writes (human dispositions from the UI) ----------
 
+// The accepting client enforces accept authority before it writes
+// (spec/architecture/AUTHORITY.md): the store never refuses the write, so this
+// check is what keeps an unauthorized acceptance out of the log. Returns
+// { by } — the principal id to record, empty when the instance declares no
+// principals — or { error }. `acceptRef` is the atom being accepted, or null for
+// a write that accepts nothing (a status change on an already accepted node).
+function authorize(acceptRef) {
+  const a = graph.authority;
+  if (!a || !a.present) return { by: "" };
+  if (!PRINCIPAL) {
+    return { error: "this instance declares principals; start the server with KONSPEKT_PRINCIPAL=<principal id>" };
+  }
+  if (!a.principals.some((p) => p.id === PRINCIPAL)) {
+    return { error: `"${PRINCIPAL}" is not declared in authority/principals.md` };
+  }
+  if (acceptRef && !mayAccept(acceptRef)) {
+    const who = a.acceptorsAt(acceptRef, Date.now());
+    if (who.ambiguous) {
+      return { error: `${acceptRef} is at the same distance from grant scopes ${who.scopes.join(" and ")}; ` +
+        `a grantor must issue a grant on a nearer entity before it can be accepted` };
+    }
+    return { error: `"${PRINCIPAL}" holds no grant to accept ${acceptRef}` +
+      (who.scopes.length ? ` (applicable scope: ${who.scopes[0]})` : " (no grant covers it)") };
+  }
+  return { by: PRINCIPAL };
+}
+// An atom at the same distance from two grant scopes has no applicable scope
+// until a grantor issues a nearer grant, so no principal may accept it yet.
+function mayAccept(ref) {
+  const a = graph.authority;
+  if (!a || !a.present) return true;
+  const who = a.acceptorsAt(ref, Date.now());
+  return !who.ambiguous && who.acceptors.has(PRINCIPAL);
+}
+
 // Two-way auto-accept every proposed edge touching `id` whose other endpoint is
-// also accepted (mirrors what a human does by hand). The just-dispositioned id
+// also accepted (mirrors what a human does by hand). An edge the acting
+// principal holds no grant for is left proposed. The just-dispositioned id
 // counts as accepted; the other endpoint is checked against the current graph.
 // Provenance-ref endpoints (channel:hash, not entities) are left alone. Returns
 // the ids of the edges whose review was flipped, so the caller can log a
@@ -138,6 +182,7 @@ function autoAcceptEdges(id) {
     const oe = graph.byId.get(other);
     const otherAccepted = other === id || (oe && oe.review === "accepted");
     if (!otherAccepted) return line;
+    if (!mayAccept(`edge:${eid}`)) return line;
     flippedEdges.push(eid);
     return `| ${eid} | ${kind} | ${from} | ${to} | ${weight} | accepted |`;
   });
@@ -148,17 +193,20 @@ function autoAcceptEdges(id) {
 // Append one transition-log row per state assignment, in the SAME write that set
 // the value (spec/architecture/SERIALIZATION.md § Transitions). Each row is
 // { ref, field, from, to }; `timestamp` is now, `source` is empty (a UI write is
-// not tied to a sources/ excerpt). No-op when the instance ships no log: an
+// not tied to a sources/ excerpt), and `by` is the acting principal. The `by`
+// cell is written only when the instance declares principals, so a log in an
+// instance without them keeps its six-column rows. No-op when the instance ships no log: an
 // instance without transitions/transitions.md records no history and is v1-
 // conformant, and writing a partial log here would strand every other entity
 // against the agreement rule. The log must already exist for a row to be added;
 // the scaffolder is what seeds an empty log into a new instance.
-function appendTransitions(rows) {
+function appendTransitions(rows, by) {
   if (!rows.length) return;
   const file = join(instanceDir, "transitions", "transitions.md");
   if (!existsSync(file)) return;
   const ts = new Date().toISOString().replace(/\.\d{3}Z$/, "Z");
-  const line = (r) => `| ${r.ref} | ${r.field} | ${r.from || ""} | ${r.to} | ${ts} |  |`;
+  const tail = graph.authority && graph.authority.present ? ` ${by} |` : "";
+  const line = (r) => `| ${r.ref} | ${r.field} | ${r.from || ""} | ${r.to} | ${ts} |  |${tail}`;
   const body = readFileSync(file, "utf8").replace(/\n+$/, "") + "\n" + rows.map(line).join("\n") + "\n";
   writeFileSync(file, body);
 }
@@ -173,6 +221,8 @@ function acceptEntity(id) {
   if (!e || !e._file) return { error: "no such entity" };
   const abs = join(instanceDir, e._file);
   if (!abs.startsWith(instanceDir) || !existsSync(abs)) return { error: "file missing" };
+  const auth = authorize(e.review === "proposed" ? `${e.entityType}:${id}` : null);
+  if (auth.error) return { error: auth.error };
 
   const prevReview = e.review;
   const txt = readFileSync(abs, "utf8");
@@ -183,7 +233,7 @@ function acceptEntity(id) {
   const rows = [];
   if (didFlip) rows.push({ ref: `${e.entityType}:${id}`, field: "review", from: prevReview, to: "accepted" });
   for (const eid of flippedEdges) rows.push({ ref: `edge:${eid}`, field: "review", from: "proposed", to: "accepted" });
-  appendTransitions(rows);
+  appendTransitions(rows, auth.by);
   return { entity: id, accepted: true, edges: flippedEdges.length };
 }
 
@@ -202,6 +252,8 @@ function resolveEntity(id) {
   if (!abs.startsWith(instanceDir) || !existsSync(abs)) return { error: "file missing" };
   if (e.status === "resolved") return { entity: id, resolved: true, accepted: false, edges: 0 };
   if (e.status === "abandoned") return { error: "an abandoned node cannot be resolved" };
+  const auth = authorize(e.review === "proposed" ? `${e.entityType}:${id}` : null);
+  if (auth.error) return { error: auth.error };
 
   const prevStatus = e.status;
   const prevReview = e.review;
@@ -219,7 +271,7 @@ function resolveEntity(id) {
     rows.push({ ref: `${e.entityType}:${id}`, field: "review", from: prevReview, to: "accepted" });
     for (const eid of flippedEdges) rows.push({ ref: `edge:${eid}`, field: "review", from: "proposed", to: "accepted" });
   }
-  appendTransitions(rows);
+  appendTransitions(rows, auth.by);
   return { entity: id, resolved: true, accepted, edges: flippedEdges.length };
 }
 

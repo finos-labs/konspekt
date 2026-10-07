@@ -461,3 +461,29 @@ proposal.
 | e-prod-transitionlog-schema | produces | node:task-transition-log | artifact:artifact-schema |  | accepted |
 | e-prod-transitionlog-conformance | produces | node:task-transition-log | artifact:artifact-conformance-checker |  | proposed |
 | e-sup-observed-reviewonly | supersedes | noteworthy:nw-transitions-observed-in-history | noteworthy:nw-review-is-the-only-field-that-transitions |  | accepted |
+
+<!-- === accept authority and acceptance before work (2026-10-07; conversation accept-authority-design) === -->
+| e-dec-account-acceptancebeforework | decomposes | node:goal-accountability | node:task-acceptance-before-work |  | accepted |
+| e-not-authority-roles | notes | node:task-authority-mechanism | noteworthy:nw-acceptor-and-grantor-roles |  | proposed |
+| e-not-authority-scope | notes | node:task-authority-mechanism | noteworthy:nw-grant-scope-is-entity-subgraph |  | proposed |
+| e-not-authority-group | notes | node:task-authority-mechanism | noteworthy:nw-group-acceptance-any-member |  | proposed |
+| e-not-authority-acceptancerule | notes | node:task-authority-mechanism | noteworthy:nw-acceptance-originates-from-acceptor |  | proposed |
+| e-not-authority-by | notes | node:task-authority-mechanism | noteworthy:nw-by-records-writing-principal |  | proposed |
+| e-men-authority-principal | mentions | node:task-authority-mechanism | concept:concept-principal |  | proposed |
+| e-men-authority-grant | mentions | node:task-authority-mechanism | concept:concept-accept-grant |  | proposed |
+| e-rel-principal-grant | relates | concept:concept-principal | concept:concept-accept-grant | 0.8 | proposed |
+| e-sup-group-uniqueacceptor | supersedes | noteworthy:nw-group-acceptance-any-member | noteworthy:nw-unique-acceptor-per-atom |  | proposed |
+| e-sup-scope-openpredicate | supersedes | noteworthy:nw-grant-scope-is-entity-subgraph | noteworthy:nw-accept-scope-open-predicate |  | proposed |
+| e-prod-authority-spec | produces | node:task-authority-mechanism | artifact:artifact-authority-spec |  | proposed |
+| e-prod-authority-review | produces | node:task-authority-mechanism | artifact:artifact-review |  | proposed |
+| e-prod-authority-conformance | produces | node:task-authority-mechanism | artifact:artifact-conformance-checker |  | proposed |
+| e-not-abw-precedes | notes | node:task-acceptance-before-work | noteworthy:nw-acceptance-precedes-binding |  | proposed |
+| e-not-abw-basis | notes | node:task-acceptance-before-work | noteworthy:nw-basis-policy-field |  | proposed |
+| e-not-abw-timestamp | notes | node:task-acceptance-before-work | noteworthy:nw-binding-rows-have-timestamp |  | proposed |
+| e-prod-abw-review | produces | node:task-acceptance-before-work | artifact:artifact-review |  | proposed |
+| e-prod-abw-conformance | produces | node:task-acceptance-before-work | artifact:artifact-conformance-checker |  | proposed |
+| e-link-abw-bindingaudit | links | node:task-acceptance-before-work | node:task-binding-gap-audit | 0.5 | proposed |
+| e-link-abw-authority | links | node:task-acceptance-before-work | node:task-authority-mechanism | 0.5 | proposed |
+| e-dec-account-authoritywriters | decomposes | node:goal-accountability | node:task-authority-writers-intellij |  | proposed |
+| e-link-authwriters-plugin | links | node:task-authority-writers-intellij | node:task-intellij-plugin | 0.5 | proposed |
+| e-link-authwriters-authority | links | node:task-authority-writers-intellij | node:task-authority-mechanism | 0.5 | proposed |
