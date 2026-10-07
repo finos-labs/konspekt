@@ -1,7 +1,7 @@
 ```yaml
 id: nw-binding-rows-have-timestamp
 kind: decision
-review: proposed
+review: accepted
 provenance:
   sourceRef: 1d195ff1d54002f160df6c3ccf8439f6d382c9f7
   contentHash: 1d195ff1d54002f160df6c3ccf8439f6d382c9f7

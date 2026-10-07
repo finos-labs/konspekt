@@ -110,8 +110,8 @@ proposal.
 | e-not-trigger-statustransitions | notes | node:task-trigger-transport | noteworthy:nw-node-status-does-transition |  | proposed |
 | e-not-notifications-statustransitions | notes | node:task-portable-notifications | noteworthy:nw-node-status-does-transition |  | proposed |
 | e-not-reconcile-statustransitions | notes | node:task-reconcile-schema | noteworthy:nw-node-status-does-transition |  | proposed |
-| e-not-trigger-payloadenums | notes | node:task-trigger-transport | noteworthy:nw-payload-reference-only-admits-enums |  | proposed |
-| e-not-notifications-payloadenums | notes | node:task-portable-notifications | noteworthy:nw-payload-reference-only-admits-enums |  | proposed |
+| e-not-trigger-payloadenums | notes | node:task-trigger-transport | noteworthy:nw-payload-reference-only-admits-enums |  | accepted |
+| e-not-notifications-payloadenums | notes | node:task-portable-notifications | noteworthy:nw-payload-reference-only-admits-enums |  | accepted |
 | e-prod-repo-repo | produces | node:investigation-repo-structure | artifact:artifact-repo |  |  |
 | e-prod-reconcile-spec | produces | node:task-reconcile-schema | artifact:artifact-spec |  |  |
 | e-prod-reconcile-schema | produces | node:task-reconcile-schema | artifact:artifact-schema |  |  |
@@ -148,7 +148,7 @@ proposal.
 | e-mark-setupkit | marks | waypoint:wp-setup-kit | node:task-adoption-path |  |  |
 | e-mark-conformance-layout | marks | waypoint:wp-conformance-checker | node:task-instance-layout-regularity |  | proposed |
 | e-mark-conformance-adoption | marks | waypoint:wp-conformance-checker | node:task-adoption-path |  | proposed |
-| e-mark-links-serial | marks | waypoint:wp-links-edge-kind | node:task-serialization-format |  | proposed |
+| e-mark-links-serial | marks | waypoint:wp-links-edge-kind | node:task-serialization-format |  | accepted |
 | e-rel-conv-extstate | relates | concept:concept-goals-convergence | concept:concept-externalized-state | 0.6 |  |
 | e-rel-conv-conn | relates | concept:concept-goals-convergence | concept:concept-connective-tissue | 0.6 |  |
 | e-rel-legible-gap | relates | concept:concept-legible-over-defensible | concept:concept-second-implementer-gap | 0.5 |  |
@@ -162,7 +162,7 @@ proposal.
 | e-sup-census-schemapractice | supersedes | noteworthy:nw-konspekt-conforms-code-tracer-drifts | noteworthy:nw-schema-behind-practice |  |  |
 | e-sup-renamed-filenameid | supersedes | noteworthy:nw-filename-id-resolved-by-rename | noteworthy:nw-filename-id-rule-conflict |  |  |
 | e-sup-statustransitions-birthstate | supersedes | noteworthy:nw-node-status-does-transition | noteworthy:nw-state-written-at-birth-not-transitioned |  | proposed |
-| e-sup-payloadenums-payloadref | supersedes | noteworthy:nw-payload-reference-only-admits-enums | noteworthy:nw-notification-payload-is-reference-only |  | proposed |
+| e-sup-payloadenums-payloadref | supersedes | noteworthy:nw-payload-reference-only-admits-enums | noteworthy:nw-notification-payload-is-reference-only |  | accepted |
 | e-drv-asrlayering-adrengineer | drives | concept:concept-asr-persona-layering | waypoint:wp-adr-engineer-layer |  |  |
 
 <!-- === roadmap changeset (held commit; nodes verified, ready to push) === -->
@@ -172,14 +172,14 @@ proposal.
 | e-dec-obs-monitoring | decomposes | node:goal-observability | node:task-realtime-monitoring |  | proposed |
 | e-dec-port-enterprise | decomposes | node:goal-portability | node:task-enterprise-persistence |  | proposed |
 | e-men-multiauthor-sep | mentions | node:task-multi-author-review | concept:concept-propose-accept-separation |  | proposed |
-| e-men-fleet-sep | mentions | node:task-agent-fleet | concept:concept-propose-accept-separation |  | proposed |
+| e-men-fleet-sep | mentions | node:task-agent-fleet | concept:concept-propose-accept-separation |  | accepted |
 | e-men-enterprise-caprov | mentions | node:task-enterprise-persistence | concept:concept-content-addressed-provenance |  | proposed |
 | e-men-enterprise-contract | mentions | node:task-enterprise-persistence | concept:concept-transport-contract |  | proposed |
 | e-not-enterprise-reupload | notes | node:task-enterprise-persistence | noteworthy:nw-manual-reupload-probe |  | proposed |
 | e-not-enterprise-neutral | notes | node:task-enterprise-persistence | noteworthy:nw-mcp-binding-needs-neutral-read |  | proposed |
 | e-link-multiauthor-fleet | links | node:task-multi-author-review | node:task-agent-fleet | 0.5 | proposed |
 | e-link-multiauthor-review | links | node:task-multi-author-review | node:task-review-ergonomics | 0.5 | proposed |
-| e-link-fleet-review | links | node:task-agent-fleet | node:task-review-ergonomics | 0.5 | proposed |
+| e-link-fleet-review | links | node:task-agent-fleet | node:task-review-ergonomics | 0.5 | accepted |
 | e-link-enterprise-provenance | links | node:task-enterprise-persistence | node:task-provenance-model | 0.5 | proposed |
 | e-link-enterprise-central | links | node:task-enterprise-persistence | node:task-central-service-binding | 0.5 | proposed |
 | e-link-analytics-validation | links | node:task-graph-analytics | node:investigation-validation | 0.5 | proposed |
@@ -245,7 +245,7 @@ proposal.
 | e-not-trigger-nowake | notes | node:task-trigger-transport | noteworthy:nw-server-cannot-wake-a-session |  | proposed |
 | e-not-mcpapp-backendclient | notes | node:task-mcp-app-surface | noteworthy:nw-backend-is-mcp-client-on-web |  | proposed |
 | e-not-uiapp-mobile | notes | node:task-konspekt-ui-app | noteworthy:nw-claude-mobile-not-a-target |  | proposed |
-| e-not-uiapp-oneview | notes | node:task-konspekt-ui-app | noteworthy:nw-one-view-two-transports |  | proposed |
+| e-not-uiapp-oneview | notes | node:task-konspekt-ui-app | noteworthy:nw-one-view-two-transports |  | accepted |
 | e-not-mcpapp-oneview | notes | node:task-mcp-app-surface | noteworthy:nw-one-view-two-transports |  | proposed |
 | e-not-cas-versioning | notes | node:task-atom-versioning-cas | noteworthy:nw-versioning-not-write-scope |  | proposed |
 | e-not-cas-cursor | notes | node:task-atom-versioning-cas | noteworthy:nw-cursor-is-opaque-store-token |  | proposed |
@@ -258,9 +258,9 @@ proposal.
 | e-dec-usability-atomvocab | decomposes | node:goal-usability | node:task-atom-vocabulary |  | accepted |
 | e-link-atomvocab-serial | links | node:task-atom-vocabulary | node:task-serialization-format | 0.6 | accepted |
 | e-link-atomvocab-reconcile | links | node:task-atom-vocabulary | node:task-reconcile-schema | 0.6 | accepted |
-| e-not-trigger-pollfloor | notes | node:task-trigger-transport | noteworthy:nw-poll-is-the-floor-push-is-optional |  | proposed |
+| e-not-trigger-pollfloor | notes | node:task-trigger-transport | noteworthy:nw-poll-is-the-floor-push-is-optional |  | accepted |
 | e-not-cas-pollfloor | notes | node:task-atom-versioning-cas | noteworthy:nw-poll-is-the-floor-push-is-optional |  | proposed |
-| e-not-uiapp-pollfloor | notes | node:task-konspekt-ui-app | noteworthy:nw-poll-is-the-floor-push-is-optional |  | proposed |
+| e-not-uiapp-pollfloor | notes | node:task-konspekt-ui-app | noteworthy:nw-poll-is-the-floor-push-is-optional |  | accepted |
 | e-not-enterprise-pollfloor | notes | node:task-enterprise-persistence | noteworthy:nw-poll-is-the-floor-push-is-optional |  | proposed |
 | e-prod-uiapp-uidesign | produces | node:task-konspekt-ui-app | artifact:artifact-ui-design |  | proposed |
 | e-prod-mcpapp-uidesign | produces | node:task-mcp-app-surface | artifact:artifact-ui-design |  | proposed |
@@ -273,9 +273,9 @@ proposal.
 | e-not-uiapp-layering | notes | node:task-konspekt-ui-app | noteworthy:nw-implementation-layering |  | accepted |
 | e-not-implzero-layering | notes | node:task-implementation-zero | noteworthy:nw-implementation-layering |  |  |
 | e-not-intellij-layering | notes | node:task-intellij-plugin | noteworthy:nw-implementation-layering |  |  |
-| e-not-implzero-pollfloor | notes | node:task-implementation-zero | noteworthy:nw-poll-is-the-floor-push-is-optional |  | proposed |
-| e-not-implzero-oneview | notes | node:task-implementation-zero | noteworthy:nw-one-view-two-transports |  | proposed |
-| e-not-intellij-oneview | notes | node:task-intellij-plugin | noteworthy:nw-one-view-two-transports |  | proposed |
+| e-not-implzero-pollfloor | notes | node:task-implementation-zero | noteworthy:nw-poll-is-the-floor-push-is-optional |  | accepted |
+| e-not-implzero-oneview | notes | node:task-implementation-zero | noteworthy:nw-one-view-two-transports |  | accepted |
+| e-not-intellij-oneview | notes | node:task-intellij-plugin | noteworthy:nw-one-view-two-transports |  | accepted |
 | e-link-intellij-mcpapp | links | node:task-intellij-plugin | node:task-mcp-app-surface | 0.7 | proposed |
 | e-link-implzero-intellij | links | node:task-implementation-zero | node:task-intellij-plugin | 0.6 |  |
 | e-prod-implzero-design | produces | node:task-implementation-zero | artifact:artifact-implementation-zero-design |  |  |
@@ -329,8 +329,8 @@ proposal.
 | e-not-authority-uniqueacceptor | notes | node:task-authority-mechanism | noteworthy:nw-unique-acceptor-per-atom |  |  |
 | e-not-authority-openpredicate | notes | node:task-authority-mechanism | noteworthy:nw-accept-scope-open-predicate |  |  |
 | e-not-authority-enforcenotgated | notes | node:task-authority-mechanism | noteworthy:nw-accept-authority-enforced-not-gated |  |  |
-| e-not-fleet-firstlevel | notes | node:task-agent-fleet | noteworthy:nw-first-fleet-level-triage-and-scoped-propose |  | proposed |
-| e-not-fleet-uniqueacceptor | notes | node:task-agent-fleet | noteworthy:nw-unique-acceptor-per-atom |  | proposed |
+| e-not-fleet-firstlevel | notes | node:task-agent-fleet | noteworthy:nw-first-fleet-level-triage-and-scoped-propose |  | accepted |
+| e-not-fleet-uniqueacceptor | notes | node:task-agent-fleet | noteworthy:nw-unique-acceptor-per-atom |  | accepted |
 | e-not-signed-acceptorunit | notes | node:task-signed-accepts | noteworthy:nw-acceptor-is-persona-capability |  | proposed |
 | e-not-signed-enforce | notes | node:task-signed-accepts | noteworthy:nw-accept-authority-enforced-not-gated |  | proposed |
 
@@ -339,10 +339,10 @@ proposal.
 | e-link-plugindist-intellij | links | node:task-intellij-plugin-distribution | node:task-intellij-plugin | 0.8 | accepted |
 
 <!-- === plugin-zip release decision (proposed; usability) === -->
-| e-not-plugindist-ziprelease | notes | node:task-intellij-plugin-distribution | noteworthy:nw-plugin-zip-prebuilt-release |  | proposed |
-| e-not-intellij-ziprelease | notes | node:task-intellij-plugin | noteworthy:nw-plugin-zip-prebuilt-release |  | proposed |
-| e-not-plugindist-releaseonly | notes | node:task-intellij-plugin-distribution | noteworthy:nw-plugin-binary-release-only |  | proposed |
-| e-not-adoption-releaseonly | notes | node:task-adoption-path | noteworthy:nw-plugin-binary-release-only |  | proposed |
+| e-not-plugindist-ziprelease | notes | node:task-intellij-plugin-distribution | noteworthy:nw-plugin-zip-prebuilt-release |  | accepted |
+| e-not-intellij-ziprelease | notes | node:task-intellij-plugin | noteworthy:nw-plugin-zip-prebuilt-release |  | accepted |
+| e-not-plugindist-releaseonly | notes | node:task-intellij-plugin-distribution | noteworthy:nw-plugin-binary-release-only |  | accepted |
+| e-not-adoption-releaseonly | notes | node:task-adoption-path | noteworthy:nw-plugin-binary-release-only |  | accepted |
 
 <!-- === UI resolve action (proposed; usability) === -->
 | e-dec-usability-uiresolve | decomposes | node:goal-usability | node:task-ui-resolve-action |  | accepted |
@@ -382,7 +382,7 @@ proposal.
 <!-- === bind loose 2026-09 session work + forcing-function gap (proposed) === -->
 | e-mark-plugindist-release011 | marks | waypoint:wp-plugin-release-0-0-11 | node:task-intellij-plugin-distribution |  | proposed |
 | e-dec-usability-presrefresh | decomposes | node:goal-usability | node:task-presentation-refresh |  | accepted |
-| e-dec-usability-linkedin0926 | decomposes | node:goal-usability | node:task-linkedin-announce-2026-09 |  | proposed |
+| e-dec-usability-linkedin0926 | decomposes | node:goal-usability | node:task-linkedin-announce-2026-09 |  | accepted |
 | e-dec-account-bindingaudit | decomposes | node:goal-accountability | node:task-binding-gap-audit |  | accepted |
 | e-not-bindingaudit-gap | notes | node:task-binding-gap-audit | noteworthy:nw-binding-enforcement-gap |  | proposed |
 | e-men-bindingaudit-completeness | mentions | node:task-binding-gap-audit | concept:concept-provenance-completeness |  | proposed |
@@ -409,25 +409,25 @@ proposal.
 | e-not-edgelayout-scalehold | notes | node:task-edge-traversal-layout | noteworthy:nw-scale-sufficient-hold-optimization |  |  |
 
 <!-- === fleet git implementation changeset (six decisions + spec + migration; conversation fleet-implementation) === -->
-| e-not-fleet-committer | notes | node:task-agent-fleet | noteworthy:nw-fleet-serialized-committer |  | proposed |
-| e-not-fleet-rolesplit | notes | node:task-agent-fleet | noteworthy:nw-fleet-committer-role-split |  | proposed |
-| e-not-fleet-durableref | notes | node:task-agent-fleet | noteworthy:nw-fleet-durable-proposed-ref |  | proposed |
-| e-not-fleet-perproposal | notes | node:task-agent-fleet | noteworthy:nw-fleet-per-proposal-admission |  | proposed |
-| e-not-fleet-sandboxegress | notes | node:task-agent-fleet | noteworthy:nw-fleet-sandbox-committer-egress |  | proposed |
-| e-not-fleet-sha256 | notes | node:task-agent-fleet | noteworthy:nw-fleet-sha256-source-addressing |  | proposed |
+| e-not-fleet-committer | notes | node:task-agent-fleet | noteworthy:nw-fleet-serialized-committer |  | accepted |
+| e-not-fleet-rolesplit | notes | node:task-agent-fleet | noteworthy:nw-fleet-committer-role-split |  | accepted |
+| e-not-fleet-durableref | notes | node:task-agent-fleet | noteworthy:nw-fleet-durable-proposed-ref |  | accepted |
+| e-not-fleet-perproposal | notes | node:task-agent-fleet | noteworthy:nw-fleet-per-proposal-admission |  | accepted |
+| e-not-fleet-sandboxegress | notes | node:task-agent-fleet | noteworthy:nw-fleet-sandbox-committer-egress |  | accepted |
+| e-not-fleet-sha256 | notes | node:task-agent-fleet | noteworthy:nw-fleet-sha256-source-addressing |  | accepted |
 | e-not-account-durableref | notes | node:goal-accountability | noteworthy:nw-fleet-durable-proposed-ref |  | proposed |
 | e-not-review-perproposal | notes | node:task-review-ergonomics | noteworthy:nw-fleet-per-proposal-admission |  | proposed |
 | e-not-provenance-sha256 | notes | node:task-provenance-model | noteworthy:nw-fleet-sha256-source-addressing |  | proposed |
 | e-not-enterprise-sha256 | notes | node:task-enterprise-persistence | noteworthy:nw-fleet-sha256-source-addressing |  | proposed |
-| e-men-fleet-caprov | mentions | node:task-agent-fleet | concept:concept-content-addressed-provenance |  | proposed |
-| e-prod-fleet-spec | produces | node:task-agent-fleet | artifact:artifact-fleet-spec |  | proposed |
+| e-men-fleet-caprov | mentions | node:task-agent-fleet | concept:concept-content-addressed-provenance |  | accepted |
+| e-prod-fleet-spec | produces | node:task-agent-fleet | artifact:artifact-fleet-spec |  | accepted |
 | e-dec-collab-sourcesmigration | decomposes | node:goal-collaboration | node:task-sources-sha256-migration |  | proposed |
 | e-link-sourcesmigration-enterprise | links | node:task-sources-sha256-migration | node:task-enterprise-persistence | 0.6 | proposed |
 | e-link-sourcesmigration-provenance | links | node:task-sources-sha256-migration | node:task-provenance-model | 0.6 | proposed |
 
 <!-- === fleet-spec review: canonical-authoritative amendment (accepted 2026-09-28; conversation fleet-spec-review) === -->
 | e-sup-canonauth-durableref | supersedes | noteworthy:nw-fleet-canonical-authoritative | noteworthy:nw-fleet-durable-proposed-ref |  |  |
-| e-not-fleet-canonauth | notes | node:task-agent-fleet | noteworthy:nw-fleet-canonical-authoritative |  | proposed |
+| e-not-fleet-canonauth | notes | node:task-agent-fleet | noteworthy:nw-fleet-canonical-authoritative |  | accepted |
 
 <!-- === first-turn binding gate + edit-boundary backstop (proposed 2026-09-29; conversation binding-firstturn-gate) === -->
 | e-not-bindinggap-firstturn | notes | node:task-binding-gap-audit | noteworthy:nw-binding-firstturn-gate |  |  |
@@ -440,7 +440,7 @@ proposal.
 | e-not-fleet-retraction | notes | node:task-agent-fleet | noteworthy:nw-fleet-retraction-is-rejection |  | proposed |
 
 <!-- === cursor-specific fleet implementation (proposed 2026-10-03; conversation fleet-cursor-impl) === -->
-| e-dec-fleet-cursor | decomposes | node:task-agent-fleet | node:task-cursor-implementation |  | proposed |
+| e-dec-fleet-cursor | decomposes | node:task-agent-fleet | node:task-cursor-implementation |  | accepted |
 | e-not-cursorimpl-beforepr | notes | node:task-cursor-implementation | noteworthy:nw-cursor-proposals-before-pr |  | proposed |
 
 <!-- === transition log (proposed 2026-10-04; conversation transition-log-design) === -->
@@ -477,13 +477,14 @@ proposal.
 | e-prod-authority-spec | produces | node:task-authority-mechanism | artifact:artifact-authority-spec |  | proposed |
 | e-prod-authority-review | produces | node:task-authority-mechanism | artifact:artifact-review |  | proposed |
 | e-prod-authority-conformance | produces | node:task-authority-mechanism | artifact:artifact-conformance-checker |  | proposed |
-| e-not-abw-precedes | notes | node:task-acceptance-before-work | noteworthy:nw-acceptance-precedes-binding |  | proposed |
-| e-not-abw-basis | notes | node:task-acceptance-before-work | noteworthy:nw-basis-policy-field |  | proposed |
-| e-not-abw-timestamp | notes | node:task-acceptance-before-work | noteworthy:nw-binding-rows-have-timestamp |  | proposed |
+| e-not-abw-precedes | notes | node:task-acceptance-before-work | noteworthy:nw-acceptance-precedes-binding |  | accepted |
+| e-not-abw-basis | notes | node:task-acceptance-before-work | noteworthy:nw-basis-policy-field |  | accepted |
+| e-not-abw-timestamp | notes | node:task-acceptance-before-work | noteworthy:nw-binding-rows-have-timestamp |  | accepted |
 | e-prod-abw-review | produces | node:task-acceptance-before-work | artifact:artifact-review |  | proposed |
 | e-prod-abw-conformance | produces | node:task-acceptance-before-work | artifact:artifact-conformance-checker |  | proposed |
 | e-link-abw-bindingaudit | links | node:task-acceptance-before-work | node:task-binding-gap-audit | 0.5 | proposed |
 | e-link-abw-authority | links | node:task-acceptance-before-work | node:task-authority-mechanism | 0.5 | proposed |
-| e-dec-account-authoritywriters | decomposes | node:goal-accountability | node:task-authority-writers-intellij |  | proposed |
-| e-link-authwriters-plugin | links | node:task-authority-writers-intellij | node:task-intellij-plugin | 0.5 | proposed |
-| e-link-authwriters-authority | links | node:task-authority-writers-intellij | node:task-authority-mechanism | 0.5 | proposed |
+| e-dec-account-authoritywriters | decomposes | node:goal-accountability | node:task-authority-writers-intellij |  | accepted |
+| e-link-authwriters-plugin | links | node:task-authority-writers-intellij | node:task-intellij-plugin | 0.5 | accepted |
+| e-link-authwriters-authority | links | node:task-authority-writers-intellij | node:task-authority-mechanism | 0.5 | accepted |
+| e-dec-usability-linkedin1007 | decomposes | node:goal-usability | node:task-linkedin-announce-2026-10 |  | accepted |

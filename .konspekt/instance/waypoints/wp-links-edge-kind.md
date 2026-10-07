@@ -2,7 +2,7 @@
 id: wp-links-edge-kind
 kind: decision
 timestamp: 2026-09-12T14:30:00Z
-review: proposed
+review: accepted
 provenance:
   sourceRef: 1c521cd2996ebec25d03424a298bf146305e2c58
   contentHash: 1c521cd2996ebec25d03424a298bf146305e2c58

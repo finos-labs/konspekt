@@ -2,12 +2,12 @@
 id: task-linkedin-announce-2026-09
 type: task
 title: September 2026 LinkedIn announcements — plugin/UI, and binding
-status: active
+status: resolved
 summary:
   origin: machine
   pinned: false
   updatedAt: 2026-09-27T12:00:00Z
-review: proposed
+review: accepted
 provenance:
   sourceRef: 4395f3ccb8e1747ca13f2869046c1cc71972422a
   contentHash: 4395f3ccb8e1747ca13f2869046c1cc71972422a

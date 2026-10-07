@@ -1,7 +1,7 @@
 ```yaml
 id: nw-one-view-two-transports
 kind: decision
-review: proposed
+review: accepted
 provenance:
   sourceRef: b9a463107d5168222a3d2acd8d75ad4b66976864
   contentHash: b9a463107d5168222a3d2acd8d75ad4b66976864

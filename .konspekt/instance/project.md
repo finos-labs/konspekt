@@ -9,8 +9,9 @@ summary:
   updatedAt: 2026-06-21T13:00:00Z
 personas: [engineer]
 binding: required
+basis: accepted
 createdAt: 2026-06-21T13:00:00Z
-updatedAt: 2026-09-26T18:55:00Z
+updatedAt: 2026-10-07T13:57:53Z
 ```
 # konspekt
 

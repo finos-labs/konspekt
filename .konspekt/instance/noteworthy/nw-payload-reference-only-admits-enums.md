@@ -1,7 +1,7 @@
 ```yaml
 id: nw-payload-reference-only-admits-enums
 kind: decision
-review: proposed
+review: accepted
 provenance:
   sourceRef: 35a73e563bcbe637251e64a523dbbb5cccd6cca7
   contentHash: 35a73e563bcbe637251e64a523dbbb5cccd6cca7
