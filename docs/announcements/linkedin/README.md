@@ -40,4 +40,5 @@ To start a post, copy `TEMPLATE/` to `post_YYYY-MM-DD/` and edit.
 | 2026-09-13 | PR #19 — UI sources (draft) | |
 | 2026-09-19 | implementation_zero — local read-only UI (draft) | |
 | 2026-09-26 | IntelliJ plugin + accept/resolve write actions (draft) | |
-| 2026-09-27 | Provenance completeness — the fifth invariant (binding); feed + article (draft) | |
+| 2026-09-30 | Provenance completeness — the fifth invariant (binding); feed + article | https://www.linkedin.com/feed/update/urn:li:activity:7511212521635082241/ |
+| 2026-10-07 | Accountable acceptance — authority, transition log, basis: accepted; feed + article (draft) | |
