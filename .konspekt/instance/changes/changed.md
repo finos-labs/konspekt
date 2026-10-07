@@ -173,3 +173,5 @@ commit order; the channel was not live during that work.
 | task-authority-writers-intellij | f8dd2d24e716a9ff1f59865b49509704b8d1b593 | implementations/intellij-plugin/app/src/main/kotlin/dev/konspekt/plugin/InstanceReader.kt | 2026-10-07T16:13:12Z |
 | task-authority-writers-intellij | f8dd2d24e716a9ff1f59865b49509704b8d1b593 | implementations/intellij-plugin/app/src/main/kotlin/dev/konspekt/plugin/ViewServer.kt | 2026-10-07T16:13:12Z |
 | task-presentation-refresh | 40a47d5659f6cf724b061b24180fb35b8b7c203b | docs/index.html | 2026-10-07T16:13:12Z |
+| task-spec-acceptance-prose | 6750f9de900a108f5e85ca22ea09d2b87e99343f | ROADMAP.md | 2026-10-07T17:55:00Z |
+| task-spec-acceptance-prose | 95953f956ca3f3e7b57be927932527aa58b57260 | spec/data-model/SPEC.md | 2026-10-07T17:55:00Z |
