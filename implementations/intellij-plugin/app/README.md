@@ -43,13 +43,13 @@ The build fails with a clear message if it is unset. (The install whose
 ## Build and run
 
 ```
-./gradlew buildPlugin     # -> implementations/intellij-plugin/app/build/distributions/konspekt-intellij-0.0.11.zip
+./gradlew buildPlugin     # -> implementations/intellij-plugin/app/build/distributions/konspekt-intellij-0.0.12.zip
 ./gradlew runIde          # launches a sandbox IDE; open the "konspekt" tool window (right edge)
 ```
 
 Install the built zip into your own IDE: Settings → Plugins → ⚙ →
 *Install Plugin from Disk…* →
-`implementations/intellij-plugin/app/build/distributions/konspekt-intellij-0.0.11.zip`.
+`implementations/intellij-plugin/app/build/distributions/konspekt-intellij-0.0.12.zip`.
 
 ## Status
 
@@ -72,6 +72,13 @@ the IDE. Confirmed rendering and live refresh from the installed-from-disk zip.
 (`task-ui-simple-actions`) and `POST /api/resolve` (`task-ui-resolve-action`, the
 `resolve` authority verb → `status: resolved`). Both are exercised from the tool
 window's entity drawer; the model never calls them.
+
+Under an instance that declares principals (`authority/principals.md`), an accept
+or resolve must name a declared principal. The plugin acts as the principal in the
+`KONSPEKT_PRINCIPAL` environment variable, read from the IDE's environment at
+startup — set it (for example `KONSPEKT_PRINCIPAL=denisurusov`) and restart the
+IDE, or the write is refused with a message saying so. An instance that declares
+no principals needs nothing.
 
 **Later:** the remaining authority verbs (`abandon` / `validate` / `refute` /
 `pin` / `lift`) and reject, under `task-task-workthrough-ui`.
