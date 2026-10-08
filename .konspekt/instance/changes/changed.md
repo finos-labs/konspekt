@@ -177,3 +177,13 @@ commit order; the channel was not live during that work.
 | task-spec-acceptance-prose | 95953f956ca3f3e7b57be927932527aa58b57260 | spec/data-model/SPEC.md | 2026-10-07T17:55:00Z |
 | task-deck-acceptance-prose | cd44f8f7a2e6bb663d5be6090588d6cabf878a33 | ROADMAP.md | 2026-10-07T17:58:00Z |
 | task-deck-acceptance-prose | 4d8831a9fd298adb295f5ba9de193b8b3ce7b498 | docs/index.html | 2026-10-07T17:58:00Z |
+| task-linkedin-announce-2026-10 | 0714bc822345c5462dece3df5d4e11e0c6ce881d | docs/announcements/linkedin/README.md | 2026-10-07T18:05:00Z |
+| task-linkedin-announce-2026-10 | 0714bc822345c5462dece3df5d4e11e0c6ce881d | docs/announcements/linkedin/post_2026-10-07/post.md | 2026-10-07T18:05:00Z |
+| task-linkedin-announce-2026-10 | 0714bc822345c5462dece3df5d4e11e0c6ce881d | docs/announcements/linkedin/post_2026-10-07/article.md | 2026-10-07T18:05:00Z |
+| task-linkedin-announce-2026-10 | 0714bc822345c5462dece3df5d4e11e0c6ce881d | docs/announcements/linkedin/post_2026-10-07/article.html | 2026-10-07T18:05:00Z |
+| task-linkedin-announce-2026-10 | 0714bc822345c5462dece3df5d4e11e0c6ce881d | docs/announcements/linkedin/post_2026-10-07/images/acceptance.png | 2026-10-07T18:05:00Z |
+| task-linkedin-announce-2026-10 | 0714bc822345c5462dece3df5d4e11e0c6ce881d | docs/announcements/linkedin/post_2026-10-07/images/CAPTURE.md | 2026-10-07T18:05:00Z |
+| task-authority-writers-intellij | 8687dc1349be6630199160156d2df64f5a4c0550 | implementations/intellij-plugin/app/README.md | 2026-10-08T00:02:00Z |
+| task-authority-mechanism | b876bf1df2692dd4359809936973b2e9d7f89ab5 | implementations/implementation-zero/app/README.md | 2026-10-08T00:02:00Z |
+| task-intellij-plugin-distribution | 532825773e01ab98d5256499326e5b2ff763a7b3 | implementations/intellij-plugin/app/gradle.properties | 2026-10-08T00:02:00Z |
+| task-intellij-plugin-distribution | 532825773e01ab98d5256499326e5b2ff763a7b3 | implementations/intellij-plugin/app/README.md | 2026-10-08T00:02:00Z |
