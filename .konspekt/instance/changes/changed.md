@@ -173,3 +173,7 @@ commit order; the channel was not live during that work.
 | task-authority-writers-intellij | f8dd2d24e716a9ff1f59865b49509704b8d1b593 | implementations/intellij-plugin/app/src/main/kotlin/dev/konspekt/plugin/InstanceReader.kt | 2026-10-07T16:13:12Z |
 | task-authority-writers-intellij | f8dd2d24e716a9ff1f59865b49509704b8d1b593 | implementations/intellij-plugin/app/src/main/kotlin/dev/konspekt/plugin/ViewServer.kt | 2026-10-07T16:13:12Z |
 | task-presentation-refresh | 40a47d5659f6cf724b061b24180fb35b8b7c203b | docs/index.html | 2026-10-07T16:13:12Z |
+| task-authority-writers-intellij | 8687dc1349be6630199160156d2df64f5a4c0550 | implementations/intellij-plugin/app/README.md | 2026-10-08T00:02:00Z |
+| task-authority-mechanism | b876bf1df2692dd4359809936973b2e9d7f89ab5 | implementations/implementation-zero/app/README.md | 2026-10-08T00:02:00Z |
+| task-intellij-plugin-distribution | 532825773e01ab98d5256499326e5b2ff763a7b3 | implementations/intellij-plugin/app/gradle.properties | 2026-10-08T00:02:00Z |
+| task-intellij-plugin-distribution | 532825773e01ab98d5256499326e5b2ff763a7b3 | implementations/intellij-plugin/app/README.md | 2026-10-08T00:02:00Z |
