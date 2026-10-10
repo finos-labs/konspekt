@@ -12,9 +12,11 @@
 // else, so an unregistered branch owns nothing.
 
 import { join } from "node:path";
+import { writeFileSync, readFileSync } from "node:fs";
 import { init, addWorktree, removeWorktree, commitAll, currentBranch } from "./git.mjs";
 
 export const OUTBOX_PREFIX = "outbox/";
+const MANIFEST = "fleet.json";
 
 export function branchForHandle(handle) {
   return `${OUTBOX_PREFIX}${handle}`;
@@ -60,19 +62,46 @@ export function setupFleet({ root, canonicalBranch = "canonical", proposers = []
     built.push({ handle, path, branch });
   }
 
+  const descriptor = descriptorFrom({ root, canonicalPath, canonicalBranch, proposers: built });
+  writeManifest(descriptor);
+  return descriptor;
+}
+
+// Build a fleet descriptor (data plus the owner/proposer lookups) from the plain
+// data a manifest holds. One builder keeps setupFleet and loadFleet identical.
+function descriptorFrom({ root, canonicalPath, canonicalBranch, proposers }) {
+  const owners = new Map(proposers.map((p) => [p.branch, p.handle]));
   return {
     root,
     canonicalPath,
     canonicalBranch,
-    proposers: built,
+    proposers,
     // The anti-spoof binding: known outbox branch -> owner handle, else null.
     ownerOf(branch) {
       return owners.get(branch) ?? null;
     },
     proposerFor(handle) {
-      return built.find((p) => p.handle === handle) ?? null;
+      return proposers.find((p) => p.handle === handle) ?? null;
     },
   };
+}
+
+// Persist the layout to <root>/fleet.json so a later CLI invocation (a separate
+// process) attaches to the same worktrees and owner map instead of rebuilding.
+export function writeManifest(descriptor) {
+  const data = {
+    canonicalPath: descriptor.canonicalPath,
+    canonicalBranch: descriptor.canonicalBranch,
+    proposers: descriptor.proposers.map((p) => ({ handle: p.handle, path: p.path, branch: p.branch })),
+  };
+  writeFileSync(join(descriptor.root, MANIFEST), JSON.stringify(data, null, 2) + "\n", "utf8");
+}
+
+// Attach to an existing on-disk fleet by reading its manifest. Does not touch
+// git; it reconstructs the descriptor so run-pass and propose can operate.
+export function loadFleet(root) {
+  const data = JSON.parse(readFileSync(join(root, MANIFEST), "utf8"));
+  return descriptorFrom({ root, ...data });
 }
 
 // Remove the proposer worktrees. The canonical worktree and its object store
