@@ -116,6 +116,28 @@ Each milestone is independently testable.
 9. **M9 — assistant seam.** Read-only interface plus CLI; the model itself stays
    out of scope.
 
+## Manual UAT checkpoint (before or just after M4)
+
+Before the committer gains the authority to write canonical (fold, M5), a manual
+UAT exercises connectivity and data flow end to end over M2–M4: stand up the N+1
+worktrees, have a proposer write and commit a proposal to its outbox, run the
+committer CLI to read the outboxes and report what it verified, and confirm an
+operator sees the right proposals with their verify verdicts. This is a
+read-and-report pass — no fold, no bless — so it is safe to run against a throwaway
+object store while the write path is still landing.
+
+To make the checkpoint runnable, the CLI (`cli.mjs`) gains two commands by M4:
+
+- `propose` — assemble, sign, and commit a proposal onto a proposer's outbox
+  (M3 behavior behind a command line).
+- `run-pass --dry-run` (or `inspect`) — read new proposals across the outbox
+  branches and print each one's verify verdict (id match, source match, origin
+  equals branch owner, scope within grant, binding and confidence present),
+  without folding.
+
+The checkpoint is operator-run and not part of the automated suite; its steps are
+recorded here so the run is repeatable.
+
 ## Invariants the code must hold
 
 - Canonical is authoritative; the `proposed` ref is a derived, rebuildable index
