@@ -2,7 +2,7 @@
 id: task-linkedin-announce-2026-10
 type: task
 title: October 2026 LinkedIn announcement — acceptance & authority
-status: active
+status: resolved
 summary:
   origin: machine
   pinned: false

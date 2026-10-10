@@ -2,7 +2,7 @@
 id: task-binding-operating-behavior
 type: task
 title: Ask-at-open binding behavior in the operating loop
-status: active
+status: resolved
 summary:
   origin: machine
   pinned: false

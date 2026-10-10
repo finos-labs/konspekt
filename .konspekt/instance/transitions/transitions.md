@@ -986,3 +986,13 @@ proposing agent was not recorded.
 | edge:e-dec-authverbs-decktask | review |  | proposed | 2026-10-07T17:20:00Z |  | claude |
 | edge:e-dec-authverbs-decktask | review | proposed | accepted | 2026-10-07T17:20:00Z |  | denisurusov |
 | node:task-deck-acceptance-prose | status | open | resolved | 2026-10-07T17:30:00Z |  | denisurusov |
+| noteworthy:nw-binding-retroactive | review | proposed | accepted | 2026-10-08T01:54:50Z |  | denisurusov |
+| node:task-linkedin-announce-2026-10 | status | active | resolved | 2026-10-09T12:42:35Z |  | denisurusov |
+| node:task-implementation-zero | status | active | resolved | 2026-10-09T12:42:42Z |  | denisurusov |
+| node:task-binding-operating-behavior | status | active | resolved | 2026-10-09T12:42:49Z |  | denisurusov |
+| node:task-konspekt-ui-app | status | open | resolved | 2026-10-09T12:43:24Z |  | denisurusov |
+| node:task-visual-status-filters | status | open | resolved | 2026-10-09T12:43:31Z |  | denisurusov |
+| node:task-fleet-worktree-committer | review |  | accepted | 2026-10-10T16:00:00Z | 1e1bc298fb11d1f9fa021fdf96d3f4f901147346 | denisurusov |
+| node:task-fleet-worktree-committer | status |  | open | 2026-10-10T16:00:00Z |  |  |
+| edge:e-dec-fleet-committer | review |  | accepted | 2026-10-10T16:00:00Z | 1e1bc298fb11d1f9fa021fdf96d3f4f901147346 | denisurusov |
+| noteworthy:nw-claude-mobile-not-a-target | review | proposed | accepted | 2026-10-10T16:05:00Z |  | denisurusov |

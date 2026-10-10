@@ -3,7 +3,7 @@
      Check freshness with: node tools/roadmap.mjs --check
      This file is a pure function of .konspekt/instance/ (no timestamps baked in).
      Goals and tasks are graph nodes; the horizon is derived from node status/review.
-     contentHash: sha256:02c0b4724b10a5ea -->
+     contentHash: sha256:ba4b175035c3101a -->
 
 # konspekt roadmap
 
@@ -14,10 +14,6 @@ Horizon: **Now** — in progress · **Next** — accepted and planned · **Later
 ## Answer who is responsible
 
 Make the facts a responsibility question needs answerable with evidence. The law decides who is responsible; konspekt records, verbatim and unaltered, what an AI proposed and which named human accepted it, so the underlying account is not in dispute. Responsibility attaches to a human by construction: an AI proposes, and only a named maintainer accepts.
-
-**Now** — _in progress_
-
-- Ask-at-open binding behavior in the operating loop
 
 **Next** — _accepted and planned_
 
@@ -36,6 +32,7 @@ Make the facts a responsibility question needs answerable with evidence. The law
 
 - Require acceptance before work is bound
 - Accept authority in the IntelliJ plugin
+- Ask-at-open binding behavior in the operating loop
 - Serialize executed-command provenance as an ordered log
 - Record the source and config changes associated with a task
 
@@ -54,7 +51,6 @@ Make konspekt's record a high-quality *input* to the model, not only a human-rea
 
 **Now** — _in progress_
 
-- Ask-at-open binding behavior in the operating loop
 - Ingestion mode
 
 **Next** — _accepted and planned_
@@ -69,6 +65,7 @@ Make konspekt's record a high-quality *input* to the model, not only a human-rea
 
 **Shipped** — _resolved_
 
+- Ask-at-open binding behavior in the operating loop
 - Provenance model — content-addressed source
 - Reconciliation
 - Review ergonomics
@@ -80,7 +77,6 @@ Help people process gen-AI outputs and follow long conversations by externalizin
 
 **Now** — _in progress_
 
-- Ask-at-open binding behavior in the operating loop
 - Ingestion mode
 
 **Next** — _accepted and planned_
@@ -95,6 +91,7 @@ Help people process gen-AI outputs and follow long conversations by externalizin
 
 **Shipped** — _resolved_
 
+- Ask-at-open binding behavior in the operating loop
 - Provenance model — content-addressed source
 - Reconciliation
 - Review ergonomics
@@ -150,17 +147,10 @@ Keep a project's working context — its instructions, accumulated decisions, an
 
 Make a konspekt instance operable by a human through a visual interface, not only readable: select a goal, see its open tasks, and work through them — reviewing, dispositioning, accepting, and resolving from the interface rather than by hand- editing files. Where [[goal-observability]] makes the graph legible (read-only projections and metrics), this goal makes it operable (navigate and act).
 
-**Now** — _in progress_
-
-- Build implementation_zero — a local watcher and floating read-only view
-- October 2026 LinkedIn announcement — acceptance & authority
-
 **Next** — _accepted and planned_
 
 - Navigate from a goal to its open tasks
-- Build the konspekt UI app as one view with two shells
 - Work through and disposition tasks in the interface
-- Encode status and review as visual channels and filters
 
 **Later** — _proposed, not yet committed_
 
@@ -171,15 +161,19 @@ Make a konspekt instance operable by a human through a visual interface, not onl
 - An ASR/ADR view in the konspekt UI
 - Settle "atom" in the vocabulary
 - Note on the Control Verbs slide that acceptance is prose
+- Build implementation_zero — a local watcher and floating read-only view
 - Build the IntelliJ plugin shell over the one view
 - Distribute the IntelliJ plugin as an installable zip
+- Build the konspekt UI app as one view with two shells
 - September 2026 LinkedIn announcements — plugin/UI, and binding
+- October 2026 LinkedIn announcement — acceptance & authority
 - Configurable popup mode for the IntelliJ plugin
 - Refresh presentation materials for the plugin, UI writes, and binding
 - Related-commands tab in the entity detail panel
 - State in the spec that acceptance is prose
 - Resolve a work node from the UI (POST /api/resolve)
 - Take simple actions from the UI (accept a proposed entity)
+- Encode status and review as visual channels and filters
 
 ## Share authorship across a team _(proposed)_
 
@@ -189,6 +183,7 @@ Let several participants — people and agents — propose into and review one s
 
 - One reviewer over a fleet of agents
 - Cursor implementation of the fleet
+- Worktree-outbox fleet committer implementation
 
 **Later** — _proposed, not yet committed_
 
@@ -198,4 +193,4 @@ Let several participants — people and agents — propose into and review one s
 
 ---
 
-Generated from 8 goal(s) and 75 task-listing(s) over the instance graph.
+Generated from 8 goal(s) and 76 task-listing(s) over the instance graph.

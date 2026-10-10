@@ -2,7 +2,7 @@
 id: task-konspekt-ui-app
 type: task
 title: Build the konspekt UI app as one view with two shells
-status: open
+status: resolved
 summary:
   origin: machine
   pinned: false

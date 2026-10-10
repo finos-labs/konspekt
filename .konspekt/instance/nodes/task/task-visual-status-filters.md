@@ -2,7 +2,7 @@
 id: task-visual-status-filters
 type: task
 title: Encode status and review as visual channels and filters
-status: open
+status: resolved
 summary:
   origin: machine
   pinned: false

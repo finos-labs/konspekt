@@ -1,14 +1,14 @@
 ```yaml
 id: nw-claude-mobile-not-a-target
 kind: decision
-review: proposed
+review: accepted
 provenance:
   sourceRef: b9a463107d5168222a3d2acd8d75ad4b66976864
   contentHash: b9a463107d5168222a3d2acd8d75ad4b66976864
   timestamp: 2026-09-14T16:00:00Z
   conversationId: app-design-101
 createdAt: 2026-09-14T16:00:00Z
-updatedAt: 2026-09-14T16:00:00Z
+updatedAt: 2026-10-10T16:05:00Z
 ```
 # Noteworthy: Vendor mobile is a host, konspekt mobile is the target
 
