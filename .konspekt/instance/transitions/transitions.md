@@ -1002,3 +1002,8 @@ proposing agent was not recorded.
 | node:task-reader-rejected-filter | status |  | open | 2026-10-10T16:30:00Z |  |  |
 | edge:e-dec-usability-rejectedfilter | review |  | proposed | 2026-10-10T16:30:00Z |  |  |
 | edge:e-link-committer-rejectedfilter | review |  | proposed | 2026-10-10T16:30:00Z |  |  |
+| node:task-vendor-neutral-interop | review |  | proposed | 2026-10-10T16:25:00Z |  |  |
+| node:task-vendor-neutral-interop | status |  | open | 2026-10-10T16:25:00Z |  |  |
+| edge:e-dec-port-vendorneutral | review |  | proposed | 2026-10-10T16:25:00Z |  |  |
+| node:task-vendor-neutral-interop | review | proposed | accepted | 2026-10-10T16:30:00Z | 61cb82df38f6e65ac716680e9d38c3fa5738e56d | denisurusov |
+| edge:e-dec-port-vendorneutral | review | proposed | accepted | 2026-10-10T16:30:00Z |  | denisurusov |

@@ -496,3 +496,4 @@ proposal.
 | e-note-authverbs-prose | notes | node:investigation-authority-verb-usage | noteworthy:nw-acceptance-is-prose |  | accepted |
 | e-dec-authverbs-spectask | decomposes | node:investigation-authority-verb-usage | node:task-spec-acceptance-prose |  | accepted |
 | e-dec-authverbs-decktask | decomposes | node:investigation-authority-verb-usage | node:task-deck-acceptance-prose |  | accepted |
+| e-dec-port-vendorneutral | decomposes | node:goal-portability | node:task-vendor-neutral-interop |  | accepted |
