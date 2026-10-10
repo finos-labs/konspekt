@@ -7,3 +7,4 @@ dist/
 .vscode/
 distribution/latest/
 .claude/.binding/
+.konspekt-fleet/

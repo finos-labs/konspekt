@@ -48,6 +48,22 @@ The committer is two roles kept apart:
 The single human acceptor is unchanged. The assistant asks; the human's answer
 is the accept; the deterministic writer executes only the named subset.
 
+## Session branches
+
+A fleet session is scoped to one feature branch, and that branch is the
+session's canonical. The committer's canonical worktree checks it out, and the N
+outbox branches `outbox/<handle>` are forked from it, one per proposer, each
+handed out as a proposer worktree. Folds and blesses land on the feature branch,
+are reviewed there, and merge to the trunk when the human accepts the session's
+work.
+
+The committer's canonical is always a feature branch. The trunk cannot serve as
+canonical directly: a linked worktree cannot check out a branch already checked
+out elsewhere, and holding fold and bless commits on a feature branch keeps them
+reviewable before they reach the trunk. Standing up a session is therefore: cut
+the feature branch, add the committer worktree on it, fork and hand out N outbox
+worktrees, record the layout in the session manifest.
+
 ## Runtime substrate
 
 The fleet is designed to run inside an egress sandbox with the **committer host
@@ -171,6 +187,19 @@ A deterministic loop over the N outbox branches, one pass in flight at a time.
    `review: rejected` on canonical — a tombstone retained with its reason,
    consistent with the grow-only store and `REVIEW.md`'s reject-as-tombstone.
    Nothing is erased.
+
+## Runtime state outside history
+
+The derived `proposed` index and the fleet's fold and decision logs live under
+`.konspekt-fleet/` at the canonical worktree root — `folded.md`, `decisions.md`,
+and the materialized index. This directory is runtime state and not part of the
+graph: it is gitignored and never committed, so a fold or bless commit touches
+only the konspekt instance under `.konspekt/instance/`. Canonical is
+authoritative and the index is rebuildable from it (step 4), so keeping the logs
+out of history loses nothing; a reader that needs the queue regenerates it from
+canonical with `rebuild-index`. Because those commits stay instance-only, they
+are graph bookkeeping and raise no out-of-instance binding obligation
+(`.konspekt/OPERATING.md` § Binding commits to the graph).
 
 ## Proposal state and reader filtering
 
