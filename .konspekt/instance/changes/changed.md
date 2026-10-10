@@ -199,3 +199,5 @@ commit order; the channel was not live during that work.
 | task-fleet-worktree-committer | b35fbcb48d4cf7c3aaa29d3e3f49f5e7d786f4c2 | implementations/fleet/worktree/app/cli.mjs | 2026-10-10T16:03:05Z |
 | task-binding-gap-audit | b73f55910a62ae7ec0c94893406e19cb3fe764aa | .konspekt/OPERATING.md | 2026-10-10T16:18:09Z |
 | task-vendor-neutral-interop | c9701f936d43681a13aeedcb2049bf5b877484bf | ROADMAP.md | 2026-10-10T17:16:58Z |
+| task-fleet-worktree-committer | badb47df614f498971937508266fca8b6dd90a63 | .gitignore | 2026-10-10T22:16:51Z |
+| task-fleet-worktree-committer | badb47df614f498971937508266fca8b6dd90a63 | docs/design/fleet-spec.md | 2026-10-10T22:16:51Z |
