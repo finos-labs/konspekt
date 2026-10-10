@@ -130,6 +130,7 @@ function cmdBless(args) {
   const by = need(args, "by");
   const mode = args["mode"] && args["mode"] !== true ? args["mode"] : "inspection";
   const instanceSubdir = args["instance-subdir"] && args["instance-subdir"] !== true ? args["instance-subdir"] : "";
+  const now = args["now"] && args["now"] !== true ? args["now"] : null;
   const identity = { name: args["name"] || undefined, email: args["email"] || undefined };
 
   // Accept ids from --accept a,b,c and reject ids from --reject x,y with --reason.
@@ -140,7 +141,7 @@ function cmdBless(args) {
   ];
   if (decisions.length === 0) throw new Error("nothing to do: pass --accept and/or --reject with proposal ids");
 
-  const { done, setAside } = blessPass(loadFleet(root), decisions, { identity, instanceSubdir });
+  const { done, setAside } = blessPass(loadFleet(root), decisions, { identity, instanceSubdir, now });
   for (const d of done) console.log(`${d.decision === "accepted" ? "blessed" : "rejected"} ${d.ref}  (${d.proposalId.slice(0, 12)}) in ${d.commit}`);
   for (const s of setAside) console.log(`  not applied ${s.proposalId ? s.proposalId.slice(0, 12) : "(?)"}: ${s.reason}`);
 }
@@ -148,7 +149,9 @@ function cmdBless(args) {
 function cmdRebuildIndex(args) {
   const root = need(args, "root");
   const instanceSubdir = args["instance-subdir"] && args["instance-subdir"] !== true ? args["instance-subdir"] : "";
-  const index = rebuildIndex(root, { instanceSubdir });
+  // The fleet log and instance live in the canonical worktree, not the fleet
+  // root; resolve it the same way run-pass and bless do.
+  const index = rebuildIndex(loadFleet(root).canonicalPath, { instanceSubdir });
   const c = index.counts;
   console.log(`rebuilt proposed index from canonical: ${c.total} proposal(s)`);
   console.log(`  pending ${c.pending}, accepted ${c.accepted}, rejected ${c.rejected}` +
