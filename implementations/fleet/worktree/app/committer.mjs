@@ -17,6 +17,7 @@ import { verifyProposal } from "./verify.mjs";
 import { parseProposal } from "./payload.mjs";
 import { foldOrder } from "./order.mjs";
 import { foldProposals } from "./fold.mjs";
+import { decideAtom } from "./bless.mjs";
 import { commitAll } from "./git.mjs";
 
 // Read one proposer worktree's outbox. Returns
@@ -113,4 +114,34 @@ export function foldPass(fleet, { grants = {}, known = null, identity = {}, inst
     });
   }
   return { verdicts, folded, setAside, commit };
+}
+
+// The disposition pass (fleet-spec.md § Committer protocol, steps 7-8): the
+// human has named a per-proposal decision; the deterministic writer executes
+// exactly that subset. Each decision is { proposalId, decision: accepted|
+// rejected, by, mode?, reason? }. One atomic field-only commit per dispositioned
+// atom, so canonical never lands a half-flipped atom. A decision the writer
+// cannot apply (unknown, already dispositioned) is set aside and the rest
+// proceed. Returns { done, setAside }.
+export function blessPass(fleet, decisions = [], { identity = {}, instanceSubdir = "", now = null } = {}) {
+  const instanceDir = instanceSubdir ? join(fleet.canonicalPath, instanceSubdir) : fleet.canonicalPath;
+  const done = [];
+  const setAside = [];
+  for (const d of decisions) {
+    let result;
+    try {
+      result = decideAtom(instanceDir, fleet.canonicalPath, { ...d, now });
+    } catch (e) {
+      setAside.push({ proposalId: d.proposalId ?? null, reason: e.message });
+      continue;
+    }
+    const verb = result.decision === "accepted" ? "bless" : "reject";
+    const commit = commitAll(fleet.canonicalPath, `${verb}: ${result.ref}`, {
+      name: identity.name,
+      email: identity.email,
+      signoff: true,
+    });
+    done.push({ ...result, commit });
+  }
+  return { done, setAside };
 }

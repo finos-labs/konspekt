@@ -13,7 +13,7 @@
 import { readFileSync } from "node:fs";
 import { setupFleet, loadFleet } from "./worktrees.mjs";
 import { assembleProposal, proposeToOutbox, renderEdgesBlock } from "./outbox.mjs";
-import { verifyPass, foldPass } from "./committer.mjs";
+import { verifyPass, foldPass, blessPass } from "./committer.mjs";
 import { rebuildIndex } from "./proposed-ref.mjs";
 
 function parseArgs(argv) {
@@ -115,6 +115,26 @@ function cmdRunPass(args) {
   }
 }
 
+function cmdBless(args) {
+  const root = need(args, "root");
+  const by = need(args, "by");
+  const mode = args["mode"] && args["mode"] !== true ? args["mode"] : "inspection";
+  const instanceSubdir = args["instance-subdir"] && args["instance-subdir"] !== true ? args["instance-subdir"] : "";
+  const identity = { name: args["name"] || undefined, email: args["email"] || undefined };
+
+  // Accept ids from --accept a,b,c and reject ids from --reject x,y with --reason.
+  const ids = (v) => (v && v !== true ? String(v).split(",").map((s) => s.trim()).filter(Boolean) : []);
+  const decisions = [
+    ...ids(args["accept"]).map((proposalId) => ({ proposalId, decision: "accepted", by, mode })),
+    ...ids(args["reject"]).map((proposalId) => ({ proposalId, decision: "rejected", by, reason: args["reason"] !== true ? args["reason"] : null })),
+  ];
+  if (decisions.length === 0) throw new Error("nothing to do: pass --accept and/or --reject with proposal ids");
+
+  const { done, setAside } = blessPass(loadFleet(root), decisions, { identity, instanceSubdir });
+  for (const d of done) console.log(`${d.decision === "accepted" ? "blessed" : "rejected"} ${d.ref}  (${d.proposalId.slice(0, 12)}) in ${d.commit}`);
+  for (const s of setAside) console.log(`  not applied ${s.proposalId ? s.proposalId.slice(0, 12) : "(?)"}: ${s.reason}`);
+}
+
 function cmdRebuildIndex(args) {
   const root = need(args, "root");
   const instanceSubdir = args["instance-subdir"] && args["instance-subdir"] !== true ? args["instance-subdir"] : "";
@@ -136,9 +156,10 @@ function main() {
     if (command === "init") cmdInit(args);
     else if (command === "propose") cmdPropose(args);
     else if (command === "run-pass") cmdRunPass(args);
+    else if (command === "bless") cmdBless(args);
     else if (command === "rebuild-index") cmdRebuildIndex(args);
     else {
-      console.error("usage: cli.mjs <init|propose|run-pass|rebuild-index> [--flags]");
+      console.error("usage: cli.mjs <init|propose|run-pass|bless|rebuild-index> [--flags]");
       process.exit(2);
     }
   } catch (e) {

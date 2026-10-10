@@ -33,8 +33,10 @@ function fleetDirPath(canonicalRoot) {
 }
 
 // Append one fold record. Called by fold.mjs in the fold commit, so the linkage
-// lands atomically with the atom it describes.
-export function appendFoldRecord(canonicalRoot, { proposalId, ref, agent }) {
+// lands atomically with the atom it describes. `edges` is the atom's wiring edge
+// ids, recorded so bless/reject can flip exactly the atom's own rows without
+// re-reading the (possibly torn-down) outbox.
+export function appendFoldRecord(canonicalRoot, { proposalId, ref, agent, edges = [] }) {
   const dir = fleetDirPath(canonicalRoot);
   mkdirSync(dir, { recursive: true });
   const path = join(dir, FOLD_LOG);
@@ -43,17 +45,17 @@ export function appendFoldRecord(canonicalRoot, { proposalId, ref, agent }) {
     existing =
       "# Fleet fold log\n\n" +
       "Append-only. Each row records a proposal folded onto canonical: its\n" +
-      "proposal_id, the atom it became (`type:id`), and the proposing agent. This\n" +
-      "is fleet-side derived state, not part of the konspekt graph; canonical is\n" +
-      "authoritative (nw-fleet-canonical-authoritative).\n\n" +
-      "| proposal_id | ref | agent |\n" +
-      "|-------------|-----|-------|\n";
+      "proposal_id, the atom it became (`type:id`), the proposing agent, and the\n" +
+      "wiring edge ids. This is fleet-side derived state, not part of the konspekt\n" +
+      "graph; canonical is authoritative (nw-fleet-canonical-authoritative).\n\n" +
+      "| proposal_id | ref | agent | edges |\n" +
+      "|-------------|-----|-------|-------|\n";
   }
   if (existing.length && !existing.endsWith("\n")) existing += "\n";
-  writeFileSync(path, existing + `| ${proposalId} | ${ref} | ${agent ?? ""} |\n`, "utf8");
+  writeFileSync(path, existing + `| ${proposalId} | ${ref} | ${agent ?? ""} | ${edges.join(",")} |\n`, "utf8");
 }
 
-// Read the fold log into [{ proposalId, ref, agent }], in file (fold) order.
+// Read the fold log into [{ proposalId, ref, agent, edgeIds }], in fold order.
 export function readFoldLog(canonicalRoot) {
   const path = join(fleetDirPath(canonicalRoot), FOLD_LOG);
   if (!existsSync(path)) return [];
@@ -64,7 +66,8 @@ export function readFoldLog(canonicalRoot) {
     const cells = t.split("|").slice(1, -1).map((c) => c.trim());
     if (cells.length < 2) continue;
     if (cells[0] === "proposal_id" || /^-+$/.test(cells[0])) continue;
-    rows.push({ proposalId: cells[0], ref: cells[1], agent: cells[2] || null });
+    const edgeIds = cells[3] ? cells[3].split(",").map((s) => s.trim()).filter(Boolean) : [];
+    rows.push({ proposalId: cells[0], ref: cells[1], agent: cells[2] || null, edgeIds });
   }
   return rows;
 }

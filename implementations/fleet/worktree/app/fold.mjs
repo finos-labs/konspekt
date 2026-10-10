@@ -204,6 +204,7 @@ export function foldProposal(instanceDir, { proposalMd, sourceMd }, { now, fleet
     proposalId: front.proposal_id ?? null,
     ref: `${entityType}:${id}`,
     agent: front.origin && front.origin.agent,
+    edges: edgeRows.map((r) => r.id),
   });
 
   return {
