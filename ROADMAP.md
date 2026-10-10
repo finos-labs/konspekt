@@ -3,7 +3,7 @@
      Check freshness with: node tools/roadmap.mjs --check
      This file is a pure function of .konspekt/instance/ (no timestamps baked in).
      Goals and tasks are graph nodes; the horizon is derived from node status/review.
-     contentHash: sha256:ba4b175035c3101a -->
+     contentHash: sha256:785139efeafd5508 -->
 
 # konspekt roadmap
 
@@ -155,6 +155,7 @@ Make a konspekt instance operable by a human through a visual interface, not onl
 **Later** — _proposed, not yet committed_
 
 - Serve the konspekt view as an MCP Apps ui:// resource
+- Filter review rejected tombstones in the shipped readers
 
 **Shipped** — _resolved_
 
@@ -193,4 +194,4 @@ Let several participants — people and agents — propose into and review one s
 
 ---
 
-Generated from 8 goal(s) and 76 task-listing(s) over the instance graph.
+Generated from 8 goal(s) and 77 task-listing(s) over the instance graph.

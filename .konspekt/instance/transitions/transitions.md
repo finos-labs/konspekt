@@ -996,3 +996,9 @@ proposing agent was not recorded.
 | node:task-fleet-worktree-committer | status |  | open | 2026-10-10T16:00:00Z |  |  |
 | edge:e-dec-fleet-committer | review |  | accepted | 2026-10-10T16:00:00Z | 1e1bc298fb11d1f9fa021fdf96d3f4f901147346 | denisurusov |
 | noteworthy:nw-claude-mobile-not-a-target | review | proposed | accepted | 2026-10-10T16:05:00Z |  | denisurusov |
+| artifact:artifact-fleet-worktree-design | review |  | accepted | 2026-10-10T16:30:00Z | d1f27d9c19df3cee92f67d1cc8b11d432acc537c | denisurusov |
+| edge:e-prod-fleetworktree-design | review |  | accepted | 2026-10-10T16:30:00Z | d1f27d9c19df3cee92f67d1cc8b11d432acc537c | denisurusov |
+| node:task-reader-rejected-filter | review |  | proposed | 2026-10-10T16:30:00Z |  |  |
+| node:task-reader-rejected-filter | status |  | open | 2026-10-10T16:30:00Z |  |  |
+| edge:e-dec-usability-rejectedfilter | review |  | proposed | 2026-10-10T16:30:00Z |  |  |
+| edge:e-link-committer-rejectedfilter | review |  | proposed | 2026-10-10T16:30:00Z |  |  |

@@ -442,6 +442,9 @@ proposal.
 <!-- === cursor-specific fleet implementation (proposed 2026-10-03; conversation fleet-cursor-impl) === -->
 | e-dec-fleet-cursor | decomposes | node:task-agent-fleet | node:task-cursor-implementation |  | accepted |
 | e-dec-fleet-committer | decomposes | node:task-agent-fleet | node:task-fleet-worktree-committer |  | accepted |
+| e-prod-fleetworktree-design | produces | node:task-fleet-worktree-committer | artifact:artifact-fleet-worktree-design |  | accepted |
+| e-dec-usability-rejectedfilter | decomposes | node:goal-usability | node:task-reader-rejected-filter |  | proposed |
+| e-link-committer-rejectedfilter | links | node:task-fleet-worktree-committer | node:task-reader-rejected-filter | 0.5 | proposed |
 | e-not-cursorimpl-beforepr | notes | node:task-cursor-implementation | noteworthy:nw-cursor-proposals-before-pr |  | proposed |
 
 <!-- === transition log (proposed 2026-10-04; conversation transition-log-design) === -->

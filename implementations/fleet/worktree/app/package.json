@@ -1,0 +1,14 @@
+{
+  "name": "konspekt-fleet-worktree",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Worktree-outbox fleet committer: co-located proposer outboxes and a deterministic single-writer committer over one konspekt instance.",
+  "main": "cli.mjs",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "test": "node --test"
+  }
+}
