@@ -11,6 +11,7 @@
 // (docs/DESIGN.md § Manual UAT checkpoint).
 
 import { readFileSync } from "node:fs";
+import { resolve, dirname } from "node:path";
 import { setupFleet, loadFleet } from "./worktrees.mjs";
 import { assembleProposal, proposeToOutbox, renderEdgesBlock } from "./outbox.mjs";
 import { verifyPass, foldPass, blessPass } from "./committer.mjs";
@@ -52,7 +53,8 @@ function cmdInit(args) {
 function cmdPropose(args) {
   const root = need(args, "root");
   const agent = need(args, "agent");
-  const spec = JSON.parse(readFileSync(need(args, "spec"), "utf8"));
+  const specPath = need(args, "spec");
+  const spec = JSON.parse(readFileSync(specPath, "utf8"));
   const source = readFileSync(need(args, "source"), "utf8");
   const identity = { name: args["name"] || undefined, email: args["email"] || undefined };
 
@@ -60,7 +62,15 @@ function cmdPropose(args) {
   const proposer = fleet.proposerFor(agent);
   if (!proposer) throw new Error(`no proposer "${agent}" in ${root}`);
 
-  const body = spec.body + (spec.edges ? "\n\n" + renderEdgesBlock(spec.edges) : "");
+  // The entity body is markdown (a ```yaml fence + prose). A proposer authors it
+  // as a file and points `body_file` at it (resolved relative to the spec),
+  // rather than hand-escaping it into the JSON; `body` inline still works.
+  let bodyText = spec.body;
+  if (bodyText === undefined && spec.body_file) {
+    bodyText = readFileSync(resolve(dirname(specPath), spec.body_file), "utf8");
+  }
+  if (bodyText === undefined) throw new Error("spec needs `body` or `body_file`");
+  const body = bodyText.trimEnd() + (spec.edges ? "\n\n" + renderEdgesBlock(spec.edges) : "");
   const assembled = assembleProposal({
     kind: spec.kind ?? "entity",
     origin: { agent, model: spec.model ?? "unknown", session: spec.session ?? "cli" },
