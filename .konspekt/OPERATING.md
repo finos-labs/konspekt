@@ -133,6 +133,28 @@ commit authored (after `basisBaseline`) before its entity was accepted, and
 `.claude/hooks/require-binding.sh` denies an edit outside
 `.konspekt/instance/` while the bound entity is not accepted.
 
+## Binding commits to the graph
+
+`binding: required` extends past the conversation to the commit. Every commit
+that changes a surface **outside** `.konspekt/instance/` — product or standard
+code, docs, or a generated projection like `ROADMAP.md` — is work and must bind
+to the active entity through a row in the engineer changed-code log
+`.konspekt/instance/changes/changed.md` (`| entity | commit | file |
+timestamp |`). Write the row **at commit time**, in the same persist as the
+code or immediately after, so the log trails commits by at most one. A commit
+touching only `.konspekt/instance/**` (the instance and its logs) is
+bookkeeping and needs no row.
+
+Before `push`, run `node tools/binding-audit.mjs`; it is also a CI gate. Under
+`basis: accepted` it enforces two rules: the bound entity must be accepted, and
+the commit must be authored after that acceptance — so accept the entity before
+committing work against it. A commit that is genuinely not graph-bound work
+(rare) is listed by SHA in `.konspekt/binding-audit.json` "allow" rather than
+given a row.
+
+Recorded in the instance as `task-binding-gap-audit` and
+`nw-binding-enforcement-gap`.
+
 ## Human vocabulary
 
 Not duplicated here — single source of truth:
