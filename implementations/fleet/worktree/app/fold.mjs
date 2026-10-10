@@ -19,6 +19,7 @@
 import { join } from "node:path";
 import { mkdirSync, writeFileSync, readFileSync, existsSync } from "node:fs";
 import { parseProposal } from "./payload.mjs";
+import { appendFoldRecord } from "./proposed-ref.mjs";
 import { parseYamlSubset } from "../../../../lib/conformance.mjs";
 
 // Where each entity type's file lives, and the id prefix the store expects.
@@ -128,7 +129,7 @@ const edgeRow = (r) => `| ${r.id} | ${r.kind} | ${r.from} | ${r.to} | ${r.weight
 // entity type, missing id, or an entity its own edges do not wire): these are
 // set-aside conditions the caller reports, never a partial write — the caller
 // folds the batch in one commit, so a throw here aborts before any commit.
-export function foldProposal(instanceDir, { proposalMd, sourceMd }, { now } = {}) {
+export function foldProposal(instanceDir, { proposalMd, sourceMd }, { now, fleetDir } = {}) {
   const { front, body } = parseProposal(proposalMd);
   const { fenceText, prose, edgeRows } = parseEntityBody(body);
 
@@ -196,6 +197,15 @@ export function foldProposal(instanceDir, { proposalMd, sourceMd }, { now } = {}
   for (const r of edgeRows) trRows.push(txRow(`edge:${r.id}`, "review", "proposed", timestamp));
   appendRows(join(instanceDir, "transitions", "transitions.md"), trRows);
 
+  // ----- fleet fold log (derived-index linkage, outside the instance tree) -----
+  // proposal_id is fleet vocabulary and does not enter the stored atom, so the
+  // proposal -> atom linkage lands here, atomically in the same fold commit.
+  appendFoldRecord(fleetDir || instanceDir, {
+    proposalId: front.proposal_id ?? null,
+    ref: `${entityType}:${id}`,
+    agent: front.origin && front.origin.agent,
+  });
+
   return {
     proposalId: front.proposal_id ?? null,
     entityType,
@@ -209,12 +219,12 @@ export function foldProposal(instanceDir, { proposalMd, sourceMd }, { now } = {}
 // Fold an ordered batch of verified proposals into `instanceDir`. Each is folded
 // whole; a proposal the committer cannot place is set aside with its reason and
 // the rest still fold. Returns { folded, setAside }.
-export function foldProposals(instanceDir, items, { now } = {}) {
+export function foldProposals(instanceDir, items, { now, fleetDir } = {}) {
   const folded = [];
   const setAside = [];
   for (const it of items) {
     try {
-      folded.push(foldProposal(instanceDir, it, { now }));
+      folded.push(foldProposal(instanceDir, it, { now, fleetDir }));
     } catch (e) {
       setAside.push({ proposalId: it.proposalId ?? null, reason: e.message });
     }

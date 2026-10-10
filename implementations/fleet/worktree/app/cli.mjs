@@ -14,6 +14,7 @@ import { readFileSync } from "node:fs";
 import { setupFleet, loadFleet } from "./worktrees.mjs";
 import { assembleProposal, proposeToOutbox, renderEdgesBlock } from "./outbox.mjs";
 import { verifyPass, foldPass } from "./committer.mjs";
+import { rebuildIndex } from "./proposed-ref.mjs";
 
 function parseArgs(argv) {
   const out = { _: [] };
@@ -114,6 +115,19 @@ function cmdRunPass(args) {
   }
 }
 
+function cmdRebuildIndex(args) {
+  const root = need(args, "root");
+  const instanceSubdir = args["instance-subdir"] && args["instance-subdir"] !== true ? args["instance-subdir"] : "";
+  const index = rebuildIndex(root, { instanceSubdir });
+  const c = index.counts;
+  console.log(`rebuilt proposed index from canonical: ${c.total} proposal(s)`);
+  console.log(`  pending ${c.pending}, accepted ${c.accepted}, rejected ${c.rejected}` +
+    (c.missing ? `, missing ${c.missing}` : "") + (c.unknown ? `, unknown ${c.unknown}` : ""));
+  for (const e of index.entries) {
+    console.log(`  [${e.state.padEnd(8)}] ${e.proposalId.slice(0, 12)}  ${e.ref}  (${e.agent ?? "?"})`);
+  }
+}
+
 function main() {
   const argv = process.argv.slice(2);
   const command = argv[0];
@@ -122,8 +136,9 @@ function main() {
     if (command === "init") cmdInit(args);
     else if (command === "propose") cmdPropose(args);
     else if (command === "run-pass") cmdRunPass(args);
+    else if (command === "rebuild-index") cmdRebuildIndex(args);
     else {
-      console.error("usage: cli.mjs <init|propose|run-pass> [--flags]");
+      console.error("usage: cli.mjs <init|propose|run-pass|rebuild-index> [--flags]");
       process.exit(2);
     }
   } catch (e) {

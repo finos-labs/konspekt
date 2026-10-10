@@ -102,7 +102,7 @@ export function foldPass(fleet, { grants = {}, known = null, identity = {}, inst
   }
 
   const instanceDir = instanceSubdir ? join(fleet.canonicalPath, instanceSubdir) : fleet.canonicalPath;
-  const { folded, setAside } = foldProposals(instanceDir, foldOrder(verified), { now });
+  const { folded, setAside } = foldProposals(instanceDir, foldOrder(verified), { now, fleetDir: fleet.canonicalPath });
 
   let commit = null;
   if (folded.length) {
