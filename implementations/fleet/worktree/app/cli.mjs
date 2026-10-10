@@ -13,7 +13,7 @@
 import { readFileSync } from "node:fs";
 import { setupFleet, loadFleet } from "./worktrees.mjs";
 import { assembleProposal, proposeToOutbox, renderEdgesBlock } from "./outbox.mjs";
-import { verifyPass } from "./committer.mjs";
+import { verifyPass, foldPass } from "./committer.mjs";
 
 function parseArgs(argv) {
   const out = { _: [] };
@@ -83,13 +83,18 @@ function cmdRunPass(args) {
   const root = need(args, "root");
   const dryRun = Boolean(args["dry-run"]);
   const grants = args["grants"] ? JSON.parse(readFileSync(args["grants"], "utf8")) : {};
+  const identity = { name: args["name"] || undefined, email: args["email"] || undefined };
+  const instanceSubdir = args["instance-subdir"] && args["instance-subdir"] !== true ? args["instance-subdir"] : "";
 
   const fleet = loadFleet(root);
-  const verdicts = verifyPass(fleet, { grants });
 
-  if (!dryRun) {
-    console.log("note: fold/bless are not implemented in this cut; reporting verify only (same as --dry-run).");
-  }
+  // --dry-run reads and reports only; a live pass folds the verified set onto
+  // canonical as review: proposed in one commit (bless is M7).
+  const res = dryRun
+    ? { verdicts: verifyPass(fleet, { grants }), folded: [], setAside: [], commit: null }
+    : foldPass(fleet, { grants, identity, instanceSubdir });
+  const { verdicts, folded, setAside, commit } = res;
+
   console.log(`read ${verdicts.length} proposal(s) across ${fleet.proposers.length} outbox(es)\n`);
 
   let verified = 0;
@@ -100,6 +105,13 @@ function cmdRunPass(args) {
     if (!v.ok) for (const r of v.reasons) console.log(`             - ${r}`);
   }
   console.log(`\n${verified}/${verdicts.length} verified; ${verdicts.length - verified} set aside.`);
+
+  if (!dryRun) {
+    for (const f of folded) console.log(`  folded ${f.entityType} ${f.entityId}  <- ${f.proposalId.slice(0, 12)}`);
+    for (const s of setAside) console.log(`  not folded ${s.proposalId ? s.proposalId.slice(0, 12) : "(?)"}: ${s.reason}`);
+    if (commit) console.log(`\nfolded ${folded.length} onto canonical in ${commit}`);
+    else console.log(`\nnothing to fold`);
+  }
 }
 
 function main() {

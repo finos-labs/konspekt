@@ -6,13 +6,18 @@
 // branch (since the last processed sequence); this reads the full outbox, which
 // is enough for verify and for the dry-run pass.
 //
-// The write side (fold, bless, the derived proposed index) is M5-M7 and is not
-// here: this module reads and verifies, and holds no authority to write
-// canonical.
+// The read and verify side lives here (steps 1-2), and so does `foldPass` (step
+// 4): the deterministic write onto canonical. Bless and the derived `proposed`
+// index are M7/M6. The fold translation itself is fold.mjs; this module reads,
+// verifies, orders the verified set, folds the batch, and commits it once.
 
 import { readdirSync, existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { verifyProposal } from "./verify.mjs";
+import { parseProposal } from "./payload.mjs";
+import { foldOrder } from "./order.mjs";
+import { foldProposals } from "./fold.mjs";
+import { commitAll } from "./git.mjs";
 
 // Read one proposer worktree's outbox. Returns
 // [{ proposalId, dir, proposalMd, sourceMd }]; proposalId is the directory name.
@@ -46,34 +51,66 @@ export function readProposals(fleet) {
   return all;
 }
 
+// The verdict for one read proposal: verify plus the directory-name check (a
+// payload whose id disagrees with its directory is as set-aside as a hash
+// mismatch). Shared by verifyPass and foldPass so both judge a proposal the
+// same way.
+function verdictFor(fleet, pr, { grants, known }) {
+  const branchOwner = fleet.ownerOf(pr.branch);
+  const grant = grants[pr.owner] ?? {};
+  const v = verifyProposal({ proposalMd: pr.proposalMd, sourceMd: pr.sourceMd, branchOwner, grant, known });
+  const dirMatchesId = v.proposalId === pr.proposalId;
+  const reasons = dirMatchesId
+    ? v.reasons
+    : [...v.reasons, `directory ${pr.proposalId} does not match proposal_id ${v.proposalId ?? "(none)"}`];
+  return {
+    proposalId: pr.proposalId,
+    owner: pr.owner,
+    branch: pr.branch,
+    dir: pr.dir,
+    ok: v.ok && dirMatchesId,
+    checks: { ...v.checks, dir: dirMatchesId },
+    reasons,
+  };
+}
+
 // Run verify across every outbox proposal. `grants` maps an agent handle to its
 // propose grant; `known` is the optional depends_on resolution set. Returns one
 // verdict row per proposal, in read order.
 export function verifyPass(fleet, { grants = {}, known = null } = {}) {
-  return readProposals(fleet).map((pr) => {
-    const branchOwner = fleet.ownerOf(pr.branch);
-    const grant = grants[pr.owner] ?? {};
-    const v = verifyProposal({
-      proposalMd: pr.proposalMd,
-      sourceMd: pr.sourceMd,
-      branchOwner,
-      grant,
-      known,
+  return readProposals(fleet).map((pr) => verdictFor(fleet, pr, { grants, known }));
+}
+
+// The deterministic write pass (fleet-spec.md § Committer protocol, step 4):
+// read, verify, order the verified set in fold order, fold the batch whole onto
+// canonical as `review: proposed`, and commit it once. `instanceSubdir` locates
+// the konspekt instance inside the canonical worktree (e.g. ".konspekt/instance"
+// when dogfooding the real store); default is the worktree root. Returns
+// { verdicts, folded, setAside, commit }. A verified proposal the fold cannot
+// place is reported in `setAside`, and nothing partial is committed — fold
+// writes files and this commits once, so an aborted fold leaves canonical clean.
+export function foldPass(fleet, { grants = {}, known = null, identity = {}, instanceSubdir = "", now = null } = {}) {
+  const verdicts = [];
+  const verified = [];
+  for (const pr of readProposals(fleet)) {
+    const verdict = verdictFor(fleet, pr, { grants, known });
+    verdicts.push(verdict);
+    if (!verdict.ok) continue;
+    let created = null;
+    try { created = parseProposal(pr.proposalMd).front.created ?? null; } catch { /* verified payloads parse */ }
+    verified.push({ proposalId: pr.proposalId, proposalMd: pr.proposalMd, sourceMd: pr.sourceMd, created });
+  }
+
+  const instanceDir = instanceSubdir ? join(fleet.canonicalPath, instanceSubdir) : fleet.canonicalPath;
+  const { folded, setAside } = foldProposals(instanceDir, foldOrder(verified), { now });
+
+  let commit = null;
+  if (folded.length) {
+    commit = commitAll(fleet.canonicalPath, `fold: ${folded.length} proposal(s)`, {
+      name: identity.name,
+      email: identity.email,
+      signoff: true,
     });
-    // The directory name must also match the recomputed id: a payload whose id
-    // disagrees with its directory is as set-aside as a hash mismatch.
-    const dirMatchesId = v.proposalId === pr.proposalId;
-    const reasons = dirMatchesId
-      ? v.reasons
-      : [...v.reasons, `directory ${pr.proposalId} does not match proposal_id ${v.proposalId ?? "(none)"}`];
-    return {
-      proposalId: pr.proposalId,
-      owner: pr.owner,
-      branch: pr.branch,
-      dir: pr.dir,
-      ok: v.ok && dirMatchesId,
-      checks: { ...v.checks, dir: dirMatchesId },
-      reasons,
-    };
-  });
+  }
+  return { verdicts, folded, setAside, commit };
 }
