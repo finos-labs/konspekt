@@ -992,7 +992,7 @@ proposing agent was not recorded.
 | node:task-binding-operating-behavior | status | active | resolved | 2026-10-09T12:42:49Z |  | denisurusov |
 | node:task-konspekt-ui-app | status | open | resolved | 2026-10-09T12:43:24Z |  | denisurusov |
 | node:task-visual-status-filters | status | open | resolved | 2026-10-09T12:43:31Z |  | denisurusov |
-| node:task-fleet-worktree-committer | review |  | accepted | 2026-10-10T16:00:00Z | 1e1bc298fb11d1f9fa021fdf96d3f4f901147346 | denisurusov |
+| node:task-fleet-worktree-committer | review |  | accepted | 2026-10-10T13:00:00Z | 1e1bc298fb11d1f9fa021fdf96d3f4f901147346 | denisurusov |
 | node:task-fleet-worktree-committer | status |  | open | 2026-10-10T16:00:00Z |  |  |
 | edge:e-dec-fleet-committer | review |  | accepted | 2026-10-10T16:00:00Z | 1e1bc298fb11d1f9fa021fdf96d3f4f901147346 | denisurusov |
 | noteworthy:nw-claude-mobile-not-a-target | review | proposed | accepted | 2026-10-10T16:05:00Z |  | denisurusov |

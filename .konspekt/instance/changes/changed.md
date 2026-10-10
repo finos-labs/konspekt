@@ -187,3 +187,13 @@ commit order; the channel was not live during that work.
 | task-authority-mechanism | b876bf1df2692dd4359809936973b2e9d7f89ab5 | implementations/implementation-zero/app/README.md | 2026-10-08T00:02:00Z |
 | task-intellij-plugin-distribution | 532825773e01ab98d5256499326e5b2ff763a7b3 | implementations/intellij-plugin/app/gradle.properties | 2026-10-08T00:02:00Z |
 | task-intellij-plugin-distribution | 532825773e01ab98d5256499326e5b2ff763a7b3 | implementations/intellij-plugin/app/README.md | 2026-10-08T00:02:00Z |
+| task-fleet-worktree-committer | a31159b336f7bfed3baba7fc744298a924270a50 | ROADMAP.md | 2026-10-10T13:00:18Z |
+| task-fleet-worktree-committer | f7fe89c0f8baeeb86ca9d86f8f51657478c32ef7 | implementations/fleet/worktree/app/payload.mjs | 2026-10-10T13:25:33Z |
+| task-fleet-worktree-committer | f26532ab424398c40f65e114546e9e45edcac6ad | implementations/fleet/worktree/app/worktrees.mjs | 2026-10-10T13:27:49Z |
+| task-fleet-worktree-committer | 0c6af440c2e79c9c89f7fe24465c766b4c63d9a7 | implementations/fleet/worktree/app/outbox.mjs | 2026-10-10T13:30:47Z |
+| task-fleet-worktree-committer | 5cf9a8fd4b25024cd94cffaa432db91df6b6ad4c | implementations/fleet/worktree/app/committer.mjs | 2026-10-10T13:45:13Z |
+| task-fleet-worktree-committer | 0dd67e5a0a68bf1b53eeb2778bcb1d2cb208f47d | implementations/fleet/worktree/app/fold.mjs | 2026-10-10T15:32:30Z |
+| task-fleet-worktree-committer | 445670d2e80d477503a6931f8051f3d51d5932dd | implementations/fleet/worktree/app/proposed-ref.mjs | 2026-10-10T15:36:50Z |
+| task-fleet-worktree-committer | 0b1ca0cf16eba4d3ffda49559372701f98548b6d | implementations/fleet/worktree/app/bless.mjs | 2026-10-10T15:41:36Z |
+| task-fleet-worktree-committer | 8abb3797a9c1548fae79c901675caee4b17c8b89 | implementations/fleet/worktree/app/cli.mjs | 2026-10-10T15:57:45Z |
+| task-fleet-worktree-committer | b35fbcb48d4cf7c3aaa29d3e3f49f5e7d786f4c2 | implementations/fleet/worktree/app/cli.mjs | 2026-10-10T16:03:05Z |
