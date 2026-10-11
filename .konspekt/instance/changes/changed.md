@@ -201,3 +201,4 @@ commit order; the channel was not live during that work.
 | task-vendor-neutral-interop | c9701f936d43681a13aeedcb2049bf5b877484bf | ROADMAP.md | 2026-10-10T17:16:58Z |
 | task-fleet-worktree-committer | badb47df614f498971937508266fca8b6dd90a63 | .gitignore | 2026-10-10T22:16:51Z |
 | task-fleet-worktree-committer | badb47df614f498971937508266fca8b6dd90a63 | docs/design/fleet-spec.md | 2026-10-10T22:16:51Z |
+| task-fleet-worktree-committer | ce5c9ff21ab083c4b6d54c51c3aadb0f17dd0a98 | implementations/fleet/worktree/app/README.md | 2026-10-11T01:28:44Z |
