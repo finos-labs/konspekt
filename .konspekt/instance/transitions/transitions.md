@@ -1023,3 +1023,9 @@ proposing agent was not recorded.
 | edge:e-not-fleet-topologybelow | review |  | proposed | 2026-10-11T15:02:58Z |  | claude |
 | noteworthy:nw-fleet-remove-fold-translation | review |  | proposed | 2026-10-11T15:28:59Z |  | claude |
 | edge:e-not-fleet-removefold | review |  | proposed | 2026-10-11T15:28:59Z |  | claude |
+| artifact:artifact-fleet-protocol | review | proposed | accepted | 2026-10-11T15:41:50Z | eaa24a05b8c0f87a106ff805ed8fc180bdc97fc5 | denisurusov |
+| noteworthy:nw-fleet-git-topology-below-standard | review | proposed | accepted | 2026-10-11T15:41:50Z | eaa24a05b8c0f87a106ff805ed8fc180bdc97fc5 | denisurusov |
+| noteworthy:nw-fleet-remove-fold-translation | review | proposed | accepted | 2026-10-11T15:41:50Z | eaa24a05b8c0f87a106ff805ed8fc180bdc97fc5 | denisurusov |
+| edge:e-prod-fleet-protocol | review | proposed | accepted | 2026-10-11T15:41:50Z | eaa24a05b8c0f87a106ff805ed8fc180bdc97fc5 | denisurusov |
+| edge:e-not-fleet-topologybelow | review | proposed | accepted | 2026-10-11T15:41:50Z | eaa24a05b8c0f87a106ff805ed8fc180bdc97fc5 | denisurusov |
+| edge:e-not-fleet-removefold | review | proposed | accepted | 2026-10-11T15:41:50Z | eaa24a05b8c0f87a106ff805ed8fc180bdc97fc5 | denisurusov |

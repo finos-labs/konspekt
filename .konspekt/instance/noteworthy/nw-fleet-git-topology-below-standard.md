@@ -1,7 +1,7 @@
 ```yaml
 id: nw-fleet-git-topology-below-standard
 kind: decision
-review: proposed
+review: accepted
 provenance:
   sourceRef: 80787b91bd3624bfe393482af57912892aa26b6c
   contentHash: 80787b91bd3624bfe393482af57912892aa26b6c

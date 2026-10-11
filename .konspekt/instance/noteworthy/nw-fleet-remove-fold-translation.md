@@ -1,7 +1,7 @@
 ```yaml
 id: nw-fleet-remove-fold-translation
 kind: decision
-review: proposed
+review: accepted
 provenance:
   sourceRef: 9697c181f76581137f4d92c6629b203cabaeeac3
   contentHash: 9697c181f76581137f4d92c6629b203cabaeeac3
