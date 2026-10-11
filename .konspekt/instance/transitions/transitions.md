@@ -1007,3 +1007,13 @@ proposing agent was not recorded.
 | edge:e-dec-port-vendorneutral | review |  | proposed | 2026-10-10T16:25:00Z |  |  |
 | node:task-vendor-neutral-interop | review | proposed | accepted | 2026-10-10T16:30:00Z | 61cb82df38f6e65ac716680e9d38c3fa5738e56d | denisurusov |
 | edge:e-dec-port-vendorneutral | review | proposed | accepted | 2026-10-10T16:30:00Z |  | denisurusov |
+| concept:concept-write-integrity-by-verification | review |  | proposed | 2026-10-11T13:39:32Z |  | claude |
+| waypoint:wp-adr-fleet-agentic-committer | review |  | proposed | 2026-10-11T13:39:32Z |  | claude |
+| edge:e-drv-writeintegrity-agenticcommitter | review |  | proposed | 2026-10-11T13:39:32Z |  | claude |
+| edge:e-sup-agenticcommitter-rolesplit | review |  | proposed | 2026-10-11T13:39:32Z |  | claude |
+| edge:e-mark-agenticcommitter-fleet | review |  | proposed | 2026-10-11T13:39:32Z |  | claude |
+| concept:concept-write-integrity-by-verification | review | proposed | accepted | 2026-10-11T13:44:24Z |  | denisurusov |
+| waypoint:wp-adr-fleet-agentic-committer | review | proposed | accepted | 2026-10-11T13:44:57Z |  | denisurusov |
+| edge:e-drv-writeintegrity-agenticcommitter | review | proposed | accepted | 2026-10-11T13:44:57Z |  | denisurusov |
+| edge:e-sup-agenticcommitter-rolesplit | review | proposed | accepted | 2026-10-11T13:44:57Z |  | denisurusov |
+| edge:e-mark-agenticcommitter-fleet | review | proposed | accepted | 2026-10-11T13:44:57Z |  | denisurusov |

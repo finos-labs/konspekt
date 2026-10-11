@@ -492,6 +492,10 @@ proposal.
 | e-link-authwriters-plugin | links | node:task-authority-writers-intellij | node:task-intellij-plugin | 0.5 | accepted |
 | e-link-authwriters-authority | links | node:task-authority-writers-intellij | node:task-authority-mechanism | 0.5 | accepted |
 | e-dec-usability-linkedin1007 | decomposes | node:goal-usability | node:task-linkedin-announce-2026-10 |  | accepted |
+<!-- === fleet as protocol: agentic committer ADR + driving ASR (proposed 2026-10-11; conversation fleet-as-protocol) === -->
+| e-drv-writeintegrity-agenticcommitter | drives | concept:concept-write-integrity-by-verification | waypoint:wp-adr-fleet-agentic-committer |  | accepted |
+| e-sup-agenticcommitter-rolesplit | supersedes | waypoint:wp-adr-fleet-agentic-committer | noteworthy:nw-fleet-committer-role-split |  | accepted |
+| e-mark-agenticcommitter-fleet | marks | waypoint:wp-adr-fleet-agentic-committer | node:task-agent-fleet |  | accepted |
 | e-dec-usability-authverbs | decomposes | node:goal-usability | node:investigation-authority-verb-usage |  | accepted |
 | e-note-authverbs-prose | notes | node:investigation-authority-verb-usage | noteworthy:nw-acceptance-is-prose |  | accepted |
 | e-dec-authverbs-spectask | decomposes | node:investigation-authority-verb-usage | node:task-spec-acceptance-prose |  | accepted |
