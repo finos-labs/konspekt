@@ -496,6 +496,10 @@ proposal.
 | e-drv-writeintegrity-agenticcommitter | drives | concept:concept-write-integrity-by-verification | waypoint:wp-adr-fleet-agentic-committer |  | accepted |
 | e-sup-agenticcommitter-rolesplit | supersedes | waypoint:wp-adr-fleet-agentic-committer | noteworthy:nw-fleet-committer-role-split |  | accepted |
 | e-mark-agenticcommitter-fleet | marks | waypoint:wp-adr-fleet-agentic-committer | node:task-agent-fleet |  | accepted |
+<!-- === fleet protocol design artifact (proposed 2026-10-11; conversation fleet-as-protocol) === -->
+| e-prod-fleet-protocol | produces | node:task-agent-fleet | artifact:artifact-fleet-protocol |  | proposed |
+| e-not-fleet-topologybelow | notes | node:task-agent-fleet | noteworthy:nw-fleet-git-topology-below-standard |  | proposed |
+| e-not-fleet-removefold | notes | node:task-agent-fleet | noteworthy:nw-fleet-remove-fold-translation |  | proposed |
 | e-dec-usability-authverbs | decomposes | node:goal-usability | node:investigation-authority-verb-usage |  | accepted |
 | e-note-authverbs-prose | notes | node:investigation-authority-verb-usage | noteworthy:nw-acceptance-is-prose |  | accepted |
 | e-dec-authverbs-spectask | decomposes | node:investigation-authority-verb-usage | node:task-spec-acceptance-prose |  | accepted |

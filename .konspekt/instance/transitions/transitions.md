@@ -1017,3 +1017,9 @@ proposing agent was not recorded.
 | edge:e-drv-writeintegrity-agenticcommitter | review | proposed | accepted | 2026-10-11T13:44:57Z |  | denisurusov |
 | edge:e-sup-agenticcommitter-rolesplit | review | proposed | accepted | 2026-10-11T13:44:57Z |  | denisurusov |
 | edge:e-mark-agenticcommitter-fleet | review | proposed | accepted | 2026-10-11T13:44:57Z |  | denisurusov |
+| artifact:artifact-fleet-protocol | review |  | proposed | 2026-10-11T14:29:55Z |  | claude |
+| edge:e-prod-fleet-protocol | review |  | proposed | 2026-10-11T14:29:55Z |  | claude |
+| noteworthy:nw-fleet-git-topology-below-standard | review |  | proposed | 2026-10-11T15:02:58Z |  | claude |
+| edge:e-not-fleet-topologybelow | review |  | proposed | 2026-10-11T15:02:58Z |  | claude |
+| noteworthy:nw-fleet-remove-fold-translation | review |  | proposed | 2026-10-11T15:28:59Z |  | claude |
+| edge:e-not-fleet-removefold | review |  | proposed | 2026-10-11T15:28:59Z |  | claude |

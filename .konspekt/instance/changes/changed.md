@@ -202,3 +202,4 @@ commit order; the channel was not live during that work.
 | task-fleet-worktree-committer | badb47df614f498971937508266fca8b6dd90a63 | .gitignore | 2026-10-10T22:16:51Z |
 | task-fleet-worktree-committer | badb47df614f498971937508266fca8b6dd90a63 | docs/design/fleet-spec.md | 2026-10-10T22:16:51Z |
 | task-fleet-worktree-committer | ce5c9ff21ab083c4b6d54c51c3aadb0f17dd0a98 | implementations/fleet/worktree/app/README.md | 2026-10-11T01:28:44Z |
+| task-agent-fleet | c83c4c08ad5dd95d69f3da55995b33dc4ec39192 | docs/design/fleet-protocol.md | 2026-10-11T15:29:56Z |
