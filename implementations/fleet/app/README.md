@@ -7,7 +7,7 @@ agents each write to their own git **outbox** branch; one deterministic
 
 This README explains **when, how, and why each `.mjs` runs**. For the design
 and rationale see `../docs/DESIGN.md`; for the fleet model see
-`../../../../docs/design/fleet-spec.md`; `spec/` governs on any conflict.
+`../../../docs/design/fleet-spec.md`; `spec/` governs on any conflict.
 
 ## What triggers the code
 
@@ -58,19 +58,23 @@ is the execution order; steps map to `fleet-spec.md` § Committer protocol.
    real-repo session). → `worktrees.mjs` → `git.mjs`. Result: `canonical/` and
    `outbox-<handle>/` worktrees sharing one object store, plus `fleet.json`.
 2. **Propose** — each proposer agent runs `propose` against its own handle. →
-   `cli.mjs` → `outbox.mjs` (`assembleProposal`) → `payload.mjs` (compute
-   `proposal_id` and `source.hash` via `lib/conformance.mjs gitBlobSha`) →
-   `git.mjs` (commit onto the outbox branch). Result: `proposals/<id>/` on that
-   agent's outbox, nowhere else.
+   `cli.mjs` → `outbox.mjs` (`assembleProposal` authors the stored-form atom:
+   a ```yaml fence with `review: proposed` and provenance, plus the source,
+   wiring edges, and a fleet envelope) → `payload.mjs` (content-address
+   `entity.md` and `source.md` via `lib/conformance.mjs gitBlobSha`) → `git.mjs`
+   (commit onto the outbox branch). Result: `proposals/<id>/` on that agent's
+   outbox, nowhere else.
 3. **Dry pass** — operator runs `run-pass --dry-run`. → `committer.mjs`
    (`verifyPass`) → `verify.mjs`. Reads every outbox and prints `OK` /
    `SET ASIDE` with reasons. No write. This is the manual-UAT read-and-report
    checkpoint.
 4. **Fold** — operator runs `run-pass`. → `committer.mjs` (`foldPass`) →
    `order.mjs` (`foldOrder`, arrival order) → `fold.mjs` (`foldProposals`,
-   translate payload to stored form, inject `review`/provenance, wire edges) →
+   verify-and-append: write `entity.md` onto canonical byte for byte, wire its
+   edges, append birth transition rows with the proposing agent in `by`) →
    `proposed-ref.mjs` (`appendFoldRecord` → `.konspekt-fleet/folded.md`) →
-   `git.mjs` (one commit). Each verified atom lands whole as `review: proposed`.
+   `git.mjs` (one commit). Each verified atom lands whole as `review: proposed`;
+   the committer rewrites nothing.
 5. **Index** — operator runs `rebuild-index`. → `proposed-ref.mjs`
    (`rebuildIndex`) reads canonical (`lib/conformance.mjs loadInstance`) joined
    to the fold log, and materializes pending/accepted/rejected.
@@ -92,25 +96,27 @@ proposer agent only ever touches step 2, only on its own branch.
 |--------|-----------|------|
 | `cli.mjs` | the shell | the only entry point; parses flags and dispatches the five commands |
 | `worktrees.mjs` | `init`, and every command via `loadFleet` | stand up / attach the N+1 worktrees; map outbox branch → owner handle (`fleet.json`) |
-| `outbox.mjs` | `propose` | proposer side: assemble + sign a payload, write `proposals/<id>/`, commit to the outbox |
-| `payload.mjs` | `outbox.mjs`, `verify.mjs` | serialize/parse `proposal.md`; canonicalize and compute `proposal_id` |
-| `verify.mjs` | `run-pass` (both modes) via `committer.mjs` | per-proposal checks (id, source hash, origin == branch owner, scope within grant, confidence + binding present, `depends_on`); failures set aside |
+| `outbox.mjs` | `propose` | proposer side: author a stored-form atom (`entity.md`, `source.md`, `edges.md`, `meta.json`), write `proposals/<id>/`, commit to the outbox |
+| `payload.mjs` | `outbox.mjs`, `verify.mjs`, `committer.mjs` | content-address the atom: canonicalize `entity.md` and compute its git blob SHA (the proposal id); hash `source.md` |
+| `verify.mjs` | `run-pass` (both modes) via `committer.mjs` | per-proposal checks (source hash vs the atom's `contentHash`, origin == branch owner, entity_type within grant, `review: proposed`, confidence + binding present, `depends_on`); failures set aside |
 | `order.mjs` | `run-pass` (fold) | fold order (arrival) kept apart from bless order (`depends_on` gate) |
-| `fold.mjs` | `run-pass` (fold) | translate verified payloads to stored entities, inject committer-owned fields, wire edges, write source excerpt |
+| `fold.mjs` | `run-pass` (fold) | verify-and-append: write the proposer's `entity.md` onto canonical unchanged, append its edges and birth transition rows, write the source excerpt |
 | `proposed-ref.mjs` | `run-pass` (fold) and `rebuild-index` | append the fold log; build/rebuild the derived index from canonical |
 | `bless.mjs` | `bless` | field-only accept (flip `review`, append accept record) and reject tombstone |
 | `committer.mjs` | `run-pass`, `bless` | the deterministic passes: `verifyPass`, `foldPass`, `blessPass` — read every outbox, apply one pass, commit |
 | `git.mjs` | most of the above | plumbing: `hash-object`, worktree add/remove, commit with DCO sign-off, post-write SHA recheck |
 
-Four modules (`payload`, `fold`, `proposed-ref`, `bless`) reuse the shared data
-model from `../../../../lib/conformance.mjs` (`gitBlobSha`, `loadInstance`,
-`parseYamlSubset`) rather than re-implementing it.
+The modules that touch the stored form (`payload`, `verify`, `fold`,
+`committer`, `proposed-ref`, `bless`) reuse the shared data model from
+`../../../lib/conformance.mjs` (`gitBlobSha`, `splitEntityFile`,
+`loadInstance`, `parseYamlSubset`) rather than re-implementing it.
 
 ## State on disk
 
 - **`canonical` branch** — the graph: accepted, `proposed`, and `rejected`
   atoms. Authoritative.
-- **`outbox/<handle>` branches** — each proposer's `proposals/<id>/` payloads.
+- **`outbox/<handle>` branches** — each proposer's `proposals/<id>/` stored-form
+  atoms (`entity.md`, `source.md`, `edges.md`, `meta.json`).
 - **`.konspekt-fleet/`** (gitignored) — `folded.md`, `decisions.md`, and the
   materialized index. Runtime logs, rebuildable from canonical, never committed
   (`fleet-spec.md` § Runtime state outside history).

@@ -13,7 +13,7 @@
 import { readFileSync } from "node:fs";
 import { resolve, dirname } from "node:path";
 import { setupFleet, loadFleet } from "./worktrees.mjs";
-import { assembleProposal, proposeToOutbox, renderEdgesBlock } from "./outbox.mjs";
+import { assembleProposal, proposeToOutbox } from "./outbox.mjs";
 import { verifyPass, foldPass, blessPass } from "./committer.mjs";
 import { rebuildIndex } from "./proposed-ref.mjs";
 
@@ -62,26 +62,28 @@ function cmdPropose(args) {
   const proposer = fleet.proposerFor(agent);
   if (!proposer) throw new Error(`no proposer "${agent}" in ${root}`);
 
-  // The entity body is markdown (a ```yaml fence + prose). A proposer authors it
-  // as a file and points `body_file` at it (resolved relative to the spec),
-  // rather than hand-escaping it into the JSON; `body` inline still works.
-  let bodyText = spec.body;
-  if (bodyText === undefined && spec.body_file) {
-    bodyText = readFileSync(resolve(dirname(specPath), spec.body_file), "utf8");
-  }
-  if (bodyText === undefined) throw new Error("spec needs `body` or `body_file`");
-  const body = bodyText.trimEnd() + (spec.edges ? "\n\n" + renderEdgesBlock(spec.edges) : "");
+  // The proposer authors the stored-form atom: a type-specific fence (without
+  // review/provenance, which assembleProposal renders) and the prose body. It
+  // provides them inline (`fence`, `prose`) or from files (`fence_file`,
+  // `prose_file`), resolved relative to the spec.
+  const readRel = (p) => readFileSync(resolve(dirname(specPath), p), "utf8");
+  let fence = spec.fence;
+  if (fence === undefined && spec.fence_file) fence = readRel(spec.fence_file);
+  if (fence === undefined) throw new Error("spec needs `fence` or `fence_file`");
+  let prose = spec.prose;
+  if (prose === undefined && spec.prose_file) prose = readRel(spec.prose_file);
+
   const assembled = assembleProposal({
-    kind: spec.kind ?? "entity",
-    origin: { agent, model: spec.model ?? "unknown", session: spec.session ?? "cli" },
-    scope: { entity_type: spec.entity_type, atom_state: spec.atom_state ?? "proposed" },
-    target: { node: spec.target_node ?? "new" },
-    dependsOn: spec.depends_on ?? [],
+    entityType: spec.entity_type,
+    fence,
+    prose: prose ?? "",
     confidence: spec.confidence,
+    conversationId: spec.session ?? spec.conversationId,
+    timestamp: spec.timestamp ?? spec.created ?? new Date().toISOString(),
+    origin: { agent, model: spec.model ?? "unknown", session: spec.session ?? "cli" },
     binding: spec.binding,
-    claim: spec.claim ?? null,
-    created: spec.created ?? new Date().toISOString(),
-    body,
+    dependsOn: spec.depends_on ?? [],
+    edges: spec.edges ?? [],
     source,
   });
 

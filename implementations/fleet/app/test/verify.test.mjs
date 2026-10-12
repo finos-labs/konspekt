@@ -1,18 +1,21 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { verifyProposal } from "../verify.mjs";
-import { assembleProposal, renderEdgesBlock } from "../outbox.mjs";
+import { assembleProposal } from "../outbox.mjs";
 
 const SOURCE = "excerpt\n";
 
 function good(overrides = {}) {
   return assembleProposal({
-    origin: { agent: "agent-a", model: "m", session: "s" },
-    scope: { entity_type: "Concept", atom_state: "proposed" },
+    entityType: "concept",
+    fence: "id: concept-demo\nlabel: demo\ncreatedAt: 2026-10-10T16:00:00Z\nupdatedAt: 2026-10-10T16:00:00Z",
+    prose: "# Concept: demo\n\nbody.",
     confidence: 0.8,
+    conversationId: "s",
+    timestamp: "2026-10-10T16:00:00Z",
+    origin: { agent: "agent-a", model: "m", session: "s" },
     binding: "task-fleet-worktree-committer",
-    created: "2026-10-10T16:00:00Z",
-    body: "# Concept: demo\n\nbody.\n" + renderEdgesBlock([]),
+    edges: [{ id: "e-foo", kind: "mentions", from: "node:task-demo", to: "concept:concept-demo", review: "proposed" }],
     source: SOURCE,
     ...overrides,
   });
@@ -20,8 +23,9 @@ function good(overrides = {}) {
 
 function verify(assembled, opts = {}) {
   return verifyProposal({
-    proposalMd: assembled.proposalMd,
+    entityMd: assembled.entityMd,
     sourceMd: assembled.sourceMd,
+    meta: assembled.meta,
     branchOwner: "agent-a",
     ...opts,
   });
@@ -33,7 +37,7 @@ test("a well-formed proposal from its own branch verifies", () => {
   assert.deepEqual(v.reasons, []);
 });
 
-test("origin spoof: branch owner disagrees with declared agent", () => {
+test("origin spoof: branch owner disagrees with the envelope agent", () => {
   const v = verify(good(), { branchOwner: "agent-b" });
   assert.equal(v.ok, false);
   assert.equal(v.checks.origin, false);
@@ -45,25 +49,17 @@ test("unregistered branch (null owner) fails origin", () => {
   assert.equal(v.checks.origin, false);
 });
 
-test("tampered body fails the id check", () => {
-  const a = good();
-  a.proposalMd = a.proposalMd.replace("body.", "TAMPERED.");
-  const v = verify(a);
-  assert.equal(v.checks.id, false);
-  assert.equal(v.ok, false);
-});
-
-test("swapped source fails the source check", () => {
+test("a tampered source fails the source check", () => {
   const a = good();
   a.sourceMd = "different\n";
   const v = verify(a);
   assert.equal(v.checks.source, false);
 });
 
-test("atom_state other than proposed is set aside", () => {
-  const v = verify(good({ scope: { entity_type: "Concept", atom_state: "accepted" } }));
+test("a review other than proposed is set aside", () => {
+  const v = verify(good({ review: "accepted" }));
   assert.equal(v.checks.scope, false);
-  assert.match(v.reasons.join("; "), /atom_state accepted is not "proposed"/);
+  assert.match(v.reasons.join("; "), /review accepted is not "proposed"/);
 });
 
 test("entity_type outside the grant is set aside", () => {
@@ -83,16 +79,15 @@ test("a none:<reason> binding is accepted as resolved", () => {
 });
 
 test("depends_on is resolved against a known set when provided", () => {
-  const dep = good({ created: "2026-10-10T15:00:00Z" });
-  const child = good({ dependsOn: [dep.proposalId] });
-  assert.equal(verify(child, { known: new Set([dep.proposalId]) }).checks.depends_on, true);
+  const child = good({ dependsOn: ["concept-premise"] });
+  assert.equal(verify(child, { known: new Set(["concept-premise"]) }).checks.depends_on, true);
   const miss = verify(child, { known: new Set() });
   assert.equal(miss.checks.depends_on, false);
   assert.match(miss.reasons.join("; "), /depends_on unresolved/);
 });
 
-test("an unframed payload is set aside, not thrown", () => {
-  const v = verifyProposal({ proposalMd: "# no frontmatter\n", sourceMd: SOURCE, branchOwner: "agent-a" });
+test("an entity with no ```yaml fence is set aside, not thrown", () => {
+  const v = verifyProposal({ entityMd: "# no fence\n", sourceMd: SOURCE, meta: { origin: { agent: "agent-a" } }, branchOwner: "agent-a" });
   assert.equal(v.ok, false);
-  assert.match(v.reasons.join("; "), /unparseable payload/);
+  assert.match(v.reasons.join("; "), /no ```yaml fence/);
 });

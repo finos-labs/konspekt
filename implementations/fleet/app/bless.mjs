@@ -21,7 +21,7 @@
 
 import { join } from "node:path";
 import { mkdirSync, writeFileSync, readFileSync, existsSync } from "node:fs";
-import { loadInstance } from "../../../../lib/conformance.mjs";
+import { loadInstance } from "../../../lib/conformance.mjs";
 import { FLEET_DIR, readFoldLog } from "./proposed-ref.mjs";
 
 const DECISIONS_LOG = "decisions.md";

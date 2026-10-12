@@ -65,13 +65,13 @@ test("a proposer writes only its own worktree", () => {
   const b = f.proposerFor("agent-b");
 
   mkdirSync(join(a.path, "proposals", "p1"), { recursive: true });
-  writeFileSync(join(a.path, "proposals", "p1", "proposal.md"), "---\nkind: entity\n---\nbody\n");
+  writeFileSync(join(a.path, "proposals", "p1", "entity.md"), "```yaml\nid: concept-x\n```\nbody\n");
   commitAll(a.path, "outbox: p1", IDENTITY);
 
   // The proposal lives on agent-a's branch only.
-  assert.ok(existsSync(join(a.path, "proposals", "p1", "proposal.md")));
-  assert.ok(!existsSync(join(b.path, "proposals", "p1", "proposal.md")));
-  assert.ok(!existsSync(join(f.canonicalPath, "proposals", "p1", "proposal.md")));
+  assert.ok(existsSync(join(a.path, "proposals", "p1", "entity.md")));
+  assert.ok(!existsSync(join(b.path, "proposals", "p1", "entity.md")));
+  assert.ok(!existsSync(join(f.canonicalPath, "proposals", "p1", "entity.md")));
 });
 
 test("duplicate proposer handles are rejected", () => {

@@ -8,34 +8,42 @@
 //
 // The read and verify side lives here (steps 1-2), and so does `foldPass` (step
 // 4): the deterministic write onto canonical. Bless and the derived `proposed`
-// index are M7/M6. The fold translation itself is fold.mjs; this module reads,
-// verifies, orders the verified set, folds the batch, and commits it once.
+// index are M7/M6. The verify-and-append itself is fold.mjs; this module reads,
+// verifies, orders the verified set, appends the batch, and commits it once.
 
 import { readdirSync, existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { verifyProposal } from "./verify.mjs";
-import { parseProposal } from "./payload.mjs";
+import { computeEntityId } from "./payload.mjs";
 import { foldOrder } from "./order.mjs";
 import { foldProposals } from "./fold.mjs";
 import { decideAtom } from "./bless.mjs";
 import { commitAll } from "./git.mjs";
+import { splitEntityFile } from "../../../lib/conformance.mjs";
 
 // Read one proposer worktree's outbox. Returns
-// [{ proposalId, dir, proposalMd, sourceMd }]; proposalId is the directory name.
+// [{ proposalId, dir, entityMd, sourceMd, edgesMd, meta }]; proposalId is the
+// directory name. A directory without entity.md is skipped. meta.json parse
+// failures leave meta null, which verify reports as a missing origin.
 export function readOutbox(worktreePath) {
   const base = join(worktreePath, "proposals");
   if (!existsSync(base)) return [];
   const out = [];
   for (const id of readdirSync(base)) {
     const dir = join(base, id);
-    const proposalPath = join(dir, "proposal.md");
-    if (!existsSync(proposalPath)) continue;
-    const sourcePath = join(dir, "source.md");
+    const entityPath = join(dir, "entity.md");
+    if (!existsSync(entityPath)) continue;
+    const read = (name) => (existsSync(join(dir, name)) ? readFileSync(join(dir, name), "utf8") : null);
+    let meta = {};
+    const metaText = read("meta.json");
+    if (metaText != null) { try { meta = JSON.parse(metaText); } catch { meta = {}; } }
     out.push({
       proposalId: id,
       dir,
-      proposalMd: readFileSync(proposalPath, "utf8"),
-      sourceMd: existsSync(sourcePath) ? readFileSync(sourcePath, "utf8") : null,
+      entityMd: readFileSync(entityPath, "utf8"),
+      sourceMd: read("source.md"),
+      edgesMd: read("edges.md") ?? "",
+      meta,
     });
   }
   return out;
@@ -59,11 +67,12 @@ export function readProposals(fleet) {
 function verdictFor(fleet, pr, { grants, known }) {
   const branchOwner = fleet.ownerOf(pr.branch);
   const grant = grants[pr.owner] ?? {};
-  const v = verifyProposal({ proposalMd: pr.proposalMd, sourceMd: pr.sourceMd, branchOwner, grant, known });
-  const dirMatchesId = v.proposalId === pr.proposalId;
+  const v = verifyProposal({ entityMd: pr.entityMd, sourceMd: pr.sourceMd, meta: pr.meta, branchOwner, grant, known });
+  const computedId = computeEntityId(pr.entityMd);
+  const dirMatchesId = computedId === pr.proposalId;
   const reasons = dirMatchesId
     ? v.reasons
-    : [...v.reasons, `directory ${pr.proposalId} does not match proposal_id ${v.proposalId ?? "(none)"}`];
+    : [...v.reasons, `directory ${pr.proposalId} does not match the entity content id ${computedId}`];
   return {
     proposalId: pr.proposalId,
     owner: pr.owner,
@@ -97,9 +106,16 @@ export function foldPass(fleet, { grants = {}, known = null, identity = {}, inst
     const verdict = verdictFor(fleet, pr, { grants, known });
     verdicts.push(verdict);
     if (!verdict.ok) continue;
-    let created = null;
-    try { created = parseProposal(pr.proposalMd).front.created ?? null; } catch { /* verified payloads parse */ }
-    verified.push({ proposalId: pr.proposalId, proposalMd: pr.proposalMd, sourceMd: pr.sourceMd, created });
+    const { front } = splitEntityFile(pr.entityMd);
+    const created = (front.provenance && front.provenance.timestamp) || front.createdAt || null;
+    verified.push({
+      proposalId: pr.proposalId,
+      entityMd: pr.entityMd,
+      sourceMd: pr.sourceMd,
+      edgesMd: pr.edgesMd,
+      meta: pr.meta,
+      created,
+    });
   }
 
   const instanceDir = instanceSubdir ? join(fleet.canonicalPath, instanceSubdir) : fleet.canonicalPath;

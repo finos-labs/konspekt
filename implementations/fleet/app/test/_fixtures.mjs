@@ -1,11 +1,11 @@
-// Shared test fixtures: a minimal conformant instance, a concept proposal, and
-// a stand-up-and-fold helper. Not a *.test.mjs file, so the runner does not
-// execute it directly.
+// Shared test fixtures: a minimal conformant instance, a stored-form concept
+// proposal, and a stand-up-and-fold helper. Not a *.test.mjs file, so the runner
+// does not execute it directly.
 
 import { mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { setupFleet } from "../worktrees.mjs";
-import { assembleProposal, renderEdgesBlock, proposeToOutbox } from "../outbox.mjs";
+import { assembleProposal, proposeToOutbox } from "../outbox.mjs";
 import { foldPass } from "../committer.mjs";
 import { commitAll, git } from "../git.mjs";
 
@@ -29,25 +29,28 @@ export function writeSeed(dir) {
     "# Transitions\n\n| ref | field | from | to | timestamp | source | by |\n|-----|-------|------|----|-----------|--------|----|\n| node:task-demo | review |  | accepted | 2026-10-01T00:00:00Z |  |  |\n| node:task-demo | status |  | open | 2026-10-01T00:00:00Z |  |  |\n");
 }
 
-// A concept proposal whose body is a konspekt concept plus the edge wiring it.
-export function conceptProposal({ agent = "agent-a", id = "concept-foo", edgeId = "e-foo", created = "2026-10-10T16:00:00Z" } = {}) {
-  const body = [
-    "```yaml",
-    `id: ${id}`,
-    "label: Foo",
-    `createdAt: ${created}`,
-    `updatedAt: ${created}`,
-    "```",
-    "# Concept: Foo",
-    "",
-    "A demo concept.",
-    "",
-    renderEdgesBlock([{ id: edgeId, kind: "mentions", from: "node:task-demo", to: `concept:${id}`, review: "proposed" }]).trimEnd(),
-  ].join("\n");
+// A stored-form concept proposal: the konspekt concept atom the proposer
+// authored (review: proposed, provenance set by assembleProposal) plus the edge
+// wiring it into the seed's target node.
+export function conceptProposal({
+  agent = "agent-a",
+  id = "concept-foo",
+  edgeId = "e-foo",
+  created = "2026-10-10T16:00:00Z",
+  binding = "task-demo",
+  confidence = 0.8,
+} = {}) {
   return assembleProposal({
+    entityType: "concept",
+    fence: [`id: ${id}`, "label: Foo", `createdAt: ${created}`, `updatedAt: ${created}`].join("\n"),
+    prose: "# Concept: Foo\n\nFoo is a demo concept proposed by an agent.",
+    confidence,
+    conversationId: "demo-conv",
+    timestamp: created,
     origin: { agent, model: "m", session: "demo-conv" },
-    scope: { entity_type: "Concept", atom_state: "proposed" },
-    confidence: 0.8, binding: "task-demo", created, body, source: `excerpt for ${id}\n`,
+    binding,
+    edges: [{ id: edgeId, kind: "mentions", from: "node:task-demo", to: `concept:${id}`, review: "proposed" }],
+    source: `verbatim excerpt for ${id}\n`,
   });
 }
 

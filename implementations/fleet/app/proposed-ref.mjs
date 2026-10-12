@@ -19,7 +19,7 @@
 
 import { join } from "node:path";
 import { mkdirSync, writeFileSync, readFileSync, existsSync } from "node:fs";
-import { loadInstance } from "../../../../lib/conformance.mjs";
+import { loadInstance } from "../../../lib/conformance.mjs";
 import { git } from "./git.mjs";
 
 export const FLEET_DIR = ".konspekt-fleet";

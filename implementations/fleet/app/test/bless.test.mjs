@@ -6,7 +6,7 @@ import { join } from "node:path";
 import { blessPass } from "../committer.mjs";
 import { readDecisions } from "../bless.mjs";
 import { buildIndex } from "../proposed-ref.mjs";
-import { loadInstance } from "../../../../../lib/conformance.mjs";
+import { loadInstance } from "../../../../lib/conformance.mjs";
 import { standUpAndFold, commitCount, IDENTITY } from "./_fixtures.mjs";
 
 const NOW = "2026-10-10T18:00:00Z";

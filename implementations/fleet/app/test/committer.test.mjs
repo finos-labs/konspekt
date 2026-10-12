@@ -4,7 +4,7 @@ import { mkdtempSync, rmSync, writeFileSync, mkdirSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { setupFleet, loadFleet } from "../worktrees.mjs";
-import { assembleProposal, proposeToOutbox, renderEdgesBlock } from "../outbox.mjs";
+import { assembleProposal, proposeToOutbox } from "../outbox.mjs";
 import { readOutbox, readProposals, verifyPass } from "../committer.mjs";
 
 const IDENTITY = { name: "Test", email: "test@konspekt.local" };
@@ -15,12 +15,15 @@ afterEach(() => { try { rmSync(root, { recursive: true, force: true }); } catch 
 
 function proposal(agent, overrides = {}) {
   return assembleProposal({
-    origin: { agent, model: "m", session: "s" },
-    scope: { entity_type: "Concept", atom_state: "proposed" },
+    entityType: "concept",
+    fence: `id: concept-from-${agent}\nlabel: demo\ncreatedAt: 2026-10-10T16:00:00Z\nupdatedAt: 2026-10-10T16:00:00Z`,
+    prose: `# Concept: from ${agent}\n\nbody.`,
     confidence: 0.7,
+    conversationId: "s",
+    timestamp: "2026-10-10T16:00:00Z",
+    origin: { agent, model: "m", session: "s" },
     binding: "task-fleet-worktree-committer",
-    created: "2026-10-10T16:00:00Z",
-    body: `# Concept: from ${agent}\n\nbody.\n` + renderEdgesBlock([]),
+    edges: [{ id: `e-${agent}`, kind: "mentions", from: "node:task-demo", to: `concept:concept-from-${agent}`, review: "proposed" }],
     source: `excerpt from ${agent}\n`,
     ...overrides,
   });
@@ -48,7 +51,7 @@ test("verifyPass passes honest proposals and sets aside a spoofed origin", () =>
 
   // Honest: agent-a proposes on its own branch.
   proposeToOutbox(f.proposerFor("agent-a").path, proposal("agent-a"), { identity: IDENTITY });
-  // Spoof: a payload claiming origin agent-b written onto agent-a's outbox.
+  // Spoof: an atom whose envelope claims origin agent-b, written onto agent-a's outbox.
   proposeToOutbox(f.proposerFor("agent-a").path, proposal("agent-b"), { identity: IDENTITY });
 
   const verdicts = verifyPass(f);
@@ -71,17 +74,19 @@ test("verifyPass works through a reloaded manifest (separate attach)", () => {
   assert.equal(verdicts[0].ok, true, verdicts[0].reasons.join("; "));
 });
 
-test("a proposal directory renamed to disagree with its id is set aside", () => {
+test("a proposal directory renamed to disagree with its content id is set aside", () => {
   const f = setupFleet({ root, proposers: ["agent-a"], identity: IDENTITY });
   const a = proposal("agent-a");
-  // Hand-place the payload under a wrong directory name.
+  // Hand-place the proposal under a wrong directory name.
   const dir = join(f.proposerFor("agent-a").path, "proposals", "deadbeef");
   mkdirSync(dir, { recursive: true });
-  writeFileSync(join(dir, "proposal.md"), a.proposalMd, "utf8");
+  writeFileSync(join(dir, "entity.md"), a.entityMd, "utf8");
   writeFileSync(join(dir, "source.md"), a.sourceMd, "utf8");
+  writeFileSync(join(dir, "edges.md"), a.edgesMd, "utf8");
+  writeFileSync(join(dir, "meta.json"), JSON.stringify(a.meta, null, 2) + "\n", "utf8");
 
   const verdicts = verifyPass(f);
   assert.equal(verdicts.length, 1);
   assert.equal(verdicts[0].ok, false);
-  assert.match(verdicts[0].reasons.join("; "), /does not match proposal_id/);
+  assert.match(verdicts[0].reasons.join("; "), /does not match the entity content id/);
 });
