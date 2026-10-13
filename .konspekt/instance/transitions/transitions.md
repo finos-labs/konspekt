@@ -1029,3 +1029,16 @@ proposing agent was not recorded.
 | edge:e-prod-fleet-protocol | review | proposed | accepted | 2026-10-11T15:41:50Z | eaa24a05b8c0f87a106ff805ed8fc180bdc97fc5 | denisurusov |
 | edge:e-not-fleet-topologybelow | review | proposed | accepted | 2026-10-11T15:41:50Z | eaa24a05b8c0f87a106ff805ed8fc180bdc97fc5 | denisurusov |
 | edge:e-not-fleet-removefold | review | proposed | accepted | 2026-10-11T15:41:50Z | eaa24a05b8c0f87a106ff805ed8fc180bdc97fc5 | denisurusov |
+| noteworthy:nw-fleet-config-on-canonical | review |  | proposed | 2026-10-13T01:50:34Z |  | claude |
+| noteworthy:nw-fleet-config-is-setup-driver | review |  | proposed | 2026-10-13T01:50:34Z |  | claude |
+| node:task-fleet-config-driven-setup | review |  | proposed | 2026-10-13T01:50:34Z |  | claude |
+| node:task-fleet-config-driven-setup | status |  | open | 2026-10-13T01:50:34Z |  |  |
+| edge:e-not-fleet-configcanon | review |  | proposed | 2026-10-13T01:50:34Z |  | claude |
+| edge:e-not-fleet-configdriver | review |  | proposed | 2026-10-13T01:50:34Z |  | claude |
+| edge:e-dec-fleet-configsetup | review |  | proposed | 2026-10-13T01:50:34Z |  | claude |
+| noteworthy:nw-fleet-config-on-canonical | review | proposed | accepted | 2026-10-13T01:55:55Z | 4311b661b955f7c391c9ba76a0e9b47f248495c1 | denisurusov |
+| noteworthy:nw-fleet-config-is-setup-driver | review | proposed | accepted | 2026-10-13T01:55:55Z | 4311b661b955f7c391c9ba76a0e9b47f248495c1 | denisurusov |
+| node:task-fleet-config-driven-setup | review | proposed | accepted | 2026-10-13T01:55:55Z | 4311b661b955f7c391c9ba76a0e9b47f248495c1 | denisurusov |
+| edge:e-not-fleet-configcanon | review | proposed | accepted | 2026-10-13T01:55:55Z | 4311b661b955f7c391c9ba76a0e9b47f248495c1 | denisurusov |
+| edge:e-not-fleet-configdriver | review | proposed | accepted | 2026-10-13T01:55:55Z | 4311b661b955f7c391c9ba76a0e9b47f248495c1 | denisurusov |
+| edge:e-dec-fleet-configsetup | review | proposed | accepted | 2026-10-13T01:55:55Z | 4311b661b955f7c391c9ba76a0e9b47f248495c1 | denisurusov |
