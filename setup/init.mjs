@@ -41,7 +41,7 @@
 import {
   existsSync, mkdirSync, writeFileSync, readFileSync, readdirSync, statSync,
 } from "node:fs";
-import { dirname, join, basename, relative } from "node:path";
+import { dirname, join, basename, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { execSync } from "node:child_process";
 
@@ -174,6 +174,35 @@ function parseManifest(text) {
   return m;
 }
 
+// Merge a component's settings.json into an adopter's existing one instead of
+// clobbering it. Claude Code fixes the .claude/settings.json path, so an
+// adopter may already have hooks of their own. This adds each of the
+// component's hook groups under its event, de-duped on the inner hook
+// `command` (so --force re-install is idempotent), and copies any other
+// top-level key only when absent — the adopter's own settings are never
+// overwritten. targetText is "" when no file exists yet.
+function mergeSettingsJson(targetText, sourceText) {
+  const target = targetText.trim() ? JSON.parse(targetText) : {};
+  const source = JSON.parse(sourceText);
+  target.hooks = target.hooks || {};
+  for (const [event, groups] of Object.entries(source.hooks || {})) {
+    const existing = target.hooks[event] || (target.hooks[event] = []);
+    const commands = new Set(
+      existing.flatMap((g) => (g.hooks || []).map((h) => h.command))
+    );
+    for (const g of groups) {
+      const cmds = (g.hooks || []).map((h) => h.command);
+      if (cmds.some((c) => commands.has(c))) continue; // already wired
+      existing.push(g);
+      for (const c of cmds) commands.add(c);
+    }
+  }
+  for (const k of Object.keys(source)) {
+    if (k !== "hooks" && !(k in target)) target[k] = source[k];
+  }
+  return JSON.stringify(target, null, 2) + "\n";
+}
+
 function listComponents() {
   if (!existsSync(COMPONENTS)) return [];
   return readdirSync(COMPONENTS)
@@ -228,6 +257,12 @@ if (has("--list")) {
 if (has("--check")) {
   const only = opt("--check", null);
   const ids = only ? [only] : listComponents();
+  // True when --check runs inside the konspekt repo itself (setup/ is at the
+  // repo root, so HERE/.. is that root). konspekt is the SOURCE the components
+  // project from, not an adopter of them, so a file marked
+  // `sourceRepoKeepsOwn` is hand-maintained here and legitimately differs from
+  // the adopter template — skip it to avoid a false drift.
+  const isSelf = resolve(join(HERE, "..")) === resolve(root);
   let drifted = 0;
   let checked = 0;
   for (const id of ids) {
@@ -236,6 +271,8 @@ if (has("--check")) {
       const target = join(root, f.to);
       if (!existsSync(target)) continue; // not installed — not drift
       if (f.seed) continue;              // config, expected to differ
+      if (f.merge) continue;             // merged into the adopter's file, expected to differ
+      if (isSelf && f.sourceRepoKeepsOwn) continue; // konspekt's own source, not a projection
       checked++;
       const want = readFileSync(join(m.dir, f.from), "utf8");
       const got = readFileSync(target, "utf8");
@@ -296,6 +333,9 @@ if (has("--add")) {
   const skips = [];
   for (const f of m.files) {
     const exists = existsSync(join(root, f.to));
+    // Merge files are never skipped: the merge is non-destructive and
+    // idempotent, so it runs whether or not the target already exists.
+    if (f.merge) { writes.push(f); continue; }
     if (exists && f.seed) { skips.push([f.to, "seed file, kept as-is"]); continue; }
     if (exists && !force) { skips.push([f.to, "already installed, use --force to regenerate"]); continue; }
     writes.push(f);
@@ -317,8 +357,15 @@ if (has("--add")) {
   for (const f of writes) {
     const p = join(root, f.to);
     mkdirSync(dirname(p), { recursive: true });
-    writeFileSync(p, readFileSync(join(m.dir, f.from), "utf8"));
-    console.log("  +", f.to);
+    const src = readFileSync(join(m.dir, f.from), "utf8");
+    if (f.merge === "json") {
+      const existed = existsSync(p);
+      writeFileSync(p, mergeSettingsJson(existed ? readFileSync(p, "utf8") : "", src));
+      console.log(existed ? "  ~" : "  +", f.to, existed ? "(merged)" : "");
+    } else {
+      writeFileSync(p, src);
+      console.log("  +", f.to);
+    }
   }
   for (const [path, why] of skips) console.log("  =", path, `(${why})`);
 

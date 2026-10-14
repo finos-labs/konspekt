@@ -6,7 +6,7 @@
 // text body to --body-file. Sends nothing itself: delivery is the caller's
 // job, so this stays testable offline and needs no network access.
 //
-// Usage:  node .github/scripts/konspekt-notify.mjs <beforeSha> <afterSha> [--body-file PATH]
+// Usage:  node .konspekt/lib/konspekt-notify.mjs <beforeSha> <afterSha> [--body-file PATH]
 //
 // Design commitments:
 //   - Zero dependencies. Node + git only.

@@ -6,7 +6,7 @@ name: konspekt notify
 # Subscriptions live in .konspekt/notify.yml, which is repo config rather than
 # graph state (nw-subscriptions-are-config-not-graph). The event set and the
 # reference-only payload rule are documented in that file; the matching logic is
-# .github/scripts/konspekt-notify.mjs and has no dependencies beyond git.
+# .konspekt/lib/konspekt-notify.mjs and has no dependencies beyond git.
 #
 # No secrets required. Delivery uses the built-in GITHUB_TOKEN, so there is no
 # SMTP account, no app password, and no external service to keep alive. `to` in
@@ -58,7 +58,7 @@ jobs:
       - name: Compute events
         id: events
         run: |
-          node .github/scripts/konspekt-notify.mjs \
+          node .konspekt/lib/konspekt-notify.mjs \
             "${{ steps.range.outputs.before }}" \
             "${{ steps.range.outputs.after }}" \
             --body-file "$RUNNER_TEMP/body.txt"
