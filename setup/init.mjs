@@ -48,6 +48,10 @@ import { execSync } from "node:child_process";
 const HERE = dirname(fileURLToPath(import.meta.url));
 const TPL = join(HERE, "templates");
 const COMPONENTS = join(HERE, "components");
+// The standard's persona layers live at the repo root, beside setup/. Vendoring
+// copies a layer FROM here INTO an adopter's .konspekt/spec/personas/<layer>/,
+// where the checker resolves registries (nw-component-ships-import-closure).
+const SPEC_PERSONAS = join(HERE, "..", "spec", "personas");
 
 // The instance lives at `.konspekt/instance`. This is a constant of the
 // filesystem binding, not a configurable: this script is what writes it, so
@@ -73,7 +77,9 @@ if (has("--help") || has("-h")) {
       "      --full also installs every component in the same run, producing",
       "      the fully adopted repo pictured in setup/README.md.",
       "      --persona activates a konspekt persona layer (repeatable),",
-      "      e.g. --persona engineer.",
+      "      e.g. --persona engineer. Add --vendor-persona to also copy the",
+      "      layer's registry into .konspekt/spec/personas/ so the checker",
+      "      resolves it instead of degrading to core-only.",
       "      --tool writes an explicit per-tool pointer file (repeatable):",
       "      cursor, copilot, windsurf. AGENTS.md + CLAUDE.md + GEMINI.md",
       "      are always written; most agents read AGENTS.md natively.",
@@ -83,6 +89,10 @@ if (has("--help") || has("-h")) {
       "",
       "  node setup/init.mjs --add <component> [--force] [--push]",
       "      Install a component into an existing instance.",
+      "",
+      "  node setup/init.mjs --vendor-persona <layer> [--push]",
+      "      Copy a persona layer's registry from the standard into an existing",
+      "      instance's .konspekt/spec/personas/<layer>/ (repeatable / comma list).",
       "",
       "  node setup/init.mjs --check [<component>]",
       "      Report drift between installed files and component templates.",
@@ -307,6 +317,58 @@ function installComponent(id, { force = false, quiet = false } = {}) {
   return { wrote: true, m };
 }
 
+// A persona layer is vendorable when the standard ships it with a registry —
+// that is what the checker loads; the SPEC.md / AGENTS.md beside it are the
+// layer's operating docs the agent reads, carried along for completeness.
+function availablePersonas() {
+  if (!existsSync(SPEC_PERSONAS)) return [];
+  return readdirSync(SPEC_PERSONAS)
+    .filter((d) => {
+      const p = join(SPEC_PERSONAS, d);
+      return statSync(p).isDirectory() && existsSync(join(p, "registry.mjs"));
+    })
+    .sort();
+}
+
+// Copy a persona layer from the standard into the adopter's umbrella at
+// .konspekt/spec/personas/<layer>/, the one place the checker looks. This is an
+// explicit, opt-in projection of the standard's spec (not auto-vendored at
+// scaffold time), so a repo that wants its persona layer *resolved* — rather
+// than degrading to core-only with a warning — asks for it with one command.
+// Like any projection it overwrites: a local edit here is drift --check reports
+// against the standard. Returns the number of files written.
+function vendorPersona(layer, { quiet = false } = {}) {
+  const srcDir = join(SPEC_PERSONAS, layer);
+  if (!existsSync(srcDir) || !statSync(srcDir).isDirectory()) {
+    console.error(`Unknown persona layer "${layer}". Available: ${availablePersonas().join(", ") || "(none)"}`);
+    process.exit(1);
+  }
+  const relDir = `.konspekt/spec/personas/${layer}`;
+  const targetDir = join(root, relDir);
+  mkdirSync(targetDir, { recursive: true });
+  if (!quiet) console.log(`Vendoring persona layer "${layer}" into ${relDir}/`);
+  let wrote = 0;
+  for (const name of readdirSync(srcDir)) {
+    const sp = join(srcDir, name);
+    if (!statSync(sp).isFile()) continue;
+    const tp = join(targetDir, name);
+    const existed = existsSync(tp);
+    writeFileSync(tp, readFileSync(sp, "utf8"));
+    if (!quiet) console.log(existed ? "  ~" : "  +", `${relDir}/${name}`);
+    wrote++;
+  }
+  return wrote;
+}
+
+// Layers requested with --vendor-persona (repeatable / comma list). A bare
+// --vendor-persona carries no layer and defers to the --persona set (scaffold
+// path); a standalone call must name at least one.
+const vendorArgs = args.flatMap((a, i) =>
+  a === "--vendor-persona" && args[i + 1] && !args[i + 1].startsWith("--")
+    ? args[i + 1].split(",").map((x) => x.trim()).filter(Boolean)
+    : []
+);
+
 // ---------------------------------------------------------------------------
 // --list
 // ---------------------------------------------------------------------------
@@ -328,6 +390,11 @@ if (has("--list")) {
     console.log("");
   }
   console.log("Install with:  node setup/init.mjs --add <component>");
+  const layers = availablePersonas();
+  if (layers.length) {
+    console.log(`\nPersona layers:  ${layers.join(", ")}`);
+    console.log("Vendor with:  node setup/init.mjs --vendor-persona <layer>");
+  }
   process.exit(0);
 }
 
@@ -364,6 +431,38 @@ if (has("--check")) {
       }
     }
   }
+
+  // Vendored persona layers are projections of the standard's spec/personas/,
+  // so check each adopter file against its source the same way. Only on a full
+  // --check (a component-scoped check stays scoped); skipped in konspekt itself,
+  // which has no .konspekt/spec/personas/ (its checker reads root spec/ direct).
+  const adopterPersonas = join(root, ".konspekt/spec/personas");
+  if (!only && existsSync(adopterPersonas)) {
+    for (const layer of readdirSync(adopterPersonas)) {
+      const tdir = join(adopterPersonas, layer);
+      if (!statSync(tdir).isDirectory()) continue;
+      const sdir = join(SPEC_PERSONAS, layer);
+      for (const name of readdirSync(tdir)) {
+        const tp = join(tdir, name);
+        if (!statSync(tp).isFile()) continue;
+        checked++;
+        const rel = `.konspekt/spec/personas/${layer}/${name}`;
+        const sp = join(sdir, name);
+        if (!existsSync(sp)) {
+          console.log(`DRIFT  ${rel}`);
+          console.log(`       no counterpart in the standard's spec/personas/${layer}/`);
+          drifted++;
+          continue;
+        }
+        if (readFileSync(sp, "utf8") !== readFileSync(tp, "utf8")) {
+          console.log(`DRIFT  ${rel}`);
+          console.log(`       differs from the standard's spec/personas/${layer}/${name}`);
+          drifted++;
+        }
+      }
+    }
+  }
+
   if (!checked) {
     console.log("Nothing installed to check.");
     process.exit(0);
@@ -371,6 +470,7 @@ if (has("--check")) {
   if (drifted) {
     console.log(`\n${drifted} of ${checked} installed file(s) drifted.`);
     console.log("Regenerate with:  node setup/init.mjs --add <component> --force");
+    console.log("    (persona file:  node setup/init.mjs --vendor-persona <layer>)");
     process.exit(1);
   }
   console.log(`${checked} installed file(s) match their component templates.`);
@@ -403,6 +503,40 @@ if (has("--add")) {
       if (m.requires && m.requires.includes("workflows")) {
         console.error("If the push was rejected, check that your credential holds the `workflows` scope.");
       }
+      process.exit(1);
+    }
+  }
+  process.exit(0);
+}
+
+// ---------------------------------------------------------------------------
+// --vendor-persona, standalone (instance already exists)
+//
+// Mirrors --add: retrofit a persona registry onto a live instance. When the
+// instance does NOT yet exist this falls through to the scaffold path, where
+// --vendor-persona runs after scaffolding (and a bare flag vendors the
+// --persona layers). So a standalone call is distinguished by the instance
+// already being present, and it must name the layer(s) explicitly.
+// ---------------------------------------------------------------------------
+
+if (has("--vendor-persona") && existsSync(join(root, INSTANCE))) {
+  if (!vendorArgs.length) {
+    console.error("--vendor-persona needs a layer id, e.g. --vendor-persona engineer");
+    console.error(`Available: ${availablePersonas().join(", ") || "(none)"}`);
+    process.exit(1);
+  }
+  let total = 0;
+  for (const layer of vendorArgs) total += vendorPersona(layer);
+  console.log(`\n${total} file(s) vendored. The checker now resolves: ${vendorArgs.join(", ")}.`);
+  if (has("--push")) {
+    console.log("\nPushing...");
+    try {
+      execSync("git add .konspekt/spec/personas", { cwd: root, stdio: "inherit" });
+      execSync(`git commit -m "vendor konspekt persona layer(s): ${vendorArgs.join(", ")}"`, { cwd: root, stdio: "inherit" });
+      execSync("git push", { cwd: root, stdio: "inherit" });
+      console.log("Pushed.");
+    } catch {
+      console.error("git step failed — the files are on disk; commit manually.");
       process.exit(1);
     }
   }
@@ -519,13 +653,28 @@ for (const t of tools) {
 // instance + envelope + installed tooling (.konspekt/lib/) + harness
 // (.claude/, .github/workflows/). Components stay individually installable with
 // --add; --full is the batch for adoption and for testing the README tree.
-// (The one surface it does not create is .konspekt/spec/personas/<layer>/,
-// which the README marks optional and not auto-vendored.)
+// (It does not auto-vendor persona registries into
+// .konspekt/spec/personas/<layer>/; that stays an explicit opt-in via
+// --vendor-persona, handled just below.)
 const full = has("--full");
 if (full) {
   const comps = listComponents();
   console.log(`\nInstalling all components (--full): ${comps.join(", ")}\n`);
   for (const id of comps) installComponent(id, { quiet: true });
+}
+
+// --vendor-persona on a scaffold run copies the named layers' registries into
+// the umbrella so the checker resolves them. A bare flag vendors whatever
+// --persona activated; explicit args override. This is the only path that
+// writes .konspekt/spec/personas/<layer>/ — never automatic, always asked for.
+if (has("--vendor-persona")) {
+  const layers = vendorArgs.length ? vendorArgs : personas;
+  if (!layers.length) {
+    console.log("\n  ! --vendor-persona given with no layer and no --persona to defer to (skipped)");
+  } else {
+    console.log("");
+    for (const layer of layers) vendorPersona(layer);
+  }
 }
 
 console.log("\nDone. Next:");

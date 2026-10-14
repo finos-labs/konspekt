@@ -33,7 +33,7 @@ sit outside it.
     ├─ lib/                          # installed tooling: every script the adopter runs
     │  ├─ conformance.mjs validate.mjs load-personas.mjs authority.mjs  # the checker closure
     │  └─ konspekt-notify.mjs                                           # the change notifier
-    └─ spec/personas/<layer>/        # where the checker looks for a persona registry (optional; not auto-vendored)
+    └─ spec/personas/<layer>/        # where the checker looks for a persona registry (optional; vendor with --vendor-persona)
     .claude/                         # Claude Code operating layer (paths fixed by Claude Code)
     ├─ settings.json                 # SessionStart + PreToolUse wiring (merged, never clobbered)
     ├─ hooks/
@@ -57,8 +57,12 @@ registries are **not** auto-vendored: neither the scaffolder nor the
 `conformance` component ships them. A layer named in `project.md` whose registry
 is absent is non-fatal — `load-personas.mjs` skips it with a warning and the
 checker applies core rules only for it. Vendoring a registry into the umbrella
-is an explicit, separate step, kept that way so adoption does not duplicate the
-standard's spec into every repo (`nw-component-ships-import-closure`).
+is an explicit, opt-in step: `node setup/init.mjs --vendor-persona <layer>`
+copies it from the standard into `.konspekt/spec/personas/<layer>/` (and
+`--persona <layer> --vendor-persona` does it during scaffolding). It is kept
+separate from scaffolding so adoption does not duplicate the standard's spec
+into every repo unless asked, and `--check` then drift-checks the vendored copy
+against the standard (`nw-component-ships-import-closure`).
 
 This describes an *adopter* repo. konspekt's own repository is the exception on
 both tooling surfaces, because it is the **source** the components project from.
