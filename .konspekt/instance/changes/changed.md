@@ -265,3 +265,11 @@ commit order; the channel was not live during that work.
 | task-adoption-path | 7bfe40e640917d9a4b64e464b0b4826060464a7a | setup/components/notify/manifest.yml | 2026-10-14T16:46:17Z |
 | task-adoption-path | 7bfe40e640917d9a4b64e464b0b4826060464a7a | setup/components/notify/workflow.yml | 2026-10-14T16:46:17Z |
 | task-adoption-path | 7bfe40e640917d9a4b64e464b0b4826060464a7a | setup/init.mjs | 2026-10-14T16:46:17Z |
+| task-adoption-path | 2bb9dfb54f25eff6c4909630fd06ff41569f5371 | setup/init.mjs | 2026-10-14T23:12:42Z |
+| task-adoption-path | 2bb9dfb54f25eff6c4909630fd06ff41569f5371 | setup/README.md | 2026-10-14T23:12:42Z |
+| task-adoption-path | 2bb9dfb54f25eff6c4909630fd06ff41569f5371 | setup/WEBMOBILE_SEED.md | 2026-10-14T23:12:42Z |
+| task-adoption-path | 2bb9dfb54f25eff6c4909630fd06ff41569f5371 | setup/templates/OPERATING.md | 2026-10-14T23:12:42Z |
+| task-adoption-path | 2bb9dfb54f25eff6c4909630fd06ff41569f5371 | setup/templates/AGENTS-stanza.md | 2026-10-14T23:12:42Z |
+| task-adoption-path | 2bb9dfb54f25eff6c4909630fd06ff41569f5371 | setup/components/notify/konspekt-notify.mjs | 2026-10-14T23:12:42Z |
+| task-adoption-path | 2bb9dfb54f25eff6c4909630fd06ff41569f5371 | .konspekt/lib/konspekt-notify.mjs | 2026-10-14T23:12:42Z |
+| task-adoption-path | 2bb9dfb54f25eff6c4909630fd06ff41569f5371 | spec/architecture/SCHEMA-RECONCILIATION.md | 2026-10-14T23:12:42Z |

@@ -27,7 +27,7 @@ bound atom and no recorded decline.
 
 Second, the reading list is split by repository. A generic adopter has two
 repos: the backend repo (`<owner>/<repo>`, holding `.konspekt/OPERATING.md` and
-the instance) and the konspekt standard (`denisurusov/konspekt`, holding
+the instance) and the konspekt standard (`finos-labs/konspekt`, holding
 `spec/`, `.claude/skills/`, and personas). `init.mjs` scaffolds only `.konspekt/`
 into the backend repo, so the spec and skills are absent there unless vendored.
 The prior seed used bare relative paths that did not name a repo — ambiguous for
