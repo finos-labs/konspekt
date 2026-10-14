@@ -10,7 +10,7 @@ provenance:
   conversationId: cdm-collateral-adoption
   confidence: 0.8
 createdAt: 2026-10-14T01:44:02Z
-updatedAt: 2026-10-14T01:44:02Z
+updatedAt: 2026-10-14T23:53:54Z
 ```
 # Noteworthy: a component must vendor its code's full import closure
 
@@ -52,3 +52,34 @@ step), not shipped by the conformance component.
 General rule for future components: the manifest's `files:` list must be the
 static-import closure of its entry points, not just the entry points. A check
 that the declared closure is complete belongs in `--check`.
+
+## Resolution — proposed
+
+The prescribed fix shipped and is verified. The `conformance` component manifest
+now declares the full closure — `conformance.mjs`, `validate.mjs`,
+`load-personas.mjs`, `authority.mjs` — each projected to `.konspekt/lib/`, and
+the consolidation moved the notifier there too (`.konspekt/lib/konspekt-notify.mjs`),
+so nothing an adopter runs sits at the repo root or under `.github/`. Verified in
+the reporting adopter, `cdm-collateral`: installing the component and running the
+installed checker (`node .konspekt/lib/validate.mjs`) no longer raises
+`ERR_MODULE_NOT_FOUND` — it reads the instance and reports cleanly. A single
+`init.mjs --full` now reproduces the whole adopter tree, closure included.
+
+The persona case this item carved out — registries stay **not** auto-vendored —
+is honored by making vendoring an explicit, opt-in command rather than a hand
+copy: `init.mjs --vendor-persona <layer>` projects a layer's registry into
+`.konspekt/spec/personas/<layer>/`, the one place the installed checker resolves
+it. Before, `cdm-collateral`'s activated `engineer` layer degraded to core-only
+with a warning; after vendoring, the checker resolves it with zero problems.
+`--check` drift-checks the vendored copy against the standard, so the hand-copy
+sprawl this item named is now a tracked projection, not silent duplication.
+
+One prescription is still open: the import-closure **completeness** check — that
+a manifest's `files:` list equals the static-import closure of its entry points —
+is not yet in `--check`. `--check` today catches content drift of declared files
+and of vendored registries, not a missing closure member. Until that lands, a new
+component's closure is still verified by hand.
+
+Status held at `review: proposed`: the maintainer records the resolution but does
+not self-accept. A human `lift` marks the constraint resolved once the open
+completeness check is judged in or out of scope.
