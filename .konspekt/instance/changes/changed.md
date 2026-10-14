@@ -255,3 +255,13 @@ commit order; the channel was not live during that work.
 | task-agent-fleet | 06c0c52a10235f2a1537653ebf1b5410619a25b1 | implementations/fleet/worktree/app/worktrees.mjs | 2026-10-12T15:06:34Z |
 | task-agent-fleet | 06c0c52a10235f2a1537653ebf1b5410619a25b1 | implementations/fleet/worktree/docs/DESIGN.md | 2026-10-12T15:06:34Z |
 | task-fleet-config-driven-setup | 10589961311a065e6f042389535a48553bb28a82 | ROADMAP.md | 2026-10-13T01:58:47Z |
+| task-adoption-path | 7bfe40e640917d9a4b64e464b0b4826060464a7a | .github/workflows/konspekt-notify.yml | 2026-10-14T16:46:17Z |
+| task-adoption-path | 7bfe40e640917d9a4b64e464b0b4826060464a7a | .konspekt/lib/konspekt-notify.mjs | 2026-10-14T16:46:17Z |
+| task-adoption-path | 7bfe40e640917d9a4b64e464b0b4826060464a7a | setup/README.md | 2026-10-14T16:46:17Z |
+| task-adoption-path | 7bfe40e640917d9a4b64e464b0b4826060464a7a | setup/components/claude-code/manifest.yml | 2026-10-14T16:46:17Z |
+| task-adoption-path | 7bfe40e640917d9a4b64e464b0b4826060464a7a | setup/components/conformance/manifest.yml | 2026-10-14T16:46:17Z |
+| task-adoption-path | 7bfe40e640917d9a4b64e464b0b4826060464a7a | setup/components/conformance/workflow.yml | 2026-10-14T16:46:17Z |
+| task-adoption-path | 7bfe40e640917d9a4b64e464b0b4826060464a7a | setup/components/notify/konspekt-notify.mjs | 2026-10-14T16:46:17Z |
+| task-adoption-path | 7bfe40e640917d9a4b64e464b0b4826060464a7a | setup/components/notify/manifest.yml | 2026-10-14T16:46:17Z |
+| task-adoption-path | 7bfe40e640917d9a4b64e464b0b4826060464a7a | setup/components/notify/workflow.yml | 2026-10-14T16:46:17Z |
+| task-adoption-path | 7bfe40e640917d9a4b64e464b0b4826060464a7a | setup/init.mjs | 2026-10-14T16:46:17Z |
