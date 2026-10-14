@@ -273,3 +273,6 @@ commit order; the channel was not live during that work.
 | task-adoption-path | 2bb9dfb54f25eff6c4909630fd06ff41569f5371 | setup/components/notify/konspekt-notify.mjs | 2026-10-14T23:12:42Z |
 | task-adoption-path | 2bb9dfb54f25eff6c4909630fd06ff41569f5371 | .konspekt/lib/konspekt-notify.mjs | 2026-10-14T23:12:42Z |
 | task-adoption-path | 2bb9dfb54f25eff6c4909630fd06ff41569f5371 | spec/architecture/SCHEMA-RECONCILIATION.md | 2026-10-14T23:12:42Z |
+| task-adoption-path | a20e6a04380d9fe41d778f2563a8f60a0fb234d3 | setup/init.mjs | 2026-10-14T23:34:56Z |
+| task-adoption-path | a20e6a04380d9fe41d778f2563a8f60a0fb234d3 | test/setup-init.test.mjs | 2026-10-14T23:34:56Z |
+| task-adoption-path | a20e6a04380d9fe41d778f2563a8f60a0fb234d3 | setup/README.md | 2026-10-14T23:34:56Z |
