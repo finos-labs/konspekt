@@ -2,7 +2,7 @@
 
 This repo carries konspekt-format project state under `.konspekt/`. The data
 model and transport are defined by the konspekt standard
-(github.com/denisurusov/konspekt — `spec/data-model`, `spec/architecture`).
+(github.com/finos-labs/konspekt — `spec/data-model`, `spec/architecture`).
 
 - Read `.konspekt/instance/` before design or writing work; do not run from
   stale context.

@@ -126,21 +126,35 @@ hardcodes it is conforming rather than assuming.
 ## Run it
 
 From the root of the repo you want to adopt konspekt (needs Node 18+). Copy this
-`setup/` folder into your repo, or clone konspekt and run it from there:
+`setup/` folder into your repo, or clone konspekt and run it from there.
+
+The scaffold-only command writes the base — the instance, the envelope, and the
+agent-instruction files:
 
     node setup/init.mjs --name "My Project" --goal "what this project is for"
 
+To get the **fully adopted repo pictured above** in one command — the base plus
+every component (`.konspekt/lib/` tooling, the `.claude/` Claude Code layer, and
+`.github/workflows/` CI) — add `--full`:
+
+    node setup/init.mjs --name "My Project" --goal "what this project is for" --full
+
+That single run produces the tree under **What it sets up**, surface for surface.
+The one thing `--full` does not create is `.konspekt/spec/personas/<layer>/`: a
+persona's registry is not vendored automatically (see the persona note above),
+so a layer you activate degrades to core checking until you vendor its registry.
+
 Add `--persona <layer>` (repeatable, or comma-separated) to activate a persona
-layer — it writes a `personas: [...]` line into `project.md` so the persona-aware
-checks apply to this instance.
+layer — it writes a `personas: [...]` line into `project.md`.
 
-Review what it wrote, then commit:
+Review what it wrote, then commit — `git add .` after `--full`, or the base
+paths otherwise:
 
-    git add .konspekt AGENTS.md CLAUDE.md GEMINI.md && git commit -m "adopt konspekt project state"
+    git add . && git commit -m "adopt konspekt project state"
 
 Or let the script do it — add `--push`. It is idempotent: it refuses to clobber
-an existing `.konspekt/instance/`, and it skips an agent-file stanza already
-present.
+an existing `.konspekt/instance/`, skips an agent-file stanza already present,
+and merges rather than overwrites an existing `.claude/settings.json`.
 
 ## Then what
 
@@ -176,6 +190,10 @@ installed **into** a live `.konspekt/`.
     node setup/init.mjs --add notify           # install one
     node setup/init.mjs --add notify --force   # regenerate after editing the component
     node setup/init.mjs --check                # report drift, write nothing
+
+To install every component at adoption time instead of one at a time, scaffold
+with `--full` (see **Run it**); the à la carte `--add` is for adding a component
+to an instance that already exists.
 
 Components are **not part of the standard**. A conformant instance with none of
 them is complete, and the manual re-upload probe passes without them. Each lives

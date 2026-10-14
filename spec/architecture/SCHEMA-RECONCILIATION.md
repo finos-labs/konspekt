@@ -20,7 +20,7 @@ mislead; renaming one of them is an open question.
 ## Where this came from
 
 On 2026-07-19 a diff was run between `spec/data-model/schema.ts` and the entity
-files in two instances — `denisurusov/konspekt` (this repo) and `code_tracer`,
+files in two instances — `finos-labs/konspekt` (this repo) and `code_tracer`,
 the first external adopter. The diff reported that both instances had converged
 on a uniform front-matter envelope the schema does not define, and eight
 remediation items were drafted from that reading.

@@ -35,7 +35,7 @@ if (!beforeSha || !afterSha) {
   process.exit(2);
 }
 
-const REPO = process.env.GITHUB_REPOSITORY || "denisurusov/konspekt";
+const REPO = process.env.GITHUB_REPOSITORY || "finos-labs/konspekt";
 const SERVER = process.env.GITHUB_SERVER_URL || "https://github.com";
 const INSTANCE = ".konspekt/instance";
 

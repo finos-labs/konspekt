@@ -36,7 +36,7 @@
  * is: cd /path/to/other-repo && node /path/to/konspekt/setup/init.mjs --add X
  *
  * Zero dependencies. The konspekt standard:
- * https://github.com/denisurusov/konspekt (spec/data-model, spec/architecture).
+ * https://github.com/finos-labs/konspekt (spec/data-model, spec/architecture).
  */
 import {
   existsSync, mkdirSync, writeFileSync, readFileSync, readdirSync, statSync,
@@ -68,8 +68,10 @@ if (has("--help") || has("-h")) {
     [
       "konspekt setup",
       "",
-      "  node setup/init.mjs [--name NAME] [--goal GOAL] [--persona LAYER] [--tool T] [--push]",
+      "  node setup/init.mjs [--name NAME] [--goal GOAL] [--persona LAYER] [--tool T] [--full] [--push]",
       "      Scaffold a new .konspekt/ instance into the current repo.",
+      "      --full also installs every component in the same run, producing",
+      "      the fully adopted repo pictured in setup/README.md.",
       "      --persona activates a konspekt persona layer (repeatable),",
       "      e.g. --persona engineer.",
       "      --tool writes an explicit per-tool pointer file (repeatable):",
@@ -226,6 +228,85 @@ function loadComponent(id) {
   return { ...m, id, dir };
 }
 
+// Install one component's files into `root`. Shared by --add and the scaffold
+// --full path. Returns { wrote, m }. Hard errors (no instance, missing
+// `needs`) exit the process. `quiet` suppresses the component's own "Next:"
+// epilogue, for the batch (--full) case where one combined epilogue is printed.
+function installComponent(id, { force = false, quiet = false } = {}) {
+  const m = loadComponent(id);
+
+  // A component needs an instance to attach to.
+  if (!existsSync(join(root, INSTANCE))) {
+    console.error(`No konspekt instance at ${INSTANCE}/.`);
+    console.error("Scaffold one first:  node setup/init.mjs");
+    process.exit(1);
+  }
+
+  // Runtime prerequisites a component calls but does not ship. Refuse rather
+  // than install something that cannot run.
+  if (m.needs && m.needs.length) {
+    const missing = m.needs.filter((rel) => !existsSync(join(root, rel)));
+    if (missing.length) {
+      console.error(`Component "${id}" needs files this repo does not have:`);
+      for (const rel of missing) console.error(`  ${rel}`);
+      console.error("");
+      console.error("Vendor them alongside setup/ and try again.");
+      process.exit(1);
+    }
+  }
+
+  const writes = [];
+  const skips = [];
+  for (const f of m.files) {
+    const exists = existsSync(join(root, f.to));
+    // Merge files are never skipped: the merge is non-destructive and
+    // idempotent, so it runs whether or not the target already exists.
+    if (f.merge) { writes.push(f); continue; }
+    if (exists && f.seed) { skips.push([f.to, "seed file, kept as-is"]); continue; }
+    if (exists && !force) { skips.push([f.to, "already installed, use --force to regenerate"]); continue; }
+    writes.push(f);
+  }
+
+  if (m.requires && m.requires.includes("workflows")) {
+    console.log(
+      [
+        "Note: this component writes under .github/workflows/.",
+        "GitHub Apps and MCP connectors need an explicit `workflows` scope to PUSH",
+        "such a file — the local write succeeds and the push is what gets rejected.",
+        "If you are driving konspekt through a connector, run this from a terminal.",
+        "",
+      ].join("\n")
+    );
+  }
+
+  console.log(`Installing component "${id}" into ${root}\n`);
+  for (const f of writes) {
+    const p = join(root, f.to);
+    mkdirSync(dirname(p), { recursive: true });
+    const src = readFileSync(join(m.dir, f.from), "utf8");
+    if (f.merge === "json") {
+      const existed = existsSync(p);
+      writeFileSync(p, mergeSettingsJson(existed ? readFileSync(p, "utf8") : "", src));
+      console.log(existed ? "  ~" : "  +", f.to, existed ? "(merged)" : "");
+    } else {
+      writeFileSync(p, src);
+      console.log("  +", f.to);
+    }
+  }
+  for (const [path, why] of skips) console.log("  =", path, `(${why})`);
+
+  if (!writes.length) {
+    console.log("\nNothing to do.");
+    return { wrote: false, m };
+  }
+
+  if (m.next && !quiet) {
+    console.log("\nNext:");
+    for (const line of m.next.split("\n")) console.log("  " + line);
+  }
+  return { wrote: true, m };
+}
+
 // ---------------------------------------------------------------------------
 // --list
 // ---------------------------------------------------------------------------
@@ -306,78 +387,8 @@ if (has("--add")) {
     console.error("--add needs a component id. See: node setup/init.mjs --list");
     process.exit(1);
   }
-  const m = loadComponent(id);
-
-  // Inverse of the scaffold guard: a component needs something to attach to.
-  if (!existsSync(join(root, INSTANCE))) {
-    console.error(`No konspekt instance at ${INSTANCE}/.`);
-    console.error("Scaffold one first:  node setup/init.mjs");
-    process.exit(1);
-  }
-
-  // Runtime prerequisites a component calls but does not ship. Refuse rather
-  // than install something that cannot run.
-  if (m.needs && m.needs.length) {
-    const missing = m.needs.filter((rel) => !existsSync(join(root, rel)));
-    if (missing.length) {
-      console.error(`Component "${id}" needs files this repo does not have:`);
-      for (const rel of missing) console.error(`  ${rel}`);
-      console.error("");
-      console.error("Vendor them alongside setup/ and try again.");
-      process.exit(1);
-    }
-  }
-
-  const force = has("--force");
-  const writes = [];
-  const skips = [];
-  for (const f of m.files) {
-    const exists = existsSync(join(root, f.to));
-    // Merge files are never skipped: the merge is non-destructive and
-    // idempotent, so it runs whether or not the target already exists.
-    if (f.merge) { writes.push(f); continue; }
-    if (exists && f.seed) { skips.push([f.to, "seed file, kept as-is"]); continue; }
-    if (exists && !force) { skips.push([f.to, "already installed, use --force to regenerate"]); continue; }
-    writes.push(f);
-  }
-
-  if (m.requires && m.requires.includes("workflows")) {
-    console.log(
-      [
-        "Note: this component writes under .github/workflows/.",
-        "GitHub Apps and MCP connectors need an explicit `workflows` scope to PUSH",
-        "such a file — the local write succeeds and the push is what gets rejected.",
-        "If you are driving konspekt through a connector, run this from a terminal.",
-        "",
-      ].join("\n")
-    );
-  }
-
-  console.log(`Installing component "${id}" into ${root}\n`);
-  for (const f of writes) {
-    const p = join(root, f.to);
-    mkdirSync(dirname(p), { recursive: true });
-    const src = readFileSync(join(m.dir, f.from), "utf8");
-    if (f.merge === "json") {
-      const existed = existsSync(p);
-      writeFileSync(p, mergeSettingsJson(existed ? readFileSync(p, "utf8") : "", src));
-      console.log(existed ? "  ~" : "  +", f.to, existed ? "(merged)" : "");
-    } else {
-      writeFileSync(p, src);
-      console.log("  +", f.to);
-    }
-  }
-  for (const [path, why] of skips) console.log("  =", path, `(${why})`);
-
-  if (!writes.length) {
-    console.log("\nNothing to do.");
-    process.exit(0);
-  }
-
-  if (m.next) {
-    console.log("\nNext:");
-    for (const line of m.next.split("\n")) console.log("  " + line);
-  }
+  const { wrote, m } = installComponent(id, { force: has("--force") });
+  if (!wrote) process.exit(0);
 
   if (has("--push")) {
     console.log("\nPushing...");
@@ -503,22 +514,46 @@ for (const t of tools) {
   }
 }
 
+// --full installs every available component in the same run, so a single
+// command produces the fully adopted repo that setup/README.md pictures:
+// instance + envelope + installed tooling (.konspekt/lib/) + harness
+// (.claude/, .github/workflows/). Components stay individually installable with
+// --add; --full is the batch for adoption and for testing the README tree.
+// (The one surface it does not create is .konspekt/spec/personas/<layer>/,
+// which the README marks optional and not auto-vendored.)
+const full = has("--full");
+if (full) {
+  const comps = listComponents();
+  console.log(`\nInstalling all components (--full): ${comps.join(", ")}\n`);
+  for (const id of comps) installComponent(id, { quiet: true });
+}
+
 console.log("\nDone. Next:");
 console.log(`  1. Edit ${INSTANCE}/project.md \u2014 set the goal and summary.`);
 console.log("  2. Review .konspekt/OPERATING.md \u2014 the operating policy you just adopted.");
-console.log("  3. Commit:  git add .konspekt AGENTS.md CLAUDE.md GEMINI.md && git commit -m 'adopt konspekt'");
-const comps = listComponents();
-if (comps.length) {
-  console.log(`  4. Optional add-ons: node setup/init.mjs --list  (${comps.join(", ")})`);
+if (full) {
+  console.log("  3. Commit:  git add . && git commit -m 'adopt konspekt'");
+} else {
+  console.log("  3. Commit:  git add .konspekt AGENTS.md CLAUDE.md GEMINI.md && git commit -m 'adopt konspekt'");
+  const comps = listComponents();
+  if (comps.length) {
+    console.log(`  4. Optional add-ons: node setup/init.mjs --list  (${comps.join(", ")})`);
+    console.log("     or re-run with --full to install them all at once.");
+  }
 }
 
 if (has("--push")) {
   console.log("\nPushing...");
   try {
-    const agentFiles = ["AGENTS.md", "CLAUDE.md", "GEMINI.md",
-      ".github/copilot-instructions.md", ".windsurfrules", ".cursor/rules/konspekt.mdc"]
-      .filter((f) => existsSync(join(root, f)));
-    execSync(`git add .konspekt ${agentFiles.join(" ")}`, { cwd: root, stdio: "inherit" });
+    if (full) {
+      // --full touched .konspekt, .claude and .github \u2014 stage the lot.
+      execSync("git add .", { cwd: root, stdio: "inherit" });
+    } else {
+      const agentFiles = ["AGENTS.md", "CLAUDE.md", "GEMINI.md",
+        ".github/copilot-instructions.md", ".windsurfrules", ".cursor/rules/konspekt.mdc"]
+        .filter((f) => existsSync(join(root, f)));
+      execSync(`git add .konspekt ${agentFiles.join(" ")}`, { cwd: root, stdio: "inherit" });
+    }
     execSync('git commit -m "adopt konspekt project state"', { cwd: root, stdio: "inherit" });
     execSync("git push", { cwd: root, stdio: "inherit" });
     console.log("Pushed.");

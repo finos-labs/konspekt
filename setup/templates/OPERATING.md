@@ -8,7 +8,7 @@ scope: How this project runs its konspekt maintenance loop. Host policy, not sta
 
 The operating envelope for the konspekt instance under `.konspekt/instance/`.
 This is host policy, **not** part of the konspekt standard: the standard
-(github.com/denisurusov/konspekt — `spec/data-model`, `spec/architecture`)
+(github.com/finos-labs/konspekt — `spec/data-model`, `spec/architecture`)
 defines the data model and transport; *how this project* runs its maintenance
 loop lives here, and a second platform adopting the instance re-establishes its
 own envelope.
