@@ -2,7 +2,7 @@
 id: nw-component-ships-import-closure
 kind: constraint
 status: active
-review: proposed
+review: accepted
 provenance:
   sourceRef: 24b3f7fe9f0805f675a27cbfcb3f24bd9b0bdce2
   contentHash: 24b3f7fe9f0805f675a27cbfcb3f24bd9b0bdce2
@@ -10,7 +10,7 @@ provenance:
   conversationId: cdm-collateral-adoption
   confidence: 0.8
 createdAt: 2026-10-14T01:44:02Z
-updatedAt: 2026-10-14T23:53:54Z
+updatedAt: 2026-10-15T00:02:27Z
 ```
 # Noteworthy: a component must vendor its code's full import closure
 
