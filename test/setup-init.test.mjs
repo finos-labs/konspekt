@@ -1,14 +1,16 @@
 #!/usr/bin/env node
 // Smoke test for setup/init.mjs — the adopter scaffolder (task-adoption-path).
 //
-// Scope is deliberately narrow: scaffold a fresh instance into a throwaway
-// directory and check that every expected file lands in the right place, then
-// check that a second scaffold into the same directory refuses. It does not
-// assert file contents, component installs, or drift detection.
+// Scope: scaffold a fresh instance into a throwaway directory and check that
+// every expected file lands in the right place, then check that a second
+// scaffold into the same directory refuses. A second block covers
+// --vendor-persona: that it makes the installed checker resolve a persona layer
+// (instead of degrading to core-only) and that --check reports drift against the
+// standard when a vendored file is edited.
 //
 // Run:  node test/setup-init.test.mjs   (exit 0 = pass, 1 = fail)
 
-import { mkdtempSync, existsSync, rmSync } from "node:fs";
+import { mkdtempSync, existsSync, rmSync, appendFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, dirname } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
@@ -39,6 +41,7 @@ const EXPECTED = [
 
 const failures = [];
 const tmp = mkdtempSync(join(tmpdir(), "konspekt-setup-"));
+const tmp2 = mkdtempSync(join(tmpdir(), "konspekt-persona-"));
 
 try {
   // First scaffold must succeed (exit 0).
@@ -75,8 +78,63 @@ try {
     refused = true;
   }
   if (!refused) failures.push("second scaffold did not refuse an existing instance");
+
+  // --vendor-persona: the installed checker must resolve the layer only once its
+  // registry is vendored. Run the adopter's OWN checker (.konspekt/lib/), whose
+  // spec root is .konspekt/spec/personas/ — the source checker always resolves
+  // against konspekt's spec, so it cannot witness vendoring.
+  const checkerJson = (dir) => {
+    const out = execFileSync("node", [join(dir, ".konspekt", "lib", "validate.mjs"), "--json"],
+      { cwd: dir, encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] });
+    return JSON.parse(out);
+  };
+  try {
+    execFileSync("node", [INIT, "--name", "Persona", "--goal", "g", "--persona", "engineer"],
+      { cwd: tmp2, stdio: "pipe" });
+    execFileSync("node", [INIT, "--add", "conformance", "--force"], { cwd: tmp2, stdio: "pipe" });
+
+    // Before vendoring: engineer is activated but unresolved — core-only.
+    const before = checkerJson(tmp2);
+    if (before.meta.personas.includes("engineer")) {
+      failures.push("engineer resolved before its registry was vendored");
+    }
+    if (!before.problems.some((p) => p.code === "persona-not-loaded")) {
+      failures.push("expected persona-not-loaded info before vendoring");
+    }
+
+    // Vendor it; the three layer files must land.
+    execFileSync("node", [INIT, "--vendor-persona", "engineer"], { cwd: tmp2, stdio: "pipe" });
+    for (const f of ["registry.mjs", "SPEC.md", "AGENTS.md"]) {
+      if (!existsSync(join(tmp2, ".konspekt", "spec", "personas", "engineer", f))) {
+        failures.push(`vendor-persona did not write engineer/${f}`);
+      }
+    }
+
+    // After vendoring: the checker resolves the layer, no persona-not-loaded.
+    const after = checkerJson(tmp2);
+    if (!after.meta.personas.includes("engineer")) {
+      failures.push("engineer not resolved after vendoring its registry");
+    }
+    if (after.problems.some((p) => p.code === "persona-not-loaded")) {
+      failures.push("persona-not-loaded still present after vendoring");
+    }
+
+    // Editing a vendored file is drift against the standard: --check must fail.
+    appendFileSync(join(tmp2, ".konspekt", "spec", "personas", "engineer", "registry.mjs"),
+      "\n// local edit\n");
+    let drifted = false;
+    try {
+      execFileSync("node", [INIT, "--check"], { cwd: tmp2, stdio: "pipe" });
+    } catch {
+      drifted = true;
+    }
+    if (!drifted) failures.push("--check did not report drift on an edited vendored persona file");
+  } catch (e) {
+    failures.push(`vendor-persona block threw: ${e.message}\n${e.stderr || e.stdout || ""}`);
+  }
 } finally {
   rmSync(tmp, { recursive: true, force: true });
+  rmSync(tmp2, { recursive: true, force: true });
 }
 
 if (failures.length) {
@@ -84,4 +142,4 @@ if (failures.length) {
   for (const f of failures) console.error("  - " + f);
   process.exit(1);
 }
-console.log(`ok setup/init.mjs — scaffolds ${EXPECTED.length} files in place and refuses to clobber`);
+console.log(`ok setup/init.mjs — scaffolds ${EXPECTED.length} files in place, refuses to clobber, and vendors persona layers`);

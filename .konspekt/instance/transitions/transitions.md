@@ -1042,3 +1042,8 @@ proposing agent was not recorded.
 | edge:e-not-fleet-configcanon | review | proposed | accepted | 2026-10-13T01:55:55Z | 4311b661b955f7c391c9ba76a0e9b47f248495c1 | denisurusov |
 | edge:e-not-fleet-configdriver | review | proposed | accepted | 2026-10-13T01:55:55Z | 4311b661b955f7c391c9ba76a0e9b47f248495c1 | denisurusov |
 | edge:e-dec-fleet-configsetup | review | proposed | accepted | 2026-10-13T01:55:55Z | 4311b661b955f7c391c9ba76a0e9b47f248495c1 | denisurusov |
+| noteworthy:nw-component-ships-import-closure | status |  | active | 2026-10-14T01:44:02Z |  | claude |
+| noteworthy:nw-component-ships-import-closure | review |  | proposed | 2026-10-14T01:44:02Z |  | claude |
+| edge:e-not-adoption-importclosure | review |  | proposed | 2026-10-14T01:44:02Z |  | claude |
+| noteworthy:nw-component-ships-import-closure | review | proposed | accepted | 2026-10-15T00:02:27Z |  | denisurusov |
+| edge:e-not-adoption-importclosure | review | proposed | accepted | 2026-10-15T00:02:27Z |  | denisurusov |

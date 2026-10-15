@@ -20,13 +20,13 @@ on:
     branches: [main]
     paths:
       - ".konspekt/instance/**"
-      - "lib/**"
-      - "spec/**"
+      - ".konspekt/lib/**"
+      - ".konspekt/spec/**"
   pull_request:
     paths:
       - ".konspekt/instance/**"
-      - "lib/**"
-      - "spec/**"
+      - ".konspekt/lib/**"
+      - ".konspekt/spec/**"
   workflow_dispatch:
 
 permissions:
@@ -50,7 +50,7 @@ jobs:
         id: validate
         run: |
           set -o pipefail
-          node lib/validate.mjs .konspekt/instance | tee "$RUNNER_TEMP/report.txt"
+          node .konspekt/lib/validate.mjs .konspekt/instance | tee "$RUNNER_TEMP/report.txt"
 
       - name: Summary
         if: always()

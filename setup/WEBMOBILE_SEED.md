@@ -30,14 +30,14 @@ path below is read from a specific one — do not assume a single repo:
 - **Your backend repo — `<owner>/<repo>`.** Holds this project's operating
   policy and live graph. It does not carry the spec or the skills unless you
   vendored them.
-- **The konspekt standard — `denisurusov/konspekt`.** Holds the portable spec,
+- **The konspekt standard — `finos-labs/konspekt`.** Holds the portable spec,
   the maintainer skills, and the persona layers.
 
 Before acting, read the following (via the GitHub connector — or, if your session
 has a container, by cloning each repo for a full local pass). Each entry names
 the repository it lives in.
 
-From the konspekt standard (`denisurusov/konspekt`):
+From the konspekt standard (`finos-labs/konspekt`):
 
 - `.claude/skills/` — the maintainer skills, especially `konspekt-atom-readiness`
 - `spec/data-model/` — the entities, review states, and edge kinds you propose against
@@ -81,7 +81,7 @@ Then treat this conversation as konspekt-enabled and operate the loop:
 ## Requirements & limits
 
 - **A GitHub connector with access to both repos.** Read access to the konspekt
-  standard (`denisurusov/konspekt`) for the spec and skills, plus read access to
+  standard (`finos-labs/konspekt`) for the spec and skills, plus read access to
   your backend repo, lets the conversation be context-aware and propose.
   Read-write access to your backend repo is needed for the full persist loop
   (writing entities, rewriting `edges/edges.md`, pushing a commit); the standard

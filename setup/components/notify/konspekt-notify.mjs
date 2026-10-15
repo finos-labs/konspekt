@@ -6,7 +6,7 @@
 // text body to --body-file. Sends nothing itself: delivery is the caller's
 // job, so this stays testable offline and needs no network access.
 //
-// Usage:  node .github/scripts/konspekt-notify.mjs <beforeSha> <afterSha> [--body-file PATH]
+// Usage:  node .konspekt/lib/konspekt-notify.mjs <beforeSha> <afterSha> [--body-file PATH]
 //
 // Design commitments:
 //   - Zero dependencies. Node + git only.
@@ -35,7 +35,7 @@ if (!beforeSha || !afterSha) {
   process.exit(2);
 }
 
-const REPO = process.env.GITHUB_REPOSITORY || "denisurusov/konspekt";
+const REPO = process.env.GITHUB_REPOSITORY || "finos-labs/konspekt";
 const SERVER = process.env.GITHUB_SERVER_URL || "https://github.com";
 const INSTANCE = ".konspekt/instance";
 

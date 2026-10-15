@@ -508,3 +508,4 @@ proposal.
 | e-not-fleet-configcanon | notes | node:task-agent-fleet | noteworthy:nw-fleet-config-on-canonical |  | accepted |
 | e-not-fleet-configdriver | notes | node:task-agent-fleet | noteworthy:nw-fleet-config-is-setup-driver |  | accepted |
 | e-dec-fleet-configsetup | decomposes | node:task-agent-fleet | node:task-fleet-config-driven-setup |  | accepted |
+| e-not-adoption-importclosure | notes | node:task-adoption-path | noteworthy:nw-component-ships-import-closure |  | accepted |

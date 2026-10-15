@@ -29,7 +29,7 @@ files:
     to: .konspekt/notify.yml
     seed: true
   - from: konspekt-notify.mjs
-    to: .github/scripts/konspekt-notify.mjs
+    to: .konspekt/lib/konspekt-notify.mjs
   - from: workflow.yml
     to: .github/workflows/konspekt-notify.yml
 
@@ -37,4 +37,4 @@ next: |
   1. Edit .konspekt/notify.yml — subscriptions are empty, so nothing fires yet.
   2. Commit and push. The workflow runs on push to main touching the instance.
   3. Dry run without waiting for a push:
-       node .github/scripts/konspekt-notify.mjs HEAD~1 HEAD
+       node .konspekt/lib/konspekt-notify.mjs HEAD~1 HEAD
