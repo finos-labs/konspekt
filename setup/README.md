@@ -22,11 +22,12 @@ sit outside it.
 
     .konspekt/                       # the konspekt umbrella: portable unit + envelope + tooling
     ├─ instance/                     # the portable konspekt instance (ports across platforms)
-    │  ├─ project.md                 # root: goal + summary
+    │  ├─ project.md                 # root: goal + summary + policy (binding: required, basis: proposed)
     │  ├─ nodes/ concepts/ noteworthy/ artifacts/ waypoints/
     │  ├─ edges/edges.md             # the single edge table (starts empty)
     │  ├─ transitions/transitions.md # the status-transition log (starts empty)
-    │  └─ sources/                   # content-addressed provenance excerpts (+ README)
+    │  ├─ sources/                   # content-addressed provenance excerpts (+ README)
+    │  └─ changes/ commands/         # persona provenance logs, seeded empty (only with --persona engineer)
     ├─ OPERATING.md                  # this project's operating policy (loop, triggers, binding)
     ├─ NOTES.md                      # human scratchpad (the `note:` convention)
     ├─ notify.yml                    # notify-component config seed (empty subscriptions)
@@ -149,7 +150,19 @@ persona's registry is not vendored automatically (see the persona note above),
 so a layer you activate degrades to core checking until you vendor its registry.
 
 Add `--persona <layer>` (repeatable, or comma-separated) to activate a persona
-layer — it writes a `personas: [...]` line into `project.md`.
+layer — it writes a `personas: [...]` line into `project.md` and seeds the
+provenance logs the layer's registry declares (for `engineer`:
+`changes/changed.md` and `commands/executed.md`, as empty tables). The Claude
+Code SessionStart hook injects the layer's operating brief from
+`.konspekt/spec/personas/<layer>/AGENTS.md`, so vendor the layer
+(`--vendor-persona`) if you use Claude Code; without it the hook warns that the
+brief is missing.
+
+`project.md` is seeded with `binding: required` (every conversation binds to an
+entity; `optional` permits a recorded decline) and `basis: proposed` (work may
+bind to a proposed entity; `accepted` requires acceptance first). The shipped
+hooks read both fields, and `OPERATING.md` § Conversation binding and
+§ Acceptance before work describe them.
 
 Review what it wrote, then commit — `git add .` after `--full`, or the base
 paths otherwise:

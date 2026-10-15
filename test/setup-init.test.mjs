@@ -10,7 +10,7 @@
 //
 // Run:  node test/setup-init.test.mjs   (exit 0 = pass, 1 = fail)
 
-import { mkdtempSync, existsSync, rmSync, appendFileSync } from "node:fs";
+import { mkdtempSync, existsSync, rmSync, appendFileSync, readFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, dirname } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
@@ -69,6 +69,17 @@ try {
     failures.push(`could not load scaffolded instance: ${e.message}`);
   }
 
+  // The seed carries the policy fields the shipped Claude Code hooks read, and
+  // OPERATING.md carries the section those hooks cite by name. Without them the
+  // hooks point at a section that does not exist and the basis check is inert.
+  const projectMd = readFileSync(join(tmp, ".konspekt", "instance", "project.md"), "utf8");
+  if (!/^binding: required$/m.test(projectMd)) failures.push("project.md seed lacks `binding: required`");
+  if (!/^basis: proposed$/m.test(projectMd)) failures.push("project.md seed lacks `basis: proposed`");
+  const operatingMd = readFileSync(join(tmp, ".konspekt", "OPERATING.md"), "utf8");
+  if (!operatingMd.includes("## Conversation binding")) failures.push("OPERATING.md seed lacks § Conversation binding");
+  // No persona layer, no persona logs.
+  if (existsSync(join(tmp, ".konspekt", "instance", "changes"))) failures.push("changes/ seeded without a persona layer");
+
   // A second scaffold into the same directory must refuse (non-zero exit),
   // rather than clobber the instance that is already there.
   let refused = false;
@@ -93,6 +104,12 @@ try {
       { cwd: tmp2, stdio: "pipe" });
     execFileSync("node", [INIT, "--add", "conformance", "--force"], { cwd: tmp2, stdio: "pipe" });
 
+    // The engineer brief tells the agent to append to these logs; they are
+    // seeded empty so the first append finds the file.
+    for (const f of ["changes/changed.md", "commands/executed.md"]) {
+      if (!existsSync(join(tmp2, ".konspekt", "instance", f))) failures.push(`engineer scaffold did not seed ${f}`);
+    }
+
     // Before vendoring: engineer is activated but unresolved — core-only.
     const before = checkerJson(tmp2);
     if (before.meta.personas.includes("engineer")) {
@@ -110,8 +127,11 @@ try {
       }
     }
 
-    // After vendoring: the checker resolves the layer, no persona-not-loaded.
+    // After vendoring: the checker resolves the layer, no persona-not-loaded,
+    // and the seeded empty logs raise no errors.
     const after = checkerJson(tmp2);
+    const afterErrs = after.problems.filter((p) => p.severity === "error");
+    if (afterErrs.length) failures.push(`engineer scaffold not conformant: ${afterErrs.map((p) => p.code).join(", ")}`);
     if (!after.meta.personas.includes("engineer")) {
       failures.push("engineer not resolved after vendoring its registry");
     }

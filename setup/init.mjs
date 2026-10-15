@@ -42,7 +42,7 @@ import {
   existsSync, mkdirSync, writeFileSync, readFileSync, readdirSync, statSync,
 } from "node:fs";
 import { dirname, join, basename, relative, resolve } from "node:path";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 import { execSync } from "node:child_process";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
@@ -595,6 +595,21 @@ put(`${INSTANCE}/transitions/transitions.md`, tpl("transitions.md"));
 put(`${INSTANCE}/sources/README.md`, tpl("sources-README.md"));
 for (const d of ["nodes", "concepts", "noteworthy", "artifacts", "waypoints"]) {
   put(`${INSTANCE}/${d}/.gitkeep`, "");
+}
+// An activated persona layer's operating brief names the provenance logs its
+// registry declares (the engineer layer: changes/changed.md and
+// commands/executed.md). Seed each as an empty table so the brief's first
+// "append a row" finds the file instead of a missing path. A layer with no
+// registry in the standard seeds nothing here.
+const LOG_TEMPLATES = { changeLog: "changes-changed.md", commandLog: "commands-executed.md" };
+for (const layer of personas) {
+  const reg = join(SPEC_PERSONAS, layer, "registry.mjs");
+  if (!existsSync(reg)) continue;
+  const mod = (await import(pathToFileURL(reg).href)).default || {};
+  for (const [key, file] of Object.entries(LOG_TEMPLATES)) {
+    const rel = mod[key]?.file && `${INSTANCE}/${mod[key].file}`;
+    if (rel && !existsSync(join(root, rel))) put(rel, tpl(file));
+  }
 }
 put(".konspekt/OPERATING.md", tpl("OPERATING.md"));
 put(".konspekt/NOTES.md", tpl("NOTES.md"));
