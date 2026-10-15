@@ -398,6 +398,26 @@ if (has("--list")) {
   process.exit(0);
 }
 
+// Policy fields an instance scaffolded before they were seeded may lack. The
+// shipped Claude Code hooks and the binding audit read both, so a missing one
+// means the hooks fall back to a default the adopter never chose. Returns one
+// message per missing field; empty when there is no instance or nothing is
+// missing. The scaffolder never edits an existing project.md, so this reports
+// and the adopter adds the lines.
+function projectPolicyGaps() {
+  const p = join(root, INSTANCE, "project.md");
+  if (!existsSync(p)) return [];
+  const text = readFileSync(p, "utf8");
+  const gaps = [];
+  if (!/^binding:[ \t]*\S/m.test(text)) {
+    gaps.push("no `binding:` field — the Claude Code hooks enforce `required`; add `binding: required` (or `optional`)");
+  }
+  if (!/^basis:[ \t]*\S/m.test(text)) {
+    gaps.push("no `basis:` field — reads as `proposed`; add `basis: proposed` (or `accepted`)");
+  }
+  return gaps;
+}
+
 // ---------------------------------------------------------------------------
 // --check
 // ---------------------------------------------------------------------------
@@ -463,9 +483,21 @@ if (has("--check")) {
     }
   }
 
+  // Missing policy fields fail a full --check like drift does: both leave the
+  // installed hooks acting on something other than what the adopter set.
+  const gaps = only ? [] : projectPolicyGaps();
+  for (const g of gaps) {
+    console.log(`POLICY ${INSTANCE}/project.md`);
+    console.log(`       ${g}`);
+  }
+
   if (!checked) {
     console.log("Nothing installed to check.");
-    process.exit(0);
+    process.exit(gaps.length ? 1 : 0);
+  }
+  if (gaps.length && !drifted) {
+    console.log(`\n${gaps.length} policy field(s) missing from ${INSTANCE}/project.md.`);
+    process.exit(1);
   }
   if (drifted) {
     console.log(`\n${drifted} of ${checked} installed file(s) drifted.`);
@@ -488,6 +520,12 @@ if (has("--add")) {
     process.exit(1);
   }
   const { wrote, m } = installComponent(id, { force: has("--force") });
+  const gaps = projectPolicyGaps();
+  if (gaps.length) {
+    console.log(`\nNote: ${INSTANCE}/project.md predates the seeded policy fields:`);
+    for (const g of gaps) console.log(`  - ${g}`);
+    console.log("  konspekt's setup/templates/OPERATING.md § Conversation binding and § Acceptance before work describe them.");
+  }
   if (!wrote) process.exit(0);
 
   if (has("--push")) {

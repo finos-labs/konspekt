@@ -10,7 +10,7 @@
 //
 // Run:  node test/setup-init.test.mjs   (exit 0 = pass, 1 = fail)
 
-import { mkdtempSync, existsSync, rmSync, appendFileSync, readFileSync } from "node:fs";
+import { mkdtempSync, existsSync, rmSync, appendFileSync, readFileSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, dirname } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
@@ -42,6 +42,7 @@ const EXPECTED = [
 const failures = [];
 const tmp = mkdtempSync(join(tmpdir(), "konspekt-setup-"));
 const tmp2 = mkdtempSync(join(tmpdir(), "konspekt-persona-"));
+const tmp3 = mkdtempSync(join(tmpdir(), "konspekt-audit-"));
 
 try {
   // First scaffold must succeed (exit 0).
@@ -152,9 +153,61 @@ try {
   } catch (e) {
     failures.push(`vendor-persona block threw: ${e.message}\n${e.stderr || e.stdout || ""}`);
   }
+
+  // --check reports a project.md that predates the seeded policy fields (an
+  // instance scaffolded before binding/basis were written) and fails.
+  const pm = join(tmp, ".konspekt", "instance", "project.md");
+  writeFileSync(pm, readFileSync(pm, "utf8").replace(/^binding:.*\n/m, "").replace(/^basis:.*\n/m, ""));
+  let policyOut = "";
+  let policyFailed = false;
+  try {
+    policyOut = execFileSync("node", [INIT, "--check"], { cwd: tmp, encoding: "utf8", stdio: "pipe" });
+  } catch (e) {
+    policyFailed = true;
+    policyOut = String(e.stdout || "");
+  }
+  if (!policyFailed) failures.push("--check did not fail on a project.md without binding/basis");
+  if (!/no `binding:` field/.test(policyOut) || !/no `basis:` field/.test(policyOut)) {
+    failures.push(`--check did not name both missing policy fields:\n${policyOut}`);
+  }
+
+  // The conformance component ships the binding audit; it runs from the
+  // adopter's .konspekt/lib/ with no configuration. Unbound work after the
+  // adoption commit fails it; a changed-code row binding that work passes it.
+  try {
+    const git = (...a) => execFileSync("git", a, { cwd: tmp3, stdio: "pipe", encoding: "utf8",
+      env: { ...process.env, GIT_AUTHOR_NAME: "t", GIT_AUTHOR_EMAIL: "t@t", GIT_COMMITTER_NAME: "t", GIT_COMMITTER_EMAIL: "t@t" } });
+    execFileSync("node", [INIT, "--name", "Audit", "--goal", "g", "--persona", "engineer"], { cwd: tmp3, stdio: "pipe" });
+    execFileSync("node", [INIT, "--add", "conformance"], { cwd: tmp3, stdio: "pipe" });
+    const audit = join(tmp3, ".konspekt", "lib", "binding-audit.mjs");
+    if (!existsSync(audit)) throw new Error("conformance did not install .konspekt/lib/binding-audit.mjs");
+    const runAudit = () => {
+      try { execFileSync("node", [audit], { cwd: tmp3, stdio: "pipe" }); return 0; }
+      catch (e) { return e.status; }
+    };
+
+    if (runAudit() !== 0) failures.push("audit did not skip before anything was committed");
+    git("init", "-q");
+    git("add", ".");
+    git("commit", "-q", "-m", "adopt konspekt");
+    writeFileSync(join(tmp3, "app.txt"), "work\n");
+    git("add", "app.txt");
+    git("commit", "-q", "-m", "task-x: work");
+    if (runAudit() !== 1) failures.push("audit did not fail on an unbound commit after adoption");
+
+    const sha = git("rev-parse", "HEAD").trim();
+    appendFileSync(join(tmp3, ".konspekt", "instance", "changes", "changed.md"),
+      `| task-x | ${sha} | app.txt | 2026-01-01T00:00:00Z |\n`);
+    git("add", ".");
+    git("commit", "-q", "-m", "task-x: changed-code rows");
+    if (runAudit() !== 0) failures.push("audit did not pass once the commit was bound");
+  } catch (e) {
+    failures.push(`binding-audit block threw: ${e.message}\n${e.stderr || e.stdout || ""}`);
+  }
 } finally {
   rmSync(tmp, { recursive: true, force: true });
   rmSync(tmp2, { recursive: true, force: true });
+  rmSync(tmp3, { recursive: true, force: true });
 }
 
 if (failures.length) {
@@ -162,4 +215,4 @@ if (failures.length) {
   for (const f of failures) console.error("  - " + f);
   process.exit(1);
 }
-console.log(`ok setup/init.mjs — scaffolds ${EXPECTED.length} files in place, refuses to clobber, and vendors persona layers`);
+console.log(`ok setup/init.mjs — scaffolds ${EXPECTED.length} files in place, refuses to clobber, vendors persona layers, reports missing policy fields, and ships a working binding audit`);

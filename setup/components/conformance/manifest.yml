@@ -12,7 +12,8 @@ id: conformance
 title: Conformance CI
 binding: github
 summary: Run the konspekt conformance checker on every push and pull request
-  that touches the instance, and fail the build on errors.
+  that touches the instance, and fail the build on errors; run the binding
+  audit on every push and pull request.
 
 # Permissions the INSTALL needs, not the component's runtime.
 #   workflows  writes under .github/workflows/. Verified 2026-07-20: a GitHub
@@ -56,6 +57,15 @@ files:
     to: .konspekt/lib/load-personas.mjs
   - from: ../../../lib/authority.mjs
     to: .konspekt/lib/authority.mjs
+  # The binding audit is a standalone script (Node built-ins only, no lib
+  # imports). It finds the repo root by walking up to .konspekt/instance/, so
+  # the same file runs from konspekt's tools/ and an adopter's .konspekt/lib/.
+  - from: ../../../tools/binding-audit.mjs
+    to: .konspekt/lib/binding-audit.mjs
+  - from: binding-audit-workflow.yml
+    to: .github/workflows/konspekt-binding-audit.yml
+    # konspekt's own audit workflow runs tools/binding-audit.mjs directly.
+    sourceRepoKeepsOwn: true
   - from: workflow.yml
     to: .github/workflows/konspekt-conformance.yml
     # konspekt is conformance's source, not an adopter of it: its own CI runs
@@ -69,6 +79,11 @@ next: |
      .konspekt/instance/**.
   2. Run it locally the same way CI does:
        node .konspekt/lib/validate.mjs .konspekt/instance
-  3. It fails on errors only. To gate on warnings too, add --strict to the
+  3. The binding audit runs the same way:
+       node .konspekt/lib/binding-audit.mjs
+     It needs no configuration: it starts after the commit that added
+     .konspekt/instance/project.md, and it skips unless project.md is
+     `binding: required` and the instance has changes/changed.md.
+  4. The conformance check fails on errors only. To gate on warnings too, add --strict to the
      workflow's validate step — expect that to be red until the schema
      reconciliation is closed.
