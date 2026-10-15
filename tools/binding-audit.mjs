@@ -28,21 +28,42 @@
 // .konspekt/binding-audit.json when present, otherwise the binding baseline, so
 // an instance can adopt `basis: accepted` without failing on earlier commits.
 //
+// Where it runs: here as tools/binding-audit.mjs, and in an adopter repo as
+// .konspekt/lib/binding-audit.mjs (installed by the conformance component). The
+// repo root is found by walking up from the script to the first directory that
+// holds .konspekt/instance/, so both locations work unchanged.
+//
+// When it skips (exit 0): the instance is not `binding: required`, or it has no
+// changed-code log (changes/changed.md, seeded by the engineer persona layer).
+// Without that log no commit can be bound, so auditing would fail every commit
+// of an instance that does not record changed code.
+//
 // Usage:
 //   node tools/binding-audit.mjs [--since <ref>] [--head <ref>]
 //                                [--basis proposed|accepted] [--basis-since <ref>]
 //   --basis        overrides the `basis` field of project.md for this run
 //   --basis-since  overrides "basisBaseline"
 // Baseline resolution: --since, else $KONSPEKT_AUDIT_SINCE, else the "baseline"
-// field of .konspekt/binding-audit.json. Commits at or before the baseline are
-// the pre-enforcement backlog and are not audited.
+// field of .konspekt/binding-audit.json, else the commit that added
+// .konspekt/instance/project.md (the adoption commit). Commits at or before the
+// baseline are the pre-enforcement backlog and are not audited.
 
 import { readFileSync, existsSync } from "node:fs";
 import { execFileSync } from "node:child_process";
 import { join, dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
-const REPO_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
+function findRepoRoot(start) {
+  for (let d = start; ; d = dirname(d)) {
+    if (existsSync(join(d, ".konspekt", "instance"))) return d;
+    if (dirname(d) === d) return null;
+  }
+}
+const REPO_ROOT = findRepoRoot(dirname(fileURLToPath(import.meta.url)));
+if (!REPO_ROOT) {
+  console.error("binding-audit: no .konspekt/instance/ found above this script.");
+  process.exit(2);
+}
 const CONFIG = join(REPO_ROOT, ".konspekt", "binding-audit.json");
 const CHANGED_LOG = join(REPO_ROOT, ".konspekt", "instance", "changes", "changed.md");
 const PROJECT_FILE = join(REPO_ROOT, ".konspekt", "instance", "project.md");
@@ -61,6 +82,30 @@ if (existsSync(CONFIG)) {
   if (!baseline) baseline = cfg.baseline || null;
   if (!basisBaseline) basisBaseline = cfg.basisBaseline || null;
   for (const c of cfg.allow || []) allow.add(c);
+}
+// ----- applicability -----
+const projectText = existsSync(PROJECT_FILE) ? readFileSync(PROJECT_FILE, "utf8") : "";
+const bindingPolicy = (projectText.match(/^binding:[ \t]*([A-Za-z]+)[ \t]*$/m) || [])[1] || "optional";
+if (bindingPolicy !== "required") {
+  console.log(`binding-audit: skipped — project.md has binding: ${bindingPolicy}; the audit applies to binding: required.`);
+  process.exit(0);
+}
+if (!existsSync(CHANGED_LOG)) {
+  console.log("binding-audit: skipped — no changed-code log at .konspekt/instance/changes/changed.md (activate the engineer persona layer to record one).");
+  process.exit(0);
+}
+
+// With no configured baseline, start after the adoption commit: the first
+// commit that added project.md. Nothing before it could have been bound.
+if (!baseline) {
+  try {
+    const added = git(["log", "--diff-filter=A", "--format=%H", "--", ".konspekt/instance/project.md"]).trim().split("\n").filter(Boolean);
+    baseline = added.length ? added[added.length - 1] : null;
+  } catch { baseline = null; }
+  if (!baseline) {
+    console.log("binding-audit: skipped — .konspekt/instance/project.md is not committed yet, so there is no history to audit.");
+    process.exit(0);
+  }
 }
 if (!baseline) {
   console.error("binding-audit: no baseline. Set --since <ref>, $KONSPEKT_AUDIT_SINCE, or the \"baseline\" field of .konspekt/binding-audit.json.");

@@ -45,14 +45,28 @@ fi
 # obligations enter context — not just its data-model registry, which only the
 # conformance checker consumes. Closes the drift where engineer-layer duties
 # (ASR/ADR, executed-command provenance) lived in a file no session read.
+#
+# The brief is looked up in two places, first match wins: an adopter's vendored
+# copy at .konspekt/spec/personas/<layer>/ (written by setup/init.mjs
+# --vendor-persona), then the standard's own spec/personas/<layer>/ (konspekt
+# itself, which carries no vendored copy). A layer found in neither is named in
+# a warning so the gap is visible instead of silent.
 project_md="${CLAUDE_PROJECT_DIR:-.}/.konspekt/instance/project.md"
-personas_dir="${CLAUDE_PROJECT_DIR:-.}/spec/personas"
+personas_dirs=(
+  "${CLAUDE_PROJECT_DIR:-.}/.konspekt/spec/personas"
+  "${CLAUDE_PROJECT_DIR:-.}/spec/personas"
+)
 if [[ -f "$project_md" ]]; then
   personas_line="$(grep -E '^personas:' "$project_md" || true)"
   names="$(printf '%s' "$personas_line" | sed -E 's/^personas:[[:space:]]*\[?//; s/].*$//; s/,/ /g')"
   for name in $names; do
-    brief="$personas_dir/$name/AGENTS.md"
-    if [[ -f "$brief" ]]; then
+    brief=""
+    for d in "${personas_dirs[@]}"; do
+      if [[ -f "$d/$name/AGENTS.md" ]]; then brief="$d/$name/AGENTS.md"; break; fi
+    done
+    if [[ -z "$brief" ]]; then
+      context+=$'\n\nWARNING: persona layer "'"$name"$'" is active in project.md but no operating brief was found at .konspekt/spec/personas/'"$name"$'/AGENTS.md or spec/personas/'"$name"$'/AGENTS.md. Vendor it from a konspekt checkout with: node <konspekt>/setup/init.mjs --vendor-persona '"$name"$'\n'
+    else
       context+=$'\n\n===== BEGIN ACTIVE PERSONA BRIEF ('"$name"$'): '"$brief"$' =====\n\n'
       context+="$(cat "$brief")"
       context+=$'\n\n===== END ACTIVE PERSONA BRIEF ('"$name"$') =====\n'
@@ -71,7 +85,17 @@ if [[ -f "$operating_md" ]]; then
   context+=$'\n\n===== BEGIN OPERATING POLICY: '"$operating_md"$' =====\n\n'
   context+="$(cat "$operating_md")"
   context+=$'\n\n===== END OPERATING POLICY: '"$operating_md"$' =====\n'
-  context+=$'\n\nMANDATORY — Conversation binding "Ask at open" (OPERATING.md § Conversation\nbinding): before any durable work this session, your FIRST user-facing message\nMUST ask the human which graph entity this conversation attaches to — an\nexisting entity (give the id) or a new one (name the type), proposing\n`investigation` as the default for an exploratory start. This instance is\n`binding: required`, so the ask is unconditional and "none" is not a legal\nanswer. Do not begin implementation, edits, or research before issuing the ask.\n'
+  # The policy value comes from project.md `binding:`. A missing field reads as
+  # `required`, the value require-binding.sh enforces, so the text the model sees
+  # matches what the PreToolUse gate does.
+  binding="$(grep -m1 -E '^binding:[[:space:]]*[A-Za-z]+[[:space:]]*$' "$project_md" 2>/dev/null \
+    | sed -E 's/^binding:[[:space:]]*//; s/[[:space:]]*$//' || true)"
+  if [[ "$binding" == "optional" ]]; then
+    policy_text='This instance is `binding: optional`: the ask is still unconditional, but the human may decline; record a decline as a `waypoint` so the absence stays on the record.'
+  else
+    policy_text='This instance is `binding: required`, so the ask is unconditional and "none" is not a legal answer.'
+  fi
+  context+=$'\n\nMANDATORY — Conversation binding "Ask at open" (OPERATING.md § Conversation\nbinding): before any durable work this session, your FIRST user-facing message\nMUST ask the human which graph entity this conversation attaches to — an\nexisting entity (give the id) or a new one (name the type), proposing\n`investigation` as the default for an exploratory start. '"$policy_text"$'\nDo not begin implementation, edits, or research before issuing the ask.\n'
 fi
 
 # Escape a string for embedding as a JSON string value (no jq dependency).

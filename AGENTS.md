@@ -72,3 +72,12 @@ Do not hand-edit `distribution/`; it is derived from root.
 - Prefer observed evidence from files and command output over plausible prose.
 - Record uncertainty instead of filling gaps with invented authority.
 - Do not stage, commit, or push unless explicitly requested.
+- Sign off every commit for the Developer Certificate of Origin: use
+  `git commit -s`, so the commit carries a `Signed-off-by:` line matching its
+  author (`CONTRIBUTING.md` § Developer Certificate of Origin). The FINOS DCO
+  check on pull requests fails if any commit in the branch lacks it. Commit
+  under the repository owner's configured git identity; an agent identity such
+  as `noreply@anthropic.com` cannot make the DCO certification, and stays a
+  `Co-Authored-By:` trailer. To fix a branch that already has unsigned commits,
+  rebase it with `--signoff` (see `CONTRIBUTING.md` § How to Fix a Failing DCO
+  Check).

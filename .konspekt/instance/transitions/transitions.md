@@ -1047,3 +1047,5 @@ proposing agent was not recorded.
 | edge:e-not-adoption-importclosure | review |  | proposed | 2026-10-14T01:44:02Z |  | claude |
 | noteworthy:nw-component-ships-import-closure | review | proposed | accepted | 2026-10-15T00:02:27Z |  | denisurusov |
 | edge:e-not-adoption-importclosure | review | proposed | accepted | 2026-10-15T00:02:27Z |  | denisurusov |
+| noteworthy:nw-adopter-tooling-zero-config | review |  | proposed | 2026-10-15T01:09:37Z | f8a5f0f62d7fe578010d0dcf3e6e268dba82f174 | claude |
+| edge:e-not-adoption-zeroconfig | review |  | proposed | 2026-10-15T01:09:37Z | f8a5f0f62d7fe578010d0dcf3e6e268dba82f174 | claude |
