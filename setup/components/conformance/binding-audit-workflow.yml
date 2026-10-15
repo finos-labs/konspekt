@@ -4,7 +4,9 @@ name: konspekt binding audit
 # (spec/architecture/BINDING.md). Every commit after the adoption commit that
 # changed files outside .konspekt/instance/ must be bound to an entity by a row
 # in the changed-code log (.konspekt/instance/changes/changed.md). A commit that
-# binds to nothing fails the job.
+# binds to nothing fails the job. A commit that only touches files the setup kit
+# installs (.konspekt/, .claude/hooks/, .claude/skills/, .claude/settings.json,
+# .github/workflows/konspekt-*) is bookkeeping and needs no row.
 #
 # No configuration needed. The audit skips (and passes) when project.md is not
 # `binding: required` or the instance has no changed-code log. To start the audit

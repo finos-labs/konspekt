@@ -295,3 +295,7 @@ commit order; the channel was not live during that work.
 | task-adoption-path | c9cd86e2fd90ecd8991159b7d1bb8152ee160e57 | test/setup-init.test.mjs | 2026-10-15T01:07:15Z |
 | task-adoption-path | c9cd86e2fd90ecd8991159b7d1bb8152ee160e57 | tools/binding-audit.mjs | 2026-10-15T01:07:15Z |
 | task-adoption-path | 36052038f6841b5e2057c2e3bfa00bc8fd1d7978 | AGENTS.md | 2026-10-15T02:00:34Z |
+| task-adoption-path | 59c37d8971eedce3b22122dcdbdfcb04ff27366e | setup/README.md | 2026-10-15T02:14:27Z |
+| task-adoption-path | 59c37d8971eedce3b22122dcdbdfcb04ff27366e | setup/components/conformance/binding-audit-workflow.yml | 2026-10-15T02:14:27Z |
+| task-adoption-path | 59c37d8971eedce3b22122dcdbdfcb04ff27366e | test/setup-init.test.mjs | 2026-10-15T02:14:27Z |
+| task-adoption-path | 59c37d8971eedce3b22122dcdbdfcb04ff27366e | tools/binding-audit.mjs | 2026-10-15T02:14:27Z |
