@@ -201,6 +201,13 @@ try {
     git("add", ".");
     git("commit", "-q", "-m", "task-x: changed-code rows");
     if (runAudit() !== 0) failures.push("audit did not pass once the commit was bound");
+
+    // A commit that only installs or updates kit files is bookkeeping in an
+    // adopter repo, not unbound work.
+    execFileSync("node", [INIT, "--add", "claude-code"], { cwd: tmp3, stdio: "pipe" });
+    git("add", ".");
+    git("commit", "-q", "-m", "install claude-code component");
+    if (runAudit() !== 0) failures.push("audit reported a kit-only commit as unbound");
   } catch (e) {
     failures.push(`binding-audit block threw: ${e.message}\n${e.stderr || e.stdout || ""}`);
   }

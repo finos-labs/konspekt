@@ -263,7 +263,10 @@ installing into another project looks like:
   It also ships the **binding audit** (`.konspekt/lib/binding-audit.mjs` and
   `konspekt-binding-audit.yml`): every commit after the one that added
   `project.md` that changed files outside `.konspekt/instance/` must be bound to
-  an entity by a row in `changes/changed.md`. It needs no configuration. It
+  an entity by a row in `changes/changed.md`. A commit that only touches files
+  the kit installs (`.konspekt/`, `.claude/hooks/`, `.claude/skills/`,
+  `.claude/settings.json`, `.github/workflows/konspekt-*`) counts as
+  bookkeeping and needs no row. It needs no configuration. It
   skips, and passes, unless `project.md` is `binding: required` and the instance
   has a changed-code log (seeded by `--persona engineer`). To start it later or
   exempt a commit, write `.konspekt/binding-audit.json`

@@ -14,9 +14,15 @@
 // Detection, not a persist gate: it reports after the fact and never blocks a
 // save (BINDING.md; task-binding-gap-audit).
 //
-// Bookkeeping (skipped): a commit whose files are all under .konspekt/instance/
-// (the portable instance and its logs). Everything else is product/standard work
-// that must bind. Merge commits are skipped; the merged branch commits carry the
+// Bookkeeping (skipped): a commit whose files all fall under bookkeeping paths.
+// In the standard's repository (this file at tools/) that is .konspekt/instance/
+// only: its .claude/ and .github/ are source it edits. In an adopter (this file
+// at .konspekt/lib/, installed by the conformance component) it also covers the
+// paths the setup kit installs and regenerates — .konspekt/, .claude/hooks/,
+// .claude/skills/, .claude/settings.json, .github/workflows/konspekt-* — so a
+// commit that only installs or updates the kit is not reported as unbound work.
+// The "bookkeeping" array of .konspekt/binding-audit.json adds path prefixes.
+// Everything else is product/standard work that must bind. Merge commits are skipped; the merged branch commits carry the
 // binding. This assumes a merge-commit workflow, not squash-merge.
 //
 // Acceptance before work (spec/architecture/REVIEW.md § Acceptance before work):
@@ -50,7 +56,7 @@
 
 import { readFileSync, existsSync } from "node:fs";
 import { execFileSync } from "node:child_process";
-import { join, dirname, resolve } from "node:path";
+import { join, dirname, relative, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 
 function findRepoRoot(start) {
@@ -69,6 +75,10 @@ const CHANGED_LOG = join(REPO_ROOT, ".konspekt", "instance", "changes", "changed
 const PROJECT_FILE = join(REPO_ROOT, ".konspekt", "instance", "project.md");
 const TRANSITION_LOG = join(REPO_ROOT, ".konspekt", "instance", "transitions", "transitions.md");
 const INSTANCE_PREFIX = ".konspekt/instance/";
+// Adopter mode: this script was installed into the adopter's .konspekt/lib/.
+const ADOPTER = relative(REPO_ROOT, dirname(fileURLToPath(import.meta.url))).split(sep).join("/") === ".konspekt/lib";
+const KIT_PREFIXES = [".konspekt/", ".claude/hooks/", ".claude/skills/", ".claude/settings.json", ".github/workflows/konspekt-"];
+const bookkeeping = ADOPTER ? [...KIT_PREFIXES] : [INSTANCE_PREFIX];
 
 function git(args) { return execFileSync("git", args, { cwd: REPO_ROOT, encoding: "utf8" }); }
 function arg(name) { const i = process.argv.indexOf(name); return i >= 0 ? process.argv[i + 1] : null; }
@@ -82,6 +92,7 @@ if (existsSync(CONFIG)) {
   if (!baseline) baseline = cfg.baseline || null;
   if (!basisBaseline) basisBaseline = cfg.basisBaseline || null;
   for (const c of cfg.allow || []) allow.add(c);
+  for (const b of cfg.bookkeeping || []) bookkeeping.push(b);
 }
 // ----- applicability -----
 const projectText = existsSync(PROJECT_FILE) ? readFileSync(PROJECT_FILE, "utf8") : "";
@@ -147,8 +158,8 @@ for (const sha of commits) {
   if (isAllowed(sha)) continue;
   const files = git(["diff-tree", "--no-commit-id", "--name-only", "-r", sha]).split("\n").map((s) => s.trim()).filter(Boolean);
   if (!files.length) continue;
-  const touchesProduct = files.some((f) => !f.startsWith(INSTANCE_PREFIX));
-  if (!touchesProduct) continue; // bookkeeping: instance-only
+  const touchesProduct = files.some((f) => !bookkeeping.some((b) => f.startsWith(b)));
+  if (!touchesProduct) continue; // bookkeeping only
   if (!isBound(sha)) {
     const subject = git(["log", "-1", "--format=%s", sha]).trim();
     unbound.push({ sha: sha.slice(0, 10), subject });
