@@ -276,3 +276,13 @@ commit order; the channel was not live during that work.
 | task-adoption-path | 9be386b3c8a2b37afd42e636e4bd1bc264a4c76a | setup/init.mjs | 2026-10-14T23:34:56Z |
 | task-adoption-path | 9be386b3c8a2b37afd42e636e4bd1bc264a4c76a | test/setup-init.test.mjs | 2026-10-14T23:34:56Z |
 | task-adoption-path | 9be386b3c8a2b37afd42e636e4bd1bc264a4c76a | setup/README.md | 2026-10-14T23:34:56Z |
+| task-adoption-path | 38e388479dfa196c694daf5ab3beb576f43ef6ea | .claude/hooks/load-mandatory-skills.sh | 2026-10-15T00:57:20Z |
+| task-adoption-path | 38e388479dfa196c694daf5ab3beb576f43ef6ea | .claude/hooks/require-binding.sh | 2026-10-15T00:57:20Z |
+| task-adoption-path | 38e388479dfa196c694daf5ab3beb576f43ef6ea | setup/README.md | 2026-10-15T00:57:20Z |
+| task-adoption-path | 38e388479dfa196c694daf5ab3beb576f43ef6ea | setup/init.mjs | 2026-10-15T00:57:20Z |
+| task-adoption-path | 38e388479dfa196c694daf5ab3beb576f43ef6ea | setup/templates/OPERATING.md | 2026-10-15T00:57:20Z |
+| task-adoption-path | 38e388479dfa196c694daf5ab3beb576f43ef6ea | setup/templates/changes-changed.md | 2026-10-15T00:57:20Z |
+| task-adoption-path | 38e388479dfa196c694daf5ab3beb576f43ef6ea | setup/templates/commands-executed.md | 2026-10-15T00:57:20Z |
+| task-adoption-path | 38e388479dfa196c694daf5ab3beb576f43ef6ea | setup/templates/project.md | 2026-10-15T00:57:20Z |
+| task-adoption-path | 38e388479dfa196c694daf5ab3beb576f43ef6ea | test/load-mandatory-skills-hook.test.mjs | 2026-10-15T00:57:20Z |
+| task-adoption-path | 38e388479dfa196c694daf5ab3beb576f43ef6ea | test/setup-init.test.mjs | 2026-10-15T00:57:20Z |
