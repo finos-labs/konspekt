@@ -286,3 +286,11 @@ commit order; the channel was not live during that work.
 | task-adoption-path | 38e388479dfa196c694daf5ab3beb576f43ef6ea | setup/templates/project.md | 2026-10-15T00:57:20Z |
 | task-adoption-path | 38e388479dfa196c694daf5ab3beb576f43ef6ea | test/load-mandatory-skills-hook.test.mjs | 2026-10-15T00:57:20Z |
 | task-adoption-path | 38e388479dfa196c694daf5ab3beb576f43ef6ea | test/setup-init.test.mjs | 2026-10-15T00:57:20Z |
+| task-adoption-path | d09dfcce62aec30a8e2f6e99880bf6a9803ff2e0 | lib/conformance.mjs | 2026-10-15T01:07:15Z |
+| task-adoption-path | d09dfcce62aec30a8e2f6e99880bf6a9803ff2e0 | setup/README.md | 2026-10-15T01:07:15Z |
+| task-adoption-path | d09dfcce62aec30a8e2f6e99880bf6a9803ff2e0 | setup/components/conformance/binding-audit-workflow.yml | 2026-10-15T01:07:15Z |
+| task-adoption-path | d09dfcce62aec30a8e2f6e99880bf6a9803ff2e0 | setup/components/conformance/manifest.yml | 2026-10-15T01:07:15Z |
+| task-adoption-path | d09dfcce62aec30a8e2f6e99880bf6a9803ff2e0 | setup/init.mjs | 2026-10-15T01:07:15Z |
+| task-adoption-path | d09dfcce62aec30a8e2f6e99880bf6a9803ff2e0 | spec/personas/engineer/AGENTS.md | 2026-10-15T01:07:15Z |
+| task-adoption-path | d09dfcce62aec30a8e2f6e99880bf6a9803ff2e0 | test/setup-init.test.mjs | 2026-10-15T01:07:15Z |
+| task-adoption-path | d09dfcce62aec30a8e2f6e99880bf6a9803ff2e0 | tools/binding-audit.mjs | 2026-10-15T01:07:15Z |
