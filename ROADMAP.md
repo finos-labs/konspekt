@@ -3,7 +3,7 @@
      Check freshness with: node tools/roadmap.mjs --check
      This file is a pure function of .konspekt/instance/ (no timestamps baked in).
      Goals and tasks are graph nodes; the horizon is derived from node status/review.
-     contentHash: sha256:c6141faae7778abd -->
+     contentHash: sha256:0d44b7ca2a6ec235 -->
 
 # konspekt roadmap
 
@@ -186,6 +186,7 @@ Let several participants — people and agents — propose into and review one s
 - One reviewer over a fleet of agents
 - Cursor implementation of the fleet
 - Config-driven fleet setup from the canonical fleet.json
+- Implement idempotent fold in fold.mjs
 - Worktree-outbox fleet committer implementation
 
 **Later** — _proposed, not yet committed_
@@ -194,6 +195,10 @@ Let several participants — people and agents — propose into and review one s
 - Support multiple human authors on one instance
 - Re-address existing sources from git blob SHA to SHA-256
 
+**Shipped** — _resolved_
+
+- Idempotent fold — stop re-fold clobbering blessed atoms
+
 ---
 
-Generated from 8 goal(s) and 79 task-listing(s) over the instance graph.
+Generated from 8 goal(s) and 81 task-listing(s) over the instance graph.
