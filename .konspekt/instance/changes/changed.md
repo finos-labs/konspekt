@@ -308,3 +308,6 @@ commit order; the channel was not live during that work.
 | task-fleet-config-driven-setup | f62a251aabe41beb2123e420172ea0167424d487 | implementations/fleet/docs/instructions.md | 2026-10-22T18:05:00Z |
 | task-fleet-config-driven-setup | f62a251aabe41beb2123e420172ea0167424d487 | .konspekt/fleet/config/fleet.json | 2026-10-22T18:05:00Z |
 | task-fleet-config-driven-setup | 3579593fdcad47ccc3f8393fd1ac99c42322786b | ROADMAP.md | 2026-10-22T18:09:00Z |
+| task-fleet-worktree-committer | d2a9b07e0c03c96724cb8a4b16f2bc31f1ade3ba | implementations/fleet/app/claims.mjs | 2026-10-22T18:20:00Z |
+| task-fleet-worktree-committer | d2a9b07e0c03c96724cb8a4b16f2bc31f1ade3ba | implementations/fleet/app/cli.mjs | 2026-10-22T18:20:00Z |
+| task-fleet-worktree-committer | d2a9b07e0c03c96724cb8a4b16f2bc31f1ade3ba | implementations/fleet/app/test/claims.test.mjs | 2026-10-22T18:20:00Z |
