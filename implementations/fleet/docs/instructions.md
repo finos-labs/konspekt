@@ -18,3 +18,39 @@
     12. make sure under ./konspekt there a config for this specific agent (e.g., spec writer agent needs to read 
         fleet spec writing skill
 13. execute a script to start committer agent CLI
+
+## Teardown
+
+Tearing the fleet down removes the proposer worktrees and leaves canonical, the
+git object store, and the outbox branches intact. It is supported by
+`teardownFleet(descriptor, { force })` in
+`implementations/fleet/app/worktrees.mjs`. There is no CLI subcommand for it yet
+(gap, below).
+
+- **Removes:** each proposer worktree directory (`git worktree remove`).
+- **Preserves:** the canonical worktree and object store, and every outbox
+  branch. A branch is kept because a proposer's un-folded proposals live on it;
+  dropping it would lose them. Fold and consume first (or accept the loss).
+- **Preconditions:** each proposer worktree must be clean, or pass
+  `force: true`. Confirm no un-folded proposals remain — `ls
+  <FLEET_ROOT>/outbox-<handle>/proposals` should be empty on every outbox. Every
+  folded proposal must already be consumed from its outbox (re-fold constraint
+  `nw-fleet-refold-clobbers-blessed`).
+
+Run it (library only, no CLI subcommand):
+
+```
+node -e "import('./implementations/fleet/app/worktrees.mjs').then(m => m.teardownFleet(m.loadFleet('<FLEET_ROOT>')))"
+```
+
+A full wipe needs these by hand (teardownFleet does not do them):
+
+- delete the outbox branches (`git branch -D outbox/<handle>`), safe only once
+  every proposal is folded and consumed;
+- remove the flat manifest `<FLEET_ROOT>/fleet.json` and any `authoring-*`
+  scratch dirs;
+- the canonical branch and its instance are never touched by teardown.
+
+**Gap:** teardown is library-only. Wiring a `teardown` CLI subcommand (and a
+config-driven setup/teardown pair) is future work under
+`task-fleet-config-driven-setup`.
