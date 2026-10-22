@@ -332,3 +332,4 @@ commit order; the channel was not live during that work.
 | task-vendor-neutral-interop | c2a059bf935f64eb121a2601a37b9479538a3d80 | .claude/skills/fleet-presentation-writer/SKILL.md | 2026-10-22T18:55:00Z |
 | task-vendor-neutral-interop | c2a059bf935f64eb121a2601a37b9479538a3d80 | .claude/skills/fleet-spec-writer/SKILL.md | 2026-10-22T18:55:00Z |
 | task-vendor-neutral-interop | c2a059bf935f64eb121a2601a37b9479538a3d80 | .claude/skills/fleet-skill-builder/SKILL.md | 2026-10-22T18:55:00Z |
+| task-vendor-neutral-interop | fa9b88bc381b3e450cea9d1c89e75296fa50da35 | ROADMAP.md | 2026-10-22T19:01:00Z |
