@@ -5,7 +5,7 @@ kind: deck
 location: docs/decks/fleet-model.md
 createdAt: 2026-10-21T00:00:00Z
 updatedAt: 2026-10-21T00:00:00Z
-review: proposed
+review: accepted
 provenance:
   sourceRef: f209adbb9fab36c162ad7968322aecd89969f87a
   contentHash: f209adbb9fab36c162ad7968322aecd89969f87a

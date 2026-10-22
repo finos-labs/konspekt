@@ -519,4 +519,4 @@ proposal.
 | e-cap-prod-skill-builder | produces | node:task-agent-fleet | artifact:artifact-fleet-skill-builder-skill |  | proposed |
 | e-cap-prod-uat-instructions | produces | node:task-fleet-config-driven-setup | artifact:artifact-fleet-uat-instructions |  | proposed |
 | e-review-triage-produces | produces | node:task-review-ergonomics | artifact:artifact-fleet-review-triage-skill |  | accepted |
-| e-agent-fleet-produces-fleet-model-deck | produces | node:task-agent-fleet | artifact:artifact-fleet-model-deck |  | proposed |
+| e-agent-fleet-produces-fleet-model-deck | produces | node:task-agent-fleet | artifact:artifact-fleet-model-deck |  | accepted |
