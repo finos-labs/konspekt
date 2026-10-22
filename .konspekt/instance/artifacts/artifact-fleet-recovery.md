@@ -5,7 +5,7 @@ kind: doc
 location: docs/design/fleet-recovery.md
 createdAt: 2026-10-21T00:00:00Z
 updatedAt: 2026-10-21T00:00:00Z
-review: proposed
+review: accepted
 provenance:
   sourceRef: 3b2d2e9ad4faba2bdc8997dc5399f2c356f280df
   contentHash: 3b2d2e9ad4faba2bdc8997dc5399f2c356f280df

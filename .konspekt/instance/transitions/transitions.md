@@ -1049,3 +1049,5 @@ proposing agent was not recorded.
 | edge:e-not-adoption-importclosure | review | proposed | accepted | 2026-10-15T00:02:27Z |  | denisurusov |
 | artifact:artifact-fleet-recovery | review |  | proposed | 2026-10-22T01:47:58.161Z |  | spec-writer |
 | edge:e-fleet-recovery-produces | review |  | proposed | 2026-10-22T01:47:58.161Z |  | spec-writer |
+| artifact:artifact-fleet-recovery | review | proposed | accepted | 2026-10-22T01:53:21.395Z |  | denisurusov |
+| edge:e-fleet-recovery-produces | review | proposed | accepted | 2026-10-22T01:53:21.395Z |  | denisurusov |
