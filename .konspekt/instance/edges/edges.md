@@ -510,3 +510,11 @@ proposal.
 | e-dec-fleet-configsetup | decomposes | node:task-agent-fleet | node:task-fleet-config-driven-setup |  | accepted |
 | e-not-adoption-importclosure | notes | node:task-adoption-path | noteworthy:nw-component-ships-import-closure |  | accepted |
 | e-fleet-recovery-produces | produces | node:task-fleet-worktree-committer | artifact:artifact-fleet-recovery |  | accepted |
+| e-cap-notes-payload | notes | node:task-agent-fleet | noteworthy:nw-fleet-proposer-payload-fence-prose |  | proposed |
+| e-cap-notes-principal | notes | node:task-agent-fleet | noteworthy:nw-fleet-proposer-is-declared-principal |  | proposed |
+| e-cap-prod-committer-skill | produces | node:task-fleet-worktree-committer | artifact:artifact-fleet-committer-skill |  | proposed |
+| e-cap-prod-proposer-common | produces | node:task-agent-fleet | artifact:artifact-fleet-proposer-common-skill |  | proposed |
+| e-cap-prod-presentation-writer | produces | node:task-agent-fleet | artifact:artifact-fleet-presentation-writer-skill |  | proposed |
+| e-cap-prod-spec-writer | produces | node:task-agent-fleet | artifact:artifact-fleet-spec-writer-skill |  | proposed |
+| e-cap-prod-skill-builder | produces | node:task-agent-fleet | artifact:artifact-fleet-skill-builder-skill |  | proposed |
+| e-cap-prod-uat-instructions | produces | node:task-fleet-config-driven-setup | artifact:artifact-fleet-uat-instructions |  | proposed |

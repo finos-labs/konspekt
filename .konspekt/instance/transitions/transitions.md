@@ -1051,3 +1051,19 @@ proposing agent was not recorded.
 | edge:e-fleet-recovery-produces | review |  | proposed | 2026-10-22T01:47:58.161Z |  | spec-writer |
 | artifact:artifact-fleet-recovery | review | proposed | accepted | 2026-10-22T01:53:21.395Z |  | denisurusov |
 | edge:e-fleet-recovery-produces | review | proposed | accepted | 2026-10-22T01:53:21.395Z |  | denisurusov |
+| noteworthy:nw-fleet-proposer-payload-fence-prose | review |  | proposed | 2026-10-22T02:16:59.291Z |  | claude |
+| edge:e-cap-notes-payload | review |  | proposed | 2026-10-22T02:16:59.291Z |  | claude |
+| noteworthy:nw-fleet-proposer-is-declared-principal | review |  | proposed | 2026-10-22T02:16:59.291Z |  | claude |
+| edge:e-cap-notes-principal | review |  | proposed | 2026-10-22T02:16:59.291Z |  | claude |
+| artifact:artifact-fleet-committer-skill | review |  | proposed | 2026-10-22T02:16:59.291Z |  | claude |
+| edge:e-cap-prod-committer-skill | review |  | proposed | 2026-10-22T02:16:59.291Z |  | claude |
+| artifact:artifact-fleet-proposer-common-skill | review |  | proposed | 2026-10-22T02:16:59.291Z |  | claude |
+| edge:e-cap-prod-proposer-common | review |  | proposed | 2026-10-22T02:16:59.291Z |  | claude |
+| artifact:artifact-fleet-presentation-writer-skill | review |  | proposed | 2026-10-22T02:16:59.291Z |  | claude |
+| edge:e-cap-prod-presentation-writer | review |  | proposed | 2026-10-22T02:16:59.291Z |  | claude |
+| artifact:artifact-fleet-spec-writer-skill | review |  | proposed | 2026-10-22T02:16:59.291Z |  | claude |
+| edge:e-cap-prod-spec-writer | review |  | proposed | 2026-10-22T02:16:59.291Z |  | claude |
+| artifact:artifact-fleet-skill-builder-skill | review |  | proposed | 2026-10-22T02:16:59.291Z |  | claude |
+| edge:e-cap-prod-skill-builder | review |  | proposed | 2026-10-22T02:16:59.291Z |  | claude |
+| artifact:artifact-fleet-uat-instructions | review |  | proposed | 2026-10-22T02:16:59.291Z |  | claude |
+| edge:e-cap-prod-uat-instructions | review |  | proposed | 2026-10-22T02:16:59.291Z |  | claude |
