@@ -20,6 +20,7 @@ import { resolve, dirname } from "node:path";
 import { setupFleet, loadFleet, setupFromConfig, loadFromConfig, teardownFleet } from "./worktrees.mjs";
 import { assembleProposal, proposeToOutbox } from "./outbox.mjs";
 import { verifyPass, foldPass, blessPass } from "./committer.mjs";
+import { assembleClaim, writeClaimToOutbox, readClaimRequests, applyClaims } from "./claims.mjs";
 import { rebuildIndex } from "./proposed-ref.mjs";
 
 function parseArgs(argv) {
@@ -134,6 +135,23 @@ function cmdPropose(args) {
   console.log(`  committed ${commit} on ${proposer.branch}`);
 }
 
+// Author a claim (advisory dispatch): propose `status: open -> active` on an
+// already-accepted worked node, onto the agent's own outbox (M8). The committer
+// applies it on the next `run-pass`.
+function cmdClaim(args) {
+  const agent = need(args, "agent");
+  const node = need(args, "node");
+  const identity = { name: args["name"] || undefined, email: args["email"] || undefined };
+  const { fleet } = attach(args);
+  const proposer = fleet.proposerFor(agent);
+  if (!proposer) throw new Error(`no proposer "${agent}" in the fleet`);
+  const created = args["now"] && args["now"] !== true ? args["now"] : undefined;
+  const { claimId, claim } = assembleClaim({ kind: "claim", node, agent, created });
+  const { commit } = writeClaimToOutbox(proposer.path, { claimId, claim }, { identity });
+  console.log(`claimed ${node} (open -> active) by ${agent}`);
+  console.log(`  committed ${commit} on ${proposer.branch} as ${claimId.slice(0, 12)}`);
+}
+
 function cmdRunPass(args) {
   const dryRun = Boolean(args["dry-run"]);
   const identity = { name: args["name"] || undefined, email: args["email"] || undefined };
@@ -165,6 +183,20 @@ function cmdRunPass(args) {
     for (const s of setAside) console.log(`  not folded ${s.proposalId ? s.proposalId.slice(0, 12) : "(?)"}: ${s.reason}`);
     if (commit) console.log(`\nfolded ${folded.length} onto canonical in ${commit}`);
     else console.log(`\nnothing to fold${alreadyFolded.length ? ` (${alreadyFolded.length} already folded)` : ""}`);
+  }
+
+  // Claims (M8): a claim is committer-applied status dispatch; a release is
+  // human-gated and only reported here. A dry-run reads and reports, applying
+  // nothing.
+  const claimReqs = readClaimRequests(fleet);
+  if (dryRun) {
+    for (const r of claimReqs) console.log(`  claim (dry) ${r.claim?.kind ?? "?"} ${r.claim?.node ?? "?"} by ${r.owner}`);
+  } else if (claimReqs.length) {
+    const cp = applyClaims(fleet, { instanceSubdir, identity });
+    for (const a of cp.applied) console.log(`  claimed ${a.node} (${a.from} -> ${a.to}) by ${a.agent}`);
+    for (const p of cp.pending) console.log(`  release pending (needs human accept): ${p.claim?.node} -> ${p.claim?.to} by ${p.owner}`);
+    for (const s of cp.setAside) console.log(`  claim set aside ${s.claimId.slice(0, 12)}: ${s.reason}`);
+    if (cp.commit) console.log(`\napplied ${cp.applied.length} claim(s) in ${cp.commit}`);
   }
 }
 
@@ -213,11 +245,12 @@ function main() {
     else if (command === "setup") cmdSetup(args);
     else if (command === "teardown") cmdTeardown(args);
     else if (command === "propose") cmdPropose(args);
+    else if (command === "claim") cmdClaim(args);
     else if (command === "run-pass") cmdRunPass(args);
     else if (command === "bless") cmdBless(args);
     else if (command === "rebuild-index") cmdRebuildIndex(args);
     else {
-      console.error("usage: cli.mjs <init|setup|teardown|propose|run-pass|bless|rebuild-index> [--flags]");
+      console.error("usage: cli.mjs <init|setup|teardown|propose|claim|run-pass|bless|rebuild-index> [--flags]");
       console.error("  config-driven commands take --canonical <path> (reads .konspekt/fleet/config/fleet.json);");
       console.error("  the flat manifest path takes --root <dir> (legacy).");
       process.exit(2);
