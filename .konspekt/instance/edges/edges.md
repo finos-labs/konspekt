@@ -526,3 +526,4 @@ proposal.
 | e-committer-notes-inplace | notes | node:task-fleet-worktree-committer | noteworthy:nw-fleet-in-place-canonical |  | proposed |
 | e-fleet-notes-skill-drift | notes | node:task-agent-fleet | noteworthy:nw-fleet-proposer-skill-drift |  | proposed |
 | e-fleet-outbox-lifecycle-produces | produces | node:task-fleet-worktree-committer | artifact:artifact-fleet-outbox-lifecycle |  | accepted |
+| e-fleet-confidence-scale-produces | produces | node:task-agent-fleet | artifact:artifact-fleet-confidence-scale |  | proposed |
