@@ -276,3 +276,9 @@ commit order; the channel was not live during that work.
 | task-adoption-path | 9be386b3c8a2b37afd42e636e4bd1bc264a4c76a | setup/init.mjs | 2026-10-14T23:34:56Z |
 | task-adoption-path | 9be386b3c8a2b37afd42e636e4bd1bc264a4c76a | test/setup-init.test.mjs | 2026-10-14T23:34:56Z |
 | task-adoption-path | 9be386b3c8a2b37afd42e636e4bd1bc264a4c76a | setup/README.md | 2026-10-14T23:34:56Z |
+| task-fleet-worktree-committer | 0ac3d9a9dc094efd30cd9a35f93cccf60e2714e4 | .claude/skills/fleet-committer/SKILL.md | 2026-10-22T00:28:11Z |
+| task-agent-fleet | 8816ff7686356101a8774913f94c37d77b85bddc | .claude/skills/fleet-proposer-common/SKILL.md | 2026-10-22T00:28:11Z |
+| task-agent-fleet | 8816ff7686356101a8774913f94c37d77b85bddc | .claude/skills/fleet-presentation-writer/SKILL.md | 2026-10-22T00:28:11Z |
+| task-agent-fleet | 8816ff7686356101a8774913f94c37d77b85bddc | .claude/skills/fleet-spec-writer/SKILL.md | 2026-10-22T00:28:11Z |
+| task-agent-fleet | 8816ff7686356101a8774913f94c37d77b85bddc | .claude/skills/fleet-skill-builder/SKILL.md | 2026-10-22T00:28:11Z |
+| task-fleet-config-driven-setup | 97358eec1b6602f77bd5c950e787b435b2ae83e4 | implementations/fleet/docs/instructions.md | 2026-10-22T00:28:11Z |
