@@ -36,6 +36,13 @@ git object store, and the outbox branches intact. It is supported by
   <FLEET_ROOT>/outbox-<handle>/proposals` should be empty on every outbox. Every
   folded proposal must already be consumed from its outbox (re-fold constraint
   `nw-fleet-refold-clobbers-blessed`).
+- **No live process may hold a worktree.** `git worktree remove` fails with
+  `Permission denied` on Windows if a running process (e.g. a proposer's own
+  editor/agent session) has that worktree as its working directory; `teardownFleet`
+  throws on the first such worktree and stops, leaving the rest registered. Close
+  every proposer session first. If a worktree is left half-removed (its admin
+  entry gone but the directory still on disk), `git worktree prune` clears the
+  entry and the directory is deleted by hand once unlocked.
 
 Run it (library only, no CLI subcommand):
 
