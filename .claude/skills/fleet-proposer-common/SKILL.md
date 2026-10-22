@@ -76,8 +76,20 @@ payload-format fix fed a proposer `body_file` and a `worktree/app` path
      ]
    }
    ```
-   `confidence` is your honest self-estimate in [0,1] — it is the review-queue
-   sort key, so do not inflate it. Every atom must land **wired**: include at
+   `confidence` in [0,1] follows one scale for every role: your estimate of the
+   probability the human accepts this atom **unchanged**. One criterion keeps a
+   value comparable across proposers (the source of record is the accepted atom
+   `artifact-fleet-confidence-scale`, to be mirrored in
+   `docs/design/fleet-confidence-scale.md`). Bands: below 0.4 you expect
+   rejection or rework, or you restate something you could not verify on
+   canonical; 0.4–0.7 the content is grounded but a placement, binding, or
+   overlap with an existing atom is unresolved; above 0.7 every claim is checked
+   against canonical, the binding is direct, and no near-duplicate was found;
+   above 0.9 needs a cited canonical source that settles the content. A value
+   above 0.7 names in the prose which canonical surfaces you checked. Your
+   role-specific taste informs this estimate; it does not redefine the scale. It
+   is the review-queue sort key, so do not inflate it. Every atom must land
+   **wired**: include at
    least one edge whose endpoint is your entity, with a valid domain/range and a
    unique, hyphenated edge id, `review: proposed`.
 6. **Commit to your outbox** via the committer CLI:

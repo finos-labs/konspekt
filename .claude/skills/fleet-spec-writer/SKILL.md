@@ -42,5 +42,7 @@ under `spec/architecture/` is a correct reason for the human to reject it.
 ## Taste
 
 A spec earns its place by removing a real ambiguity or settling a decision, not
-by narrating what the code already says. Name the ambiguity it closes; set
-`confidence` to how settled the content is.
+by narrating what the code already says. Name the ambiguity it closes. Set
+`confidence` on the unified scale in `fleet-proposer-common` (your estimate the
+human accepts the atom unchanged); how settled the content is informs that
+estimate, it does not redefine the scale.

@@ -35,5 +35,7 @@ konspekt entity pointing at where the deck lives), not the slides themselves.
 ## Taste
 
 A deck earns its place by making one thing click, not by restating docs. Pick a
-narrow audience and a single takeaway; set `confidence` by how sure you are the
-deck is worth a reviewer's time, honestly.
+narrow audience and a single takeaway. Set `confidence` on the unified scale in
+`fleet-proposer-common` (your estimate the human accepts the atom unchanged);
+how sure you are the deck is worth a reviewer's time informs that estimate, it
+does not redefine the scale.

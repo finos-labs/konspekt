@@ -39,5 +39,7 @@ surface (skills included) to a neutral location. When you cite a skill's
 
 A skill earns its place by making an agent reliably good at one role with no
 extra prompting — concrete steps, the invariants that matter, the failure modes
-to avoid. A skill that just restates general advice is noise; set `confidence`
-by how much it would actually change an agent's behavior.
+to avoid. A skill that just restates general advice is noise. Set `confidence`
+on the unified scale in `fleet-proposer-common` (your estimate the human accepts
+the atom unchanged); how much it would change an agent's behavior informs that
+estimate, it does not redefine the scale.
