@@ -2,7 +2,7 @@
 id: task-fleet-fold-idempotent-impl
 type: task
 title: Implement idempotent fold in fold.mjs
-status: open
+status: resolved
 summary:
   origin: machine
   pinned: false
@@ -15,7 +15,7 @@ provenance:
   timestamp: 2026-10-22T17:32:42.831Z
   confidence: 0.9
 createdAt: 2026-10-22T17:32:42.831Z
-updatedAt: 2026-10-22T17:32:42.831Z
+updatedAt: 2026-10-22T17:46:00.000Z
 ```
 # Task: Implement idempotent fold in fold.mjs
 

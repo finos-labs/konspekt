@@ -1125,3 +1125,5 @@ proposing agent was not recorded.
 | node:task-fleet-fold-idempotent-impl | status |  | open | 2026-10-22T17:32:42.831Z |  | denisurusov |
 | edge:e-dec-committer-fold-impl | review |  | accepted | 2026-10-22T17:32:42.831Z |  | denisurusov |
 | edge:e-foldimpl-notes-refold | review |  | accepted | 2026-10-22T17:32:42.831Z |  | denisurusov |
+| node:task-fleet-fold-idempotent-impl | status | open | resolved | 2026-10-22T17:46:00.000Z |  | denisurusov |
+| noteworthy:nw-fleet-refold-clobbers-blessed | status | active | lifted | 2026-10-22T17:46:00.000Z |  | denisurusov |

@@ -1,7 +1,7 @@
 ```yaml
 id: nw-fleet-refold-clobbers-blessed
 kind: constraint
-status: active
+status: lifted
 review: accepted
 provenance:
   sourceRef: e8c4e203fcc5f80d60fb6363bf6ee35e5bc48b15
@@ -10,7 +10,7 @@ provenance:
   timestamp: 2026-10-22T12:44:01.258Z
   confidence: 0.9
 createdAt: 2026-10-22T12:44:01.258Z
-updatedAt: 2026-10-22T12:44:01.258Z
+updatedAt: 2026-10-22T17:46:00.000Z
 ```
 # Noteworthy: re-folding an un-consumed outbox clobbers a blessed atom back to proposed
 
