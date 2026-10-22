@@ -288,3 +288,7 @@ commit order; the channel was not live during that work.
 | task-agent-fleet | 532eb07d49fc37fc14397f3351beb934561331cc | .claude/skills/fleet-proposer-common/SKILL.md | 2026-10-22T17:12:00Z |
 | task-fleet-config-driven-setup | 2518cd1d60b418c4ed1ecd0678e2e9ba14423d27 | implementations/fleet/docs/instructions.md | 2026-10-22T17:08:11Z |
 | task-fleet-config-driven-setup | bd0d25071505522a003f05c44f9fba1d9c6b4583 | implementations/fleet/docs/instructions.md | 2026-10-22T17:16:00Z |
+| task-agent-fleet | c541ee158f4efeff6c6eb3ada6929136336cfd07 | .claude/skills/fleet-proposer-common/SKILL.md | 2026-10-22T17:24:00Z |
+| task-agent-fleet | c541ee158f4efeff6c6eb3ada6929136336cfd07 | .claude/skills/fleet-spec-writer/SKILL.md | 2026-10-22T17:24:00Z |
+| task-agent-fleet | c541ee158f4efeff6c6eb3ada6929136336cfd07 | .claude/skills/fleet-presentation-writer/SKILL.md | 2026-10-22T17:24:00Z |
+| task-agent-fleet | c541ee158f4efeff6c6eb3ada6929136336cfd07 | .claude/skills/fleet-skill-builder/SKILL.md | 2026-10-22T17:24:00Z |
