@@ -25,7 +25,7 @@ file is the protocol all roles share.
 - `CANONICAL` — `FLEET_ROOT/canonical`, a konspekt instance you read.
 - `HANDLE` — your agent handle; it equals your outbox branch owner.
 - `APP` — the committer app dir holding `cli.mjs`
-  (`implementations/fleet/worktree/app`).
+  (`implementations/fleet/app`).
 - `AUTHORING` — a scratch dir you own; author your files here, NOT in the
   worktree (so the commit stages only your proposal).
 
@@ -38,15 +38,16 @@ file is the protocol all roles share.
    (`grep -rl "review: accepted" CANONICAL/nodes`) that your atom serves; its id
    is your `binding` and usually the `from` of your wiring edge. If nothing fits,
    use `none:<short-reason>` — an honest recorded decision not to bind.
-3. **Author the entity body** (`AUTHORING/body.md`) in konspekt's **stored**
-   format: a ```yaml fence, then prose.
-   - The fence carries the entity's own fields: `id` (with the right prefix for
-     its type — see your role skill), the type's required fields, `createdAt`,
-     `updatedAt`.
+3. **Author the fence and prose as two files** (the CLI combines them into the
+   stored atom; it has no single-`body` input):
+   - `AUTHORING/fence.md` — the entity's own field lines ONLY: `id` (with the
+     right prefix for its type — see your role skill), the type's required
+     fields, `createdAt`, `updatedAt`. One `field: value` per line, **with no
+     ```yaml delimiters** — the CLI wraps the lines in the fence itself.
    - **Do NOT put `review:` or `provenance:` in the fence.** The committer owns
-     those and injects them at fold; if you write them they are stripped.
-   - After the closing fence, write a short prose body (`# <Type>: <name>` then a
-     paragraph). No edges block in `body.md`.
+     those and injects them at fold; the CLI does not accept them here.
+   - `AUTHORING/prose.md` — the markdown body after the fence (`# <Type>: <name>`
+     then a paragraph). No edges block here.
 4. **Author the source excerpt** (`AUTHORING/source.md`): a short verbatim
    excerpt that justifies the atom. It is content-addressed; the committer writes
    it to `sources/<sha>.md`.
@@ -58,7 +59,8 @@ file is the protocol all roles share.
      "binding": "<accepted-node-id or none:<reason>>",
      "model": "<your model id>",
      "session": "<fleet session id>",
-     "body_file": "body.md",
+     "fence_file": "fence.md",
+     "prose_file": "prose.md",
      "edges": [
        { "id": "e-<short>", "kind": "<kind>", "from": "<type:id>", "to": "<type:id>", "review": "proposed" }
      ]
