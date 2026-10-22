@@ -2,12 +2,12 @@
 id: task-fleet-committer-refold-dedup
 type: task
 title: Idempotent fold — stop re-fold clobbering blessed atoms
-status: open
+status: resolved
 summary:
   origin: machine
   pinned: false
   updatedAt: 2026-10-22T12:44:01.258Z
-review: proposed
+review: accepted
 provenance:
   sourceRef: 5fbdc335b46a98612258524b7ce6b82d08a1eb6d
   contentHash: 5fbdc335b46a98612258524b7ce6b82d08a1eb6d

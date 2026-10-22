@@ -520,10 +520,10 @@ proposal.
 | e-cap-prod-uat-instructions | produces | node:task-fleet-config-driven-setup | artifact:artifact-fleet-uat-instructions |  | proposed |
 | e-review-triage-produces | produces | node:task-review-ergonomics | artifact:artifact-fleet-review-triage-skill |  | accepted |
 | e-agent-fleet-produces-fleet-model-deck | produces | node:task-agent-fleet | artifact:artifact-fleet-model-deck |  | accepted |
-| e-committer-notes-refold | notes | node:task-fleet-worktree-committer | noteworthy:nw-fleet-refold-clobbers-blessed |  | proposed |
-| e-dec-committer-refold-dedup | decomposes | node:task-fleet-worktree-committer | node:task-fleet-committer-refold-dedup |  | proposed |
-| e-dedup-notes-refold | notes | node:task-fleet-committer-refold-dedup | noteworthy:nw-fleet-refold-clobbers-blessed |  | proposed |
-| e-committer-notes-inplace | notes | node:task-fleet-worktree-committer | noteworthy:nw-fleet-in-place-canonical |  | proposed |
-| e-fleet-notes-skill-drift | notes | node:task-agent-fleet | noteworthy:nw-fleet-proposer-skill-drift |  | proposed |
+| e-committer-notes-refold | notes | node:task-fleet-worktree-committer | noteworthy:nw-fleet-refold-clobbers-blessed |  | accepted |
+| e-dec-committer-refold-dedup | decomposes | node:task-fleet-worktree-committer | node:task-fleet-committer-refold-dedup |  | accepted |
+| e-dedup-notes-refold | notes | node:task-fleet-committer-refold-dedup | noteworthy:nw-fleet-refold-clobbers-blessed |  | accepted |
+| e-committer-notes-inplace | notes | node:task-fleet-worktree-committer | noteworthy:nw-fleet-in-place-canonical |  | accepted |
+| e-fleet-notes-skill-drift | notes | node:task-agent-fleet | noteworthy:nw-fleet-proposer-skill-drift |  | accepted |
 | e-fleet-outbox-lifecycle-produces | produces | node:task-fleet-worktree-committer | artifact:artifact-fleet-outbox-lifecycle |  | accepted |
 | e-fleet-confidence-scale-produces | produces | node:task-agent-fleet | artifact:artifact-fleet-confidence-scale |  | accepted |

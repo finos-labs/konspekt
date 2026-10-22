@@ -2,15 +2,15 @@
 id: nw-fleet-proposer-skill-drift
 kind: constraint
 status: active
-review: proposed
+review: accepted
 provenance:
   sourceRef: 3b5ab0896393176672b6a8afb03d17a923ae7db3
   contentHash: 3b5ab0896393176672b6a8afb03d17a923ae7db3
   conversationId: fleet-uat-committer-2026-10-22
-  timestamp: 2026-10-22T17:10:00.000Z
+  timestamp: 2026-10-22T16:35:00.000Z
   confidence: 0.9
-createdAt: 2026-10-22T17:10:00.000Z
-updatedAt: 2026-10-22T17:10:00.000Z
+createdAt: 2026-10-22T16:35:00.000Z
+updatedAt: 2026-10-22T17:01:30Z
 ```
 # Noteworthy: a proposer auto-loads skills from its own drift-prone outbox branch
 

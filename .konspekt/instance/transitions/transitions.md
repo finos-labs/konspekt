@@ -1084,9 +1084,9 @@ proposing agent was not recorded.
 | edge:e-committer-notes-inplace | review |  | proposed | 2026-10-22T12:44:01.258Z |  | claude |
 | node:task-fleet-committer-refold-dedup | status |  | open | 2026-10-22T12:44:01.258Z |  | claude |
 | noteworthy:nw-fleet-refold-clobbers-blessed | status |  | active | 2026-10-22T12:44:01.258Z |  | claude |
-| noteworthy:nw-fleet-proposer-skill-drift | review |  | proposed | 2026-10-22T17:10:00.000Z |  | claude |
-| edge:e-fleet-notes-skill-drift | review |  | proposed | 2026-10-22T17:10:00.000Z |  | claude |
-| noteworthy:nw-fleet-proposer-skill-drift | status |  | active | 2026-10-22T17:10:00.000Z |  | claude |
+| noteworthy:nw-fleet-proposer-skill-drift | review |  | proposed | 2026-10-22T16:35:00.000Z |  | claude |
+| edge:e-fleet-notes-skill-drift | review |  | proposed | 2026-10-22T16:35:00.000Z |  | claude |
+| noteworthy:nw-fleet-proposer-skill-drift | status |  | active | 2026-10-22T16:35:00.000Z |  | claude |
 | artifact:artifact-fleet-outbox-lifecycle | review |  | proposed | 2026-10-22T16:21:19.086Z |  | spec-writer |
 | edge:e-fleet-outbox-lifecycle-produces | review |  | proposed | 2026-10-22T16:21:19.086Z |  | spec-writer |
 | artifact:artifact-fleet-outbox-lifecycle | review | proposed | accepted | 2026-10-22T16:25:00.767Z |  | denisurusov |
@@ -1095,3 +1095,13 @@ proposing agent was not recorded.
 | edge:e-fleet-confidence-scale-produces | review |  | proposed | 2026-10-22T16:56:07.396Z |  | spec-writer |
 | artifact:artifact-fleet-confidence-scale | review | proposed | accepted | 2026-10-22T16:58:03.647Z |  | denisurusov |
 | edge:e-fleet-confidence-scale-produces | review | proposed | accepted | 2026-10-22T16:58:03.647Z |  | denisurusov |
+| noteworthy:nw-fleet-refold-clobbers-blessed | review | proposed | accepted | 2026-10-22T17:00:24Z |  | denisurusov |
+| edge:e-committer-notes-refold | review | proposed | accepted | 2026-10-22T17:00:24Z |  | denisurusov |
+| node:task-fleet-committer-refold-dedup | review | proposed | accepted | 2026-10-22T17:00:39Z |  | denisurusov |
+| edge:e-dec-committer-refold-dedup | review | proposed | accepted | 2026-10-22T17:00:39Z |  | denisurusov |
+| edge:e-dedup-notes-refold | review | proposed | accepted | 2026-10-22T17:00:39Z |  | denisurusov |
+| node:task-fleet-committer-refold-dedup | status | open | resolved | 2026-10-22T17:00:45Z |  | denisurusov |
+| noteworthy:nw-fleet-in-place-canonical | review | proposed | accepted | 2026-10-22T17:01:19Z |  | denisurusov |
+| edge:e-committer-notes-inplace | review | proposed | accepted | 2026-10-22T17:01:19Z |  | denisurusov |
+| noteworthy:nw-fleet-proposer-skill-drift | review | proposed | accepted | 2026-10-22T17:01:30Z |  | denisurusov |
+| edge:e-fleet-notes-skill-drift | review | proposed | accepted | 2026-10-22T17:01:30Z |  | denisurusov |

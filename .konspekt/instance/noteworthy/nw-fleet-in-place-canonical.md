@@ -1,7 +1,7 @@
 ```yaml
 id: nw-fleet-in-place-canonical
 kind: decision
-review: proposed
+review: accepted
 provenance:
   sourceRef: e20f035d350f11acbad9c6e02511b56b80ef8ca6
   contentHash: e20f035d350f11acbad9c6e02511b56b80ef8ca6

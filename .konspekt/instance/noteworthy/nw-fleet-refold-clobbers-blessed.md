@@ -2,7 +2,7 @@
 id: nw-fleet-refold-clobbers-blessed
 kind: constraint
 status: active
-review: proposed
+review: accepted
 provenance:
   sourceRef: e8c4e203fcc5f80d60fb6363bf6ee35e5bc48b15
   contentHash: e8c4e203fcc5f80d60fb6363bf6ee35e5bc48b15
