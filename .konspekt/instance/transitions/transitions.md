@@ -1093,3 +1093,5 @@ proposing agent was not recorded.
 | edge:e-fleet-outbox-lifecycle-produces | review | proposed | accepted | 2026-10-22T16:25:00.767Z |  | denisurusov |
 | artifact:artifact-fleet-confidence-scale | review |  | proposed | 2026-10-22T16:56:07.396Z |  | spec-writer |
 | edge:e-fleet-confidence-scale-produces | review |  | proposed | 2026-10-22T16:56:07.396Z |  | spec-writer |
+| artifact:artifact-fleet-confidence-scale | review | proposed | accepted | 2026-10-22T16:58:03.647Z |  | denisurusov |
+| edge:e-fleet-confidence-scale-produces | review | proposed | accepted | 2026-10-22T16:58:03.647Z |  | denisurusov |

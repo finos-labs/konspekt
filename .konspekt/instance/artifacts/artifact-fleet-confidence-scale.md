@@ -5,7 +5,7 @@ kind: doc
 location: docs/design/fleet-confidence-scale.md
 createdAt: 2026-10-22T16:56:02Z
 updatedAt: 2026-10-22T16:56:02Z
-review: proposed
+review: accepted
 provenance:
   sourceRef: fbf04d9c2e5ef1d7ca1b0c7dd9368742572caf24
   contentHash: fbf04d9c2e5ef1d7ca1b0c7dd9368742572caf24
