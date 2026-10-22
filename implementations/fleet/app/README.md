@@ -39,6 +39,7 @@ in-memory state between commands.
 | `run-pass --dry-run` | operator | before folding | read every outbox, print each proposal's verify verdict and the claims that would apply, write nothing |
 | `run-pass` | operator | to fold | fold the verified set onto canonical as `review: proposed` and apply claims (advisory `open → active`, attributed to the agent) |
 | `rebuild-index` | operator | after a fold, or after a crash | regenerate the derived pending/accepted/rejected queue from canonical |
+| `review` | operator | before blessing | present the pending queue lowest-confidence first, clustered with near-duplicate hints (read-only, no model) |
 | `bless --accept … --reject …` | operator | after the human decides | one field-only commit per atom: flip `review`, append the decision record |
 | `accept-release --claim … --by …` | operator | to apply a pending release | flip the worked node `active → resolved\|abandoned`, attributed to the human acceptor |
 | `teardown` | operator | to dismantle | remove the proposer worktrees (keeps canonical, the object store, and the outbox branches) |
@@ -89,9 +90,12 @@ is the execution order; steps map to `fleet-spec.md` § Committer protocol.
 5. **Index** — operator runs `rebuild-index`. → `proposed-ref.mjs`
    (`rebuildIndex`) reads canonical (`lib/conformance.mjs loadInstance`) joined
    to the fold log, and materializes pending/accepted/rejected.
-6. **Present** — the human reads the queue and names a subset to admit. (The
-   read-only review-assistant seam that would cluster and summarize here is M9,
-   not yet built; today the operator reads the index directly.)
+6. **Present** — operator runs `review`. → `review-assistant.mjs`
+   (`reviewDigest` / `renderReviewPrompt`) reads the index and canonical and
+   presents the pending queue lowest-confidence first, clustered by type, with
+   near-duplicate hints. This is the read-only M9 seam: it writes nothing and
+   calls no model (an LLM assistant may consume `reviewDigest` for a richer
+   summary). The human then names a subset to admit.
 7. **Bless / reject** — operator runs `bless` with the human's `--accept` /
    `--reject` ids. → `committer.mjs` (`blessPass`) → `bless.mjs` (`decideAtom`:
    flip `review` on the entity and its edges; append to
@@ -147,8 +151,10 @@ N worktrees and assert the folded/blessed tree passes `lib/validate.mjs`.
 
 ## Status
 
-M1–M7 are implemented: `init`, `propose`, `run-pass` (dry + fold),
-`rebuild-index`, and `bless`. M8 (claims / claim-release as grow-only
-proposals) and M9 (the read-only review-assistant seam) are planned
-(`../docs/DESIGN.md` § Milestones); the `review-assistant.mjs` listed there does
-not exist yet.
+M1–M9 are implemented. M1–M7: `init`/`setup`, `propose`, `run-pass` (dry +
+fold, now idempotent), `rebuild-index`, and `bless`, plus the config-driven
+`setup`/`teardown` path (`task-fleet-config-driven-setup`). M8: `claim`
+(committer-applied `open → active`) and `release` / `accept-release`
+(human-gated `active → resolved|abandoned`), grow-only, no new primitive. M9:
+the read-only review-assistant seam (`review-assistant.mjs`, the `review`
+command) — it presents the queue and calls no model.

@@ -22,6 +22,7 @@ import { assembleProposal, proposeToOutbox } from "./outbox.mjs";
 import { verifyPass, foldPass, blessPass } from "./committer.mjs";
 import { assembleClaim, writeClaimToOutbox, readClaimRequests, applyClaims, acceptRelease } from "./claims.mjs";
 import { rebuildIndex } from "./proposed-ref.mjs";
+import { reviewDigest, renderReviewPrompt } from "./review-assistant.mjs";
 
 function parseArgs(argv) {
   const out = { _: [] };
@@ -267,6 +268,16 @@ function cmdRebuildIndex(args) {
   }
 }
 
+// The read-only review-assistant seam (M9): present the pending queue to the
+// human, lowest-confidence first, with near-duplicate hints. Writes nothing and
+// calls no model.
+function cmdReview(args) {
+  const instanceSubdir = args["instance-subdir"] && args["instance-subdir"] !== true ? args["instance-subdir"] : "";
+  const { fleet } = attach(args);
+  const digest = reviewDigest(fleet.canonicalPath, { instanceSubdir });
+  console.log(renderReviewPrompt(digest));
+}
+
 function main() {
   const argv = process.argv.slice(2);
   const command = argv[0];
@@ -280,10 +291,11 @@ function main() {
     else if (command === "release") cmdRelease(args);
     else if (command === "accept-release") cmdAcceptRelease(args);
     else if (command === "run-pass") cmdRunPass(args);
+    else if (command === "review") cmdReview(args);
     else if (command === "bless") cmdBless(args);
     else if (command === "rebuild-index") cmdRebuildIndex(args);
     else {
-      console.error("usage: cli.mjs <init|setup|teardown|propose|claim|release|accept-release|run-pass|bless|rebuild-index> [--flags]");
+      console.error("usage: cli.mjs <init|setup|teardown|propose|claim|release|accept-release|run-pass|review|bless|rebuild-index> [--flags]");
       console.error("  config-driven commands take --canonical <path> (reads .konspekt/fleet/config/fleet.json);");
       console.error("  the flat manifest path takes --root <dir> (legacy).");
       process.exit(2);
