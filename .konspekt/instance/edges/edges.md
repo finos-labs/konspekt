@@ -509,3 +509,4 @@ proposal.
 | e-not-fleet-configdriver | notes | node:task-agent-fleet | noteworthy:nw-fleet-config-is-setup-driver |  | accepted |
 | e-dec-fleet-configsetup | decomposes | node:task-agent-fleet | node:task-fleet-config-driven-setup |  | accepted |
 | e-not-adoption-importclosure | notes | node:task-adoption-path | noteworthy:nw-component-ships-import-closure |  | accepted |
+| e-fleet-recovery-produces | produces | node:task-fleet-worktree-committer | artifact:artifact-fleet-recovery |  | proposed |
