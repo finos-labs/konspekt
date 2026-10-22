@@ -131,10 +131,20 @@ fi
 # The reason names the session_id so the maintainer can write the marker; the
 # marker must carry the bound entity id, so recording it is a real act of
 # binding, not a rubber stamp.
+# The policy clause follows project.md `binding:`; a missing field reads as
+# `required`, the value this gate enforces either way (a marker is always needed).
+binding="$(grep -m1 -E '^binding:[[:space:]]*[A-Za-z]+[[:space:]]*$' \
+  "$project_dir/.konspekt/instance/project.md" 2>/dev/null \
+  | sed -E 's/^binding:[[:space:]]*//; s/[[:space:]]*$//' || true)"
+if [[ "$binding" == "optional" ]]; then
+  policy="binding: optional — a decline is legal, recorded as a waypoint whose id goes in the marker"
+else
+  policy="binding: required — 'none' is not legal"
+fi
 reason="Conversation-binding gate (OPERATING.md § Conversation binding): no binding "
 reason+="recorded for this session, so file mutations are blocked. Establish the "
 reason+="active entity WITH THE HUMAN first (ask which entity this conversation "
-reason+="attaches to; binding: required — 'none' is not legal). Once the human has "
+reason+="attaches to; $policy). Once the human has "
 reason+="confirmed the entity, record it and retry:  "
 reason+="mkdir -p \\\"\$CLAUDE_PROJECT_DIR/.claude/.binding\\\" && printf '%s\\\\n' "
 reason+="'<entity-id>' > \\\"\$CLAUDE_PROJECT_DIR/.claude/.binding/$session_id\\\"  "

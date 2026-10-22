@@ -22,16 +22,18 @@ sit outside it.
 
     .konspekt/                       # the konspekt umbrella: portable unit + envelope + tooling
     ├─ instance/                     # the portable konspekt instance (ports across platforms)
-    │  ├─ project.md                 # root: goal + summary
+    │  ├─ project.md                 # root: goal + summary + policy (binding: required, basis: proposed)
     │  ├─ nodes/ concepts/ noteworthy/ artifacts/ waypoints/
     │  ├─ edges/edges.md             # the single edge table (starts empty)
     │  ├─ transitions/transitions.md # the status-transition log (starts empty)
-    │  └─ sources/                   # content-addressed provenance excerpts (+ README)
+    │  ├─ sources/                   # content-addressed provenance excerpts (+ README)
+    │  └─ changes/ commands/         # persona provenance logs, seeded empty (only with --persona engineer)
     ├─ OPERATING.md                  # this project's operating policy (loop, triggers, binding)
     ├─ NOTES.md                      # human scratchpad (the `note:` convention)
     ├─ notify.yml                    # notify-component config seed (empty subscriptions)
     ├─ lib/                          # installed tooling: every script the adopter runs
     │  ├─ conformance.mjs validate.mjs load-personas.mjs authority.mjs  # the checker closure
+    │  ├─ binding-audit.mjs                                             # flags commits bound to no entity
     │  └─ konspekt-notify.mjs                                           # the change notifier
     └─ spec/personas/<layer>/        # where the checker looks for a persona registry (optional; vendor with --vendor-persona)
     .claude/                         # Claude Code operating layer (paths fixed by Claude Code)
@@ -42,13 +44,15 @@ sit outside it.
     └─ skills/<name>/SKILL.md        # the required skills (listed below)
     .github/workflows/               # CI workflows only (GitHub fixes this location)
     ├─ konspekt-conformance.yml      # runs the checker on every push/PR touching the instance
+    ├─ konspekt-binding-audit.yml    # runs the binding audit on every push/PR
     └─ konspekt-notify.yml           # opens an issue when an entity changes review state
     AGENTS.md  CLAUDE.md  GEMINI.md  # agent-instruction files (stanza + pointers)
 
 **Installed tooling lives under `.konspekt/lib/`.** Every script the adopter
 executes — the conformance checker's full import closure
-(`conformance.mjs`, `validate.mjs`, `load-personas.mjs`, `authority.mjs`) and the
-change notifier (`konspekt-notify.mjs`) — is installed there, so nothing an
+(`conformance.mjs`, `validate.mjs`, `load-personas.mjs`, `authority.mjs`), the
+binding audit (`binding-audit.mjs`), and the change notifier
+(`konspekt-notify.mjs`) — is installed there, so nothing an
 adopter runs sits at the repo root or under `.github/`. `.github/` holds CI
 workflows only, because GitHub fixes that path; the workflows invoke the scripts
 by their `.konspekt/lib/` path. The checker resolves persona registries at
@@ -149,7 +153,19 @@ persona's registry is not vendored automatically (see the persona note above),
 so a layer you activate degrades to core checking until you vendor its registry.
 
 Add `--persona <layer>` (repeatable, or comma-separated) to activate a persona
-layer — it writes a `personas: [...]` line into `project.md`.
+layer — it writes a `personas: [...]` line into `project.md` and seeds the
+provenance logs the layer's registry declares (for `engineer`:
+`changes/changed.md` and `commands/executed.md`, as empty tables). The Claude
+Code SessionStart hook injects the layer's operating brief from
+`.konspekt/spec/personas/<layer>/AGENTS.md`, so vendor the layer
+(`--vendor-persona`) if you use Claude Code; without it the hook warns that the
+brief is missing.
+
+`project.md` is seeded with `binding: required` (every conversation binds to an
+entity; `optional` permits a recorded decline) and `basis: proposed` (work may
+bind to a proposed entity; `accepted` requires acceptance first). The shipped
+hooks read both fields, and `OPERATING.md` § Conversation binding and
+§ Acceptance before work describe them.
 
 Review what it wrote, then commit — `git add .` after `--full`, or the base
 paths otherwise:
@@ -243,6 +259,23 @@ installing into another project looks like:
   fewer makes the installed checker crash on its first import with
   `ERR_MODULE_NOT_FOUND` before it reads a thing. Same `workflows` scope caveat
   as above.
+
+  It also ships the **binding audit** (`.konspekt/lib/binding-audit.mjs` and
+  `konspekt-binding-audit.yml`): every commit after the one that added
+  `project.md` that changed files outside `.konspekt/instance/` must be bound to
+  an entity by a row in `changes/changed.md`. A commit that only touches files
+  the kit installs (`.konspekt/`, `.claude/hooks/`, `.claude/skills/`,
+  `.claude/settings.json`, `.github/workflows/konspekt-*`) counts as
+  bookkeeping and needs no row. It needs no configuration. It
+  skips, and passes, unless `project.md` is `binding: required` and the instance
+  has a changed-code log (seeded by `--persona engineer`). To start it later or
+  exempt a commit, write `.konspekt/binding-audit.json`
+  (`{"baseline": "<sha>", "allow": ["<sha>"]}`).
+
+  `--check` also reports a `project.md` without `binding:` or `basis:` (an
+  instance scaffolded before those fields were seeded) and fails; `--add`
+  prints the same note. The scaffolder never edits an existing `project.md`, so
+  add the two lines by hand.
 
   Fails on **errors only**. `edge-domain-range` and the status-vocabulary
   warnings are the open subject of `spec/architecture/SCHEMA-RECONCILIATION.md`,

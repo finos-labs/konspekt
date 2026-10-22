@@ -1130,3 +1130,5 @@ proposing agent was not recorded.
 | node:task-fleet-config-driven-setup | status | open | resolved | 2026-10-22T18:08:00.000Z |  | denisurusov |
 | node:task-fleet-worktree-committer | status | open | resolved | 2026-10-22T18:45:00.000Z |  | denisurusov |
 | node:task-vendor-neutral-interop | status | open | resolved | 2026-10-22T19:00:00.000Z |  | denisurusov |
+| noteworthy:nw-adopter-tooling-zero-config | review |  | proposed | 2026-10-15T01:09:37Z | f8a5f0f62d7fe578010d0dcf3e6e268dba82f174 | claude |
+| edge:e-not-adoption-zeroconfig | review |  | proposed | 2026-10-15T01:09:37Z | f8a5f0f62d7fe578010d0dcf3e6e268dba82f174 | claude |

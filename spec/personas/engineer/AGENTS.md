@@ -55,8 +55,10 @@ every substantive deliverable — code, docs, presentation, releases, announceme
 — must still resolve to an entity, and every non-bookkeeping commit must carry a
 changed-code row that binds it. Do not read "a maintenance command is exempt from
 command-provenance" as "this kind of work need not be captured." The forcing
-function is `konspekt-atom-readiness`; the detection surface is
-`tools/binding-audit.mjs`.
+function is `konspekt-atom-readiness`; the detection surface is the binding
+audit (`tools/binding-audit.mjs` in the standard's repository,
+`.konspekt/lib/binding-audit.mjs` in a repository that installed the
+`conformance` component).
 
 ## Changed-code rows and acceptance before work
 

@@ -10,7 +10,7 @@
 //
 // Run:  node test/setup-init.test.mjs   (exit 0 = pass, 1 = fail)
 
-import { mkdtempSync, existsSync, rmSync, appendFileSync } from "node:fs";
+import { mkdtempSync, existsSync, rmSync, appendFileSync, readFileSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, dirname } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
@@ -42,6 +42,7 @@ const EXPECTED = [
 const failures = [];
 const tmp = mkdtempSync(join(tmpdir(), "konspekt-setup-"));
 const tmp2 = mkdtempSync(join(tmpdir(), "konspekt-persona-"));
+const tmp3 = mkdtempSync(join(tmpdir(), "konspekt-audit-"));
 
 try {
   // First scaffold must succeed (exit 0).
@@ -69,6 +70,17 @@ try {
     failures.push(`could not load scaffolded instance: ${e.message}`);
   }
 
+  // The seed carries the policy fields the shipped Claude Code hooks read, and
+  // OPERATING.md carries the section those hooks cite by name. Without them the
+  // hooks point at a section that does not exist and the basis check is inert.
+  const projectMd = readFileSync(join(tmp, ".konspekt", "instance", "project.md"), "utf8");
+  if (!/^binding: required$/m.test(projectMd)) failures.push("project.md seed lacks `binding: required`");
+  if (!/^basis: proposed$/m.test(projectMd)) failures.push("project.md seed lacks `basis: proposed`");
+  const operatingMd = readFileSync(join(tmp, ".konspekt", "OPERATING.md"), "utf8");
+  if (!operatingMd.includes("## Conversation binding")) failures.push("OPERATING.md seed lacks § Conversation binding");
+  // No persona layer, no persona logs.
+  if (existsSync(join(tmp, ".konspekt", "instance", "changes"))) failures.push("changes/ seeded without a persona layer");
+
   // A second scaffold into the same directory must refuse (non-zero exit),
   // rather than clobber the instance that is already there.
   let refused = false;
@@ -93,6 +105,12 @@ try {
       { cwd: tmp2, stdio: "pipe" });
     execFileSync("node", [INIT, "--add", "conformance", "--force"], { cwd: tmp2, stdio: "pipe" });
 
+    // The engineer brief tells the agent to append to these logs; they are
+    // seeded empty so the first append finds the file.
+    for (const f of ["changes/changed.md", "commands/executed.md"]) {
+      if (!existsSync(join(tmp2, ".konspekt", "instance", f))) failures.push(`engineer scaffold did not seed ${f}`);
+    }
+
     // Before vendoring: engineer is activated but unresolved — core-only.
     const before = checkerJson(tmp2);
     if (before.meta.personas.includes("engineer")) {
@@ -110,8 +128,11 @@ try {
       }
     }
 
-    // After vendoring: the checker resolves the layer, no persona-not-loaded.
+    // After vendoring: the checker resolves the layer, no persona-not-loaded,
+    // and the seeded empty logs raise no errors.
     const after = checkerJson(tmp2);
+    const afterErrs = after.problems.filter((p) => p.severity === "error");
+    if (afterErrs.length) failures.push(`engineer scaffold not conformant: ${afterErrs.map((p) => p.code).join(", ")}`);
     if (!after.meta.personas.includes("engineer")) {
       failures.push("engineer not resolved after vendoring its registry");
     }
@@ -132,9 +153,68 @@ try {
   } catch (e) {
     failures.push(`vendor-persona block threw: ${e.message}\n${e.stderr || e.stdout || ""}`);
   }
+
+  // --check reports a project.md that predates the seeded policy fields (an
+  // instance scaffolded before binding/basis were written) and fails.
+  const pm = join(tmp, ".konspekt", "instance", "project.md");
+  writeFileSync(pm, readFileSync(pm, "utf8").replace(/^binding:.*\n/m, "").replace(/^basis:.*\n/m, ""));
+  let policyOut = "";
+  let policyFailed = false;
+  try {
+    policyOut = execFileSync("node", [INIT, "--check"], { cwd: tmp, encoding: "utf8", stdio: "pipe" });
+  } catch (e) {
+    policyFailed = true;
+    policyOut = String(e.stdout || "");
+  }
+  if (!policyFailed) failures.push("--check did not fail on a project.md without binding/basis");
+  if (!/no `binding:` field/.test(policyOut) || !/no `basis:` field/.test(policyOut)) {
+    failures.push(`--check did not name both missing policy fields:\n${policyOut}`);
+  }
+
+  // The conformance component ships the binding audit; it runs from the
+  // adopter's .konspekt/lib/ with no configuration. Unbound work after the
+  // adoption commit fails it; a changed-code row binding that work passes it.
+  try {
+    const git = (...a) => execFileSync("git", a, { cwd: tmp3, stdio: "pipe", encoding: "utf8",
+      env: { ...process.env, GIT_AUTHOR_NAME: "t", GIT_AUTHOR_EMAIL: "t@t", GIT_COMMITTER_NAME: "t", GIT_COMMITTER_EMAIL: "t@t" } });
+    execFileSync("node", [INIT, "--name", "Audit", "--goal", "g", "--persona", "engineer"], { cwd: tmp3, stdio: "pipe" });
+    execFileSync("node", [INIT, "--add", "conformance"], { cwd: tmp3, stdio: "pipe" });
+    const audit = join(tmp3, ".konspekt", "lib", "binding-audit.mjs");
+    if (!existsSync(audit)) throw new Error("conformance did not install .konspekt/lib/binding-audit.mjs");
+    const runAudit = () => {
+      try { execFileSync("node", [audit], { cwd: tmp3, stdio: "pipe" }); return 0; }
+      catch (e) { return e.status; }
+    };
+
+    if (runAudit() !== 0) failures.push("audit did not skip before anything was committed");
+    git("init", "-q");
+    git("add", ".");
+    git("commit", "-q", "-m", "adopt konspekt");
+    writeFileSync(join(tmp3, "app.txt"), "work\n");
+    git("add", "app.txt");
+    git("commit", "-q", "-m", "task-x: work");
+    if (runAudit() !== 1) failures.push("audit did not fail on an unbound commit after adoption");
+
+    const sha = git("rev-parse", "HEAD").trim();
+    appendFileSync(join(tmp3, ".konspekt", "instance", "changes", "changed.md"),
+      `| task-x | ${sha} | app.txt | 2026-01-01T00:00:00Z |\n`);
+    git("add", ".");
+    git("commit", "-q", "-m", "task-x: changed-code rows");
+    if (runAudit() !== 0) failures.push("audit did not pass once the commit was bound");
+
+    // A commit that only installs or updates kit files is bookkeeping in an
+    // adopter repo, not unbound work.
+    execFileSync("node", [INIT, "--add", "claude-code"], { cwd: tmp3, stdio: "pipe" });
+    git("add", ".");
+    git("commit", "-q", "-m", "install claude-code component");
+    if (runAudit() !== 0) failures.push("audit reported a kit-only commit as unbound");
+  } catch (e) {
+    failures.push(`binding-audit block threw: ${e.message}\n${e.stderr || e.stdout || ""}`);
+  }
 } finally {
   rmSync(tmp, { recursive: true, force: true });
   rmSync(tmp2, { recursive: true, force: true });
+  rmSync(tmp3, { recursive: true, force: true });
 }
 
 if (failures.length) {
@@ -142,4 +222,4 @@ if (failures.length) {
   for (const f of failures) console.error("  - " + f);
   process.exit(1);
 }
-console.log(`ok setup/init.mjs — scaffolds ${EXPECTED.length} files in place, refuses to clobber, and vendors persona layers`);
+console.log(`ok setup/init.mjs — scaffolds ${EXPECTED.length} files in place, refuses to clobber, vendors persona layers, reports missing policy fields, and ships a working binding audit`);

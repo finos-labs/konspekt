@@ -7,6 +7,8 @@ summary:
   pinned: false
   updatedAt: {{TS}}
 {{PERSONAS}}
+binding: required
+basis: proposed
 createdAt: {{TS}}
 updatedAt: {{TS}}
 ```

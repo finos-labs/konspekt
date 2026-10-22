@@ -1,0 +1,60 @@
+name: konspekt binding audit
+
+# Detects unbound work for an instance running binding: required
+# (spec/architecture/BINDING.md). Every commit after the adoption commit that
+# changed files outside .konspekt/instance/ must be bound to an entity by a row
+# in the changed-code log (.konspekt/instance/changes/changed.md). A commit that
+# binds to nothing fails the job. A commit that only touches files the setup kit
+# installs (.konspekt/, .claude/hooks/, .claude/skills/, .claude/settings.json,
+# .github/workflows/konspekt-*) is bookkeeping and needs no row.
+#
+# No configuration needed. The audit skips (and passes) when project.md is not
+# `binding: required` or the instance has no changed-code log. To start the audit
+# later than the adoption commit, or to exempt a commit, write
+# .konspekt/binding-audit.json: {"baseline": "<sha>", "allow": ["<sha>"]}.
+#
+# Detection after the fact, not a persist gate. Node-only, no network, no
+# dependencies.
+#
+# Installed by `node setup/init.mjs --add conformance`. Do not edit in place —
+# edit setup/components/conformance/binding-audit-workflow.yml and re-run with
+# --force.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: konspekt-binding-audit-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # the audit walks baseline..HEAD; needs full history
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Binding audit
+        run: |
+          set -o pipefail
+          node .konspekt/lib/binding-audit.mjs | tee "$RUNNER_TEMP/audit.txt"
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "### konspekt binding audit" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          cat "$RUNNER_TEMP/audit.txt" >> "$GITHUB_STEP_SUMMARY" 2>/dev/null || echo "(no output)" >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
