@@ -300,3 +300,4 @@ commit order; the channel was not live during that work.
 | task-fleet-fold-idempotent-impl | 76d4e25cb11bbf205259aa188d8e2177e32390c4 | implementations/fleet/app/cli.mjs | 2026-10-22T17:45:00Z |
 | task-fleet-fold-idempotent-impl | 76d4e25cb11bbf205259aa188d8e2177e32390c4 | implementations/fleet/app/test/fold.test.mjs | 2026-10-22T17:45:00Z |
 | task-fleet-fold-idempotent-impl | 76d4e25cb11bbf205259aa188d8e2177e32390c4 | docs/design/fleet-outbox-lifecycle.md | 2026-10-22T17:45:00Z |
+| task-fleet-fold-idempotent-impl | bb2162a88a84e460d16a04227f2e8a34c8edec6d | ROADMAP.md | 2026-10-22T17:47:00Z |
