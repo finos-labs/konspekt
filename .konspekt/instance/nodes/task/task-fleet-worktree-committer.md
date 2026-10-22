@@ -2,7 +2,7 @@
 id: task-fleet-worktree-committer
 type: task
 title: Worktree-outbox fleet committer implementation
-status: open
+status: resolved
 summary:
   origin: machine
   pinned: false
@@ -15,7 +15,7 @@ provenance:
   timestamp: 2026-10-10T16:00:00Z
   confidence: 0.8
 createdAt: 2026-10-10T16:00:00Z
-updatedAt: 2026-10-10T16:00:00Z
+updatedAt: 2026-10-22T18:45:00.000Z
 ```
 # Task: Worktree-outbox fleet committer implementation
 

@@ -1047,5 +1047,88 @@ proposing agent was not recorded.
 | edge:e-not-adoption-importclosure | review |  | proposed | 2026-10-14T01:44:02Z |  | claude |
 | noteworthy:nw-component-ships-import-closure | review | proposed | accepted | 2026-10-15T00:02:27Z |  | denisurusov |
 | edge:e-not-adoption-importclosure | review | proposed | accepted | 2026-10-15T00:02:27Z |  | denisurusov |
+| artifact:artifact-fleet-recovery | review |  | proposed | 2026-10-22T01:47:58.161Z |  | spec-writer |
+| edge:e-fleet-recovery-produces | review |  | proposed | 2026-10-22T01:47:58.161Z |  | spec-writer |
+| artifact:artifact-fleet-recovery | review | proposed | accepted | 2026-10-22T01:53:21.395Z |  | denisurusov |
+| edge:e-fleet-recovery-produces | review | proposed | accepted | 2026-10-22T01:53:21.395Z |  | denisurusov |
+| noteworthy:nw-fleet-proposer-payload-fence-prose | review |  | proposed | 2026-10-22T02:16:59.291Z |  | claude |
+| edge:e-cap-notes-payload | review |  | proposed | 2026-10-22T02:16:59.291Z |  | claude |
+| noteworthy:nw-fleet-proposer-is-declared-principal | review |  | proposed | 2026-10-22T02:16:59.291Z |  | claude |
+| edge:e-cap-notes-principal | review |  | proposed | 2026-10-22T02:16:59.291Z |  | claude |
+| artifact:artifact-fleet-committer-skill | review |  | proposed | 2026-10-22T02:16:59.291Z |  | claude |
+| edge:e-cap-prod-committer-skill | review |  | proposed | 2026-10-22T02:16:59.291Z |  | claude |
+| artifact:artifact-fleet-proposer-common-skill | review |  | proposed | 2026-10-22T02:16:59.291Z |  | claude |
+| edge:e-cap-prod-proposer-common | review |  | proposed | 2026-10-22T02:16:59.291Z |  | claude |
+| artifact:artifact-fleet-presentation-writer-skill | review |  | proposed | 2026-10-22T02:16:59.291Z |  | claude |
+| edge:e-cap-prod-presentation-writer | review |  | proposed | 2026-10-22T02:16:59.291Z |  | claude |
+| artifact:artifact-fleet-spec-writer-skill | review |  | proposed | 2026-10-22T02:16:59.291Z |  | claude |
+| edge:e-cap-prod-spec-writer | review |  | proposed | 2026-10-22T02:16:59.291Z |  | claude |
+| artifact:artifact-fleet-skill-builder-skill | review |  | proposed | 2026-10-22T02:16:59.291Z |  | claude |
+| edge:e-cap-prod-skill-builder | review |  | proposed | 2026-10-22T02:16:59.291Z |  | claude |
+| artifact:artifact-fleet-uat-instructions | review |  | proposed | 2026-10-22T02:16:59.291Z |  | claude |
+| edge:e-cap-prod-uat-instructions | review |  | proposed | 2026-10-22T02:16:59.291Z |  | claude |
+| artifact:artifact-fleet-review-triage-skill | review |  | proposed | 2026-10-22T02:19:07.648Z |  | skill-builder |
+| edge:e-review-triage-produces | review |  | proposed | 2026-10-22T02:19:07.648Z |  | skill-builder |
+| artifact:artifact-fleet-model-deck | review |  | proposed | 2026-10-22T02:19:11.372Z |  | presentation-writer |
+| edge:e-agent-fleet-produces-fleet-model-deck | review |  | proposed | 2026-10-22T02:19:11.372Z |  | presentation-writer |
+| artifact:artifact-fleet-review-triage-skill | review | proposed | accepted | 2026-10-22T02:23:12.507Z |  | denisurusov |
+| edge:e-review-triage-produces | review | proposed | accepted | 2026-10-22T02:23:12.507Z |  | denisurusov |
+| artifact:artifact-fleet-model-deck | review | proposed | accepted | 2026-10-22T02:23:12.690Z |  | denisurusov |
+| edge:e-agent-fleet-produces-fleet-model-deck | review | proposed | accepted | 2026-10-22T02:23:12.690Z |  | denisurusov |
+| noteworthy:nw-fleet-refold-clobbers-blessed | review |  | proposed | 2026-10-22T12:44:01.258Z |  | claude |
+| node:task-fleet-committer-refold-dedup | review |  | proposed | 2026-10-22T12:44:01.258Z |  | claude |
+| noteworthy:nw-fleet-in-place-canonical | review |  | proposed | 2026-10-22T12:44:01.258Z |  | claude |
+| edge:e-committer-notes-refold | review |  | proposed | 2026-10-22T12:44:01.258Z |  | claude |
+| edge:e-dec-committer-refold-dedup | review |  | proposed | 2026-10-22T12:44:01.258Z |  | claude |
+| edge:e-dedup-notes-refold | review |  | proposed | 2026-10-22T12:44:01.258Z |  | claude |
+| edge:e-committer-notes-inplace | review |  | proposed | 2026-10-22T12:44:01.258Z |  | claude |
+| node:task-fleet-committer-refold-dedup | status |  | open | 2026-10-22T12:44:01.258Z |  | claude |
+| noteworthy:nw-fleet-refold-clobbers-blessed | status |  | active | 2026-10-22T12:44:01.258Z |  | claude |
+| noteworthy:nw-fleet-proposer-skill-drift | review |  | proposed | 2026-10-22T16:35:00.000Z |  | claude |
+| edge:e-fleet-notes-skill-drift | review |  | proposed | 2026-10-22T16:35:00.000Z |  | claude |
+| noteworthy:nw-fleet-proposer-skill-drift | status |  | active | 2026-10-22T16:35:00.000Z |  | claude |
+| artifact:artifact-fleet-outbox-lifecycle | review |  | proposed | 2026-10-22T16:21:19.086Z |  | spec-writer |
+| edge:e-fleet-outbox-lifecycle-produces | review |  | proposed | 2026-10-22T16:21:19.086Z |  | spec-writer |
+| artifact:artifact-fleet-outbox-lifecycle | review | proposed | accepted | 2026-10-22T16:25:00.767Z |  | denisurusov |
+| edge:e-fleet-outbox-lifecycle-produces | review | proposed | accepted | 2026-10-22T16:25:00.767Z |  | denisurusov |
+| artifact:artifact-fleet-confidence-scale | review |  | proposed | 2026-10-22T16:56:07.396Z |  | spec-writer |
+| edge:e-fleet-confidence-scale-produces | review |  | proposed | 2026-10-22T16:56:07.396Z |  | spec-writer |
+| artifact:artifact-fleet-confidence-scale | review | proposed | accepted | 2026-10-22T16:58:03.647Z |  | denisurusov |
+| edge:e-fleet-confidence-scale-produces | review | proposed | accepted | 2026-10-22T16:58:03.647Z |  | denisurusov |
+| noteworthy:nw-fleet-refold-clobbers-blessed | review | proposed | accepted | 2026-10-22T17:00:24Z |  | denisurusov |
+| edge:e-committer-notes-refold | review | proposed | accepted | 2026-10-22T17:00:24Z |  | denisurusov |
+| node:task-fleet-committer-refold-dedup | review | proposed | accepted | 2026-10-22T17:00:39Z |  | denisurusov |
+| edge:e-dec-committer-refold-dedup | review | proposed | accepted | 2026-10-22T17:00:39Z |  | denisurusov |
+| edge:e-dedup-notes-refold | review | proposed | accepted | 2026-10-22T17:00:39Z |  | denisurusov |
+| node:task-fleet-committer-refold-dedup | status | open | resolved | 2026-10-22T17:00:45Z |  | denisurusov |
+| noteworthy:nw-fleet-in-place-canonical | review | proposed | accepted | 2026-10-22T17:01:19Z |  | denisurusov |
+| edge:e-committer-notes-inplace | review | proposed | accepted | 2026-10-22T17:01:19Z |  | denisurusov |
+| noteworthy:nw-fleet-proposer-skill-drift | review | proposed | accepted | 2026-10-22T17:01:30Z |  | denisurusov |
+| edge:e-fleet-notes-skill-drift | review | proposed | accepted | 2026-10-22T17:01:30Z |  | denisurusov |
+| artifact:artifact-fleet-committer-skill | review | proposed | accepted | 2026-10-22T17:32:42.831Z |  | denisurusov |
+| artifact:artifact-fleet-proposer-common-skill | review | proposed | accepted | 2026-10-22T17:32:42.831Z |  | denisurusov |
+| artifact:artifact-fleet-presentation-writer-skill | review | proposed | accepted | 2026-10-22T17:32:42.831Z |  | denisurusov |
+| artifact:artifact-fleet-spec-writer-skill | review | proposed | accepted | 2026-10-22T17:32:42.831Z |  | denisurusov |
+| artifact:artifact-fleet-skill-builder-skill | review | proposed | accepted | 2026-10-22T17:32:42.831Z |  | denisurusov |
+| artifact:artifact-fleet-uat-instructions | review | proposed | accepted | 2026-10-22T17:32:42.831Z |  | denisurusov |
+| noteworthy:nw-fleet-proposer-payload-fence-prose | review | proposed | accepted | 2026-10-22T17:32:42.831Z |  | denisurusov |
+| noteworthy:nw-fleet-proposer-is-declared-principal | review | proposed | accepted | 2026-10-22T17:32:42.831Z |  | denisurusov |
+| edge:e-cap-prod-committer-skill | review | proposed | accepted | 2026-10-22T17:32:42.831Z |  | denisurusov |
+| edge:e-cap-prod-proposer-common | review | proposed | accepted | 2026-10-22T17:32:42.831Z |  | denisurusov |
+| edge:e-cap-prod-presentation-writer | review | proposed | accepted | 2026-10-22T17:32:42.831Z |  | denisurusov |
+| edge:e-cap-prod-spec-writer | review | proposed | accepted | 2026-10-22T17:32:42.831Z |  | denisurusov |
+| edge:e-cap-prod-skill-builder | review | proposed | accepted | 2026-10-22T17:32:42.831Z |  | denisurusov |
+| edge:e-cap-prod-uat-instructions | review | proposed | accepted | 2026-10-22T17:32:42.831Z |  | denisurusov |
+| edge:e-cap-notes-payload | review | proposed | accepted | 2026-10-22T17:32:42.831Z |  | denisurusov |
+| edge:e-cap-notes-principal | review | proposed | accepted | 2026-10-22T17:32:42.831Z |  | denisurusov |
+| node:task-fleet-fold-idempotent-impl | review |  | accepted | 2026-10-22T17:32:42.831Z |  | denisurusov |
+| node:task-fleet-fold-idempotent-impl | status |  | open | 2026-10-22T17:32:42.831Z |  | denisurusov |
+| edge:e-dec-committer-fold-impl | review |  | accepted | 2026-10-22T17:32:42.831Z |  | denisurusov |
+| edge:e-foldimpl-notes-refold | review |  | accepted | 2026-10-22T17:32:42.831Z |  | denisurusov |
+| node:task-fleet-fold-idempotent-impl | status | open | resolved | 2026-10-22T17:46:00.000Z |  | denisurusov |
+| noteworthy:nw-fleet-refold-clobbers-blessed | status | active | lifted | 2026-10-22T17:46:00.000Z |  | denisurusov |
+| node:task-fleet-config-driven-setup | status | open | resolved | 2026-10-22T18:08:00.000Z |  | denisurusov |
+| node:task-fleet-worktree-committer | status | open | resolved | 2026-10-22T18:45:00.000Z |  | denisurusov |
+| node:task-vendor-neutral-interop | status | open | resolved | 2026-10-22T19:00:00.000Z |  | denisurusov |
 | noteworthy:nw-adopter-tooling-zero-config | review |  | proposed | 2026-10-15T01:09:37Z | f8a5f0f62d7fe578010d0dcf3e6e268dba82f174 | claude |
 | edge:e-not-adoption-zeroconfig | review |  | proposed | 2026-10-15T01:09:37Z | f8a5f0f62d7fe578010d0dcf3e6e268dba82f174 | claude |

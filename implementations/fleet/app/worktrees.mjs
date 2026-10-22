@@ -11,12 +11,17 @@
 // returns the registered handle for a known outbox branch and null for anything
 // else, so an unregistered branch owns nothing.
 
-import { join } from "node:path";
-import { writeFileSync, readFileSync } from "node:fs";
-import { init, addWorktree, removeWorktree, commitAll, currentBranch } from "./git.mjs";
+import { join, dirname, basename } from "node:path";
+import { writeFileSync, readFileSync, existsSync } from "node:fs";
+import { init, addWorktree, removeWorktree, commitAll, currentBranch, listWorktrees } from "./git.mjs";
 
 export const OUTBOX_PREFIX = "outbox/";
 const MANIFEST = "fleet.json";
+// The committed fleet config: repo-local envelope on the canonical branch,
+// beside OPERATING.md, NOT inside the portable .konspekt/instance/
+// (nw-fleet-config-on-canonical). It is the declarative setup driver
+// (nw-fleet-config-is-setup-driver).
+export const CONFIG_REL = join(".konspekt", "fleet", "config", "fleet.json");
 
 export function branchForHandle(handle) {
   return `${OUTBOX_PREFIX}${handle}`;
@@ -102,6 +107,89 @@ export function writeManifest(descriptor) {
 export function loadFleet(root) {
   const data = JSON.parse(readFileSync(join(root, MANIFEST), "utf8"));
   return descriptorFrom({ root, ...data });
+}
+
+// ----- config-driven setup/attach (task-fleet-config-driven-setup) -----
+//
+// The committed `.konspekt/fleet/config/fleet.json` is the single declarative
+// source: fleet-level fields plus one entry per agent
+// `{ handle, role, entityTypes, branch? }`, grants folded in. Host paths are not
+// stored — under `topology: worktree` each is resolved at attach time from
+// `git worktree list` keyed by the agent's branch (nw-fleet-config-is-setup-driver).
+
+// Read and minimally validate the committed config from the canonical worktree.
+export function readFleetConfig(canonicalPath, { configRel = CONFIG_REL } = {}) {
+  const path = join(canonicalPath, configRel);
+  if (!existsSync(path)) throw new Error(`no fleet config at ${configRel} in ${canonicalPath}`);
+  const config = JSON.parse(readFileSync(path, "utf8"));
+  if (!Array.isArray(config.agents) || config.agents.length === 0) {
+    throw new Error(`fleet config ${configRel} has no agents[]`);
+  }
+  for (const a of config.agents) {
+    if (!a.handle) throw new Error(`fleet config agent entry has no handle: ${JSON.stringify(a)}`);
+  }
+  const topology = config.topology || "worktree";
+  if (topology !== "worktree") {
+    throw new Error(`fleet config topology "${topology}" is not supported (only "worktree")`);
+  }
+  return config;
+}
+
+// The proposer grant map verify/fold expect: { <handle>: { entityTypes } },
+// taken from each agent's config entry (the former separate grants.json).
+export function grantsFromConfig(config) {
+  const grants = {};
+  for (const a of config.agents) {
+    if (Array.isArray(a.entityTypes)) grants[a.handle] = { entityTypes: a.entityTypes };
+  }
+  return grants;
+}
+
+const agentBranch = (a) => a.branch || branchForHandle(a.handle);
+
+// Stand up the fleet from a committed config: one `outbox/<handle>` worktree per
+// agent off the canonical branch. `canonicalPath` is the committer's canonical
+// worktree (the shared object store). `worktreeDir` is where the outbox
+// worktrees are created; it is NOT persisted (derived on attach), defaulting to
+// a `<name>-fleet` sibling of the canonical worktree. Returns { descriptor,
+// grants, config }.
+export function setupFromConfig({ canonicalPath, worktreeDir, config, configRel } = {}) {
+  const cfg = config || readFleetConfig(canonicalPath, { configRel });
+  const canonicalBranch = cfg.canonicalBranch || currentBranch(canonicalPath);
+  const dir = worktreeDir || join(dirname(canonicalPath), `${basename(canonicalPath)}-fleet`);
+
+  const seen = new Set();
+  const built = [];
+  for (const a of cfg.agents) {
+    if (seen.has(a.handle)) throw new Error(`duplicate agent handle in config: ${a.handle}`);
+    seen.add(a.handle);
+    const branch = agentBranch(a);
+    const path = join(dir, `outbox-${a.handle}`);
+    addWorktree(canonicalPath, path, branch, { newBranch: true });
+    built.push({ handle: a.handle, path, branch });
+  }
+
+  const descriptor = descriptorFrom({ root: dir, canonicalPath, canonicalBranch, proposers: built });
+  return { descriptor, grants: grantsFromConfig(cfg), config: cfg };
+}
+
+// Attach to a config-driven fleet with no hand-written manifest: read the
+// committed config and resolve each agent's outbox worktree path from
+// `git worktree list` on the canonical worktree, keyed by branch. Returns
+// { fleet, grants, config }. A configured agent whose outbox worktree is not
+// stood up is an error — run setup first.
+export function loadFromConfig({ canonicalPath, configRel } = {}) {
+  const cfg = readFleetConfig(canonicalPath, { configRel });
+  const canonicalBranch = cfg.canonicalBranch || currentBranch(canonicalPath);
+  const byBranch = new Map(listWorktrees(canonicalPath).map((w) => [w.branch, w.path]));
+  const proposers = cfg.agents.map((a) => {
+    const branch = agentBranch(a);
+    const path = byBranch.get(branch);
+    if (!path) throw new Error(`outbox worktree for agent "${a.handle}" (branch ${branch}) is not stood up; run setup`);
+    return { handle: a.handle, path, branch };
+  });
+  const fleet = descriptorFrom({ root: canonicalPath, canonicalPath, canonicalBranch, proposers });
+  return { fleet, grants: grantsFromConfig(cfg), config: cfg };
 }
 
 // Remove the proposer worktrees. The canonical worktree and its object store

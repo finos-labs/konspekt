@@ -2,7 +2,7 @@
 id: task-fleet-config-driven-setup
 type: task
 title: Config-driven fleet setup from the canonical fleet.json
-status: open
+status: resolved
 summary:
   origin: machine
   pinned: false
@@ -15,7 +15,7 @@ provenance:
   timestamp: 2026-10-13T01:50:34Z
   confidence: 0.8
 createdAt: 2026-10-13T01:50:34Z
-updatedAt: 2026-10-13T01:50:34Z
+updatedAt: 2026-10-22T18:08:00.000Z
 ```
 # Task: Config-driven fleet setup from the canonical fleet.json
 

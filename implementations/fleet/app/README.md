@@ -27,36 +27,48 @@ All durable state is in git (the canonical and outbox branches) plus
 reattaches to a session by reading `fleet.json` (`loadFleet`); it holds no
 in-memory state between commands.
 
-## The five commands (the only entry points)
+## The commands (the only entry points)
 
 | Command | Who runs it | When | What it does |
 |---------|-------------|------|--------------|
-| `init` | operator | once, standing up a throwaway session | create N+1 worktrees + `fleet.json` |
+| `setup` | operator | once per real repo | read the committed `.konspekt/fleet/config/fleet.json` and stand up one `outbox/<handle>` worktree per agent off canonical |
+| `init` | operator | throwaway/demo only | create a fresh `git init` N+1 store + flat `fleet.json` (legacy) |
 | `propose` | a proposer agent | once per atom | write one `proposals/<id>/` onto the agent's own outbox branch |
-| `run-pass --dry-run` | operator | before folding | read every outbox, print each proposal's verify verdict, write nothing |
-| `run-pass` | operator | to fold | fold the verified set onto canonical as `review: proposed`, one commit |
+| `claim` | a proposer agent | to signal it is working a node | write a `claim` request (`status: open → active`) onto its outbox; committer-applied on the next pass |
+| `release` | a proposer agent | to close a claim | write a `release` request (`status: active → resolved\|abandoned`); human-gated, applied on `accept-release` |
+| `run-pass --dry-run` | operator | before folding | read every outbox, print each proposal's verify verdict and the claims that would apply, write nothing |
+| `run-pass` | operator | to fold | fold the verified set onto canonical as `review: proposed` and apply claims (advisory `open → active`, attributed to the agent) |
 | `rebuild-index` | operator | after a fold, or after a crash | regenerate the derived pending/accepted/rejected queue from canonical |
+| `review` | operator | before blessing | present the pending queue lowest-confidence first, clustered with near-duplicate hints (read-only, no model) |
 | `bless --accept … --reject …` | operator | after the human decides | one field-only commit per atom: flip `review`, append the decision record |
+| `accept-release --claim … --by …` | operator | to apply a pending release | flip the worked node `active → resolved\|abandoned`, attributed to the human acceptor |
+| `teardown` | operator | to dismantle | remove the proposer worktrees (keeps canonical, the object store, and the outbox branches) |
 
-Common flags: `--root <fleet-root>` (every command); committer identity
-`--name`/`--email` (becomes the DCO sign-off); `--instance-subdir
-.konspekt/instance` when canonical carries a full repo rather than a bare
-instance; `--grants <file>` for `run-pass` (handle → scope grant).
+Attach model: config-driven commands take `--canonical <path>` and read the
+committed `.konspekt/fleet/config/fleet.json` — no hand-written manifest, and the
+per-agent `entityTypes` are the propose grants (so no separate `--grants`). The
+legacy flat path takes `--root <fleet-root>` and reads `<root>/fleet.json` that
+`init` writes, with `--grants <file>` for the grant map. Common to both:
+committer identity `--name`/`--email` (becomes the DCO sign-off) and
+`--instance-subdir .konspekt/instance` when canonical carries a full repo rather
+than a bare instance.
 
-> `init` builds a *throwaway* object store (fresh `git init`). A real-repo
-> session does not use `init`: its canonical is a feature branch of the real
-> repo and the outbox worktrees are added by hand, per `fleet-spec.md`
-> § Session branches. Both paths produce the same `fleet.json` that every other
-> command reads.
+> `setup` is the real-repo entry point: the committed config is the single
+> declarative driver of agent count, types, and worktree layout
+> (`nw-fleet-config-is-setup-driver`), and host paths are derived from `git
+> worktree list` at attach, never stored (`nw-fleet-config-on-canonical`).
+> `init` remains for throwaway demos: it builds a fresh `git init` store and the
+> flat `fleet.json` the `--root` path reads.
 
 ## One session, end to end
 
 Each step names the command, who triggers it, and the modules it pulls in. This
 is the execution order; steps map to `fleet-spec.md` § Committer protocol.
 
-1. **Stand up** — operator runs `init` (or sets up worktrees by hand for a
-   real-repo session). → `worktrees.mjs` → `git.mjs`. Result: `canonical/` and
-   `outbox-<handle>/` worktrees sharing one object store, plus `fleet.json`.
+1. **Stand up** — operator runs `setup --canonical <path>` (real repo, from the
+   committed config) or `init` (throwaway demo). → `worktrees.mjs` → `git.mjs`.
+   Result: the canonical worktree plus one `outbox-<handle>/` worktree per agent,
+   sharing one object store.
 2. **Propose** — each proposer agent runs `propose` against its own handle. →
    `cli.mjs` → `outbox.mjs` (`assembleProposal` authors the stored-form atom:
    a ```yaml fence with `review: proposed` and provenance, plus the source,
@@ -78,9 +90,12 @@ is the execution order; steps map to `fleet-spec.md` § Committer protocol.
 5. **Index** — operator runs `rebuild-index`. → `proposed-ref.mjs`
    (`rebuildIndex`) reads canonical (`lib/conformance.mjs loadInstance`) joined
    to the fold log, and materializes pending/accepted/rejected.
-6. **Present** — the human reads the queue and names a subset to admit. (The
-   read-only review-assistant seam that would cluster and summarize here is M9,
-   not yet built; today the operator reads the index directly.)
+6. **Present** — operator runs `review`. → `review-assistant.mjs`
+   (`reviewDigest` / `renderReviewPrompt`) reads the index and canonical and
+   presents the pending queue lowest-confidence first, clustered by type, with
+   near-duplicate hints. This is the read-only M9 seam: it writes nothing and
+   calls no model (an LLM assistant may consume `reviewDigest` for a richer
+   summary). The human then names a subset to admit.
 7. **Bless / reject** — operator runs `bless` with the human's `--accept` /
    `--reject` ids. → `committer.mjs` (`blessPass`) → `bless.mjs` (`decideAtom`:
    flip `review` on the entity and its edges; append to
@@ -136,8 +151,10 @@ N worktrees and assert the folded/blessed tree passes `lib/validate.mjs`.
 
 ## Status
 
-M1–M7 are implemented: `init`, `propose`, `run-pass` (dry + fold),
-`rebuild-index`, and `bless`. M8 (claims / claim-release as grow-only
-proposals) and M9 (the read-only review-assistant seam) are planned
-(`../docs/DESIGN.md` § Milestones); the `review-assistant.mjs` listed there does
-not exist yet.
+M1–M9 are implemented. M1–M7: `init`/`setup`, `propose`, `run-pass` (dry +
+fold, now idempotent), `rebuild-index`, and `bless`, plus the config-driven
+`setup`/`teardown` path (`task-fleet-config-driven-setup`). M8: `claim`
+(committer-applied `open → active`) and `release` / `accept-release`
+(human-gated `active → resolved|abandoned`), grow-only, no new primitive. M9:
+the read-only review-assistant seam (`review-assistant.mjs`, the `review`
+command) — it presents the queue and calls no model.

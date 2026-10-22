@@ -105,6 +105,35 @@ export function foldProposal(instanceDir, { entityMd, sourceMd, edgesMd, meta = 
   const timestamp = prov.timestamp || front.createdAt || now || new Date().toISOString();
   const by = meta.origin && meta.origin.agent;
 
+  // ----- idempotent fold (task-fleet-fold-idempotent-impl; contract in
+  // artifact-fleet-outbox-lifecycle / docs/design/fleet-outbox-lifecycle.md) -----
+  // Decide "already folded" from canonical alone: if the target entity file
+  // exists and its provenance contentHash equals this proposal's source hash,
+  // the atom is already on canonical. Skip it — write nothing, touch no edge or
+  // transition rows, append no fold record — so a re-run over an un-consumed
+  // outbox cannot clobber a blessed or rejected review back to proposed
+  // (nw-fleet-refold-clobbers-blessed). A same-id entity carrying a different
+  // hash is an id collision: set it aside rather than overwrite it.
+  const relFile = join(relDir, `${id}.md`);
+  const absFile = join(instanceDir, relFile);
+  if (existsSync(absFile)) {
+    const existingFront = splitEntityFile(readFileSync(absFile, "utf8")).front;
+    const existingHash = (existingFront.provenance &&
+      (existingFront.provenance.contentHash || existingFront.provenance.sourceRef)) || null;
+    if (existingHash === sourceHash) {
+      return {
+        proposalId,
+        entityType,
+        entityId: id,
+        file: relFile.split("\\").join("/"),
+        edgeIds: edgeRows.map((r) => r.id),
+        sourceRef: sourceHash,
+        status: "already-folded",
+      };
+    }
+    throw new Error(`id collision: "${id}" exists on canonical with a different contentHash`);
+  }
+
   // ----- source excerpt -----
   const sourcesDir = join(instanceDir, "sources");
   mkdirSync(sourcesDir, { recursive: true });
@@ -113,7 +142,6 @@ export function foldProposal(instanceDir, { entityMd, sourceMd, edgesMd, meta = 
   // ----- entity file (verbatim: the bytes the proposer authored and signed) -----
   const absDir = join(instanceDir, relDir);
   mkdirSync(absDir, { recursive: true });
-  const relFile = join(relDir, `${id}.md`);
   writeFileSync(join(instanceDir, relFile), entityText, "utf8");
 
   // ----- edges -----
@@ -144,21 +172,27 @@ export function foldProposal(instanceDir, { entityMd, sourceMd, edgesMd, meta = 
     file: relFile.split("\\").join("/"),
     edgeIds: edgeRows.map((r) => r.id),
     sourceRef: sourceHash,
+    status: "folded",
   };
 }
 
 // Append an ordered batch of verified proposals onto `instanceDir`. Each is
-// appended whole; a proposal the committer cannot place is set aside with its
-// reason and the rest still append. Returns { folded, setAside }.
+// appended whole; a proposal already on canonical (same id and source hash) is
+// skipped and reported in `alreadyFolded`, and a proposal the committer cannot
+// place is set aside with its reason — the rest still append. Returns
+// { folded, alreadyFolded, setAside }.
 export function foldProposals(instanceDir, items, { now, fleetDir } = {}) {
   const folded = [];
+  const alreadyFolded = [];
   const setAside = [];
   for (const it of items) {
     try {
-      folded.push(foldProposal(instanceDir, it, { now, fleetDir }));
+      const res = foldProposal(instanceDir, it, { now, fleetDir });
+      if (res.status === "already-folded") alreadyFolded.push(res);
+      else folded.push(res);
     } catch (e) {
       setAside.push({ proposalId: it.proposalId ?? null, reason: e.message });
     }
   }
-  return { folded, setAside };
+  return { folded, alreadyFolded, setAside };
 }

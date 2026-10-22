@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "canonicalBranch": "fleet_uat_test",
+  "topology": "worktree",
+  "agents": [
+    { "handle": "spec-writer", "role": "fleet-spec-writer", "entityTypes": ["artifact", "noteworthy"] },
+    { "handle": "skill-builder", "role": "fleet-skill-builder", "entityTypes": ["artifact", "noteworthy"] },
+    { "handle": "presentation-writer", "role": "fleet-presentation-writer", "entityTypes": ["artifact", "noteworthy"] }
+  ]
+}
