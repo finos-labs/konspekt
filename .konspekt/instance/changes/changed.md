@@ -292,3 +292,5 @@ commit order; the channel was not live during that work.
 | task-agent-fleet | c541ee158f4efeff6c6eb3ada6929136336cfd07 | .claude/skills/fleet-spec-writer/SKILL.md | 2026-10-22T17:24:00Z |
 | task-agent-fleet | c541ee158f4efeff6c6eb3ada6929136336cfd07 | .claude/skills/fleet-presentation-writer/SKILL.md | 2026-10-22T17:24:00Z |
 | task-agent-fleet | c541ee158f4efeff6c6eb3ada6929136336cfd07 | .claude/skills/fleet-skill-builder/SKILL.md | 2026-10-22T17:24:00Z |
+| task-agent-fleet | e6fe2e070ed7c4f10d21c8eb94c98ccc5412fa50 | docs/design/fleet-confidence-scale.md | 2026-10-22T17:30:00Z |
+| task-fleet-worktree-committer | 4d27ffe17f127d03facc703a097a8651292a8b0f | docs/design/fleet-outbox-lifecycle.md | 2026-10-22T17:31:00Z |
