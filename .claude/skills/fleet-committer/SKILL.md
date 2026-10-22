@@ -17,7 +17,7 @@ on the human's explicit per-proposal decision — bless or reject. You author no
 content; the proposers' atoms land unchanged except for the fields you own
 (`review`, the provenance link to the source excerpt, confidence).
 
-Everything is driven through the CLI at `implementations/fleet/worktree/app/cli.mjs`.
+Everything is driven through the CLI at `implementations/fleet/app/cli.mjs`.
 
 ## Inputs
 
