@@ -1084,6 +1084,9 @@ proposing agent was not recorded.
 | edge:e-committer-notes-inplace | review |  | proposed | 2026-10-22T12:44:01.258Z |  | claude |
 | node:task-fleet-committer-refold-dedup | status |  | open | 2026-10-22T12:44:01.258Z |  | claude |
 | noteworthy:nw-fleet-refold-clobbers-blessed | status |  | active | 2026-10-22T12:44:01.258Z |  | claude |
+| noteworthy:nw-fleet-proposer-skill-drift | review |  | proposed | 2026-10-22T17:10:00.000Z |  | claude |
+| edge:e-fleet-notes-skill-drift | review |  | proposed | 2026-10-22T17:10:00.000Z |  | claude |
+| noteworthy:nw-fleet-proposer-skill-drift | status |  | active | 2026-10-22T17:10:00.000Z |  | claude |
 | artifact:artifact-fleet-outbox-lifecycle | review |  | proposed | 2026-10-22T16:21:19.086Z |  | spec-writer |
 | edge:e-fleet-outbox-lifecycle-produces | review |  | proposed | 2026-10-22T16:21:19.086Z |  | spec-writer |
 | artifact:artifact-fleet-outbox-lifecycle | review | proposed | accepted | 2026-10-22T16:25:00.767Z |  | denisurusov |
