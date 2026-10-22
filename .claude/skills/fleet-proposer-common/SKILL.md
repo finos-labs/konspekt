@@ -19,6 +19,16 @@ write canonical and never touch a peer's branch.
 Your per-role skill names your handle and what kind of atom you propose. This
 file is the protocol all roles share.
 
+## Load this protocol from canonical, not your own worktree
+
+Your client auto-loads skills from the session's project dir — your outbox
+worktree, on your outbox branch, which lags canonical. Before acting, read THIS
+skill and your per-role skill from **`CANONICAL/.claude/skills/`** and follow
+that copy as authoritative. A stale outbox branch can otherwise feed you an
+out-of-date protocol — observed 2026-10-22, when an outbox branch predating the
+payload-format fix fed a proposer `body_file` and a `worktree/app` path
+(recorded as `nw-fleet-proposer-skill-drift`). The invocation names `CANONICAL`.
+
 ## Inputs the invocation gives you
 
 - `FLEET_ROOT` — the fleet root (holds `canonical/` and `outbox-<handle>/`).
@@ -101,4 +111,7 @@ node ids live under `nodes/<type>/` and carry no fixed prefix.
   accept. Never propose `accepted`.
 - Write only under `AUTHORING` and your own outbox (through the CLI). Never edit
   `CANONICAL` or another proposer's worktree.
+- Read your protocol/role skill from `CANONICAL/.claude/skills/`, not the copy
+  auto-loaded from your own outbox branch (recorded as
+  `nw-fleet-proposer-skill-drift`).
 - One atom per invocation unless told otherwise.
