@@ -5,7 +5,7 @@ kind: skill
 location: .claude/skills/fleet-review-triage/SKILL.md
 createdAt: 2026-10-21T00:00:00.000Z
 updatedAt: 2026-10-21T00:00:00.000Z
-review: proposed
+review: accepted
 provenance:
   sourceRef: 4a291face333a8f1be7714f4b924b8fe478e8e4e
   contentHash: 4a291face333a8f1be7714f4b924b8fe478e8e4e

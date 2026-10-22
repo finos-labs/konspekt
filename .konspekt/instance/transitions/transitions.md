@@ -1071,3 +1071,5 @@ proposing agent was not recorded.
 | edge:e-review-triage-produces | review |  | proposed | 2026-10-22T02:19:07.648Z |  | skill-builder |
 | artifact:artifact-fleet-model-deck | review |  | proposed | 2026-10-22T02:19:11.372Z |  | presentation-writer |
 | edge:e-agent-fleet-produces-fleet-model-deck | review |  | proposed | 2026-10-22T02:19:11.372Z |  | presentation-writer |
+| artifact:artifact-fleet-review-triage-skill | review | proposed | accepted | 2026-10-22T02:23:12.507Z |  | denisurusov |
+| edge:e-review-triage-produces | review | proposed | accepted | 2026-10-22T02:23:12.507Z |  | denisurusov |
