@@ -34,10 +34,13 @@ in-memory state between commands.
 | `setup` | operator | once per real repo | read the committed `.konspekt/fleet/config/fleet.json` and stand up one `outbox/<handle>` worktree per agent off canonical |
 | `init` | operator | throwaway/demo only | create a fresh `git init` N+1 store + flat `fleet.json` (legacy) |
 | `propose` | a proposer agent | once per atom | write one `proposals/<id>/` onto the agent's own outbox branch |
-| `run-pass --dry-run` | operator | before folding | read every outbox, print each proposal's verify verdict, write nothing |
-| `run-pass` | operator | to fold | fold the verified set onto canonical as `review: proposed`, one commit |
+| `claim` | a proposer agent | to signal it is working a node | write a `claim` request (`status: open → active`) onto its outbox; committer-applied on the next pass |
+| `release` | a proposer agent | to close a claim | write a `release` request (`status: active → resolved\|abandoned`); human-gated, applied on `accept-release` |
+| `run-pass --dry-run` | operator | before folding | read every outbox, print each proposal's verify verdict and the claims that would apply, write nothing |
+| `run-pass` | operator | to fold | fold the verified set onto canonical as `review: proposed` and apply claims (advisory `open → active`, attributed to the agent) |
 | `rebuild-index` | operator | after a fold, or after a crash | regenerate the derived pending/accepted/rejected queue from canonical |
 | `bless --accept … --reject …` | operator | after the human decides | one field-only commit per atom: flip `review`, append the decision record |
+| `accept-release --claim … --by …` | operator | to apply a pending release | flip the worked node `active → resolved\|abandoned`, attributed to the human acceptor |
 | `teardown` | operator | to dismantle | remove the proposer worktrees (keeps canonical, the object store, and the outbox branches) |
 
 Attach model: config-driven commands take `--canonical <path>` and read the

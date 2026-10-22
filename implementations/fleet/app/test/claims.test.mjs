@@ -5,7 +5,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { setupFleet } from "../worktrees.mjs";
 import { commitAll } from "../git.mjs";
-import { assembleClaim, writeClaimToOutbox, readClaimRequests, applyClaims } from "../claims.mjs";
+import { assembleClaim, writeClaimToOutbox, readClaimRequests, applyClaims, acceptRelease } from "../claims.mjs";
 import { loadInstance, splitEntityFile } from "../../../../lib/conformance.mjs";
 import { writeSeed, IDENTITY } from "./_fixtures.mjs";
 
@@ -90,6 +90,44 @@ test("a release is human-gated: reported pending, not applied by the pass", () =
   assert.equal(res.pending.length, 1);
   assert.equal(res.pending[0].claim.to, "resolved");
   assert.equal(statusOf(fleet.canonicalPath, "task-demo"), "active");
+});
+
+test("acceptRelease applies active -> resolved attributed to the human acceptor", () => {
+  const fleet = stand();
+  writeClaimToOutbox(fleet.proposerFor("agent-a").path,
+    assembleClaim({ kind: "claim", node: "task-demo", agent: "agent-a", created: "2026-10-22T10:00:00Z" }), { identity: IDENTITY });
+  applyClaims(fleet, {});
+  const rel = assembleClaim({ kind: "release", node: "task-demo", to: "resolved", agent: "agent-a" });
+  writeClaimToOutbox(fleet.proposerFor("agent-a").path, rel, { identity: IDENTITY });
+
+  const r = acceptRelease(fleet, { claimId: rel.claimId, by: "denisurusov", now: "2026-10-22T12:00:00Z", identity: IDENTITY });
+  assert.equal(r.to, "resolved");
+  assert.equal(statusOf(fleet.canonicalPath, "task-demo"), "resolved");
+  const tx = readFileSync(join(fleet.canonicalPath, "transitions/transitions.md"), "utf8");
+  assert.match(tx, /\| node:task-demo \| status \| active \| resolved \|[^|]*\|  \| denisurusov \|/);
+  assert.equal(errorsOf(fleet.canonicalPath).length, 0, JSON.stringify(errorsOf(fleet.canonicalPath), null, 2));
+});
+
+test("acceptRelease rejects a missing claim, a non-release, and a non-active node", () => {
+  const fleet = stand();
+  assert.throws(() => acceptRelease(fleet, { claimId: "deadbeef", by: "denisurusov" }), /no claim request/);
+
+  // A claim (not a release) cannot be release-accepted.
+  const claim = assembleClaim({ kind: "claim", node: "task-demo", agent: "agent-a" });
+  writeClaimToOutbox(fleet.proposerFor("agent-a").path, claim, { identity: IDENTITY });
+  assert.throws(() => acceptRelease(fleet, { claimId: claim.claimId, by: "denisurusov" }), /is not a release/);
+
+  // A release on a node that is still open (never claimed) is rejected.
+  const rel = assembleClaim({ kind: "release", node: "task-demo", to: "abandoned", agent: "agent-a" });
+  writeClaimToOutbox(fleet.proposerFor("agent-a").path, rel, { identity: IDENTITY });
+  assert.throws(() => acceptRelease(fleet, { claimId: rel.claimId, by: "denisurusov" }), /expected "active" to release/);
+});
+
+test("acceptRelease without a named acceptor is refused", () => {
+  const fleet = stand();
+  const rel = assembleClaim({ kind: "release", node: "task-demo", to: "resolved", agent: "agent-a" });
+  writeClaimToOutbox(fleet.proposerFor("agent-a").path, rel, { identity: IDENTITY });
+  assert.throws(() => acceptRelease(fleet, { claimId: rel.claimId }), /must name the human acceptor/);
 });
 
 test("readClaimRequests surfaces claim.json dirs with owner and branch", () => {

@@ -20,7 +20,7 @@ import { resolve, dirname } from "node:path";
 import { setupFleet, loadFleet, setupFromConfig, loadFromConfig, teardownFleet } from "./worktrees.mjs";
 import { assembleProposal, proposeToOutbox } from "./outbox.mjs";
 import { verifyPass, foldPass, blessPass } from "./committer.mjs";
-import { assembleClaim, writeClaimToOutbox, readClaimRequests, applyClaims } from "./claims.mjs";
+import { assembleClaim, writeClaimToOutbox, readClaimRequests, applyClaims, acceptRelease } from "./claims.mjs";
 import { rebuildIndex } from "./proposed-ref.mjs";
 
 function parseArgs(argv) {
@@ -152,6 +152,37 @@ function cmdClaim(args) {
   console.log(`  committed ${commit} on ${proposer.branch} as ${claimId.slice(0, 12)}`);
 }
 
+// Author a release (close a claim): propose `status: active -> resolved|abandoned`
+// on the worked node. Unlike a claim it is human-gated — run-pass reports it
+// pending; the human applies it with `accept-release`.
+function cmdRelease(args) {
+  const agent = need(args, "agent");
+  const node = need(args, "node");
+  const to = need(args, "to");
+  const identity = { name: args["name"] || undefined, email: args["email"] || undefined };
+  const { fleet } = attach(args);
+  const proposer = fleet.proposerFor(agent);
+  if (!proposer) throw new Error(`no proposer "${agent}" in the fleet`);
+  const created = args["now"] && args["now"] !== true ? args["now"] : undefined;
+  const { claimId, claim } = assembleClaim({ kind: "release", node, to, agent, created });
+  const { commit } = writeClaimToOutbox(proposer.path, { claimId, claim }, { identity });
+  console.log(`release proposed ${node} (active -> ${to}) by ${agent}; awaiting accept`);
+  console.log(`  committed ${commit} on ${proposer.branch} as ${claimId.slice(0, 12)}`);
+}
+
+// Human accept of a pending release: the committer applies the node status
+// transition attributed to the acceptor.
+function cmdAcceptRelease(args) {
+  const by = need(args, "by");
+  const claimId = need(args, "claim");
+  const instanceSubdir = args["instance-subdir"] && args["instance-subdir"] !== true ? args["instance-subdir"] : "";
+  const now = args["now"] && args["now"] !== true ? args["now"] : null;
+  const identity = { name: args["name"] || undefined, email: args["email"] || undefined };
+  const { fleet } = attach(args);
+  const r = acceptRelease(fleet, { claimId, by, instanceSubdir, now, identity });
+  console.log(`released ${r.node} -> ${r.to} by ${r.by} in ${r.commit}`);
+}
+
 function cmdRunPass(args) {
   const dryRun = Boolean(args["dry-run"]);
   const identity = { name: args["name"] || undefined, email: args["email"] || undefined };
@@ -246,11 +277,13 @@ function main() {
     else if (command === "teardown") cmdTeardown(args);
     else if (command === "propose") cmdPropose(args);
     else if (command === "claim") cmdClaim(args);
+    else if (command === "release") cmdRelease(args);
+    else if (command === "accept-release") cmdAcceptRelease(args);
     else if (command === "run-pass") cmdRunPass(args);
     else if (command === "bless") cmdBless(args);
     else if (command === "rebuild-index") cmdRebuildIndex(args);
     else {
-      console.error("usage: cli.mjs <init|setup|teardown|propose|claim|run-pass|bless|rebuild-index> [--flags]");
+      console.error("usage: cli.mjs <init|setup|teardown|propose|claim|release|accept-release|run-pass|bless|rebuild-index> [--flags]");
       console.error("  config-driven commands take --canonical <path> (reads .konspekt/fleet/config/fleet.json);");
       console.error("  the flat manifest path takes --root <dir> (legacy).");
       process.exit(2);

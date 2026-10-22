@@ -149,3 +149,31 @@ export function applyClaims(fleet, { instanceSubdir = "", now = null, identity =
   }
   return { applied, pending, setAside, commit };
 }
+
+// Accept a pending release the human named by claim id. A release is human-gated
+// (unlike a claim), so it is applied here, not in the pass: the committer flips
+// the worked node `active -> resolved|abandoned` in one transition attributed to
+// the human acceptor (`by`), which keeps the transition chain legal and records
+// the human's authority. Throws if the claim is absent, is not a release, is
+// spoofed, or the node is not currently `active`. Returns the applied record.
+export function acceptRelease(fleet, { claimId, by, instanceSubdir = "", now = null, identity = {} } = {}) {
+  if (!by) throw new Error("release accept must name the human acceptor (--by)");
+  const instanceDir = instanceSubdir ? join(fleet.canonicalPath, instanceSubdir) : fleet.canonicalPath;
+  const req = readClaimRequests(fleet).find((r) => r.claimId === claimId);
+  if (!req) throw new Error(`no claim request "${claimId}" in any outbox`);
+  if (!req.claim || req.claim.kind !== "release") throw new Error(`"${claimId}" is not a release`);
+  const owner = fleet.ownerOf(req.branch);
+  if (req.claim.agent !== owner) {
+    throw new Error(`release origin "${req.claim.agent}" is not the branch owner "${owner ?? "(none)"}"`);
+  }
+  const { relFile, front } = findNode(instanceDir, req.claim.node);
+  if (front.status !== "active") {
+    throw new Error(`node "${req.claim.node}" status is "${front.status}", expected "active" to release`);
+  }
+  const ts = now || new Date().toISOString();
+  applyStatus(instanceDir, relFile, req.claim.node, "active", req.claim.to, ts, by);
+  const commit = commitAll(fleet.canonicalPath, `release: ${req.claim.node} -> ${req.claim.to}`, {
+    name: identity.name, email: identity.email, signoff: true,
+  });
+  return { claimId, node: req.claim.node, to: req.claim.to, by, commit };
+}
