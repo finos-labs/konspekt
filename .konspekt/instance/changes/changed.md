@@ -320,3 +320,15 @@ commit order; the channel was not live during that work.
 | task-fleet-worktree-committer | f65db5f914b8095118103040d2c5bd079c966735 | implementations/fleet/app/test/review-assistant.test.mjs | 2026-10-22T18:40:00Z |
 | task-fleet-worktree-committer | f65db5f914b8095118103040d2c5bd079c966735 | implementations/fleet/app/README.md | 2026-10-22T18:40:00Z |
 | task-fleet-worktree-committer | 0f6db1a6e6e9f07ed777174a85f878d4a49e1696 | ROADMAP.md | 2026-10-22T18:46:00Z |
+| task-vendor-neutral-interop | c2a059bf935f64eb121a2601a37b9479538a3d80 | tools/sync-agents.mjs | 2026-10-22T18:55:00Z |
+| task-vendor-neutral-interop | c2a059bf935f64eb121a2601a37b9479538a3d80 | .konspekt/OPERATING.md | 2026-10-22T18:55:00Z |
+| task-vendor-neutral-interop | c2a059bf935f64eb121a2601a37b9479538a3d80 | .konspekt/agents/skills/fleet-committer/SKILL.md | 2026-10-22T18:55:00Z |
+| task-vendor-neutral-interop | c2a059bf935f64eb121a2601a37b9479538a3d80 | .konspekt/agents/skills/fleet-proposer-common/SKILL.md | 2026-10-22T18:55:00Z |
+| task-vendor-neutral-interop | c2a059bf935f64eb121a2601a37b9479538a3d80 | .konspekt/agents/skills/fleet-presentation-writer/SKILL.md | 2026-10-22T18:55:00Z |
+| task-vendor-neutral-interop | c2a059bf935f64eb121a2601a37b9479538a3d80 | .konspekt/agents/skills/fleet-spec-writer/SKILL.md | 2026-10-22T18:55:00Z |
+| task-vendor-neutral-interop | c2a059bf935f64eb121a2601a37b9479538a3d80 | .konspekt/agents/skills/fleet-skill-builder/SKILL.md | 2026-10-22T18:55:00Z |
+| task-vendor-neutral-interop | c2a059bf935f64eb121a2601a37b9479538a3d80 | .claude/skills/fleet-committer/SKILL.md | 2026-10-22T18:55:00Z |
+| task-vendor-neutral-interop | c2a059bf935f64eb121a2601a37b9479538a3d80 | .claude/skills/fleet-proposer-common/SKILL.md | 2026-10-22T18:55:00Z |
+| task-vendor-neutral-interop | c2a059bf935f64eb121a2601a37b9479538a3d80 | .claude/skills/fleet-presentation-writer/SKILL.md | 2026-10-22T18:55:00Z |
+| task-vendor-neutral-interop | c2a059bf935f64eb121a2601a37b9479538a3d80 | .claude/skills/fleet-spec-writer/SKILL.md | 2026-10-22T18:55:00Z |
+| task-vendor-neutral-interop | c2a059bf935f64eb121a2601a37b9479538a3d80 | .claude/skills/fleet-skill-builder/SKILL.md | 2026-10-22T18:55:00Z |
