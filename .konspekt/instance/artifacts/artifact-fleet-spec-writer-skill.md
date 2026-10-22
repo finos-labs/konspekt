@@ -3,7 +3,7 @@ id: artifact-fleet-spec-writer-skill
 name: fleet spec-writer role skill
 kind: skill
 location: .claude/skills/fleet-spec-writer/SKILL.md
-review: proposed
+review: accepted
 provenance:
   sourceRef: 80ceeb18d72b68d365c83501ba76c5229c25a3ad
   contentHash: 80ceeb18d72b68d365c83501ba76c5229c25a3ad

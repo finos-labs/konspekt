@@ -3,7 +3,7 @@ id: artifact-fleet-committer-skill
 name: fleet committer role skill
 kind: skill
 location: .claude/skills/fleet-committer/SKILL.md
-review: proposed
+review: accepted
 provenance:
   sourceRef: 096adb83f4004cb1aa5255e6e5d9e73850ed41e0
   contentHash: 096adb83f4004cb1aa5255e6e5d9e73850ed41e0

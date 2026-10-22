@@ -1,7 +1,7 @@
 ```yaml
 id: nw-fleet-proposer-payload-fence-prose
 kind: constraint
-review: proposed
+review: accepted
 provenance:
   sourceRef: 46e52dde99b0c4b37deda4b401ca3662d42832cc
   contentHash: 46e52dde99b0c4b37deda4b401ca3662d42832cc

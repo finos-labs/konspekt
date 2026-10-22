@@ -1105,3 +1105,23 @@ proposing agent was not recorded.
 | edge:e-committer-notes-inplace | review | proposed | accepted | 2026-10-22T17:01:19Z |  | denisurusov |
 | noteworthy:nw-fleet-proposer-skill-drift | review | proposed | accepted | 2026-10-22T17:01:30Z |  | denisurusov |
 | edge:e-fleet-notes-skill-drift | review | proposed | accepted | 2026-10-22T17:01:30Z |  | denisurusov |
+| artifact:artifact-fleet-committer-skill | review | proposed | accepted | 2026-10-22T17:32:42.831Z |  | denisurusov |
+| artifact:artifact-fleet-proposer-common-skill | review | proposed | accepted | 2026-10-22T17:32:42.831Z |  | denisurusov |
+| artifact:artifact-fleet-presentation-writer-skill | review | proposed | accepted | 2026-10-22T17:32:42.831Z |  | denisurusov |
+| artifact:artifact-fleet-spec-writer-skill | review | proposed | accepted | 2026-10-22T17:32:42.831Z |  | denisurusov |
+| artifact:artifact-fleet-skill-builder-skill | review | proposed | accepted | 2026-10-22T17:32:42.831Z |  | denisurusov |
+| artifact:artifact-fleet-uat-instructions | review | proposed | accepted | 2026-10-22T17:32:42.831Z |  | denisurusov |
+| noteworthy:nw-fleet-proposer-payload-fence-prose | review | proposed | accepted | 2026-10-22T17:32:42.831Z |  | denisurusov |
+| noteworthy:nw-fleet-proposer-is-declared-principal | review | proposed | accepted | 2026-10-22T17:32:42.831Z |  | denisurusov |
+| edge:e-cap-prod-committer-skill | review | proposed | accepted | 2026-10-22T17:32:42.831Z |  | denisurusov |
+| edge:e-cap-prod-proposer-common | review | proposed | accepted | 2026-10-22T17:32:42.831Z |  | denisurusov |
+| edge:e-cap-prod-presentation-writer | review | proposed | accepted | 2026-10-22T17:32:42.831Z |  | denisurusov |
+| edge:e-cap-prod-spec-writer | review | proposed | accepted | 2026-10-22T17:32:42.831Z |  | denisurusov |
+| edge:e-cap-prod-skill-builder | review | proposed | accepted | 2026-10-22T17:32:42.831Z |  | denisurusov |
+| edge:e-cap-prod-uat-instructions | review | proposed | accepted | 2026-10-22T17:32:42.831Z |  | denisurusov |
+| edge:e-cap-notes-payload | review | proposed | accepted | 2026-10-22T17:32:42.831Z |  | denisurusov |
+| edge:e-cap-notes-principal | review | proposed | accepted | 2026-10-22T17:32:42.831Z |  | denisurusov |
+| node:task-fleet-fold-idempotent-impl | review |  | accepted | 2026-10-22T17:32:42.831Z |  | denisurusov |
+| node:task-fleet-fold-idempotent-impl | status |  | open | 2026-10-22T17:32:42.831Z |  | denisurusov |
+| edge:e-dec-committer-fold-impl | review |  | accepted | 2026-10-22T17:32:42.831Z |  | denisurusov |
+| edge:e-foldimpl-notes-refold | review |  | accepted | 2026-10-22T17:32:42.831Z |  | denisurusov |

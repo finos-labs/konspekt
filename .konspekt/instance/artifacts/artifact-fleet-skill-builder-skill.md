@@ -3,7 +3,7 @@ id: artifact-fleet-skill-builder-skill
 name: fleet skill-builder role skill
 kind: skill
 location: .claude/skills/fleet-skill-builder/SKILL.md
-review: proposed
+review: accepted
 provenance:
   sourceRef: b3dae1e1c2e148a343e166f3e216edd42b948428
   contentHash: b3dae1e1c2e148a343e166f3e216edd42b948428

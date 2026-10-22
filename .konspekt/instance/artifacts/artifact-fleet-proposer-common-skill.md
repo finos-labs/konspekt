@@ -3,7 +3,7 @@ id: artifact-fleet-proposer-common-skill
 name: fleet proposer common protocol skill
 kind: skill
 location: .claude/skills/fleet-proposer-common/SKILL.md
-review: proposed
+review: accepted
 provenance:
   sourceRef: 2b8c8ce74f296aeb851528d9c510c5b28d987136
   contentHash: 2b8c8ce74f296aeb851528d9c510c5b28d987136

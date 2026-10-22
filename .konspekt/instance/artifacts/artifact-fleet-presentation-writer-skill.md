@@ -3,7 +3,7 @@ id: artifact-fleet-presentation-writer-skill
 name: fleet presentation-writer role skill
 kind: skill
 location: .claude/skills/fleet-presentation-writer/SKILL.md
-review: proposed
+review: accepted
 provenance:
   sourceRef: 2e71f7aea23196d6864679f00d30d6522c20b73c
   contentHash: 2e71f7aea23196d6864679f00d30d6522c20b73c

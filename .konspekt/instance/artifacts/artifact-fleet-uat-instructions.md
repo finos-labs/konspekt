@@ -3,7 +3,7 @@ id: artifact-fleet-uat-instructions
 name: fleet UAT standing-up instructions
 kind: doc
 location: implementations/fleet/docs/instructions.md
-review: proposed
+review: accepted
 provenance:
   sourceRef: 20503b038f17c142b883bdcdf7fad99ecc38dc90
   contentHash: 20503b038f17c142b883bdcdf7fad99ecc38dc90

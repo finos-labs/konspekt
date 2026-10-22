@@ -1,7 +1,7 @@
 ```yaml
 id: nw-fleet-proposer-is-declared-principal
 kind: constraint
-review: proposed
+review: accepted
 provenance:
   sourceRef: 2385057ad39e36378c76ae0f2db14aab2733a081
   contentHash: 2385057ad39e36378c76ae0f2db14aab2733a081
