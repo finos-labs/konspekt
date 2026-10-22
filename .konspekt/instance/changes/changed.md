@@ -285,3 +285,4 @@ commit order; the channel was not live during that work.
 | task-agent-fleet | d1715a0ca76183c2df5c614f7ea298140c442a21 | .claude/skills/fleet-proposer-common/SKILL.md | 2026-10-22T01:45:22Z |
 | task-fleet-worktree-committer | e2941dfdb2a71aadb52bbc98b00d041d5a272413 | .claude/skills/fleet-committer/SKILL.md | 2026-10-22T01:45:22Z |
 | task-fleet-worktree-committer | 26d272f49f402647d3d44751e141cc687bab064f | docs/design/fleet-recovery.md | 2026-10-22T02:21:12Z |
+| task-agent-fleet | 532eb07d49fc37fc14397f3351beb934561331cc | .claude/skills/fleet-proposer-common/SKILL.md | 2026-10-22T17:12:00Z |
