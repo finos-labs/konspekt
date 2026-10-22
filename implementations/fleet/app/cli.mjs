@@ -2,17 +2,22 @@
 // Committer / proposer CLI.
 //
 // Commands:
-//   init       stand up the N+1 worktrees and write the manifest
+//   init       stand up a throwaway N+1 store and write the flat manifest (legacy)
+//   setup      stand up outbox worktrees from the committed canonical config
+//   teardown   remove the proposer worktrees (keeps canonical + branches)
 //   propose    assemble, sign, and commit a proposal onto a proposer's outbox
-//   run-pass   read the outboxes and report each proposal's verify verdict
+//   run-pass   verify the outboxes and, live, fold the verified set onto canonical
+//   bless      apply the human's per-proposal accept/reject decisions
+//   rebuild-index  rebuild the derived proposed index from canonical
 //
-// `run-pass` supports only --dry-run in this cut: it reads and reports, and does
-// not fold (fold/bless are M5-M7). It is the committer side of the manual UAT
-// (docs/DESIGN.md § Manual UAT checkpoint).
+// Attach model: config-driven commands take `--canonical <path>` and read the
+// committed `.konspekt/fleet/config/fleet.json` (no hand-written manifest;
+// task-fleet-config-driven-setup). The legacy flat path takes `--root <dir>`
+// and reads `<root>/fleet.json` written by `init`.
 
 import { readFileSync } from "node:fs";
 import { resolve, dirname } from "node:path";
-import { setupFleet, loadFleet } from "./worktrees.mjs";
+import { setupFleet, loadFleet, setupFromConfig, loadFromConfig, teardownFleet } from "./worktrees.mjs";
 import { assembleProposal, proposeToOutbox } from "./outbox.mjs";
 import { verifyPass, foldPass, blessPass } from "./committer.mjs";
 import { rebuildIndex } from "./proposed-ref.mjs";
@@ -40,6 +45,44 @@ function need(args, key) {
   return args[key];
 }
 
+// Attach to a fleet for a read/write command. Prefers config-driven attach from
+// a committed `.konspekt/fleet/config/fleet.json` when `--canonical <path>` is
+// given (no hand-written manifest, grants read from config); otherwise falls
+// back to the flat `--root/fleet.json` manifest with grants from `--grants`.
+// Returns { fleet, grants }.
+function attach(args) {
+  if (args["canonical"] && args["canonical"] !== true) {
+    const canonicalPath = resolve(args["canonical"]);
+    const configRel = args["config"] && args["config"] !== true ? args["config"] : undefined;
+    const { fleet, grants } = loadFromConfig({ canonicalPath, configRel });
+    return { fleet, grants };
+  }
+  const fleet = loadFleet(need(args, "root"));
+  const grants = args["grants"] ? JSON.parse(readFileSync(args["grants"], "utf8")) : {};
+  return { fleet, grants };
+}
+
+// Config-driven setup: stand up one outbox worktree per agent from the committed
+// config on the canonical worktree. No --proposers, no hand-written manifest.
+function cmdSetup(args) {
+  const canonicalPath = resolve(need(args, "canonical"));
+  const worktreeDir = args["worktree-dir"] && args["worktree-dir"] !== true ? resolve(args["worktree-dir"]) : undefined;
+  const configRel = args["config"] && args["config"] !== true ? args["config"] : undefined;
+  const { descriptor } = setupFromConfig({ canonicalPath, worktreeDir, configRel });
+  console.log(`set up fleet from config at ${canonicalPath}`);
+  console.log(`  canonical branch: ${descriptor.canonicalBranch}`);
+  for (const p of descriptor.proposers) console.log(`  proposer ${p.handle}: ${p.path} (branch ${p.branch})`);
+}
+
+// Remove the proposer worktrees (keeps canonical, the object store, and the
+// outbox branches). Attaches the same way as the read/write commands.
+function cmdTeardown(args) {
+  const { fleet } = attach(args);
+  teardownFleet(fleet, { force: Boolean(args["force"]) });
+  console.log(`tore down ${fleet.proposers.length} proposer worktree(s)`);
+  for (const p of fleet.proposers) console.log(`  removed ${p.path} (branch ${p.branch} kept)`);
+}
+
 function cmdInit(args) {
   const root = need(args, "root");
   const proposers = String(need(args, "proposers")).split(",").map((s) => s.trim()).filter(Boolean);
@@ -51,16 +94,15 @@ function cmdInit(args) {
 }
 
 function cmdPropose(args) {
-  const root = need(args, "root");
   const agent = need(args, "agent");
   const specPath = need(args, "spec");
   const spec = JSON.parse(readFileSync(specPath, "utf8"));
   const source = readFileSync(need(args, "source"), "utf8");
   const identity = { name: args["name"] || undefined, email: args["email"] || undefined };
 
-  const fleet = loadFleet(root);
+  const { fleet } = attach(args);
   const proposer = fleet.proposerFor(agent);
-  if (!proposer) throw new Error(`no proposer "${agent}" in ${root}`);
+  if (!proposer) throw new Error(`no proposer "${agent}" in the fleet`);
 
   // The proposer authors the stored-form atom: a type-specific fence (without
   // review/provenance, which assembleProposal renders) and the prose body. It
@@ -93,13 +135,11 @@ function cmdPropose(args) {
 }
 
 function cmdRunPass(args) {
-  const root = need(args, "root");
   const dryRun = Boolean(args["dry-run"]);
-  const grants = args["grants"] ? JSON.parse(readFileSync(args["grants"], "utf8")) : {};
   const identity = { name: args["name"] || undefined, email: args["email"] || undefined };
   const instanceSubdir = args["instance-subdir"] && args["instance-subdir"] !== true ? args["instance-subdir"] : "";
 
-  const fleet = loadFleet(root);
+  const { fleet, grants } = attach(args);
 
   // --dry-run reads and reports only; a live pass folds the verified set onto
   // canonical as review: proposed in one commit (bless is M7).
@@ -129,7 +169,6 @@ function cmdRunPass(args) {
 }
 
 function cmdBless(args) {
-  const root = need(args, "root");
   const by = need(args, "by");
   const mode = args["mode"] && args["mode"] !== true ? args["mode"] : "inspection";
   const instanceSubdir = args["instance-subdir"] && args["instance-subdir"] !== true ? args["instance-subdir"] : "";
@@ -144,17 +183,18 @@ function cmdBless(args) {
   ];
   if (decisions.length === 0) throw new Error("nothing to do: pass --accept and/or --reject with proposal ids");
 
-  const { done, setAside } = blessPass(loadFleet(root), decisions, { identity, instanceSubdir, now });
+  const { fleet } = attach(args);
+  const { done, setAside } = blessPass(fleet, decisions, { identity, instanceSubdir, now });
   for (const d of done) console.log(`${d.decision === "accepted" ? "blessed" : "rejected"} ${d.ref}  (${d.proposalId.slice(0, 12)}) in ${d.commit}`);
   for (const s of setAside) console.log(`  not applied ${s.proposalId ? s.proposalId.slice(0, 12) : "(?)"}: ${s.reason}`);
 }
 
 function cmdRebuildIndex(args) {
-  const root = need(args, "root");
   const instanceSubdir = args["instance-subdir"] && args["instance-subdir"] !== true ? args["instance-subdir"] : "";
   // The fleet log and instance live in the canonical worktree, not the fleet
   // root; resolve it the same way run-pass and bless do.
-  const index = rebuildIndex(loadFleet(root).canonicalPath, { instanceSubdir });
+  const { fleet } = attach(args);
+  const index = rebuildIndex(fleet.canonicalPath, { instanceSubdir });
   const c = index.counts;
   console.log(`rebuilt proposed index from canonical: ${c.total} proposal(s)`);
   console.log(`  pending ${c.pending}, accepted ${c.accepted}, rejected ${c.rejected}` +
@@ -170,12 +210,16 @@ function main() {
   const args = parseArgs(argv.slice(1));
   try {
     if (command === "init") cmdInit(args);
+    else if (command === "setup") cmdSetup(args);
+    else if (command === "teardown") cmdTeardown(args);
     else if (command === "propose") cmdPropose(args);
     else if (command === "run-pass") cmdRunPass(args);
     else if (command === "bless") cmdBless(args);
     else if (command === "rebuild-index") cmdRebuildIndex(args);
     else {
-      console.error("usage: cli.mjs <init|propose|run-pass|bless|rebuild-index> [--flags]");
+      console.error("usage: cli.mjs <init|setup|teardown|propose|run-pass|bless|rebuild-index> [--flags]");
+      console.error("  config-driven commands take --canonical <path> (reads .konspekt/fleet/config/fleet.json);");
+      console.error("  the flat manifest path takes --root <dir> (legacy).");
       process.exit(2);
     }
   } catch (e) {

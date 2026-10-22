@@ -27,36 +27,44 @@ All durable state is in git (the canonical and outbox branches) plus
 reattaches to a session by reading `fleet.json` (`loadFleet`); it holds no
 in-memory state between commands.
 
-## The five commands (the only entry points)
+## The commands (the only entry points)
 
 | Command | Who runs it | When | What it does |
 |---------|-------------|------|--------------|
-| `init` | operator | once, standing up a throwaway session | create N+1 worktrees + `fleet.json` |
+| `setup` | operator | once per real repo | read the committed `.konspekt/fleet/config/fleet.json` and stand up one `outbox/<handle>` worktree per agent off canonical |
+| `init` | operator | throwaway/demo only | create a fresh `git init` N+1 store + flat `fleet.json` (legacy) |
 | `propose` | a proposer agent | once per atom | write one `proposals/<id>/` onto the agent's own outbox branch |
 | `run-pass --dry-run` | operator | before folding | read every outbox, print each proposal's verify verdict, write nothing |
 | `run-pass` | operator | to fold | fold the verified set onto canonical as `review: proposed`, one commit |
 | `rebuild-index` | operator | after a fold, or after a crash | regenerate the derived pending/accepted/rejected queue from canonical |
 | `bless --accept … --reject …` | operator | after the human decides | one field-only commit per atom: flip `review`, append the decision record |
+| `teardown` | operator | to dismantle | remove the proposer worktrees (keeps canonical, the object store, and the outbox branches) |
 
-Common flags: `--root <fleet-root>` (every command); committer identity
-`--name`/`--email` (becomes the DCO sign-off); `--instance-subdir
-.konspekt/instance` when canonical carries a full repo rather than a bare
-instance; `--grants <file>` for `run-pass` (handle → scope grant).
+Attach model: config-driven commands take `--canonical <path>` and read the
+committed `.konspekt/fleet/config/fleet.json` — no hand-written manifest, and the
+per-agent `entityTypes` are the propose grants (so no separate `--grants`). The
+legacy flat path takes `--root <fleet-root>` and reads `<root>/fleet.json` that
+`init` writes, with `--grants <file>` for the grant map. Common to both:
+committer identity `--name`/`--email` (becomes the DCO sign-off) and
+`--instance-subdir .konspekt/instance` when canonical carries a full repo rather
+than a bare instance.
 
-> `init` builds a *throwaway* object store (fresh `git init`). A real-repo
-> session does not use `init`: its canonical is a feature branch of the real
-> repo and the outbox worktrees are added by hand, per `fleet-spec.md`
-> § Session branches. Both paths produce the same `fleet.json` that every other
-> command reads.
+> `setup` is the real-repo entry point: the committed config is the single
+> declarative driver of agent count, types, and worktree layout
+> (`nw-fleet-config-is-setup-driver`), and host paths are derived from `git
+> worktree list` at attach, never stored (`nw-fleet-config-on-canonical`).
+> `init` remains for throwaway demos: it builds a fresh `git init` store and the
+> flat `fleet.json` the `--root` path reads.
 
 ## One session, end to end
 
 Each step names the command, who triggers it, and the modules it pulls in. This
 is the execution order; steps map to `fleet-spec.md` § Committer protocol.
 
-1. **Stand up** — operator runs `init` (or sets up worktrees by hand for a
-   real-repo session). → `worktrees.mjs` → `git.mjs`. Result: `canonical/` and
-   `outbox-<handle>/` worktrees sharing one object store, plus `fleet.json`.
+1. **Stand up** — operator runs `setup --canonical <path>` (real repo, from the
+   committed config) or `init` (throwaway demo). → `worktrees.mjs` → `git.mjs`.
+   Result: the canonical worktree plus one `outbox-<handle>/` worktree per agent,
+   sharing one object store.
 2. **Propose** — each proposer agent runs `propose` against its own handle. →
    `cli.mjs` → `outbox.mjs` (`assembleProposal` authors the stored-form atom:
    a ```yaml fence with `review: proposed` and provenance, plus the source,

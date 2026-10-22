@@ -44,11 +44,16 @@ git object store, and the outbox branches intact. It is supported by
   entry gone but the directory still on disk), `git worktree prune` clears the
   entry and the directory is deleted by hand once unlocked.
 
-Run it (library only, no CLI subcommand):
+Run it via the CLI (config-driven; `task-fleet-config-driven-setup`):
 
 ```
-node -e "import('./implementations/fleet/app/worktrees.mjs').then(m => m.teardownFleet(m.loadFleet('<FLEET_ROOT>')))"
+node implementations/fleet/app/cli.mjs teardown --canonical <CANONICAL_PATH>
 ```
+
+It attaches from the committed `.konspekt/fleet/config/fleet.json`, resolving each
+outbox worktree from `git worktree list`, and removes them. (The legacy flat path
+is `--root <FLEET_ROOT>`.) The library entry point is `teardownFleet` in
+`implementations/fleet/app/worktrees.mjs`.
 
 A full wipe needs these by hand (teardownFleet does not do them):
 
@@ -58,6 +63,8 @@ A full wipe needs these by hand (teardownFleet does not do them):
   scratch dirs;
 - the canonical branch and its instance are never touched by teardown.
 
-**Gap:** teardown is library-only. Wiring a `teardown` CLI subcommand (and a
-config-driven setup/teardown pair) is future work under
-`task-fleet-config-driven-setup`.
+Setup is the mirror command: `node implementations/fleet/app/cli.mjs setup
+--canonical <CANONICAL_PATH>` reads the committed config and stands up one
+`outbox/<handle>` worktree per agent off the canonical branch — no `--proposers`
+argument and no hand-written manifest (`task-fleet-config-driven-setup`,
+`nw-fleet-config-is-setup-driver`).
