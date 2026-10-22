@@ -5,7 +5,7 @@ kind: doc
 location: docs/design/fleet-outbox-lifecycle.md
 createdAt: 2026-10-22T00:00:00Z
 updatedAt: 2026-10-22T00:00:00Z
-review: proposed
+review: accepted
 provenance:
   sourceRef: 99060bd063e1a70fb8e93477e77bd982f3610884
   contentHash: 99060bd063e1a70fb8e93477e77bd982f3610884

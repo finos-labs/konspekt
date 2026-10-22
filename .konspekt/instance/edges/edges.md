@@ -524,4 +524,4 @@ proposal.
 | e-dec-committer-refold-dedup | decomposes | node:task-fleet-worktree-committer | node:task-fleet-committer-refold-dedup |  | proposed |
 | e-dedup-notes-refold | notes | node:task-fleet-committer-refold-dedup | noteworthy:nw-fleet-refold-clobbers-blessed |  | proposed |
 | e-committer-notes-inplace | notes | node:task-fleet-worktree-committer | noteworthy:nw-fleet-in-place-canonical |  | proposed |
-| e-fleet-outbox-lifecycle-produces | produces | node:task-fleet-worktree-committer | artifact:artifact-fleet-outbox-lifecycle |  | proposed |
+| e-fleet-outbox-lifecycle-produces | produces | node:task-fleet-worktree-committer | artifact:artifact-fleet-outbox-lifecycle |  | accepted |
