@@ -307,3 +307,4 @@ commit order; the channel was not live during that work.
 | task-fleet-config-driven-setup | f62a251aabe41beb2123e420172ea0167424d487 | implementations/fleet/app/README.md | 2026-10-22T18:05:00Z |
 | task-fleet-config-driven-setup | f62a251aabe41beb2123e420172ea0167424d487 | implementations/fleet/docs/instructions.md | 2026-10-22T18:05:00Z |
 | task-fleet-config-driven-setup | f62a251aabe41beb2123e420172ea0167424d487 | .konspekt/fleet/config/fleet.json | 2026-10-22T18:05:00Z |
+| task-fleet-config-driven-setup | 3579593fdcad47ccc3f8393fd1ac99c42322786b | ROADMAP.md | 2026-10-22T18:09:00Z |
