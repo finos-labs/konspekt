@@ -104,9 +104,9 @@ function cmdRunPass(args) {
   // --dry-run reads and reports only; a live pass folds the verified set onto
   // canonical as review: proposed in one commit (bless is M7).
   const res = dryRun
-    ? { verdicts: verifyPass(fleet, { grants }), folded: [], setAside: [], commit: null }
+    ? { verdicts: verifyPass(fleet, { grants }), folded: [], alreadyFolded: [], setAside: [], commit: null }
     : foldPass(fleet, { grants, identity, instanceSubdir });
-  const { verdicts, folded, setAside, commit } = res;
+  const { verdicts, folded, alreadyFolded = [], setAside, commit } = res;
 
   console.log(`read ${verdicts.length} proposal(s) across ${fleet.proposers.length} outbox(es)\n`);
 
@@ -121,9 +121,10 @@ function cmdRunPass(args) {
 
   if (!dryRun) {
     for (const f of folded) console.log(`  folded ${f.entityType} ${f.entityId}  <- ${f.proposalId.slice(0, 12)}`);
+    for (const a of alreadyFolded) console.log(`  ALREADY FOLDED ${a.entityType} ${a.entityId}  <- ${a.proposalId ? a.proposalId.slice(0, 12) : "(?)"}`);
     for (const s of setAside) console.log(`  not folded ${s.proposalId ? s.proposalId.slice(0, 12) : "(?)"}: ${s.reason}`);
     if (commit) console.log(`\nfolded ${folded.length} onto canonical in ${commit}`);
-    else console.log(`\nnothing to fold`);
+    else console.log(`\nnothing to fold${alreadyFolded.length ? ` (${alreadyFolded.length} already folded)` : ""}`);
   }
 }
 

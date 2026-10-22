@@ -119,8 +119,11 @@ export function foldPass(fleet, { grants = {}, known = null, identity = {}, inst
   }
 
   const instanceDir = instanceSubdir ? join(fleet.canonicalPath, instanceSubdir) : fleet.canonicalPath;
-  const { folded, setAside } = foldProposals(instanceDir, foldOrder(verified), { now, fleetDir: fleet.canonicalPath });
+  const { folded, alreadyFolded, setAside } = foldProposals(instanceDir, foldOrder(verified), { now, fleetDir: fleet.canonicalPath });
 
+  // Commit only when the fold wrote something. An already-folded proposal
+  // writes nothing, so a pass that folds nothing new leaves canonical byte-for-
+  // byte unchanged and creates no commit (the idempotent-fold invariant).
   let commit = null;
   if (folded.length) {
     commit = commitAll(fleet.canonicalPath, `fold: ${folded.length} proposal(s)`, {
@@ -129,7 +132,7 @@ export function foldPass(fleet, { grants = {}, known = null, identity = {}, inst
       signoff: true,
     });
   }
-  return { verdicts, folded, setAside, commit };
+  return { verdicts, folded, alreadyFolded, setAside, commit };
 }
 
 // The disposition pass (fleet-spec.md § Committer protocol, steps 7-8): the

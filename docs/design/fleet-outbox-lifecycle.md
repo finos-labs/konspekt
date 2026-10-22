@@ -49,7 +49,14 @@ checkout.
 
 ## Implementation status
 
-This note is the design; the dedup and collision checks are not yet implemented
-in `implementations/fleet/app/fold.mjs`. Until they are, the re-fold hazard is
-live and the manual consume-after-fold workaround
-(`nw-fleet-refold-clobbers-blessed`) remains mandatory between passes.
+Implemented in `implementations/fleet/app/fold.mjs` under
+`task-fleet-fold-idempotent-impl`. `foldProposal` decides "already folded" from
+canonical (items 3–4): a target entity whose `provenance.contentHash` equals the
+proposal's source hash is reported `ALREADY FOLDED` and skipped, writing nothing;
+a same-id entity with a different hash is set aside as an `id collision` (item 5).
+`foldProposals` returns the skipped set as `alreadyFolded`, and `foldPass` makes
+no commit when nothing new is folded (item 3's invariant). Covered by tests in
+`test/fold.test.mjs` (idempotent re-fold, blessed-not-clobbered, id collision,
+and the no-commit second pass). The manual consume-after-fold workaround in
+`nw-fleet-refold-clobbers-blessed` is therefore no longer required for
+correctness.
