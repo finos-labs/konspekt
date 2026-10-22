@@ -1129,3 +1129,4 @@ proposing agent was not recorded.
 | noteworthy:nw-fleet-refold-clobbers-blessed | status | active | lifted | 2026-10-22T17:46:00.000Z |  | denisurusov |
 | node:task-fleet-config-driven-setup | status | open | resolved | 2026-10-22T18:08:00.000Z |  | denisurusov |
 | node:task-fleet-worktree-committer | status | open | resolved | 2026-10-22T18:45:00.000Z |  | denisurusov |
+| node:task-vendor-neutral-interop | status | open | resolved | 2026-10-22T19:00:00.000Z |  | denisurusov |
