@@ -315,3 +315,7 @@ commit order; the channel was not live during that work.
 | task-fleet-worktree-committer | 6ff3aade9056ae53da991c1ad372100581b141bb | implementations/fleet/app/cli.mjs | 2026-10-22T18:30:00Z |
 | task-fleet-worktree-committer | 6ff3aade9056ae53da991c1ad372100581b141bb | implementations/fleet/app/test/claims.test.mjs | 2026-10-22T18:30:00Z |
 | task-fleet-worktree-committer | 6ff3aade9056ae53da991c1ad372100581b141bb | implementations/fleet/app/README.md | 2026-10-22T18:30:00Z |
+| task-fleet-worktree-committer | f65db5f914b8095118103040d2c5bd079c966735 | implementations/fleet/app/review-assistant.mjs | 2026-10-22T18:40:00Z |
+| task-fleet-worktree-committer | f65db5f914b8095118103040d2c5bd079c966735 | implementations/fleet/app/cli.mjs | 2026-10-22T18:40:00Z |
+| task-fleet-worktree-committer | f65db5f914b8095118103040d2c5bd079c966735 | implementations/fleet/app/test/review-assistant.test.mjs | 2026-10-22T18:40:00Z |
+| task-fleet-worktree-committer | f65db5f914b8095118103040d2c5bd079c966735 | implementations/fleet/app/README.md | 2026-10-22T18:40:00Z |
