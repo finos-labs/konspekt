@@ -1067,3 +1067,7 @@ proposing agent was not recorded.
 | edge:e-cap-prod-skill-builder | review |  | proposed | 2026-10-22T02:16:59.291Z |  | claude |
 | artifact:artifact-fleet-uat-instructions | review |  | proposed | 2026-10-22T02:16:59.291Z |  | claude |
 | edge:e-cap-prod-uat-instructions | review |  | proposed | 2026-10-22T02:16:59.291Z |  | claude |
+| artifact:artifact-fleet-review-triage-skill | review |  | proposed | 2026-10-22T02:19:07.648Z |  | skill-builder |
+| edge:e-review-triage-produces | review |  | proposed | 2026-10-22T02:19:07.648Z |  | skill-builder |
+| artifact:artifact-fleet-model-deck | review |  | proposed | 2026-10-22T02:19:11.372Z |  | presentation-writer |
+| edge:e-agent-fleet-produces-fleet-model-deck | review |  | proposed | 2026-10-22T02:19:11.372Z |  | presentation-writer |
