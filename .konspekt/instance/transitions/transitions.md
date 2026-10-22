@@ -1075,3 +1075,12 @@ proposing agent was not recorded.
 | edge:e-review-triage-produces | review | proposed | accepted | 2026-10-22T02:23:12.507Z |  | denisurusov |
 | artifact:artifact-fleet-model-deck | review | proposed | accepted | 2026-10-22T02:23:12.690Z |  | denisurusov |
 | edge:e-agent-fleet-produces-fleet-model-deck | review | proposed | accepted | 2026-10-22T02:23:12.690Z |  | denisurusov |
+| noteworthy:nw-fleet-refold-clobbers-blessed | review |  | proposed | 2026-10-22T12:44:01.258Z |  | claude |
+| node:task-fleet-committer-refold-dedup | review |  | proposed | 2026-10-22T12:44:01.258Z |  | claude |
+| noteworthy:nw-fleet-in-place-canonical | review |  | proposed | 2026-10-22T12:44:01.258Z |  | claude |
+| edge:e-committer-notes-refold | review |  | proposed | 2026-10-22T12:44:01.258Z |  | claude |
+| edge:e-dec-committer-refold-dedup | review |  | proposed | 2026-10-22T12:44:01.258Z |  | claude |
+| edge:e-dedup-notes-refold | review |  | proposed | 2026-10-22T12:44:01.258Z |  | claude |
+| edge:e-committer-notes-inplace | review |  | proposed | 2026-10-22T12:44:01.258Z |  | claude |
+| node:task-fleet-committer-refold-dedup | status |  | open | 2026-10-22T12:44:01.258Z |  | claude |
+| noteworthy:nw-fleet-refold-clobbers-blessed | status |  | active | 2026-10-22T12:44:01.258Z |  | claude |
