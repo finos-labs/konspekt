@@ -295,3 +295,8 @@ commit order; the channel was not live during that work.
 | task-agent-fleet | e6fe2e070ed7c4f10d21c8eb94c98ccc5412fa50 | docs/design/fleet-confidence-scale.md | 2026-10-22T17:30:00Z |
 | task-fleet-worktree-committer | 4d27ffe17f127d03facc703a097a8651292a8b0f | docs/design/fleet-outbox-lifecycle.md | 2026-10-22T17:31:00Z |
 | task-fleet-worktree-committer | c3d7bd3618e94e4785f0027a8cc38285b42c93ff | ROADMAP.md | 2026-10-22T17:35:00Z |
+| task-fleet-fold-idempotent-impl | 76d4e25cb11bbf205259aa188d8e2177e32390c4 | implementations/fleet/app/fold.mjs | 2026-10-22T17:45:00Z |
+| task-fleet-fold-idempotent-impl | 76d4e25cb11bbf205259aa188d8e2177e32390c4 | implementations/fleet/app/committer.mjs | 2026-10-22T17:45:00Z |
+| task-fleet-fold-idempotent-impl | 76d4e25cb11bbf205259aa188d8e2177e32390c4 | implementations/fleet/app/cli.mjs | 2026-10-22T17:45:00Z |
+| task-fleet-fold-idempotent-impl | 76d4e25cb11bbf205259aa188d8e2177e32390c4 | implementations/fleet/app/test/fold.test.mjs | 2026-10-22T17:45:00Z |
+| task-fleet-fold-idempotent-impl | 76d4e25cb11bbf205259aa188d8e2177e32390c4 | docs/design/fleet-outbox-lifecycle.md | 2026-10-22T17:45:00Z |
