@@ -372,3 +372,4 @@ commit order; the channel was not live during that work.
 | task-agent-fleet | c6cc7059ab70eee5c7db6f3a2c47e945535a5876 | implementations/fleet/app/test/preflight.test.mjs | 2026-10-23T21:11:02Z |
 | task-linkedin-announce-fleet | caaf08284082dde3c6b12217d58c37d8c2daa4b1 | docs/announcements/linkedin/post_2026-10-23/post.md | 2026-10-23T21:15:00Z |
 | task-linkedin-announce-fleet | caaf08284082dde3c6b12217d58c37d8c2daa4b1 | docs/announcements/linkedin/post_2026-10-23/article.md | 2026-10-23T21:15:00Z |
+| task-linkedin-announce-fleet | 49b0b4933b0e0b9524efa2eaaf993b18512e9d71 | docs/announcements/linkedin/post_2026-10-23/article.html | 2026-10-23T21:43:57Z |
