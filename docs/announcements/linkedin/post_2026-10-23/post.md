@@ -36,6 +36,7 @@ The write-up covers how it fits together (link in the comments):
 - An explicit on-disk layout — the canonical worktree in place, proposers under a `-fleet` sibling directory, all sharing one `.git`
 - Agents are skills — five fleet skills in a vendor-neutral location; each agent's role names its skill, and its entity types are its propose-grant 
 - Acceptance authority as a blocking setup element — setup refuses, and a new `doctor` command checks, until a named acceptor is declared and configured 
+- Moving the canonical branch — switching a fleet's branch is a defined operation the committer follows, and `doctor`/`run-pass` refuse if the worktree and config disagree
 - Proven by an adopter — a repo sharing none of konspekt's code ran the whole propose–verify–fold–accept loop
 
 Many proposers, one accountable human — now checked before the first agent runs.

@@ -79,6 +79,12 @@ So the named acceptor became a configuration element of the fleet, set up in a b
 
 The effect is that an adopter cannot stand up a fleet that can fold proposals but never attributably accept them. The question "who may accept here, and are they configured?" is answered before the first agent runs, not discovered at the moment someone clicks accept.
 
+## Moving the canonical branch
+
+A fleet runs on a canonical branch, and a project sometimes needs to move its canonical work onto a different branch and have the agents follow. That is now a defined operation. The committer folds onto whatever branch the canonical worktree currently has checked out, so moving the fleet means moving three things together: switch the canonical worktree to the new branch, update the `canonicalBranch` field in the config to match it, and merge the new canonical into each proposer's outbox so the proposers author against the new graph. The committer role carries that procedure, so "change the branch, make the fleet follow" is an instruction a committer session can act on directly.
+
+The failure this introduces is a half-done switch — move the worktree but forget the config, and folds land on the new branch while the config still names the old one, with nothing to say so. So it became another checked precondition: `doctor` and every `run-pass` now assert the canonical worktree is on the branch the config declares, and refuse when the two disagree. A switch applied only halfway fails loudly at the next pass instead of writing to the wrong branch.
+
 ## Why an adopter matters
 
 konspekt is built to be adopted: a project carries its own instance, declares its own authority, writes its own fleet config, and runs the engine against its own graph. A second repository exercising the fleet is the portability claim being tested by a project that shares none of konspekt's code. The adopter writes its own two authority tables; it vendors the engine it runs; it stood up the same `-fleet` worktree layout and drove the same propose-verify-fold-accept loop. The gap it exposed, and the setup gate that now closes it, are improvements the home project would not have found on its own.
