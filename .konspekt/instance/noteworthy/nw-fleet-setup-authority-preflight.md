@@ -1,7 +1,7 @@
 ```yaml
 id: nw-fleet-setup-authority-preflight
 kind: decision
-review: proposed
+review: accepted
 provenance:
   sourceRef: faa36003d4bf3612e7e677825150d55cd78407e0
   contentHash: faa36003d4bf3612e7e677825150d55cd78407e0
