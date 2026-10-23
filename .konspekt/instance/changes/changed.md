@@ -359,3 +359,5 @@ commit order; the channel was not live during that work.
 | task-agent-fleet | 7e166f6cfa486b7ec4445aa82842a9ed8ab89c1e | implementations/fleet/app/cli.mjs | 2026-10-23T16:44:40Z |
 | task-agent-fleet | 7e166f6cfa486b7ec4445aa82842a9ed8ab89c1e | implementations/fleet/app/preflight.mjs | 2026-10-23T16:44:40Z |
 | task-agent-fleet | 7e166f6cfa486b7ec4445aa82842a9ed8ab89c1e | implementations/fleet/app/test/preflight.test.mjs | 2026-10-23T16:44:40Z |
+| task-agent-fleet | cdafc0fda0f85c55f1e833e0c75a4b1ec955dd7a | .konspekt/agents/skills/fleet-committer/SKILL.md | 2026-10-23T19:46:29Z |
+| task-agent-fleet | cdafc0fda0f85c55f1e833e0c75a4b1ec955dd7a | .claude/skills/fleet-committer/SKILL.md | 2026-10-23T19:46:29Z |
