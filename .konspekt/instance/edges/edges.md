@@ -531,4 +531,5 @@ proposal.
 | e-foldimpl-notes-refold | notes | node:task-fleet-fold-idempotent-impl | noteworthy:nw-fleet-refold-clobbers-blessed |  | accepted |
 | e-not-adoption-zeroconfig | notes | node:task-adoption-path | noteworthy:nw-adopter-tooling-zero-config |  | proposed |
 | e-not-agentfleet-authority-preflight | notes | node:task-agent-fleet | noteworthy:nw-fleet-setup-authority-preflight |  | accepted |
+| e-dec-usability-announcefleet | decomposes | node:goal-usability | node:task-linkedin-announce-fleet |  | accepted |
 | e-not-fleet-foldbranch | notes | node:task-agent-fleet | noteworthy:nw-fleet-fold-follows-worktree-branch |  | accepted |
