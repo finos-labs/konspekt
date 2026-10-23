@@ -4,7 +4,7 @@
 // Commands:
 //   init       stand up a throwaway N+1 store and write the flat manifest (legacy)
 //   setup      stand up outbox worktrees from the committed canonical config
-//   doctor     run the acceptance-authority preflight without standing anything up
+//   doctor     check acceptance authority + canonical-branch match, standing nothing up
 //   teardown   remove the proposer worktrees (keeps canonical + branches)
 //   propose    assemble, sign, and commit a proposal onto a proposer's outbox
 //   run-pass   verify the outboxes and, live, fold the verified set onto canonical
@@ -18,13 +18,13 @@
 
 import { readFileSync } from "node:fs";
 import { resolve, dirname } from "node:path";
-import { setupFleet, loadFleet, setupFromConfig, loadFromConfig, teardownFleet } from "./worktrees.mjs";
+import { setupFleet, loadFleet, setupFromConfig, loadFromConfig, teardownFleet, readFleetConfig } from "./worktrees.mjs";
 import { assembleProposal, proposeToOutbox } from "./outbox.mjs";
 import { verifyPass, foldPass, blessPass } from "./committer.mjs";
 import { assembleClaim, writeClaimToOutbox, readClaimRequests, applyClaims, acceptRelease } from "./claims.mjs";
 import { rebuildIndex } from "./proposed-ref.mjs";
 import { reviewDigest, renderReviewPrompt } from "./review-assistant.mjs";
-import { authorityPreflight, DEFAULT_INSTANCE_SUBDIR } from "./preflight.mjs";
+import { authorityPreflight, canonicalBranchCheck, DEFAULT_INSTANCE_SUBDIR } from "./preflight.mjs";
 
 function parseArgs(argv) {
   const out = { _: [] };
@@ -93,21 +93,39 @@ function cmdSetup(args) {
   for (const p of descriptor.proposers) console.log(`  proposer ${p.handle}: ${p.path} (branch ${p.branch})`);
 }
 
-// Read-only acceptance-authority preflight. Runs the same check `setup` blocks
-// on, but stands nothing up, so an adopter can verify (from the acceptance
-// client's own shell) that the instance declares an authority and that
-// KONSPEKT_PRINCIPAL is configured. Exits non-zero when the fleet is not ready.
+// Read-only fleet readiness check. Runs the same acceptance-authority preflight
+// `setup` blocks on, plus (when a fleet config exists) asserts the canonical
+// worktree is on the branch the config declares — all without standing anything
+// up, so an adopter can verify (from the acceptance client's own shell) that the
+// instance declares an authority, KONSPEKT_PRINCIPAL is configured, and folds
+// would land on the intended branch. Exits non-zero when the fleet is not ready.
 function cmdDoctor(args) {
   const canonicalPath = resolve(need(args, "canonical"));
   const instanceSubdir = args["instance-subdir"] && args["instance-subdir"] !== true ? args["instance-subdir"] : DEFAULT_INSTANCE_SUBDIR;
+  const configRel = args["config"] && args["config"] !== true ? args["config"] : undefined;
   const pf = authorityPreflight({ canonicalPath, instanceSubdir });
-  if (pf.ok) {
+
+  // Also assert the canonical worktree is on the branch the config declares, so
+  // a silent config/worktree branch disagreement fails loudly here rather than
+  // folding onto the wrong branch (nw-fleet-fold-follows-worktree-branch). Only
+  // when a fleet config exists — authority is doctor's core check regardless.
+  let bc = null;
+  try {
+    const cfg = readFleetConfig(canonicalPath, { configRel });
+    bc = canonicalBranchCheck({ canonicalPath, configuredBranch: cfg.canonicalBranch });
+  } catch {
+    // no config (or unreadable): skip the branch check, keep the authority verdict.
+  }
+
+  if (pf.ok && (!bc || bc.ok)) {
     console.log(`acceptance authority OK at ${canonicalPath}`);
     console.log(`  KONSPEKT_PRINCIPAL=${pf.principal} holds an accept grant (granted: ${pf.acceptors.join(", ")})`);
+    if (bc) console.log(`  canonical worktree on branch "${bc.actual}" matches config canonicalBranch`);
     return;
   }
-  console.error(`acceptance-authority preflight FAILED at ${canonicalPath}:`);
+  console.error(`fleet doctor FAILED at ${canonicalPath}:`);
   for (const p of pf.problems) console.error(`  - ${p}`);
+  if (bc && !bc.ok) console.error(`  - ${bc.problem}`);
   process.exitCode = 1;
 }
 
@@ -225,6 +243,17 @@ function cmdRunPass(args) {
   const instanceSubdir = args["instance-subdir"] && args["instance-subdir"] !== true ? args["instance-subdir"] : "";
 
   const { fleet, grants } = attach(args);
+
+  // Refuse if the canonical worktree has drifted off the branch the fleet
+  // records as canonical: folds follow the worktree's current branch, so a
+  // mismatch would land them on the wrong branch (nw-fleet-fold-follows-worktree-branch).
+  // Blocks the dry-run too — you want the mismatch before, not after, a live pass.
+  const bc = canonicalBranchCheck({ canonicalPath: fleet.canonicalPath, configuredBranch: fleet.canonicalBranch });
+  if (!bc.ok) {
+    throw new Error(
+      `${bc.problem}\nRun \`cli.mjs doctor --canonical <path>\` after fixing to re-check.`,
+    );
+  }
 
   // --dry-run reads and reports only; a live pass folds the verified set onto
   // canonical as review: proposed in one commit (bless is M7).

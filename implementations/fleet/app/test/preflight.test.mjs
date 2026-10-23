@@ -7,7 +7,7 @@ import { fileURLToPath } from "node:url";
 import { execFileSync } from "node:child_process";
 import { init, commitAll } from "../git.mjs";
 import { CONFIG_REL } from "../worktrees.mjs";
-import { authorityPreflight, DEFAULT_INSTANCE_SUBDIR, PRINCIPAL_ENV } from "../preflight.mjs";
+import { authorityPreflight, canonicalBranchCheck, DEFAULT_INSTANCE_SUBDIR, PRINCIPAL_ENV } from "../preflight.mjs";
 
 const CLI = fileURLToPath(new URL("../cli.mjs", import.meta.url));
 const IDENTITY = { name: "T", email: "t@konspekt.local" };
@@ -158,7 +158,7 @@ test("doctor exits non-zero and explains when authority is missing", () => {
   try { run(["doctor", "--canonical", canonicalPath], {}); } catch (e) { err = e; }
   assert.ok(err, "doctor should have exited non-zero");
   const text = String(err.stderr || err.message);
-  assert.match(text, /preflight FAILED/);
+  assert.match(text, /doctor FAILED/);
   assert.match(text, new RegExp(`${PRINCIPAL_ENV} is not set`));
 });
 
@@ -168,4 +168,64 @@ test("doctor passes when authority is declared and KONSPEKT_PRINCIPAL is granted
   const out = run(["doctor", "--canonical", canonicalPath], { principal: "denisurusov" });
   assert.match(out, /acceptance authority OK/);
   assert.match(out, /denisurusov/);
+});
+
+// --- canonicalBranchCheck (git-backed) ---------------------------------------
+
+test("canonicalBranchCheck passes when the worktree is on the configured branch", () => {
+  init(canonicalPath, { initialBranch: "fleet_main" });
+  commitAll(canonicalPath, "seed", { ...IDENTITY, allowEmpty: true });
+  const bc = canonicalBranchCheck({ canonicalPath, configuredBranch: "fleet_main" });
+  assert.equal(bc.ok, true, bc.problem || "");
+  assert.equal(bc.actual, "fleet_main");
+});
+
+test("canonicalBranchCheck fails when the worktree has drifted off the configured branch", () => {
+  init(canonicalPath, { initialBranch: "fleet_main" });
+  commitAll(canonicalPath, "seed", { ...IDENTITY, allowEmpty: true });
+  execFileSync("git", ["-C", canonicalPath, "switch", "-c", "drifted"], { encoding: "utf8" });
+  const bc = canonicalBranchCheck({ canonicalPath, configuredBranch: "fleet_main" });
+  assert.equal(bc.ok, false);
+  assert.equal(bc.actual, "drifted");
+  assert.match(bc.problem, /folds follow the worktree's current branch/);
+});
+
+test("canonicalBranchCheck passes when no branch is configured (nothing to contradict)", () => {
+  init(canonicalPath, { initialBranch: "fleet_main" });
+  commitAll(canonicalPath, "seed", { ...IDENTITY, allowEmpty: true });
+  const bc = canonicalBranchCheck({ canonicalPath, configuredBranch: undefined });
+  assert.equal(bc.ok, true);
+  assert.equal(bc.actual, "fleet_main");
+});
+
+// --- CLI wiring: run-pass / doctor assert the canonical branch ---------------
+
+test("doctor reports the canonical branch matches the config", () => {
+  seedCanonicalGit({ withAuthority: true });
+  const out = run(["doctor", "--canonical", canonicalPath], { principal: "denisurusov" });
+  assert.match(out, /acceptance authority OK/);
+  assert.match(out, /matches config canonicalBranch/);
+});
+
+test("doctor fails when the canonical worktree drifted off the configured branch", () => {
+  seedCanonicalGit({ withAuthority: true });
+  execFileSync("git", ["-C", canonicalPath, "switch", "-c", "drifted"], { encoding: "utf8" });
+  let err;
+  try { run(["doctor", "--canonical", canonicalPath], { principal: "denisurusov" }); } catch (e) { err = e; }
+  assert.ok(err, "doctor should have exited non-zero");
+  const text = String(err.stderr || err.message);
+  assert.match(text, /doctor FAILED/);
+  assert.match(text, /folds follow the worktree's current branch/);
+});
+
+test("run-pass refuses when the canonical worktree drifted off the configured branch", () => {
+  seedCanonicalGit({ withAuthority: true });
+  run(["setup", "--canonical", canonicalPath, "--worktree-dir", join(root, "wt")], { principal: "denisurusov" });
+  execFileSync("git", ["-C", canonicalPath, "switch", "-c", "drifted"], { encoding: "utf8" });
+  let err;
+  try {
+    run(["run-pass", "--canonical", canonicalPath, "--dry-run"], { principal: "denisurusov" });
+  } catch (e) { err = e; }
+  assert.ok(err, "run-pass should have refused");
+  assert.match(String(err.stderr || err.message), /folds follow the worktree's current branch/);
 });
