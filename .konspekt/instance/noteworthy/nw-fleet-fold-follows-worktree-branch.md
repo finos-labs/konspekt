@@ -1,7 +1,7 @@
 ```yaml
 id: nw-fleet-fold-follows-worktree-branch
 kind: decision
-review: proposed
+review: accepted
 provenance:
   sourceRef: 09bb72e8c8aabdc7e1e84614f1036a3667788db6
   contentHash: 09bb72e8c8aabdc7e1e84614f1036a3667788db6

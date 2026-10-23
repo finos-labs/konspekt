@@ -1136,3 +1136,7 @@ proposing agent was not recorded.
 | edge:e-not-agentfleet-authority-preflight | review |  | proposed | 2026-10-23T16:44:40Z | faa36003d4bf3612e7e677825150d55cd78407e0 | claude |
 | noteworthy:nw-fleet-fold-follows-worktree-branch | review |  | proposed | 2026-10-23T19:46:29Z | 09bb72e8c8aabdc7e1e84614f1036a3667788db6 | claude |
 | edge:e-not-fleet-foldbranch | review |  | proposed | 2026-10-23T19:46:29Z | 09bb72e8c8aabdc7e1e84614f1036a3667788db6 | claude |
+| noteworthy:nw-fleet-setup-authority-preflight | review | proposed | accepted | 2026-10-23T21:34:13Z |  | denisurusov |
+| edge:e-not-agentfleet-authority-preflight | review | proposed | accepted | 2026-10-23T21:34:13Z |  | denisurusov |
+| noteworthy:nw-fleet-fold-follows-worktree-branch | review | proposed | accepted | 2026-10-23T21:34:33Z |  | denisurusov |
+| edge:e-not-fleet-foldbranch | review | proposed | accepted | 2026-10-23T21:34:33Z |  | denisurusov |
