@@ -365,3 +365,5 @@ commit order; the channel was not live during that work.
 | task-linkedin-announce-fleet | c4e6c54f146841c9ea15aa7a8ad6bf7785d8271f | docs/announcements/linkedin/post_2026-10-23/images/fleet.png | 2026-10-23T19:21:29Z |
 | task-linkedin-announce-fleet | c4e6c54f146841c9ea15aa7a8ad6bf7785d8271f | docs/announcements/linkedin/post_2026-10-23/images/CAPTURE.md | 2026-10-23T19:21:29Z |
 | task-linkedin-announce-fleet | c4e6c54f146841c9ea15aa7a8ad6bf7785d8271f | docs/announcements/linkedin/post_2026-10-23/carousel.pdf | 2026-10-23T19:21:29Z |
+| task-linkedin-announce-fleet | caaf08284082dde3c6b12217d58c37d8c2daa4b1 | docs/announcements/linkedin/post_2026-10-23/post.md | 2026-10-23T21:15:00Z |
+| task-linkedin-announce-fleet | caaf08284082dde3c6b12217d58c37d8c2daa4b1 | docs/announcements/linkedin/post_2026-10-23/article.md | 2026-10-23T21:15:00Z |
