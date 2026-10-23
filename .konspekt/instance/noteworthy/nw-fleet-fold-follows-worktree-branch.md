@@ -32,9 +32,10 @@ proposer handle and its outbox branch name are keyed to the handle, not the cano
 branch, so they do not change. The procedure is written into the committer role
 (`fleet-committer`, § Switching the canonical branch).
 
-Proposed hardening: `run-pass` and `doctor` should assert the canonical worktree is
-on the configured `canonicalBranch` and refuse on mismatch, turning the silent
-disagreement into a loud one.
+Hardening (implemented, commit `c6cc705`): `canonicalBranchCheck` (preflight.mjs)
+asserts the canonical worktree is on the configured `canonicalBranch`; `run-pass`
+refuses on mismatch (including `--dry-run`) and `doctor` reports the match and exits
+non-zero on mismatch, turning the silent disagreement into a loud one.
 
 Scopes [[task-agent-fleet]]; relates to [[nw-fleet-config-is-setup-driver]] and
 [[nw-fleet-proposer-skill-drift]].
