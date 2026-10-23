@@ -1134,3 +1134,8 @@ proposing agent was not recorded.
 | edge:e-not-adoption-zeroconfig | review |  | proposed | 2026-10-15T01:09:37Z | f8a5f0f62d7fe578010d0dcf3e6e268dba82f174 | claude |
 | noteworthy:nw-fleet-setup-authority-preflight | review |  | proposed | 2026-10-23T16:44:40Z | faa36003d4bf3612e7e677825150d55cd78407e0 | claude |
 | edge:e-not-agentfleet-authority-preflight | review |  | proposed | 2026-10-23T16:44:40Z | faa36003d4bf3612e7e677825150d55cd78407e0 | claude |
+| node:task-linkedin-announce-fleet | review |  | proposed | 2026-10-23T19:12:41Z | 21166f62a7f6132ae86eec5030cea52adae3bf01 | claude |
+| node:task-linkedin-announce-fleet | status |  | open | 2026-10-23T19:12:41Z | 21166f62a7f6132ae86eec5030cea52adae3bf01 | claude |
+| edge:e-dec-usability-announcefleet | review |  | proposed | 2026-10-23T19:12:41Z | 21166f62a7f6132ae86eec5030cea52adae3bf01 | claude |
+| node:task-linkedin-announce-fleet | review | proposed | accepted | 2026-10-23T19:21:29Z |  | denisurusov |
+| edge:e-dec-usability-announcefleet | review | proposed | accepted | 2026-10-23T19:21:29Z |  | denisurusov |
