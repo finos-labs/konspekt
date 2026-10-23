@@ -1132,3 +1132,5 @@ proposing agent was not recorded.
 | node:task-vendor-neutral-interop | status | open | resolved | 2026-10-22T19:00:00.000Z |  | denisurusov |
 | noteworthy:nw-adopter-tooling-zero-config | review |  | proposed | 2026-10-15T01:09:37Z | f8a5f0f62d7fe578010d0dcf3e6e268dba82f174 | claude |
 | edge:e-not-adoption-zeroconfig | review |  | proposed | 2026-10-15T01:09:37Z | f8a5f0f62d7fe578010d0dcf3e6e268dba82f174 | claude |
+| noteworthy:nw-fleet-setup-authority-preflight | review |  | proposed | 2026-10-23T16:44:40Z | faa36003d4bf3612e7e677825150d55cd78407e0 | claude |
+| edge:e-not-agentfleet-authority-preflight | review |  | proposed | 2026-10-23T16:44:40Z | faa36003d4bf3612e7e677825150d55cd78407e0 | claude |
