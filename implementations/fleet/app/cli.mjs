@@ -4,6 +4,7 @@
 // Commands:
 //   init       stand up a throwaway N+1 store and write the flat manifest (legacy)
 //   setup      stand up outbox worktrees from the committed canonical config
+//   doctor     run the acceptance-authority preflight without standing anything up
 //   teardown   remove the proposer worktrees (keeps canonical + branches)
 //   propose    assemble, sign, and commit a proposal onto a proposer's outbox
 //   run-pass   verify the outboxes and, live, fold the verified set onto canonical
@@ -23,6 +24,7 @@ import { verifyPass, foldPass, blessPass } from "./committer.mjs";
 import { assembleClaim, writeClaimToOutbox, readClaimRequests, applyClaims, acceptRelease } from "./claims.mjs";
 import { rebuildIndex } from "./proposed-ref.mjs";
 import { reviewDigest, renderReviewPrompt } from "./review-assistant.mjs";
+import { authorityPreflight, DEFAULT_INSTANCE_SUBDIR } from "./preflight.mjs";
 
 function parseArgs(argv) {
   const out = { _: [] };
@@ -70,10 +72,43 @@ function cmdSetup(args) {
   const canonicalPath = resolve(need(args, "canonical"));
   const worktreeDir = args["worktree-dir"] && args["worktree-dir"] !== true ? resolve(args["worktree-dir"]) : undefined;
   const configRel = args["config"] && args["config"] !== true ? args["config"] : undefined;
+  const instanceSubdir = args["instance-subdir"] && args["instance-subdir"] !== true ? args["instance-subdir"] : DEFAULT_INSTANCE_SUBDIR;
+
+  // Acceptance-authority preflight is a BLOCKING precondition of setup: refuse
+  // to stand up worktrees for a fleet that cannot attributably accept what its
+  // proposers fold (task-agent-fleet). `doctor` runs the same check on demand.
+  const pf = authorityPreflight({ canonicalPath, instanceSubdir });
+  if (!pf.ok) {
+    throw new Error(
+      `acceptance-authority preflight failed; not standing up the fleet:\n` +
+        pf.problems.map((p) => `  - ${p}`).join("\n") +
+        `\nRun \`cli.mjs doctor --canonical <path>\` after fixing to re-check.`,
+    );
+  }
+
   const { descriptor } = setupFromConfig({ canonicalPath, worktreeDir, configRel });
   console.log(`set up fleet from config at ${canonicalPath}`);
+  console.log(`  acceptance authority: ${pf.principal} (granted: ${pf.acceptors.join(", ")})`);
   console.log(`  canonical branch: ${descriptor.canonicalBranch}`);
   for (const p of descriptor.proposers) console.log(`  proposer ${p.handle}: ${p.path} (branch ${p.branch})`);
+}
+
+// Read-only acceptance-authority preflight. Runs the same check `setup` blocks
+// on, but stands nothing up, so an adopter can verify (from the acceptance
+// client's own shell) that the instance declares an authority and that
+// KONSPEKT_PRINCIPAL is configured. Exits non-zero when the fleet is not ready.
+function cmdDoctor(args) {
+  const canonicalPath = resolve(need(args, "canonical"));
+  const instanceSubdir = args["instance-subdir"] && args["instance-subdir"] !== true ? args["instance-subdir"] : DEFAULT_INSTANCE_SUBDIR;
+  const pf = authorityPreflight({ canonicalPath, instanceSubdir });
+  if (pf.ok) {
+    console.log(`acceptance authority OK at ${canonicalPath}`);
+    console.log(`  KONSPEKT_PRINCIPAL=${pf.principal} holds an accept grant (granted: ${pf.acceptors.join(", ")})`);
+    return;
+  }
+  console.error(`acceptance-authority preflight FAILED at ${canonicalPath}:`);
+  for (const p of pf.problems) console.error(`  - ${p}`);
+  process.exitCode = 1;
 }
 
 // Remove the proposer worktrees (keeps canonical, the object store, and the
@@ -285,6 +320,7 @@ function main() {
   try {
     if (command === "init") cmdInit(args);
     else if (command === "setup") cmdSetup(args);
+    else if (command === "doctor") cmdDoctor(args);
     else if (command === "teardown") cmdTeardown(args);
     else if (command === "propose") cmdPropose(args);
     else if (command === "claim") cmdClaim(args);
@@ -295,7 +331,7 @@ function main() {
     else if (command === "bless") cmdBless(args);
     else if (command === "rebuild-index") cmdRebuildIndex(args);
     else {
-      console.error("usage: cli.mjs <init|setup|teardown|propose|claim|release|accept-release|run-pass|review|bless|rebuild-index> [--flags]");
+      console.error("usage: cli.mjs <init|setup|doctor|teardown|propose|claim|release|accept-release|run-pass|review|bless|rebuild-index> [--flags]");
       console.error("  config-driven commands take --canonical <path> (reads .konspekt/fleet/config/fleet.json);");
       console.error("  the flat manifest path takes --root <dir> (legacy).");
       process.exit(2);
