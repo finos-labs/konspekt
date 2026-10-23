@@ -29,6 +29,7 @@
 import { join } from "node:path";
 import { existsSync, readFileSync } from "node:fs";
 import { parsePrincipals, parseGrants, activeGrants } from "../../../lib/authority.mjs";
+import { currentBranch } from "./git.mjs";
 
 export const PRINCIPAL_ENV = "KONSPEKT_PRINCIPAL";
 
@@ -118,4 +119,37 @@ export function authorityPreflight({
   }
 
   return { ok: problems.length === 0, problems, principal: who ?? null, acceptors: [...acceptors] };
+}
+
+// Assert the canonical worktree is on the branch the config declares. The
+// committer folds onto the canonical worktree's CURRENT branch (`commitAll`
+// checks out nothing); `canonicalBranch` in the config is used only by `setup`
+// (to fork the outbox branches) and as attach metadata. The two can therefore
+// silently disagree — switch the worktree's branch without updating the config
+// and folds land on the new branch while the config still names the old one
+// (nw-fleet-fold-follows-worktree-branch). This turns that silent disagreement
+// into a loud, blocking one at run-pass / doctor time.
+//
+// `configuredBranch` is the config's declared canonicalBranch. When it is empty
+// (the config omits it, so attach falls back to the worktree's current branch)
+// there is nothing to contradict and the check passes. Pure and read-only.
+//
+// Returns { ok, configured, actual, problem }.
+export function canonicalBranchCheck({ canonicalPath, configuredBranch } = {}) {
+  if (!canonicalPath) throw new Error("canonicalBranchCheck needs a canonicalPath");
+  const actual = currentBranch(canonicalPath);
+  if (!configuredBranch || actual === configuredBranch) {
+    return { ok: true, configured: configuredBranch || null, actual, problem: null };
+  }
+  return {
+    ok: false,
+    configured: configuredBranch,
+    actual,
+    problem:
+      `canonical worktree is on branch "${actual}" but the fleet config declares ` +
+      `canonicalBranch "${configuredBranch}": folds follow the worktree's current ` +
+      `branch, so they would land on "${actual}", not "${configuredBranch}". Switch ` +
+      `the worktree (\`git -C "${canonicalPath}" switch ${configuredBranch}\`) or update ` +
+      `canonicalBranch in the config to match (nw-fleet-fold-follows-worktree-branch).`,
+  };
 }
