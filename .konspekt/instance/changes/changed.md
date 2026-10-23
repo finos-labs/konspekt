@@ -356,3 +356,6 @@ commit order; the channel was not live during that work.
 | task-adoption-path | 59c37d8971eedce3b22122dcdbdfcb04ff27366e | setup/components/conformance/binding-audit-workflow.yml | 2026-10-15T02:14:27Z |
 | task-adoption-path | 59c37d8971eedce3b22122dcdbdfcb04ff27366e | test/setup-init.test.mjs | 2026-10-15T02:14:27Z |
 | task-adoption-path | 59c37d8971eedce3b22122dcdbdfcb04ff27366e | tools/binding-audit.mjs | 2026-10-15T02:14:27Z |
+| task-agent-fleet | 7e166f6cfa486b7ec4445aa82842a9ed8ab89c1e | implementations/fleet/app/cli.mjs | 2026-10-23T16:44:40Z |
+| task-agent-fleet | 7e166f6cfa486b7ec4445aa82842a9ed8ab89c1e | implementations/fleet/app/preflight.mjs | 2026-10-23T16:44:40Z |
+| task-agent-fleet | 7e166f6cfa486b7ec4445aa82842a9ed8ab89c1e | implementations/fleet/app/test/preflight.test.mjs | 2026-10-23T16:44:40Z |
