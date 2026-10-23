@@ -62,6 +62,38 @@ Everything is driven through the CLI at `implementations/fleet/app/cli.mjs`.
      --name "<committer>" --email "<committer@…>"
    ```
 
+## Switching the canonical branch
+
+When the human says to move the fleet's canonical branch (e.g. "change the branch
+to `new-branch`, make the fleet follow"), move three things together — the fold
+target is the worktree's **current** branch, not the configured `canonicalBranch`
+(`nw-fleet-fold-follows-worktree-branch`):
+
+1. **Switch the canonical worktree** to the new branch — this is what actually
+   redirects where folds land:
+   ```
+   git -C "<canonical>" switch <new-branch>
+   ```
+   The new branch must not be checked out in another worktree.
+2. **Update the config** so it does not lie: set `canonicalBranch` in
+   `.konspekt/fleet/config/fleet.json` to `<new-branch>` and commit it. `setup`
+   forks outbox branches off this field, and attach/`doctor` report it.
+3. **Refresh each proposer outbox onto the new canonical.** An `outbox/<handle>`
+   branch was forked from the old canonical and does not follow; merge the new
+   canonical into each outbox worktree so the proposer authors against the new
+   graph (binding resolves) and loads current skills:
+   ```
+   git -C "<outbox-worktree>" merge <new-branch>
+   ```
+   This is non-destructive and keeps un-folded proposals. Do **not** teardown +
+   re-`setup` to achieve it: `setup` creates outbox branches with `newBranch` and
+   fails on an existing one, and deleting the branch first drops un-folded proposals.
+
+The proposer handle and its outbox branch name are keyed to the handle, not the
+canonical branch, so they do not change. Verify with `doctor --canonical "<canonical>"`
+(authority still declared) and `run-pass --canonical "<canonical>" --instance-subdir
+.konspekt/instance --dry-run` (proposals bind and verify against the new canonical).
+
 ## Invariants you enforce
 
 - **Canonical is authoritative; the index is derived and rebuildable.** After a
