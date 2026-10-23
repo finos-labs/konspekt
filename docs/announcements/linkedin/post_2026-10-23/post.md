@@ -2,7 +2,7 @@
 platform: linkedin
 format: feed
 date: 2026-10-23
-url:                       # live post URL, filled in once posted
+url: https://lnkd.in/p/gbiG3h94
 announces: "the agent fleet runs — a second, unrelated repo adopted it; acceptance authority is now a setup precondition"
 carousel: carousel.pdf      # full fleet poster as a swipeable LinkedIn document
 assets:
@@ -23,9 +23,10 @@ Publish the article (article.md / article.html) FIRST, then paste its URL into
 first_comment above before posting this feed teaser. Attach images/fleet.png, or
 keep this post text-only and let the article carry the figure.
 -->
-Last time, I said konspekt's agent model was moving to a fleet — several agents proposing into one graph, one human accepting — and that the authority model is what makes that safe. This month the fleet ran. In a different repo.
+We have reached an important milestone, making Konspekt work with a fleet of agents. All agents propose into the 
+same Konspekt graph, and a single human accepts them. The authority model ensures that this is safe.
 
-A separate project adopted it: cdm-collateral, a repository modeling collateral under the Common Domain Model, unrelated to konspekt's own code. A proposer agent wrote design documents to its own outbox; a deterministic committer — no model on the write path — verified each one and folded it onto the shared graph as "proposed." I reviewed and accepted two of them. Each atom carries its verbatim source, the agent that proposed it, and me as the named acceptor.
+A separate project adopted it: cdm-collateral, a repository modeling collateral under the Common Domain Model, unrelated to konspekt's own code. A proposer agent wrote design documents to its own outbox; a deterministic committer verified each one and folded it onto the shared graph as "proposed." I reviewed and accepted two of them. Each atom carries its verbatim source, the agent that proposed it, and me as the named acceptor.
 
 Standing it up in a second repo exposed a gap the home repo never would: that project had never declared who may accept, so my first acceptance was recorded with no name on it. So the named acceptor is now a configuration element of setup, enforced in a blocking way — a fleet will not stand up until an authority is declared and the approver's identity is set.
 

@@ -1,0 +1,119 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>The fleet runs: one reviewer over many agents, proven by an adopter</title>
+<!--
+  PASTE-READY COPY of article.md for LinkedIn's Article editor.
+  LinkedIn has no Markdown/HTML/file import; it is a WYSIWYG editor. Pasting
+  rich text (this rendered page) carries headings, bold, links and bullet
+  lists across; pasting Markdown does not.
+
+  How to use:
+    1. Open this file in a browser.
+    2. Select all (Ctrl+A), copy (Ctrl+C).
+    3. In LinkedIn "Write article", paste into the body. The <h1> becomes the
+       article title (or move it into the title field).
+    4. Set the cover image to images/fleet.png via LinkedIn's cover button.
+       (Pasted images are stripped by LinkedIn.)
+  Verify formatting after pasting — LinkedIn sanitizes pasted markup.
+-->
+<style>
+  body{max-width:720px;margin:2rem auto;padding:0 1rem;font:17px/1.6 Georgia,serif;color:#1a1a1a}
+  h1{font-size:2rem;line-height:1.2}
+  h2{font-size:1.35rem;margin-top:2rem}
+  figure{margin:1.5rem 0}
+  figure img{width:100%;border:1px solid #ddd}
+  figcaption{font:14px/1.4 system-ui,sans-serif;color:#666;margin-top:.4rem}
+  .marker{font:13px/1.4 system-ui,sans-serif;color:#a00}
+  code{font:15px/1.5 ui-monospace,Menlo,Consolas,monospace;background:#f4f4f4;padding:.1em .3em;border-radius:3px}
+</style>
+
+<h1>The fleet runs: one reviewer over many agents, proven by an adopter</h1>
+
+<p class="marker">[COVER images/fleet.png — set as the article cover via LinkedIn's cover button]</p>
+<figure>
+  <img src="images/fleet.png" alt="The fleet layout — proposer agents writing to their own outbox branches, one deterministic committer folding proposals onto the canonical graph, one human accepting">
+  <figcaption>The fleet — proposer agents writing to their own outbox branches, one deterministic committer folding proposals onto the canonical graph, one human accepting.</figcaption>
+</figure>
+
+<p>konspekt keeps the state of an AI-driven project as a typed graph: goals, tasks, decisions, and the verbatim exchanges they came from. The last wave of work made acceptance accountable — a transition log that records who accepted what, an authority model that declares who may accept, and an ordering rule that requires acceptance before work. I closed that write-up by saying the governance layer is what lets the model scale past a single assistant, to a fleet. This is that fleet, running — and running first in a repository that is not konspekt's own.</p>
+
+<h2>The shape of a fleet</h2>
+
+<p>A fleet is one reviewer over many agents. Several proposer agents work a project in parallel; each writes into the same graph; one human accepts. The layout that makes this safe is a set of linked git worktrees over one shared object store: one canonical worktree on the committer's branch, and one worktree per proposer agent, each bound to its own <code>outbox/&lt;handle&gt;</code> branch. Because a linked worktree binds to exactly one branch, one worktree per agent is one outbox branch per agent by construction — an agent can only write where it is allowed to, and the committer maps a branch back to its owning agent to reject any proposal whose declared origin disagrees.</p>
+
+<p>Between the proposers and the graph sits a deterministic committer, and no model runs on that write path. The committer reads each proposer's outbox, verifies every proposal — that it came from the branch it claims, that its source text hashes to its recorded content address, that the proposing agent holds a grant for that kind of atom, that confidence is in range and the binding resolves — and folds the verified set onto canonical as <code>review: proposed</code>, in one commit. A human then accepts or rejects. The agent's judgment is a proposal; the machine's job is to verify and record; the human's judgment is acceptance. Those three roles never blur.</p>
+
+<h2>Spec-driven setup</h2>
+
+<p>Standing a fleet up is declarative. One committed file, <code>.konspekt/fleet/config/fleet.json</code>, is the single source for the layout: the canonical branch, the topology, and one entry per agent giving its handle, its role, and the entity types it is allowed to propose. There is no hand-written manifest and no wiring passed on the command line. <code>setup</code> reads the config and stands up exactly the worktrees it names.</p>
+
+<p>The config deliberately leaves two things out. Absolute filesystem paths are not stored, because they break across clones and machines; the committer re-derives each worktree's location at attach time from <code>git worktree list</code>, keyed by the agent's branch. And the runtime index is not stored either, because it is rebuildable from canonical. The config says what the fleet is; the machine figures out where it currently lives. The config is committed on the canonical branch, where the single writer already reads, and it sits in the repo-local envelope beside the operating policy — not inside the portable instance — so a second adopter writes its own and does not inherit this one.</p>
+
+<p>The layout is one half of what a fleet needs configured. The other half is its acceptance authority: the named human who may accept, declared in the instance, and that acceptor's identity, set in the environment the accepting client runs in. That half is a required configuration element too, and setup enforces it in a blocking manner — it is covered below.</p>
+
+<h2>Where the worktrees live</h2>
+
+<p>The on-disk layout is explicit. The canonical worktree is the repository itself, checked out on the canonical branch — the one tree every reader opens, holding <code>.konspekt/instance/</code>. The proposer worktrees are created as siblings of it, in a directory named after the canonical worktree with a <code>-fleet</code> suffix, one subdirectory per agent:</p>
+
+<ul>
+  <li>canonical: <code>…/project</code> (on the canonical branch)</li>
+  <li>proposers: <code>…/project-fleet/outbox-&lt;handle&gt;</code> (each on <code>outbox/&lt;handle&gt;</code>)</li>
+</ul>
+
+<p>So a project at <code>…/cdm-collateral</code> gets its proposer worktrees under <code>…/cdm-collateral-fleet/</code>, one per agent — <code>outbox-spec-writer</code>, and so on. All of them share the one object store under the canonical <code>.git</code>, so a proposer reads canonical as an ordinary sibling-directory read while it writes only to its own outbox branch. The proposer directories hold only their own outbox (the proposals they have authored and not yet had folded); the canonical tree is the only place the graph itself lives. Tearing a fleet down removes the proposer worktrees and keeps the canonical worktree, the object store, and the outbox branches.</p>
+
+<h2>The agents are skills</h2>
+
+<p>Each agent in the fleet is a role, and each role is a skill — a file the agent loads that defines what it proposes and how. The fleet ships five, and they live in a vendor-neutral location, <code>.konspekt/agents/skills/</code>, so tooling from any vendor can discover them; a small sync tool mirrors each one into <code>.claude/skills/</code> for Claude Code, which only auto-loads from there. The neutral file is the single source of truth and the mirror is a generated adapter.</p>
+
+<p>The five:</p>
+
+<ul>
+  <li><strong>fleet-proposer-common</strong> — the shared protocol every proposer follows: read canonical, author one atom, bind it, commit it to your own outbox, never accept your own work.</li>
+  <li><strong>fleet-spec-writer</strong> — proposes a specification or design document capturing something that should be written down.</li>
+  <li><strong>fleet-skill-builder</strong> — proposes a reusable skill or prompt that primes an agent for a konspekt task.</li>
+  <li><strong>fleet-presentation-writer</strong> — proposes a deck or slides that explain konspekt or the fleet to a newcomer.</li>
+  <li><strong>fleet-committer</strong> — the deterministic single writer: verify, fold as proposed, maintain the derived index, and execute the human's bless or reject, one atomic field-only commit each. No model on the write path.</li>
+</ul>
+
+<p>The skill–persona map is the config. An agent's <code>role</code> field names its skill, so the config is where you say which personas the fleet runs: <code>spec-writer</code> runs <code>fleet-spec-writer</code>, <code>skill-builder</code> runs <code>fleet-skill-builder</code>, <code>presentation-writer</code> runs <code>fleet-presentation-writer</code> — each over the shared <code>fleet-proposer-common</code>. The agent's <code>entityTypes</code> in the same entry is its propose-grant: the kinds of atom it is allowed to author (for the writer personas, artifacts and noteworthy). Adding or removing a persona is an edit to that one file. The committer runs <code>fleet-committer</code> and holds the write path alone.</p>
+
+<h2>What a run looks like</h2>
+
+<p>The run that matters happened in a separate repository: cdm-collateral, a project modeling collateral agreements under the Common Domain Model, with its own konspekt instance and no shared code with konspekt itself. It adopted the fleet the way any project would. It vendored the committer engine into its own tree, so the engine runs against that repository's own graph. It declared one proposer agent in the committed config. It stood up the worktrees.</p>
+
+<p>Then the loop: a proposer agent, primed only with its role skill, authored a design document, bound it to an accepted task, and committed it to its outbox. The committer verified the proposal and folded it onto the shared graph as proposed. I opened it, read it, and accepted it. Then a second document went through the same path. Two atoms now sit in that project's graph, each carrying its verbatim source, the agent that proposed it, and the named human who accepted it. That is the whole point of the design made concrete: an agent produced durable project knowledge, and the record can say exactly where it came from and who signed off.</p>
+
+<h2>What a second repo exposed</h2>
+
+<p>Adoption is the real test of a design, because it walks into the assumptions the home project never has to state. This one surfaced a gap immediately.</p>
+
+<p>The first time I accepted a folded proposal in the adopter — through the IntelliJ plugin — the acceptance was written to the transition log with no name attached. The attribution the authority model exists to guarantee was simply missing. The cause was mundane and exactly the kind of thing only an adopter hits: the project had never declared its principals. konspekt's own instance declares a human grantor and a grant, so the client records that identity; a fresh instance that declares nothing has no authority to record, and the acceptance goes through unattributed. Nothing errored. The record was just quietly poorer than it should have been.</p>
+
+<p>Declaring principals fixes the attribution — once an instance names who may accept, the client refuses to write an acceptance without a configured identity. But that only bites at the moment of acceptance. The deeper problem is that a whole fleet could be stood up against a project with no acceptance authority at all, and nothing would say so until the first accept.</p>
+
+<h2>Acceptance authority becomes a setup precondition</h2>
+
+<p>So the named acceptor became a configuration element of the fleet, set up in a blocking manner. Setting up a fleet now runs an acceptance-authority preflight before it stands up a single worktree, and refuses when the preflight fails. It blocks on two configuration elements. First, the instance must declare its acceptance authority — a human grantor and an effective grant that names who may accept which part of the graph. Second, that acceptor's identity must be configured in the environment the accepting client runs in, named by a <code>KONSPEKT_PRINCIPAL</code> that resolves to a declared, granted principal. Neither defaults and neither is optional: until both name a real, granted acceptor, setup refuses and nothing is stood up. A new read-only <code>doctor</code> command runs the same checks on demand, from an acceptance client's own shell, and reports what is missing in plain terms.</p>
+
+<p>The effect is that an adopter cannot stand up a fleet that can fold proposals but never attributably accept them. The question "who may accept here, and are they configured?" is answered before the first agent runs, not discovered at the moment someone clicks accept.</p>
+
+<h2>Moving the canonical branch</h2>
+
+<p>A fleet runs on a canonical branch, and a project sometimes needs to move its canonical work onto a different branch and have the agents follow. That is now a defined operation. The committer folds onto whatever branch the canonical worktree currently has checked out, so moving the fleet means moving three things together: switch the canonical worktree to the new branch, update the <code>canonicalBranch</code> field in the config to match it, and merge the new canonical into each proposer's outbox so the proposers author against the new graph. The committer role carries that procedure, so "change the branch, make the fleet follow" is an instruction a committer session can act on directly.</p>
+
+<p>The failure this introduces is a half-done switch — move the worktree but forget the config, and folds land on the new branch while the config still names the old one, with nothing to say so. So it became another checked precondition: <code>doctor</code> and every <code>run-pass</code> now assert the canonical worktree is on the branch the config declares, and refuse when the two disagree. A switch applied only halfway fails loudly at the next pass instead of writing to the wrong branch.</p>
+
+<h2>Why an adopter matters</h2>
+
+<p>konspekt is built to be adopted: a project carries its own instance, declares its own authority, writes its own fleet config, and runs the engine against its own graph. A second repository exercising the fleet is the portability claim being tested by a project that shares none of konspekt's code. The adopter writes its own two authority tables; it vendors the engine it runs; it stood up the same <code>-fleet</code> worktree layout and drove the same propose-verify-fold-accept loop. The gap it exposed, and the setup gate that now closes it, are improvements the home project would not have found on its own.</p>
+
+<p>That is the argument for the whole governance layer in one run: many proposers are only safe when acceptance is named, constrained, and now checked before the fleet exists. One human stays accountable for what enters the graph, across as many agents as the project cares to run.</p>
+
+<h2>Where it sits</h2>
+
+<p>The fleet lives under <a href="https://github.com/finos-labs/konspekt/tree/main/implementations/fleet">implementations/fleet</a>; the authority model it depends on is specified in <a href="https://github.com/finos-labs/konspekt/blob/main/spec/architecture/AUTHORITY.md">spec/architecture/AUTHORITY.md</a>. Which identities an instance declares, who holds a grant, which personas the fleet config runs, and whether <code>basis: accepted</code> is on are host choices that differ per project; the rules that check them, and the setup preflight that now requires an acceptance authority, are the same everywhere.</p>
+
+<p>All of it is on main: <a href="https://github.com/finos-labs/konspekt">github.com/finos-labs/konspekt</a></p>
+
+<p>#AI #KnowledgeGraphs #Accountability #OpenSource #FINOS #konspekt</p>

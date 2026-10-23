@@ -2,7 +2,7 @@
 platform: linkedin
 format: article
 date: 2026-10-23
-url:                       # live Article URL, filled in once posted
+url: https://www.linkedin.com/feed/update/urn:li:activity:7519527965039230976/
 title: "The fleet runs: one reviewer over many agents, proven by an adopter"
 cover: images/fleet.png
 assets:
