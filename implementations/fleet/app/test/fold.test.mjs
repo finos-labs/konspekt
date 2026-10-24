@@ -182,3 +182,56 @@ test("a second foldPass over an un-consumed outbox folds nothing and makes no co
     try { rmSync(root, { recursive: true, force: true }); } catch { /* best effort */ }
   }
 });
+
+// ----- carried files (task-fleet-proposal-carries-files) -----
+
+function conceptWithFile(fileSpec) {
+  return assembleProposal({
+    entityType: "concept",
+    fence: "id: concept-foo\nlabel: Foo\ncreatedAt: 2026-10-10T16:00:00Z\nupdatedAt: 2026-10-10T16:00:00Z",
+    prose: "# Concept: Foo\n\nbody.",
+    confidence: 0.8,
+    conversationId: "s",
+    timestamp: "2026-10-10T16:00:00Z",
+    origin: { agent: "agent-a", model: "m", session: "s" },
+    binding: "task-demo",
+    edges: [{ id: "e-foo", kind: "mentions", from: "node:task-demo", to: "concept:concept-foo", review: "proposed" }],
+    source: "excerpt\n",
+    files: [fileSpec],
+  });
+}
+
+test("foldProposal writes a carried file to the repo root and reports it", () => {
+  writeSeed(dir);
+  const p = conceptWithFile({ path: "docs/analysis/x.md", bytes: "carried body\n" });
+  const r = foldProposal(dir, p, { repoRoot: dir, instanceSubdir: "" });
+  assert.deepEqual(r.files, [{ path: "docs/analysis/x.md", hash: p.meta.files[0].hash }]);
+  assert.equal(readFileSync(join(dir, "docs/analysis/x.md"), "utf8"), "carried body\n");
+  // The atom still folded and the tree is still valid.
+  assert.equal(errorsOf(dir).length, 0);
+});
+
+test("foldProposal re-checks the carried-file hash and refuses a mismatch", () => {
+  writeSeed(dir);
+  const p = conceptWithFile({ path: "docs/x.md", bytes: "good\n" });
+  const tampered = { ...p, files: p.files.map((f) => ({ ...f, bytes: Buffer.from("evil\n") })) };
+  assert.throws(() => foldProposal(dir, tampered, { repoRoot: dir }), /hash mismatch at fold/);
+  assert.ok(!existsSync(join(dir, "docs/x.md")));
+});
+
+test("foldPass lands a carried file on canonical in the fold commit", () => {
+  const root = mkdtempSync(join(tmpdir(), "konspekt-foldfiles-"));
+  try {
+    const fleet = setupFleet({ root, proposers: ["agent-a"], identity: IDENTITY });
+    writeSeed(fleet.canonicalPath);
+    commitAll(fleet.canonicalPath, "seed", { ...IDENTITY });
+    const p = conceptWithFile({ path: "docs/x.md", bytes: "landed\n" });
+    proposeToOutbox(fleet.proposerFor("agent-a").path, p, { identity: IDENTITY });
+    const res = foldPass(fleet, { identity: IDENTITY });
+    assert.equal(res.folded.length, 1);
+    assert.deepEqual(res.folded[0].files, [{ path: "docs/x.md", hash: p.meta.files[0].hash }]);
+    assert.equal(readFileSync(join(fleet.canonicalPath, "docs/x.md"), "utf8"), "landed\n");
+  } finally {
+    try { rmSync(root, { recursive: true, force: true }); } catch { /* best effort */ }
+  }
+});

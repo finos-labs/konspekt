@@ -96,6 +96,17 @@ payload-format fix fed a proposer `body_file` and a `worktree/app` path
    **wired**: include at
    least one edge whose endpoint is your entity, with a valid domain/range and a
    unique, hyphenated edge id, `review: proposed`.
+   - **Carrying a repository file** (optional; `task-fleet-proposal-carries-files`).
+     When your atom describes a file that must land on canonical — a document,
+     source, config — carry it so the committer folds the file with the atom,
+     rather than leaving an artifact whose `location` points at a file that never
+     arrives. Add a `files` array to the spec, each `{ "path": "<repo-relative
+     target>", "file": "<local path relative to spec>" }`, or pass
+     `--file <target>=<localpath>` on the CLI (repeatable). The target is
+     repo-relative and must NOT be absolute, escape with `..`, or point inside the
+     konspekt instance (`.konspekt/instance/` — instance content is atoms, not
+     files). The committer content-addresses each file and verifies the bytes at
+     fold; a mismatch or illegal target sets the whole proposal aside.
 6. **Commit to your outbox** via the committer CLI:
    ```
    node "APP/cli.mjs" propose --canonical "CANONICAL" --agent "HANDLE" \

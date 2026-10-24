@@ -132,3 +132,10 @@ throwaway mirror), every commit you make that touches a surface outside
 and you run `node tools/binding-audit.mjs` and `node lib/validate.mjs` before
 pushing (`.konspekt/OPERATING.md` § Binding commits to the graph). Against a
 throwaway mirror, none of that applies.
+
+When a fold lands a **carried file** (`task-fleet-proposal-carries-files`),
+`run-pass` prints `+ file <path>  (bind in changed-code log)` for each one. Those
+files are outside `.konspekt/instance/`, so — in the dogfood case — add a
+changed-code row binding each to the proposal's binding entity, pointing at the
+fold commit. The row trails the fold commit by one (the log's push-based rule),
+so it is a separate bookkeeping commit after the fold, not part of it.

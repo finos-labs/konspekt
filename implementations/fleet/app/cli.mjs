@@ -33,18 +33,32 @@ import { authorityPreflight, canonicalBranchCheck, DEFAULT_INSTANCE_SUBDIR } fro
 
 function parseArgs(argv) {
   const out = { _: [] };
+  const set = (key, val) => {
+    // A repeated flag accumulates into an array (e.g. --file a --file b), so a
+    // scalar flag stays scalar and only genuine repeats become lists.
+    if (out[key] === undefined) out[key] = val;
+    else if (Array.isArray(out[key])) out[key].push(val);
+    else out[key] = [out[key], val];
+  };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     if (a.startsWith("--")) {
       const key = a.slice(2);
       const next = argv[i + 1];
-      if (next === undefined || next.startsWith("--")) out[key] = true;
-      else { out[key] = next; i++; }
+      if (next === undefined || next.startsWith("--")) set(key, true);
+      else { set(key, next); i++; }
     } else {
       out._.push(a);
     }
   }
   return out;
+}
+
+// Normalize a possibly-repeated flag to an array of string values (dropping a
+// bare boolean presence). Used for repeatable flags like --file.
+function asList(v) {
+  if (v === undefined || v === true) return [];
+  return (Array.isArray(v) ? v : [v]).filter((x) => x !== true);
 }
 
 function need(args, key) {
@@ -176,6 +190,25 @@ function cmdPropose(args) {
   let prose = spec.prose;
   if (prose === undefined && spec.prose_file) prose = readRel(spec.prose_file);
 
+  // Carried files (task-fleet-proposal-carries-files): repository files the
+  // proposal lands on canonical beside the atom. Two sources, merged:
+  //   spec.files: [{ path, file }]  — `file` is a local path relative to the spec
+  //   --file <target>=<localpath>   — repeatable on the CLI, local path from cwd
+  // `path`/`target` is the repo-relative target on canonical; bytes are read raw
+  // (binary-safe) and content-addressed by assembleProposal.
+  const files = [];
+  for (const f of spec.files ?? []) {
+    if (!f || !f.path || !f.file) throw new Error("spec.files entry needs { path, file }");
+    files.push({ path: f.path, bytes: readFileSync(resolve(dirname(specPath), f.file)) });
+  }
+  for (const entry of asList(args["file"])) {
+    const eq = String(entry).indexOf("=");
+    if (eq < 1) throw new Error(`--file must be <target>=<localpath>, got "${entry}"`);
+    const target = entry.slice(0, eq);
+    const local = entry.slice(eq + 1);
+    files.push({ path: target, bytes: readFileSync(resolve(local)) });
+  }
+
   const assembled = assembleProposal({
     entityType: spec.entity_type,
     fence,
@@ -188,11 +221,13 @@ function cmdPropose(args) {
     dependsOn: spec.depends_on ?? [],
     edges: spec.edges ?? [],
     source,
+    files,
   });
 
   const { proposalId, commit } = proposeToOutbox(proposer.path, assembled, { identity });
   console.log(`proposed ${proposalId} by ${agent}`);
   console.log(`  committed ${commit} on ${proposer.branch}`);
+  for (const f of assembled.files ?? []) console.log(`  carries file ${f.path}  (${f.hash.slice(0, 12)})`);
 }
 
 // Author a claim (advisory dispatch): propose `status: open -> active` on an
@@ -277,7 +312,13 @@ function passTick(fleet, grants, { dryRun, identity, instanceSubdir, now }) {
   console.log(`\n${verified}/${verdicts.length} verified; ${verdicts.length - verified} set aside.`);
 
   if (!dryRun) {
-    for (const f of folded) console.log(`  folded ${f.entityType} ${f.entityId}  <- ${f.proposalId.slice(0, 12)}`);
+    for (const f of folded) {
+      console.log(`  folded ${f.entityType} ${f.entityId}  <- ${f.proposalId.slice(0, 12)}`);
+      // Carried files land in this fold commit; the committer binds each in the
+      // changed-code log as a host-policy follow-up (it points at this commit,
+      // and the log trails commits by one) — task-fleet-proposal-carries-files.
+      for (const cf of f.files ?? []) console.log(`    + file ${cf.path}  (bind in changed-code log)`);
+    }
     for (const a of alreadyFolded) console.log(`  ALREADY FOLDED ${a.entityType} ${a.entityId}  <- ${a.proposalId ? a.proposalId.slice(0, 12) : "(?)"}`);
     for (const s of setAside) console.log(`  not folded ${s.proposalId ? s.proposalId.slice(0, 12) : "(?)"}: ${s.reason}`);
     if (commit) console.log(`\nfolded ${folded.length} onto canonical in ${commit}`);

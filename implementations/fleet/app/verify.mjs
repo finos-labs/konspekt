@@ -15,7 +15,7 @@
 // treats this verdict as enforcement.
 
 import { splitEntityFile } from "../../../lib/conformance.mjs";
-import { verifySourceHash } from "./payload.mjs";
+import { verifySourceHash, computeFileHash, normalizeFileTarget } from "./payload.mjs";
 
 // Entity types an agent may propose when no narrower grant is given. Project is
 // excluded; an agent does not propose the project root.
@@ -32,10 +32,15 @@ export const DEFAULT_PROPOSE_ENTITY_TYPES = ["concept", "noteworthy", "artifact"
 //   known        optional Set of ids a `depends_on` may resolve against (appended
 //                or accepted atoms plus sibling proposals in this batch); when
 //                omitted, depends_on is not resolved here
+//   files        carried files [{ path, hash, bytes }] the proposal would land on
+//                canonical; each is checked for a legal target and a byte-for-hash
+//                match (task-fleet-proposal-carries-files)
+//   instanceSubdir  the konspekt instance's subpath, so a carried file targeting
+//                inside the instance is set aside (instance content is atoms)
 //
 // Returns { ok, checks, reasons, entityId, entityType, agent }. `ok` is every
 // check true.
-export function verifyProposal({ entityMd, sourceMd, meta = {}, branchOwner, grant = {}, known = null }) {
+export function verifyProposal({ entityMd, sourceMd, meta = {}, files = [], branchOwner, grant = {}, known = null, instanceSubdir = "" }) {
   const { front, noFrontmatter } = splitEntityFile(String(entityMd ?? ""));
   if (noFrontmatter || !front.id) {
     return {
@@ -97,6 +102,32 @@ export function verifyProposal({ entityMd, sourceMd, meta = {}, branchOwner, gra
     if (unresolved.length) reasons.push(`depends_on unresolved: ${unresolved.join(", ")}`);
   } else {
     checks.depends_on = true;
+  }
+
+  // files: every carried file must declare a legal repo-relative target and its
+  // bytes must hash to the declared hash. meta.files is the authority on what the
+  // proposal claims; `files` carries the bytes the committer read. A declared
+  // file with no bytes (absent in the outbox) or a hash mismatch is set aside.
+  const declared = Array.isArray(meta.files) ? meta.files : [];
+  if (declared.length === 0) {
+    checks.files = true;
+  } else {
+    const byPath = new Map((files ?? []).map((f) => [f.path, f]));
+    let filesOk = true;
+    for (const d of declared) {
+      const vetted = normalizeFileTarget(d.path, { instanceSubdir });
+      if (!vetted.ok) { filesOk = false; reasons.push(vetted.reason); continue; }
+      const carried = byPath.get(d.path) ?? byPath.get(vetted.path);
+      if (!carried || carried.bytes == null) {
+        filesOk = false; reasons.push(`carried file ${vetted.path} is missing its bytes in the outbox`); continue;
+      }
+      const actual = computeFileHash(carried.bytes);
+      if (actual !== d.hash) {
+        filesOk = false;
+        reasons.push(`carried file ${vetted.path} hash mismatch (meta claims ${d.hash ?? "(none)"}, bytes hash to ${actual})`);
+      }
+    }
+    checks.files = filesOk;
   }
 
   const ok = Object.values(checks).every(Boolean);

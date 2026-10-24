@@ -7,7 +7,9 @@ import {
   assembleProposal,
   renderEdgesBlock,
   proposeToOutbox,
+  writeProposal,
 } from "../outbox.mjs";
+import { computeFileHash } from "../payload.mjs";
 import { computeEntityId, verifySourceHash } from "../payload.mjs";
 import { splitEntityFile } from "../../../../lib/conformance.mjs";
 import { setupFleet } from "../worktrees.mjs";
@@ -99,5 +101,33 @@ test("proposeToOutbox writes proposals/<id>/ into the proposer worktree only", (
     assert.ok(!existsSync(join(f.canonicalPath, "proposals", proposalId)));
   } finally {
     rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("a carried file is content-addressed in meta.files and written under files/", () => {
+  const dir = mkdtempSync(join(tmpdir(), "konspekt-outbox-files-"));
+  try {
+    const a = assembleProposal({
+      entityType: "artifact",
+      fence: "id: artifact-x\nlabel: X\ncreatedAt: 2026-10-10T16:00:00Z\nupdatedAt: 2026-10-10T16:00:00Z",
+      prose: "# Artifact: X\n\nbody.",
+      confidence: 0.8,
+      conversationId: "s",
+      timestamp: "2026-10-10T16:00:00Z",
+      origin: { agent: "agent-a", model: "m", session: "s" },
+      binding: "task-demo",
+      edges: [{ id: "e-x", kind: "produces", from: "node:task-demo", to: "artifact:artifact-x", review: "proposed" }],
+      source: "excerpt\n",
+      files: [{ path: "docs/nested/x.md", bytes: "carried\n" }],
+    });
+    assert.equal(a.meta.files.length, 1);
+    assert.equal(a.meta.files[0].path, "docs/nested/x.md");
+    assert.equal(a.meta.files[0].hash, computeFileHash(Buffer.from("carried\n")));
+    const { dir: pdir } = writeProposal(dir, a);
+    assert.equal(readFileSync(join(pdir, "files", "docs", "nested", "x.md"), "utf8"), "carried\n");
+    const meta = JSON.parse(readFileSync(join(pdir, "meta.json"), "utf8"));
+    assert.deepEqual(meta.files, [{ path: "docs/nested/x.md", hash: a.meta.files[0].hash }]);
+  } finally {
+    try { rmSync(dir, { recursive: true, force: true }); } catch { /* best effort */ }
   }
 });

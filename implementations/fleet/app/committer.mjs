@@ -37,6 +37,16 @@ export function readOutbox(worktreePath) {
     let meta = {};
     const metaText = read("meta.json");
     if (metaText != null) { try { meta = JSON.parse(metaText); } catch { meta = {}; } }
+    // Carried files (task-fleet-proposal-carries-files): load each declared
+    // file's bytes from files/<target>, keyed by its target path. A declared file
+    // whose bytes are absent is kept with bytes null, which verify reports.
+    const files = Array.isArray(meta.files)
+      ? meta.files.map((f) => {
+          const abs = join(dir, "files", ...String(f.path ?? "").split(/[\\/]+/));
+          const bytes = existsSync(abs) ? readFileSync(abs) : null;
+          return { path: f.path, hash: f.hash, bytes };
+        })
+      : [];
     out.push({
       proposalId: id,
       dir,
@@ -44,6 +54,7 @@ export function readOutbox(worktreePath) {
       sourceMd: read("source.md"),
       edgesMd: read("edges.md") ?? "",
       meta,
+      files,
     });
   }
   return out;
@@ -64,10 +75,10 @@ export function readProposals(fleet) {
 // payload whose id disagrees with its directory is as set-aside as a hash
 // mismatch). Shared by verifyPass and foldPass so both judge a proposal the
 // same way.
-function verdictFor(fleet, pr, { grants, known }) {
+function verdictFor(fleet, pr, { grants, known, instanceSubdir = "" }) {
   const branchOwner = fleet.ownerOf(pr.branch);
   const grant = grants[pr.owner] ?? {};
-  const v = verifyProposal({ entityMd: pr.entityMd, sourceMd: pr.sourceMd, meta: pr.meta, branchOwner, grant, known });
+  const v = verifyProposal({ entityMd: pr.entityMd, sourceMd: pr.sourceMd, meta: pr.meta, files: pr.files, branchOwner, grant, known, instanceSubdir });
   const computedId = computeEntityId(pr.entityMd);
   const dirMatchesId = computedId === pr.proposalId;
   const reasons = dirMatchesId
@@ -87,8 +98,8 @@ function verdictFor(fleet, pr, { grants, known }) {
 // Run verify across every outbox proposal. `grants` maps an agent handle to its
 // propose grant; `known` is the optional depends_on resolution set. Returns one
 // verdict row per proposal, in read order.
-export function verifyPass(fleet, { grants = {}, known = null } = {}) {
-  return readProposals(fleet).map((pr) => verdictFor(fleet, pr, { grants, known }));
+export function verifyPass(fleet, { grants = {}, known = null, instanceSubdir = "" } = {}) {
+  return readProposals(fleet).map((pr) => verdictFor(fleet, pr, { grants, known, instanceSubdir }));
 }
 
 // The deterministic write pass (fleet-spec.md § Committer protocol, step 4):
@@ -103,7 +114,7 @@ export function foldPass(fleet, { grants = {}, known = null, identity = {}, inst
   const verdicts = [];
   const verified = [];
   for (const pr of readProposals(fleet)) {
-    const verdict = verdictFor(fleet, pr, { grants, known });
+    const verdict = verdictFor(fleet, pr, { grants, known, instanceSubdir });
     verdicts.push(verdict);
     if (!verdict.ok) continue;
     const { front } = splitEntityFile(pr.entityMd);
@@ -114,12 +125,13 @@ export function foldPass(fleet, { grants = {}, known = null, identity = {}, inst
       sourceMd: pr.sourceMd,
       edgesMd: pr.edgesMd,
       meta: pr.meta,
+      files: pr.files,
       created,
     });
   }
 
   const instanceDir = instanceSubdir ? join(fleet.canonicalPath, instanceSubdir) : fleet.canonicalPath;
-  const { folded, alreadyFolded, setAside } = foldProposals(instanceDir, foldOrder(verified), { now, fleetDir: fleet.canonicalPath });
+  const { folded, alreadyFolded, setAside } = foldProposals(instanceDir, foldOrder(verified), { now, fleetDir: fleet.canonicalPath, repoRoot: fleet.canonicalPath, instanceSubdir });
 
   // Commit only when the fold wrote something. An already-folded proposal
   // writes nothing, so a pass that folds nothing new leaves canonical byte-for-

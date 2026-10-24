@@ -17,9 +17,9 @@
 // transition `by` column, from the authenticated branch owner carried in the
 // fleet envelope.
 
-import { join } from "node:path";
+import { join, dirname } from "node:path";
 import { mkdirSync, writeFileSync, readFileSync, existsSync } from "node:fs";
-import { canonicalizeEntity } from "./payload.mjs";
+import { canonicalizeEntity, computeFileHash, normalizeFileTarget } from "./payload.mjs";
 import { appendFoldRecord } from "./proposed-ref.mjs";
 import { splitEntityFile } from "../../../lib/conformance.mjs";
 
@@ -68,7 +68,7 @@ const edgeRow = (r) => `| ${r.id} | ${r.kind} | ${r.from} | ${r.to} | ${r.weight
 // own edges do not wire): these are set-aside conditions the caller reports,
 // never a partial write — the caller appends the batch in one commit, so a throw
 // here aborts before any commit.
-export function foldProposal(instanceDir, { entityMd, sourceMd, edgesMd, meta = {}, proposalId = null }, { now, fleetDir } = {}) {
+export function foldProposal(instanceDir, { entityMd, sourceMd, edgesMd, meta = {}, files = [], proposalId = null }, { now, fleetDir, repoRoot = null, instanceSubdir = "" } = {}) {
   const entityText = canonicalizeEntity(entityMd).toString("utf8");
   const { front } = splitEntityFile(entityText);
   const id = front.id;
@@ -155,6 +155,33 @@ export function foldProposal(instanceDir, { entityMd, sourceMd, edgesMd, meta = 
   for (const r of edgeRows) trRows.push(txRow(`edge:${r.id}`, "review", r.review || "proposed", timestamp, by));
   appendRows(join(instanceDir, "transitions", "transitions.md"), trRows);
 
+  // ----- carried files (task-fleet-proposal-carries-files) -----
+  // Write each carried file to its target on canonical (the repo root, NOT the
+  // instance), re-vetting the target and re-checking the bytes against the
+  // declared hash so a file that slipped past verify still cannot land wrong.
+  // They ride in this same fold commit (commitAll stages the whole worktree);
+  // binding each file's path in the changed-code log is the committer's
+  // host-policy follow-up (see run-pass output), since that row points at this
+  // commit and the log trails commits by one.
+  const writtenFiles = [];
+  const declaredFiles = Array.isArray(meta.files) ? meta.files : [];
+  if (declaredFiles.length) {
+    const root = repoRoot || instanceDir;
+    const byPath = new Map((files ?? []).map((f) => [f.path, f]));
+    for (const d of declaredFiles) {
+      const vetted = normalizeFileTarget(d.path, { instanceSubdir });
+      if (!vetted.ok) throw new Error(`carried file rejected: ${vetted.reason}`);
+      const carried = byPath.get(d.path) ?? byPath.get(vetted.path);
+      if (!carried || carried.bytes == null) throw new Error(`carried file ${vetted.path} is missing its bytes`);
+      const actual = computeFileHash(carried.bytes);
+      if (actual !== d.hash) throw new Error(`carried file ${vetted.path} hash mismatch at fold (${actual} != ${d.hash})`);
+      const abs = join(root, ...vetted.path.split("/"));
+      mkdirSync(dirname(abs), { recursive: true });
+      writeFileSync(abs, carried.bytes);
+      writtenFiles.push({ path: vetted.path, hash: d.hash });
+    }
+  }
+
   // ----- fleet fold log (derived-index linkage, outside the instance tree) -----
   // proposal_id is fleet vocabulary and does not enter the stored atom, so the
   // proposal -> atom linkage lands here, atomically in the same commit.
@@ -171,6 +198,7 @@ export function foldProposal(instanceDir, { entityMd, sourceMd, edgesMd, meta = 
     entityId: id,
     file: relFile.split("\\").join("/"),
     edgeIds: edgeRows.map((r) => r.id),
+    files: writtenFiles,
     sourceRef: sourceHash,
     status: "folded",
   };
@@ -181,13 +209,13 @@ export function foldProposal(instanceDir, { entityMd, sourceMd, edgesMd, meta = 
 // skipped and reported in `alreadyFolded`, and a proposal the committer cannot
 // place is set aside with its reason — the rest still append. Returns
 // { folded, alreadyFolded, setAside }.
-export function foldProposals(instanceDir, items, { now, fleetDir } = {}) {
+export function foldProposals(instanceDir, items, { now, fleetDir, repoRoot = null, instanceSubdir = "" } = {}) {
   const folded = [];
   const alreadyFolded = [];
   const setAside = [];
   for (const it of items) {
     try {
-      const res = foldProposal(instanceDir, it, { now, fleetDir });
+      const res = foldProposal(instanceDir, it, { now, fleetDir, repoRoot, instanceSubdir });
       if (res.status === "already-folded") alreadyFolded.push(res);
       else folded.push(res);
     } catch (e) {

@@ -1,11 +1,13 @@
 import { test, beforeEach, afterEach } from "node:test";
 import assert from "node:assert/strict";
-import { mkdtempSync, rmSync } from "node:fs";
+import { mkdtempSync, rmSync, writeFileSync, readFileSync, existsSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { execFileSync } from "node:child_process";
-import { standUpAndFold } from "./_fixtures.mjs";
+import { standUpAndFold, writeSeed, IDENTITY } from "./_fixtures.mjs";
+import { setupFleet } from "../worktrees.mjs";
+import { commitAll } from "../git.mjs";
 
 // Exercise the CLI as a subprocess — the layer the unit tests skip. The
 // rebuild-index path bug (passing the fleet root instead of the canonical
@@ -42,4 +44,38 @@ test("run-pass --dry-run verifies without folding", () => {
   assert.match(out, /1\/1 verified/);
   assert.doesNotMatch(out, /folded \d+ onto canonical/);
   void fleet;
+});
+
+test("propose --file carries a repository file that run-pass lands on canonical", () => {
+  // A config-less flat fleet, seeded, then a proposal that carries a doc.
+  const fleet = setupFleet({ root, proposers: ["agent-a"], identity: IDENTITY });
+  writeSeed(fleet.canonicalPath);
+  commitAll(fleet.canonicalPath, "seed instance", { ...IDENTITY });
+
+  const spec = {
+    entity_type: "artifact",
+    confidence: 0.8,
+    binding: "task-demo",
+    model: "m",
+    session: "cli-files",
+    fence: "id: artifact-doc\nlabel: Doc\ncreatedAt: 2026-10-10T16:00:00Z\nupdatedAt: 2026-10-10T16:00:00Z",
+    prose: "# Artifact: Doc\n\nbody.",
+    edges: [{ id: "e-doc", kind: "produces", from: "node:task-demo", to: "artifact:artifact-doc", review: "proposed" }],
+  };
+  const specPath = join(root, "spec.json");
+  const sourcePath = join(root, "source.md");
+  const localPath = join(root, "local-doc.md");
+  writeFileSync(specPath, JSON.stringify(spec), "utf8");
+  writeFileSync(sourcePath, "excerpt\n", "utf8");
+  writeFileSync(localPath, "the carried document\n", "utf8");
+
+  const proposed = run(["propose", "--root", root, "--agent", "agent-a",
+    "--spec", specPath, "--source", sourcePath, "--file", `docs/doc.md=${localPath}`,
+    "--name", "A", "--email", "a@konspekt.local"]);
+  assert.match(proposed, /carries file docs\/doc\.md/);
+
+  const out = run(["run-pass", "--root", root, "--name", "C", "--email", "c@konspekt.local"]);
+  assert.match(out, /\+ file docs\/doc\.md/);
+  assert.ok(existsSync(join(fleet.canonicalPath, "docs/doc.md")));
+  assert.equal(readFileSync(join(fleet.canonicalPath, "docs/doc.md"), "utf8"), "the carried document\n");
 });

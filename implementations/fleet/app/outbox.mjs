@@ -16,9 +16,9 @@
 // in the proposer's worktree, which is bound to its own outbox branch, so a
 // proposal never touches canonical or a peer's branch.
 
-import { join } from "node:path";
+import { join, dirname } from "node:path";
 import { mkdirSync, writeFileSync } from "node:fs";
-import { canonicalizeEntity, computeEntityId, computeSourceHash } from "./payload.mjs";
+import { canonicalizeEntity, computeEntityId, computeSourceHash, computeFileHash, normalizeFileTarget } from "./payload.mjs";
 import { commitAll } from "./git.mjs";
 
 // Render an edges block exactly as the rows land in edges.md. A proposal's edges
@@ -60,6 +60,11 @@ function renderProvenance({ sourceHash, conversationId, timestamp, confidence })
 //                provenance.
 //   prose        the markdown body after the fence.
 //   edges        the edge rows wiring the atom.
+//   files        optional repository files the proposal carries onto canonical,
+//                each { path, bytes }: `path` is the repo-relative target and
+//                `bytes` its content (string or Buffer). Each is content-addressed
+//                and recorded in meta.files as { path, hash }
+//                (task-fleet-proposal-carries-files).
 export function assembleProposal({
   entityType,
   fence,
@@ -73,6 +78,7 @@ export function assembleProposal({
   dependsOn = [],
   edges = [],
   source,
+  files = [],
 }) {
   if (!entityType) throw new Error("proposal needs entityType");
   if (!fence) throw new Error("proposal needs an authored entity fence");
@@ -93,25 +99,44 @@ export function assembleProposal({
 
   const proposalId = computeEntityId(entityMd);
   const edgesMd = renderEdgesBlock(edges);
+
+  // Carried files: validate each target up front (so an illegal path fails at
+  // author time, not only at the committer), content-address the bytes, and keep
+  // the bytes for writeProposal while recording { path, hash } in meta.
+  const carried = (files ?? []).map((f) => {
+    const vetted = normalizeFileTarget(f.path, {});
+    if (!vetted.ok) throw new Error(`carried file rejected: ${vetted.reason}`);
+    const bytes = Buffer.isBuffer(f.bytes) ? f.bytes : Buffer.from(String(f.bytes ?? ""));
+    return { path: vetted.path, bytes, hash: computeFileHash(bytes) };
+  });
+
   const meta = {
     entity_type: entityType,
     origin: { agent: origin.agent, model: origin.model ?? "unknown", session: origin.session ?? "" },
     binding,
     depends_on: dependsOn,
   };
-  return { proposalId, entityType, entityMd, sourceMd, edgesMd, meta };
+  if (carried.length) meta.files = carried.map((f) => ({ path: f.path, hash: f.hash }));
+  return { proposalId, entityType, entityMd, sourceMd, edgesMd, meta, files: carried };
 }
 
 // Write an assembled proposal into `worktreePath` under proposals/<id>/, without
 // committing. Returns { proposalId, dir }.
 export function writeProposal(worktreePath, assembled) {
-  const { proposalId, entityMd, sourceMd, edgesMd, meta } = assembled;
+  const { proposalId, entityMd, sourceMd, edgesMd, meta, files = [] } = assembled;
   const dir = join(worktreePath, "proposals", proposalId);
   mkdirSync(dir, { recursive: true });
   writeFileSync(join(dir, "entity.md"), entityMd, "utf8");
   writeFileSync(join(dir, "source.md"), sourceMd, "utf8");
   writeFileSync(join(dir, "edges.md"), edgesMd, "utf8");
   writeFileSync(join(dir, "meta.json"), JSON.stringify(meta, null, 2) + "\n", "utf8");
+  // Carried files land under files/<target>, mirroring their eventual path on
+  // canonical, so the committer reads bytes keyed by the same target.
+  for (const f of files) {
+    const abs = join(dir, "files", ...f.path.split("/"));
+    mkdirSync(dirname(abs), { recursive: true });
+    writeFileSync(abs, f.bytes);
+  }
   return { proposalId, dir };
 }
 

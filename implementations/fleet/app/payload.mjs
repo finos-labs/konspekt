@@ -58,3 +58,44 @@ export function verifySourceHash(entityMdText, sourceMdBytes) {
   const expected = computeSourceHash(sourceMdBytes);
   return { ok: claimed === expected, claimed: claimed ?? null, expected };
 }
+
+// ----- carried files (task-fleet-proposal-carries-files) -----
+//
+// A proposal may carry repository files to land on canonical beside the atom
+// (documents, code, config). Each is content-addressed by the git blob SHA of
+// its bytes, the same address the store uses everywhere, so the committer can
+// confirm the bytes it folds are the bytes the proposer declared.
+export function computeFileHash(bytes) {
+  return gitBlobSha(Buffer.isBuffer(bytes) ? bytes : Buffer.from(bytes));
+}
+
+// Normalize and vet a carried file's target path (where it lands on canonical).
+// A target must be a repo-relative POSIX path: no absolute path or drive letter,
+// no `.`/`..`/empty segment (so it cannot escape the repo), and — when
+// `instanceSubdir` is given — not inside the portable konspekt instance, whose
+// content arrives as atoms, not as a file payload. Returns { ok, path, reason };
+// on ok, `path` is the forward-slash normalized target. Shared by the proposer
+// (at author time), verify (set-aside), and fold (defensive guard).
+export function normalizeFileTarget(target, { instanceSubdir = "" } = {}) {
+  if (typeof target !== "string" || target.trim() === "") {
+    return { ok: false, path: null, reason: "file target is empty" };
+  }
+  const raw = target.trim();
+  if (raw.startsWith("/") || raw.startsWith("\\") || /^[a-zA-Z]:[\\/]/.test(raw)) {
+    return { ok: false, path: null, reason: `file target "${raw}" is absolute; targets are repo-relative` };
+  }
+  const segments = raw.split(/[\\/]+/);
+  for (const seg of segments) {
+    if (seg === "" || seg === "." || seg === "..") {
+      return { ok: false, path: null, reason: `file target "${raw}" has an illegal path segment "${seg}"` };
+    }
+  }
+  const path = segments.join("/");
+  if (instanceSubdir) {
+    const inst = String(instanceSubdir).split(/[\\/]+/).filter(Boolean).join("/");
+    if (inst && (path === inst || path.startsWith(inst + "/"))) {
+      return { ok: false, path: null, reason: `file target "${path}" is inside the instance (${inst}); instance content arrives as atoms, not files` };
+    }
+  }
+  return { ok: true, path, reason: null };
+}

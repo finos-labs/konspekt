@@ -91,3 +91,43 @@ test("an entity with no ```yaml fence is set aside, not thrown", () => {
   assert.equal(v.ok, false);
   assert.match(v.reasons.join("; "), /no ```yaml fence/);
 });
+
+// ----- carried files (task-fleet-proposal-carries-files) -----
+
+test("a carried file with matching bytes and a legal target verifies", () => {
+  const a = good({ files: [{ path: "docs/x.md", bytes: "hello\n" }] });
+  assert.deepEqual(a.meta.files.map((f) => f.path), ["docs/x.md"]);
+  const v = verify(a, { files: a.files, instanceSubdir: ".konspekt/instance" });
+  assert.equal(v.ok, true, v.reasons.join("; "));
+  assert.equal(v.checks.files, true);
+});
+
+test("a carried file whose bytes were tampered fails the files check", () => {
+  const a = good({ files: [{ path: "docs/x.md", bytes: "hello\n" }] });
+  const tampered = a.files.map((f) => ({ ...f, bytes: Buffer.from("tampered\n") }));
+  const v = verify(a, { files: tampered });
+  assert.equal(v.ok, false);
+  assert.equal(v.checks.files, false);
+  assert.match(v.reasons.join("; "), /docs\/x\.md hash mismatch/);
+});
+
+test("a carried file missing its bytes in the outbox is set aside", () => {
+  const a = good({ files: [{ path: "docs/x.md", bytes: "hello\n" }] });
+  const v = verify(a, { files: [{ path: "docs/x.md", hash: a.meta.files[0].hash, bytes: null }] });
+  assert.equal(v.checks.files, false);
+  assert.match(v.reasons.join("; "), /missing its bytes/);
+});
+
+test("a carried file targeting inside the instance is set aside", () => {
+  // Author-time normalize uses no instanceSubdir, so this is authored; the
+  // committer, knowing the instance subpath, rejects it.
+  const a = good({ files: [{ path: ".konspekt/instance/nodes/x.md", bytes: "hi\n" }] });
+  const v = verify(a, { files: a.files, instanceSubdir: ".konspekt/instance" });
+  assert.equal(v.checks.files, false);
+  assert.match(v.reasons.join("; "), /inside the instance/);
+});
+
+test("assembleProposal rejects an absolute carried-file target at author time", () => {
+  assert.throws(() => good({ files: [{ path: "/etc/passwd", bytes: "x" }] }), /absolute/);
+  assert.throws(() => good({ files: [{ path: "../escape.md", bytes: "x" }] }), /illegal path segment/);
+});
