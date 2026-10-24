@@ -380,3 +380,4 @@ commit order; the channel was not live during that work.
 | task-agent-fleet | d71797f741bca0f296d4eb77fc097e0c564a8d58 | .konspekt/agents/skills/fleet-committer/SKILL.md | 2026-10-24T14:52:15Z |
 | task-agent-fleet | d71797f741bca0f296d4eb77fc097e0c564a8d58 | .claude/skills/fleet-proposer-common/SKILL.md | 2026-10-24T14:52:15Z |
 | task-agent-fleet | d71797f741bca0f296d4eb77fc097e0c564a8d58 | .claude/skills/fleet-committer/SKILL.md | 2026-10-24T14:52:15Z |
+| task-fleet-committer-startup-scan | 3ed36fac434b8cd407eff52a4aed7fdcaa9882ec | ROADMAP.md | 2026-10-24T15:05:00Z |
