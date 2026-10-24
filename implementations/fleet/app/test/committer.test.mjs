@@ -5,7 +5,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { setupFleet, loadFleet } from "../worktrees.mjs";
 import { assembleProposal, proposeToOutbox } from "../outbox.mjs";
-import { readOutbox, readProposals, verifyPass } from "../committer.mjs";
+import { readOutbox, readProposals, verifyPass, watchLoop } from "../committer.mjs";
 
 const IDENTITY = { name: "Test", email: "test@konspekt.local" };
 let root;
@@ -89,4 +89,31 @@ test("a proposal directory renamed to disagree with its content id is set aside"
   assert.equal(verdicts.length, 1);
   assert.equal(verdicts[0].ok, false);
   assert.match(verdicts[0].reasons.join("; "), /does not match the entity content id/);
+});
+
+test("watchLoop runs tick each iteration, waits between ticks, and stops on stop()", async () => {
+  // Pure control-flow test: no real timers or signals. stop() flips true once
+  // three ticks have run, so the loop ends promptly and runs no extra tick.
+  let ticks = 0;
+  const waits = [];
+  const n = await watchLoop({
+    tick: () => { ticks++; },
+    intervalMs: 1234,
+    stop: () => ticks >= 3,
+    wait: (ms) => { waits.push(ms); return Promise.resolve(); },
+  });
+  assert.equal(n, 3); // three ticks
+  assert.equal(ticks, 3);
+  assert.deepEqual(waits, [1234, 1234]); // waited between ticks, not after the last
+});
+
+test("watchLoop does not tick when stop() is already true", async () => {
+  let ticks = 0;
+  const n = await watchLoop({ tick: () => { ticks++; }, stop: () => true });
+  assert.equal(n, 0);
+  assert.equal(ticks, 0);
+});
+
+test("watchLoop requires a tick function", async () => {
+  await assert.rejects(() => watchLoop({}), /needs a tick function/);
 });

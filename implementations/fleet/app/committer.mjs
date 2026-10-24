@@ -135,6 +135,30 @@ export function foldPass(fleet, { grants = {}, known = null, identity = {}, inst
   return { verdicts, folded, alreadyFolded, setAside, commit };
 }
 
+// Watch loop (task-fleet-committer-startup-scan): run a fold pass on a loop until
+// `stop()` returns true, so the committer, once up, keeps folding proposals as
+// proposer outboxes advance instead of acting only on a single manual pass. The
+// loop is a pure control primitive — `tick`, `stop`, and `wait` are injected, so
+// it is unit-testable with no real timers — and it is safe to repeat because the
+// fold pass it drives is idempotent (an already-folded proposal writes nothing
+// and makes no commit; nw-fleet-refold-clobbers-blessed). It never accepts:
+// each tick folds as `review: proposed`; bless stays a human-gated pass. Runs
+// `tick(n)` then waits `intervalMs` between ticks (not after the last), and
+// re-checks `stop` before and after each tick so a signal between ticks ends it
+// promptly. Returns the number of ticks run.
+const defaultWait = (ms) => new Promise((r) => setTimeout(r, ms));
+export async function watchLoop({ tick, intervalMs = 5000, stop = () => false, wait = defaultWait } = {}) {
+  if (typeof tick !== "function") throw new Error("watchLoop needs a tick function");
+  let n = 0;
+  while (!stop()) {
+    await tick(n);
+    n++;
+    if (stop()) break;
+    await wait(intervalMs);
+  }
+  return n;
+}
+
 // The disposition pass (fleet-spec.md § Committer protocol, steps 7-8): the
 // human has named a per-proposal decision; the deterministic writer executes
 // exactly that subset. Each decision is { proposalId, decision: accepted|

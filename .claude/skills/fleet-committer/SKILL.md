@@ -62,6 +62,25 @@ Everything is driven through the CLI at `implementations/fleet/app/cli.mjs`.
      --name "<committer>" --email "<committer@…>"
    ```
 
+## Watch mode (fold continuously)
+
+A single `run-pass` folds what is in the outboxes at that moment. When a proposer
+may start work before you, or keep producing while you run, fold on a loop so a
+proposal committed before you came up is not stranded until someone remembers to
+pass (`task-fleet-committer-startup-scan`):
+
+```
+node "APP/cli.mjs" run-pass --canonical "FLEET_ROOT/canonical" --instance-subdir .konspekt/instance --watch --interval 5 \
+  --name "<committer>" --email "<committer@…>"
+```
+
+It folds every verified proposal as `review: proposed` each pass and skips what
+is already folded (idempotent; it never clobbers a blessed or rejected review),
+re-checks the canonical-branch safety each pass, and blocks until Ctrl-C. It
+**never accepts** — watch folds, bless stays a separate human-gated pass. Omit
+`--interval` for the 5-second default; `--watch` cannot be combined with
+`--dry-run`.
+
 ## Switching the canonical branch
 
 When the human says to move the fleet's canonical branch (e.g. "change the branch

@@ -8,6 +8,7 @@
 //   teardown   remove the proposer worktrees (keeps canonical + branches)
 //   propose    assemble, sign, and commit a proposal onto a proposer's outbox
 //   run-pass   verify the outboxes and, live, fold the verified set onto canonical
+//              (--watch [--interval <sec>] keeps folding on a loop until Ctrl-C)
 //   bless      apply the human's per-proposal accept/reject decisions
 //   rebuild-index  rebuild the derived proposed index from canonical
 //
@@ -24,7 +25,7 @@ import { readFileSync } from "node:fs";
 import { resolve, dirname } from "node:path";
 import { setupFleet, setupFromConfig, teardownFleet, readFleetConfig, resolveFleet } from "./worktrees.mjs";
 import { assembleProposal, proposeToOutbox } from "./outbox.mjs";
-import { verifyPass, foldPass, blessPass } from "./committer.mjs";
+import { verifyPass, foldPass, blessPass, watchLoop } from "./committer.mjs";
 import { assembleClaim, writeClaimToOutbox, readClaimRequests, applyClaims, acceptRelease } from "./claims.mjs";
 import { rebuildIndex } from "./proposed-ref.mjs";
 import { reviewDigest, renderReviewPrompt } from "./review-assistant.mjs";
@@ -242,13 +243,10 @@ function cmdAcceptRelease(args) {
   console.log(`released ${r.node} -> ${r.to} by ${r.by} in ${r.commit}`);
 }
 
-function cmdRunPass(args) {
-  const dryRun = Boolean(args["dry-run"]);
-  const identity = { name: args["name"] || undefined, email: args["email"] || undefined };
-  const instanceSubdir = args["instance-subdir"] && args["instance-subdir"] !== true ? args["instance-subdir"] : "";
-
-  const { fleet, grants } = attach(args);
-
+// One run-pass over every outbox: the branch-safety check, then fold (or, for a
+// dry run, verify only), then claims. Printing is unchanged from the single-pass
+// command; the watch loop calls this once per tick (task-fleet-committer-startup-scan).
+function passTick(fleet, grants, { dryRun, identity, instanceSubdir, now }) {
   // Refuse if the canonical worktree has drifted off the branch the fleet
   // records as canonical: folds follow the worktree's current branch, so a
   // mismatch would land them on the wrong branch (nw-fleet-fold-follows-worktree-branch).
@@ -264,7 +262,7 @@ function cmdRunPass(args) {
   // canonical as review: proposed in one commit (bless is M7).
   const res = dryRun
     ? { verdicts: verifyPass(fleet, { grants }), folded: [], alreadyFolded: [], setAside: [], commit: null }
-    : foldPass(fleet, { grants, identity, instanceSubdir });
+    : foldPass(fleet, { grants, identity, instanceSubdir, now });
   const { verdicts, folded, alreadyFolded = [], setAside, commit } = res;
 
   console.log(`read ${verdicts.length} proposal(s) across ${fleet.proposers.length} outbox(es)\n`);
@@ -299,6 +297,48 @@ function cmdRunPass(args) {
     for (const s of cp.setAside) console.log(`  claim set aside ${s.claimId.slice(0, 12)}: ${s.reason}`);
     if (cp.commit) console.log(`\napplied ${cp.applied.length} claim(s) in ${cp.commit}`);
   }
+  return res;
+}
+
+async function cmdRunPass(args) {
+  const dryRun = Boolean(args["dry-run"]);
+  const identity = { name: args["name"] || undefined, email: args["email"] || undefined };
+  const instanceSubdir = args["instance-subdir"] && args["instance-subdir"] !== true ? args["instance-subdir"] : "";
+  const now = args["now"] && args["now"] !== true ? args["now"] : null;
+
+  const { fleet, grants } = attach(args);
+  const tickOpts = { dryRun, identity, instanceSubdir, now };
+
+  if (!args["watch"]) {
+    passTick(fleet, grants, tickOpts);
+    return;
+  }
+
+  // Watch mode (task-fleet-committer-startup-scan): fold live on a loop so a
+  // proposer that ran before the committer is not stranded. It folds; it never
+  // accepts (each pass writes review: proposed), so --dry-run is meaningless here.
+  if (dryRun) throw new Error("--watch folds live and cannot be combined with --dry-run");
+  const intervalSec = args["interval"] && args["interval"] !== true ? Number(args["interval"]) : 5;
+  if (!Number.isFinite(intervalSec) || intervalSec <= 0) {
+    throw new Error("--interval must be a positive number of seconds");
+  }
+
+  let stopped = false;
+  const onSignal = () => {
+    if (stopped) process.exit(0); // a second Ctrl-C exits now, without waiting for the pass
+    stopped = true;
+    console.log("\nstopping watch after the current pass…");
+  };
+  process.on("SIGINT", onSignal);
+  process.on("SIGTERM", onSignal);
+
+  console.log(`watching ${fleet.proposers.length} outbox(es) every ${intervalSec}s; Ctrl-C to stop.\n`);
+  const passes = await watchLoop({
+    intervalMs: intervalSec * 1000,
+    stop: () => stopped,
+    tick: () => { passTick(fleet, grants, { ...tickOpts, dryRun: false }); console.log(""); },
+  });
+  console.log(`watch stopped after ${passes} pass(es).`);
 }
 
 function cmdBless(args) {
@@ -347,7 +387,7 @@ function cmdReview(args) {
   console.log(renderReviewPrompt(digest));
 }
 
-function main() {
+async function main() {
   const argv = process.argv.slice(2);
   const command = argv[0];
   const args = parseArgs(argv.slice(1));
@@ -360,7 +400,7 @@ function main() {
     else if (command === "claim") cmdClaim(args);
     else if (command === "release") cmdRelease(args);
     else if (command === "accept-release") cmdAcceptRelease(args);
-    else if (command === "run-pass") cmdRunPass(args);
+    else if (command === "run-pass") await cmdRunPass(args);
     else if (command === "review") cmdReview(args);
     else if (command === "bless") cmdBless(args);
     else if (command === "rebuild-index") cmdRebuildIndex(args);
@@ -368,6 +408,7 @@ function main() {
       console.error("usage: cli.mjs <init|setup|doctor|teardown|propose|claim|release|accept-release|run-pass|review|bless|rebuild-index> [--flags]");
       console.error("  config-driven commands take --canonical <path> (reads .konspekt/fleet/config/fleet.json);");
       console.error("  the flat manifest path takes --root <dir> (legacy).");
+      console.error("  run-pass --watch [--interval <sec>] folds live on a loop until Ctrl-C.");
       process.exit(2);
     }
   } catch (e) {
