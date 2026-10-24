@@ -389,3 +389,17 @@ commit order; the channel was not live during that work.
 | task-fleet-committer-startup-scan | bc4f3043ef572deb9ffc894b78facd462067e89f | implementations/fleet/app/test/committer.test.mjs | 2026-10-24T15:35:00Z |
 | task-fleet-committer-startup-scan | bc4f3043ef572deb9ffc894b78facd462067e89f | .konspekt/agents/skills/fleet-committer/SKILL.md | 2026-10-24T15:35:00Z |
 | task-fleet-committer-startup-scan | bc4f3043ef572deb9ffc894b78facd462067e89f | .claude/skills/fleet-committer/SKILL.md | 2026-10-24T15:35:00Z |
+| task-fleet-proposal-carries-files | 849e2192ec02e1dd7661671002526282429f7d8c | implementations/fleet/app/cli.mjs | 2026-10-24T15:55:00Z |
+| task-fleet-proposal-carries-files | 849e2192ec02e1dd7661671002526282429f7d8c | implementations/fleet/app/committer.mjs | 2026-10-24T15:55:00Z |
+| task-fleet-proposal-carries-files | 849e2192ec02e1dd7661671002526282429f7d8c | implementations/fleet/app/fold.mjs | 2026-10-24T15:55:00Z |
+| task-fleet-proposal-carries-files | 849e2192ec02e1dd7661671002526282429f7d8c | implementations/fleet/app/outbox.mjs | 2026-10-24T15:55:00Z |
+| task-fleet-proposal-carries-files | 849e2192ec02e1dd7661671002526282429f7d8c | implementations/fleet/app/payload.mjs | 2026-10-24T15:55:00Z |
+| task-fleet-proposal-carries-files | 849e2192ec02e1dd7661671002526282429f7d8c | implementations/fleet/app/verify.mjs | 2026-10-24T15:55:00Z |
+| task-fleet-proposal-carries-files | 849e2192ec02e1dd7661671002526282429f7d8c | implementations/fleet/app/test/cli.test.mjs | 2026-10-24T15:55:00Z |
+| task-fleet-proposal-carries-files | 849e2192ec02e1dd7661671002526282429f7d8c | implementations/fleet/app/test/fold.test.mjs | 2026-10-24T15:55:00Z |
+| task-fleet-proposal-carries-files | 849e2192ec02e1dd7661671002526282429f7d8c | implementations/fleet/app/test/outbox.test.mjs | 2026-10-24T15:55:00Z |
+| task-fleet-proposal-carries-files | 849e2192ec02e1dd7661671002526282429f7d8c | implementations/fleet/app/test/verify.test.mjs | 2026-10-24T15:55:00Z |
+| task-fleet-proposal-carries-files | 849e2192ec02e1dd7661671002526282429f7d8c | .konspekt/agents/skills/fleet-committer/SKILL.md | 2026-10-24T15:55:00Z |
+| task-fleet-proposal-carries-files | 849e2192ec02e1dd7661671002526282429f7d8c | .konspekt/agents/skills/fleet-proposer-common/SKILL.md | 2026-10-24T15:55:00Z |
+| task-fleet-proposal-carries-files | 849e2192ec02e1dd7661671002526282429f7d8c | .claude/skills/fleet-committer/SKILL.md | 2026-10-24T15:55:00Z |
+| task-fleet-proposal-carries-files | 849e2192ec02e1dd7661671002526282429f7d8c | .claude/skills/fleet-proposer-common/SKILL.md | 2026-10-24T15:55:00Z |
