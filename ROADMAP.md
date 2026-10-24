@@ -3,7 +3,7 @@
      Check freshness with: node tools/roadmap.mjs --check
      This file is a pure function of .konspekt/instance/ (no timestamps baked in).
      Goals and tasks are graph nodes; the horizon is derived from node status/review.
-     contentHash: sha256:6b0038236f7a398b -->
+     contentHash: sha256:9bf0df5beb44d05d -->
 
 # konspekt roadmap
 
@@ -169,6 +169,7 @@ Make a konspekt instance operable by a human through a visual interface, not onl
 - Build the konspekt UI app as one view with two shells
 - September 2026 LinkedIn announcements — plugin/UI, and binding
 - October 2026 LinkedIn announcement — acceptance & authority
+- LinkedIn announcement — the agent fleet
 - Configurable popup mode for the IntelliJ plugin
 - Refresh presentation materials for the plugin, UI writes, and binding
 - Related-commands tab in the entity detail panel
@@ -185,6 +186,8 @@ Let several participants — people and agents — propose into and review one s
 
 - One reviewer over a fleet of agents
 - Cursor implementation of the fleet
+- Committer scans existing outboxes on start, not only on a manual pass
+- Let a fleet proposal land repository files, not only graph atoms
 
 **Later** — _proposed, not yet committed_
 
@@ -201,4 +204,4 @@ Let several participants — people and agents — propose into and review one s
 
 ---
 
-Generated from 8 goal(s) and 81 task-listing(s) over the instance graph.
+Generated from 8 goal(s) and 84 task-listing(s) over the instance graph.
