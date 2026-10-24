@@ -11,7 +11,7 @@
 // returns the registered handle for a known outbox branch and null for anything
 // else, so an unregistered branch owns nothing.
 
-import { join, dirname, basename } from "node:path";
+import { join, dirname, basename, resolve } from "node:path";
 import { writeFileSync, readFileSync, existsSync } from "node:fs";
 import { init, addWorktree, removeWorktree, commitAll, currentBranch, listWorktrees } from "./git.mjs";
 
@@ -199,6 +199,39 @@ export function teardownFleet(descriptor, { force = false } = {}) {
   for (const p of descriptor.proposers) {
     removeWorktree(descriptor.canonicalPath, p.path, { force });
   }
+}
+
+// Resolve a fleet descriptor from the CLI's attach arguments, tolerant of the
+// two invocation models so `--root` is not a footgun against a config-driven
+// fleet (nw-fleet-skill-root-flag-stale). Returns { fleet, grants, mode }:
+//   - `--canonical <path>`  -> config-driven attach, grants read from the config.
+//   - `--root <dir>` with a flat `<dir>/fleet.json` -> legacy manifest, grants
+//     null (the caller supplies them from `--grants`).
+//   - `--root <FLEET_ROOT>` with no flat manifest but a config-driven canonical
+//     at `<FLEET_ROOT>/canonical` -> config-driven attach off that canonical, so
+//     the fleet-root mental model the proposer/committer skills describe works.
+//   - otherwise a clear error naming `--canonical`.
+export function resolveFleet({ canonical, root, configRel } = {}) {
+  if (canonical) {
+    const canonicalPath = resolve(canonical);
+    const { fleet, grants } = loadFromConfig({ canonicalPath, configRel });
+    return { fleet, grants, mode: "config" };
+  }
+  if (!root) throw new Error("attach needs --canonical <canonical-worktree> or --root <fleet-root>");
+  const rootPath = resolve(root);
+  if (existsSync(join(rootPath, MANIFEST))) {
+    return { fleet: loadFleet(rootPath), grants: null, mode: "flat" };
+  }
+  const canonicalGuess = join(rootPath, "canonical");
+  if (existsSync(join(canonicalGuess, configRel || CONFIG_REL))) {
+    const { fleet, grants } = loadFromConfig({ canonicalPath: canonicalGuess, configRel });
+    return { fleet, grants, mode: "config" };
+  }
+  throw new Error(
+    `--root ${rootPath} has neither ${MANIFEST} nor canonical/${CONFIG_REL}; ` +
+    `a config-driven fleet takes --canonical <path-to-canonical-worktree> ` +
+    `(or point --root at the fleet root that holds canonical/)`,
+  );
 }
 
 export { currentBranch };

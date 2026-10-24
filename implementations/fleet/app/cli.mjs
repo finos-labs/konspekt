@@ -14,11 +14,15 @@
 // Attach model: config-driven commands take `--canonical <path>` and read the
 // committed `.konspekt/fleet/config/fleet.json` (no hand-written manifest;
 // task-fleet-config-driven-setup). The legacy flat path takes `--root <dir>`
-// and reads `<root>/fleet.json` written by `init`.
+// and reads `<root>/fleet.json` written by `init`. `--root` is tolerant: pointed
+// at a config-driven fleet root (holding `canonical/`) with no flat manifest, it
+// resolves canonical at `<root>/canonical` and attaches config-driven instead of
+// dead-ending (nw-fleet-skill-root-flag-stale); otherwise it errors naming
+// `--canonical`. See resolveFleet in worktrees.mjs.
 
 import { readFileSync } from "node:fs";
 import { resolve, dirname } from "node:path";
-import { setupFleet, loadFleet, setupFromConfig, loadFromConfig, teardownFleet, readFleetConfig } from "./worktrees.mjs";
+import { setupFleet, setupFromConfig, teardownFleet, readFleetConfig, resolveFleet } from "./worktrees.mjs";
 import { assembleProposal, proposeToOutbox } from "./outbox.mjs";
 import { verifyPass, foldPass, blessPass } from "./committer.mjs";
 import { assembleClaim, writeClaimToOutbox, readClaimRequests, applyClaims, acceptRelease } from "./claims.mjs";
@@ -55,14 +59,15 @@ function need(args, key) {
 // back to the flat `--root/fleet.json` manifest with grants from `--grants`.
 // Returns { fleet, grants }.
 function attach(args) {
-  if (args["canonical"] && args["canonical"] !== true) {
-    const canonicalPath = resolve(args["canonical"]);
-    const configRel = args["config"] && args["config"] !== true ? args["config"] : undefined;
-    const { fleet, grants } = loadFromConfig({ canonicalPath, configRel });
-    return { fleet, grants };
-  }
-  const fleet = loadFleet(need(args, "root"));
-  const grants = args["grants"] ? JSON.parse(readFileSync(args["grants"], "utf8")) : {};
+  const configRel = args["config"] && args["config"] !== true ? args["config"] : undefined;
+  const canonical = args["canonical"] && args["canonical"] !== true ? args["canonical"] : undefined;
+  const root = args["root"] && args["root"] !== true ? args["root"] : undefined;
+  const { fleet, grants: cfgGrants, mode } = resolveFleet({ canonical, root, configRel });
+  // In flat-manifest mode grants come from the optional --grants file; in
+  // config-driven mode they ride in the committed config.
+  const grants = mode === "flat"
+    ? (args["grants"] ? JSON.parse(readFileSync(args["grants"], "utf8")) : {})
+    : cfgGrants;
   return { fleet, grants };
 }
 

@@ -9,6 +9,7 @@ import {
   setupFromConfig,
   loadFromConfig,
   teardownFleet,
+  resolveFleet,
   CONFIG_REL,
 } from "../worktrees.mjs";
 import { init, commitAll, listWorktrees } from "../git.mjs";
@@ -98,6 +99,27 @@ test("loadFromConfig errors when a configured agent's outbox is not stood up", (
   seedCanonical();
   // No setup run: the outbox worktrees do not exist yet.
   assert.throws(() => loadFromConfig({ canonicalPath }), /not stood up; run setup/);
+});
+
+test("resolveFleet attaches config-driven when --root points at a fleet root holding canonical/", () => {
+  // The footgun nw-fleet-skill-root-flag-stale records: a config-driven fleet
+  // has no flat fleet.json at the root, so --root must not dead-end. resolveFleet
+  // resolves canonical at <root>/canonical and attaches config-driven.
+  seedCanonical();
+  const setup = setupFromConfig({ canonicalPath, worktreeDir });
+  const viaRoot = resolveFleet({ root }); // root is the parent holding canonical/
+  assert.equal(viaRoot.mode, "config");
+  assert.equal(viaRoot.fleet.ownerOf("outbox/spec-writer"), "spec-writer");
+  const viaCanonical = resolveFleet({ canonical: canonicalPath });
+  assert.equal(viaCanonical.mode, "config");
+  const norm = (p) => p.split("\\").join("/");
+  const byHandle = (d) => Object.fromEntries(d.proposers.map((p) => [p.handle, norm(p.path)]));
+  assert.deepEqual(byHandle(viaRoot.fleet), byHandle(setup.descriptor));
+});
+
+test("resolveFleet errors clearly when --root has neither a manifest nor a config-driven canonical", () => {
+  assert.throws(() => resolveFleet({ root: join(root, "empty") }),
+    /neither fleet\.json nor canonical\/.*fleet\.json.*--canonical/s);
 });
 
 test("teardownFleet removes the config-driven proposer worktrees, keeping canonical", () => {
