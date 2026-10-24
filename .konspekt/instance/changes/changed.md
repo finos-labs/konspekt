@@ -376,3 +376,7 @@ commit order; the channel was not live during that work.
 | task-linkedin-announce-fleet | dc6cf6c0db623ab7535e0e5381d6303b5494d245 | docs/announcements/linkedin/post_2026-10-23/post.md | 2026-10-23T22:44:21Z |
 | task-linkedin-announce-fleet | dc6cf6c0db623ab7535e0e5381d6303b5494d245 | docs/announcements/linkedin/post_2026-10-23/article.md | 2026-10-23T22:44:21Z |
 | task-linkedin-announce-fleet | dc6cf6c0db623ab7535e0e5381d6303b5494d245 | docs/announcements/linkedin/README.md | 2026-10-23T22:44:21Z |
+| task-agent-fleet | d71797f741bca0f296d4eb77fc097e0c564a8d58 | .konspekt/agents/skills/fleet-proposer-common/SKILL.md | 2026-10-24T14:52:15Z |
+| task-agent-fleet | d71797f741bca0f296d4eb77fc097e0c564a8d58 | .konspekt/agents/skills/fleet-committer/SKILL.md | 2026-10-24T14:52:15Z |
+| task-agent-fleet | d71797f741bca0f296d4eb77fc097e0c564a8d58 | .claude/skills/fleet-proposer-common/SKILL.md | 2026-10-24T14:52:15Z |
+| task-agent-fleet | d71797f741bca0f296d4eb77fc097e0c564a8d58 | .claude/skills/fleet-committer/SKILL.md | 2026-10-24T14:52:15Z |
