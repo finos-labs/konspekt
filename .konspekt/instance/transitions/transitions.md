@@ -1156,3 +1156,5 @@ proposing agent was not recorded.
 | noteworthy:nw-fleet-skill-root-flag-stale | review |  | proposed | 2026-10-24T14:52:15Z | 43db4a78c6d33dc2c173264ed3a463927fbe9ff6 | claude |
 | noteworthy:nw-fleet-skill-root-flag-stale | status |  | active | 2026-10-24T14:52:15Z | 43db4a78c6d33dc2c173264ed3a463927fbe9ff6 | claude |
 | edge:e-not-agentfleet-skill-root-flag | review |  | proposed | 2026-10-24T14:52:15Z | 43db4a78c6d33dc2c173264ed3a463927fbe9ff6 | claude |
+| noteworthy:nw-fleet-skill-root-flag-stale | review | proposed | accepted | 2026-10-24T15:00:03Z |  | denisurusov |
+| edge:e-not-agentfleet-skill-root-flag | review | proposed | accepted | 2026-10-24T15:00:03Z |  | denisurusov |

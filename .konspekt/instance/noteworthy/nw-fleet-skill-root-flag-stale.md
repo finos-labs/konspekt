@@ -2,7 +2,7 @@
 id: nw-fleet-skill-root-flag-stale
 kind: constraint
 status: active
-review: proposed
+review: accepted
 provenance:
   sourceRef: 43db4a78c6d33dc2c173264ed3a463927fbe9ff6
   contentHash: 43db4a78c6d33dc2c173264ed3a463927fbe9ff6
@@ -10,7 +10,7 @@ provenance:
   timestamp: 2026-10-24T14:52:15Z
   confidence: 0.9
 createdAt: 2026-10-24T14:52:15Z
-updatedAt: 2026-10-24T14:52:15Z
+updatedAt: 2026-10-24T15:00:03Z
 ```
 # Noteworthy: the fleet role skills kept the legacy `--root` attach after the config-driven cut
 
