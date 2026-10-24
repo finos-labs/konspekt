@@ -1145,3 +1145,11 @@ proposing agent was not recorded.
 | edge:e-not-agentfleet-authority-preflight | review | proposed | accepted | 2026-10-23T21:34:13Z |  | denisurusov |
 | noteworthy:nw-fleet-fold-follows-worktree-branch | review | proposed | accepted | 2026-10-23T21:34:33Z |  | denisurusov |
 | edge:e-not-fleet-foldbranch | review | proposed | accepted | 2026-10-23T21:34:33Z |  | denisurusov |
+| node:task-linkedin-announce-fleet | status | open | resolved | 2026-10-24T14:22:51Z |  | denisurusov |
+| node:task-fleet-proposal-carries-files | review |  | proposed | 2026-10-24T14:25:57Z | a65bb450013ce6f0751de7b4332dd934083740cb | claude |
+| node:task-fleet-proposal-carries-files | status |  | open | 2026-10-24T14:25:57Z | a65bb450013ce6f0751de7b4332dd934083740cb | claude |
+| edge:e-dec-agentfleet-proposalfiles | review |  | proposed | 2026-10-24T14:25:57Z | a65bb450013ce6f0751de7b4332dd934083740cb | claude |
+| edge:e-link-proposalfiles-committer | review |  | proposed | 2026-10-24T14:25:57Z | a65bb450013ce6f0751de7b4332dd934083740cb | claude |
+| node:task-fleet-proposal-carries-files | review | proposed | accepted | 2026-10-24T14:31:08Z |  | denisurusov |
+| edge:e-dec-agentfleet-proposalfiles | review | proposed | accepted | 2026-10-24T14:31:08Z |  | denisurusov |
+| edge:e-link-proposalfiles-committer | review | proposed | accepted | 2026-10-24T14:31:08Z |  | denisurusov |

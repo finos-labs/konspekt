@@ -533,3 +533,5 @@ proposal.
 | e-not-agentfleet-authority-preflight | notes | node:task-agent-fleet | noteworthy:nw-fleet-setup-authority-preflight |  | accepted |
 | e-dec-usability-announcefleet | decomposes | node:goal-usability | node:task-linkedin-announce-fleet |  | accepted |
 | e-not-fleet-foldbranch | notes | node:task-agent-fleet | noteworthy:nw-fleet-fold-follows-worktree-branch |  | accepted |
+| e-dec-agentfleet-proposalfiles | decomposes | node:task-agent-fleet | node:task-fleet-proposal-carries-files |  | accepted |
+| e-link-proposalfiles-committer | links | node:task-fleet-proposal-carries-files | node:task-fleet-worktree-committer | 0.5 | accepted |

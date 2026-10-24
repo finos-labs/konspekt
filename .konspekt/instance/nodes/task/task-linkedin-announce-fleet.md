@@ -2,7 +2,7 @@
 id: task-linkedin-announce-fleet
 type: task
 title: LinkedIn announcement — the agent fleet
-status: open
+status: resolved
 review: accepted
 provenance:
   sourceRef: 21166f62a7f6132ae86eec5030cea52adae3bf01
