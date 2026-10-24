@@ -536,3 +536,5 @@ proposal.
 | e-dec-agentfleet-proposalfiles | decomposes | node:task-agent-fleet | node:task-fleet-proposal-carries-files |  | accepted |
 | e-link-proposalfiles-committer | links | node:task-fleet-proposal-carries-files | node:task-fleet-worktree-committer | 0.5 | accepted |
 | e-not-agentfleet-skill-root-flag | notes | node:task-agent-fleet | noteworthy:nw-fleet-skill-root-flag-stale |  | accepted |
+| e-dec-agentfleet-committer-startup | decomposes | node:task-agent-fleet | node:task-fleet-committer-startup-scan |  | accepted |
+| e-link-committer-startup-committer | links | node:task-fleet-committer-startup-scan | node:task-fleet-worktree-committer | 0.5 | accepted |

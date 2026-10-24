@@ -1158,3 +1158,10 @@ proposing agent was not recorded.
 | edge:e-not-agentfleet-skill-root-flag | review |  | proposed | 2026-10-24T14:52:15Z | 43db4a78c6d33dc2c173264ed3a463927fbe9ff6 | claude |
 | noteworthy:nw-fleet-skill-root-flag-stale | review | proposed | accepted | 2026-10-24T15:00:03Z |  | denisurusov |
 | edge:e-not-agentfleet-skill-root-flag | review | proposed | accepted | 2026-10-24T15:00:03Z |  | denisurusov |
+| node:task-fleet-committer-startup-scan | review |  | proposed | 2026-10-24T15:02:59Z | d0519caaa02e29bb560735c0b56daae55b856a62 | claude |
+| node:task-fleet-committer-startup-scan | status |  | open | 2026-10-24T15:02:59Z | d0519caaa02e29bb560735c0b56daae55b856a62 | claude |
+| edge:e-dec-agentfleet-committer-startup | review |  | proposed | 2026-10-24T15:02:59Z | d0519caaa02e29bb560735c0b56daae55b856a62 | claude |
+| edge:e-link-committer-startup-committer | review |  | proposed | 2026-10-24T15:02:59Z | d0519caaa02e29bb560735c0b56daae55b856a62 | claude |
+| node:task-fleet-committer-startup-scan | review | proposed | accepted | 2026-10-24T15:03:30Z |  | denisurusov |
+| edge:e-dec-agentfleet-committer-startup | review | proposed | accepted | 2026-10-24T15:03:30Z |  | denisurusov |
+| edge:e-link-committer-startup-committer | review | proposed | accepted | 2026-10-24T15:03:30Z |  | denisurusov |
