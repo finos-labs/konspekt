@@ -384,3 +384,8 @@ commit order; the channel was not live during that work.
 | task-agent-fleet | c6c618e22ac8186da1e343d01f5701cb12a61152 | implementations/fleet/app/worktrees.mjs | 2026-10-24T15:20:00Z |
 | task-agent-fleet | c6c618e22ac8186da1e343d01f5701cb12a61152 | implementations/fleet/app/cli.mjs | 2026-10-24T15:20:00Z |
 | task-agent-fleet | c6c618e22ac8186da1e343d01f5701cb12a61152 | implementations/fleet/app/test/config.test.mjs | 2026-10-24T15:20:00Z |
+| task-fleet-committer-startup-scan | bc4f3043ef572deb9ffc894b78facd462067e89f | implementations/fleet/app/cli.mjs | 2026-10-24T15:35:00Z |
+| task-fleet-committer-startup-scan | bc4f3043ef572deb9ffc894b78facd462067e89f | implementations/fleet/app/committer.mjs | 2026-10-24T15:35:00Z |
+| task-fleet-committer-startup-scan | bc4f3043ef572deb9ffc894b78facd462067e89f | implementations/fleet/app/test/committer.test.mjs | 2026-10-24T15:35:00Z |
+| task-fleet-committer-startup-scan | bc4f3043ef572deb9ffc894b78facd462067e89f | .konspekt/agents/skills/fleet-committer/SKILL.md | 2026-10-24T15:35:00Z |
+| task-fleet-committer-startup-scan | bc4f3043ef572deb9ffc894b78facd462067e89f | .claude/skills/fleet-committer/SKILL.md | 2026-10-24T15:35:00Z |
