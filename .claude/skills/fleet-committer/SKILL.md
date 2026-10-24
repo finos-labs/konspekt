@@ -33,7 +33,7 @@ Everything is driven through the CLI at `implementations/fleet/app/cli.mjs`.
 
 1. **Verify (dry run).** See what is in the outboxes without writing:
    ```
-   node "APP/cli.mjs" run-pass --root "FLEET_ROOT" --dry-run
+   node "APP/cli.mjs" run-pass --canonical "FLEET_ROOT/canonical" --instance-subdir .konspekt/instance --dry-run
    ```
    Each proposal reports OK or SET ASIDE with reasons (id/source recompute,
    origin == branch owner, scope within grant and atom_state == proposed,
@@ -42,12 +42,12 @@ Everything is driven through the CLI at `implementations/fleet/app/cli.mjs`.
 2. **Fold.** Fold every verified proposal onto canonical as `review: proposed`,
    wired whole, in one commit:
    ```
-   node "APP/cli.mjs" run-pass --root "FLEET_ROOT" --name "<committer>" --email "<committer@…>"
+   node "APP/cli.mjs" run-pass --canonical "FLEET_ROOT/canonical" --instance-subdir .konspekt/instance --name "<committer>" --email "<committer@…>"
    ```
 3. **Index.** Rebuild the derived queue from canonical (canonical is
    authoritative; the index is a rebuildable projection):
    ```
-   node "APP/cli.mjs" rebuild-index --root "FLEET_ROOT"
+   node "APP/cli.mjs" rebuild-index --canonical "FLEET_ROOT/canonical" --instance-subdir .konspekt/instance
    ```
    Report pending / accepted / rejected to the human.
 4. **Present, do not decide.** Put the pending proposals to the human acceptor:
@@ -57,7 +57,7 @@ Everything is driven through the CLI at `implementations/fleet/app/cli.mjs`.
    commit per atom (flip `review` on the entity and its edges; append the accept
    or reject record). Accepts need `--by <principal>`; rejects carry a reason:
    ```
-   node "APP/cli.mjs" bless --root "FLEET_ROOT" --by "<principal>" --mode inspection \
+   node "APP/cli.mjs" bless --canonical "FLEET_ROOT/canonical" --instance-subdir .konspekt/instance --by "<principal>" --mode inspection \
      --accept <id>,<id> --reject <id> --reason "<why>" \
      --name "<committer>" --email "<committer@…>"
    ```

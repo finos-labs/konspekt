@@ -535,3 +535,4 @@ proposal.
 | e-not-fleet-foldbranch | notes | node:task-agent-fleet | noteworthy:nw-fleet-fold-follows-worktree-branch |  | accepted |
 | e-dec-agentfleet-proposalfiles | decomposes | node:task-agent-fleet | node:task-fleet-proposal-carries-files |  | accepted |
 | e-link-proposalfiles-committer | links | node:task-fleet-proposal-carries-files | node:task-fleet-worktree-committer | 0.5 | accepted |
+| e-not-agentfleet-skill-root-flag | notes | node:task-agent-fleet | noteworthy:nw-fleet-skill-root-flag-stale |  | proposed |

@@ -98,7 +98,7 @@ payload-format fix fed a proposer `body_file` and a `worktree/app` path
    unique, hyphenated edge id, `review: proposed`.
 6. **Commit to your outbox** via the committer CLI:
    ```
-   node "APP/cli.mjs" propose --root "FLEET_ROOT" --agent "HANDLE" \
+   node "APP/cli.mjs" propose --canonical "CANONICAL" --agent "HANDLE" \
      --spec "AUTHORING/spec.json" --source "AUTHORING/source.md" \
      --name "HANDLE" --email "HANDLE@fleet.local"
    ```

@@ -1153,3 +1153,6 @@ proposing agent was not recorded.
 | node:task-fleet-proposal-carries-files | review | proposed | accepted | 2026-10-24T14:31:08Z |  | denisurusov |
 | edge:e-dec-agentfleet-proposalfiles | review | proposed | accepted | 2026-10-24T14:31:08Z |  | denisurusov |
 | edge:e-link-proposalfiles-committer | review | proposed | accepted | 2026-10-24T14:31:08Z |  | denisurusov |
+| noteworthy:nw-fleet-skill-root-flag-stale | review |  | proposed | 2026-10-24T14:52:15Z | 43db4a78c6d33dc2c173264ed3a463927fbe9ff6 | claude |
+| noteworthy:nw-fleet-skill-root-flag-stale | status |  | active | 2026-10-24T14:52:15Z | 43db4a78c6d33dc2c173264ed3a463927fbe9ff6 | claude |
+| edge:e-not-agentfleet-skill-root-flag | review |  | proposed | 2026-10-24T14:52:15Z | 43db4a78c6d33dc2c173264ed3a463927fbe9ff6 | claude |
