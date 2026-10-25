@@ -314,6 +314,7 @@
   .rung-t{font-family:var(--disp);font-size:18px;color:var(--ink);line-height:1.1}
   .rung-c{font-size:13px;color:var(--ink-soft);line-height:1.32}
   .rung.hot .rung-t{color:var(--ochre)}
+  .fleet-fig{width:100%;height:auto;flex:0 0 auto;display:block;margin:14px 0 12px}
   .ladder .la{width:26px;height:18px;color:var(--rule);align-self:center;margin-top:12px}
 
   /* ---- roadmap descriptions (slide 15) ---- */
@@ -811,6 +812,80 @@
         </div>
       </section>
 
+      <!-- 8d · AGENT FLEET -->
+      <section class="slide" data-bg="paper" data-title="Agent fleet">
+        <div class="wrap">
+          <div class="head-row">
+            <h2 class="s-head" style="font-size:46px">One human over many agents</h2>
+            <div class="eyebrow">Agent fleet · proven by an adopter</div>
+          </div>
+          <hr class="rule" style="margin-top:14px">
+          <p class="bind-lede">Each proposer agent writes only to its own outbox branch. A deterministic committer verifies every proposal and folds it onto the shared graph as <b style="color:var(--ochre);font-weight:400">review:&nbsp;proposed</b>; one named human accepts. No model runs on the write path.</p>
+          <svg class="fleet-fig" viewBox="0 0 1096 150" font-family="'Source Serif 4', Georgia, serif">
+            <g font-family="IBM Plex Mono, monospace" font-size="10.5" letter-spacing="1.4" fill="#8C8377">
+              <text x="0" y="12">PROPOSER AGENTS</text>
+              <text x="352" y="12">COMMITTER</text>
+              <text x="652" y="12">CANONICAL GRAPH</text>
+              <text x="920" y="12">ONE HUMAN</text>
+            </g>
+            <g fill="none" stroke="#D7D0C3" stroke-width="1">
+              <rect x="0" y="24" width="250" height="34" rx="5"/>
+              <rect x="0" y="66" width="250" height="34" rx="5"/>
+              <rect x="0" y="108" width="250" height="34" rx="5"/>
+            </g>
+            <g font-family="IBM Plex Mono, monospace" font-size="12.5" fill="#A9742A">
+              <text x="14" y="45.5">outbox/spec-writer</text>
+              <text x="14" y="87.5">outbox/skill-builder</text>
+              <text x="14" y="129.5">outbox/presentation-writer</text>
+            </g>
+            <g fill="none" stroke="#C9AE7E" stroke-width="1.2">
+              <path d="M250 41 C300 41 300 83 344 83"/><path d="M250 83 H344"/><path d="M250 125 C300 125 300 83 344 83"/>
+            </g>
+            <rect x="352" y="40" width="210" height="86" rx="6" fill="none" stroke="#A9742A" stroke-width="1.3"/>
+            <text x="368" y="66" font-family="Fraunces, Georgia, serif" font-size="19" fill="#211D18">Verify, then fold</text>
+            <text x="368" y="88" font-size="12.5" fill="#4C463D">origin · content hash · grant</text>
+            <text x="368" y="106" font-size="12.5" fill="#4C463D">binding · one commit per pass</text>
+            <path d="M562 83h74m0 0-7-6m7 6-7 6" fill="none" stroke="#A9742A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            <g stroke="#CDC5B7" stroke-width="1"><line x1="720" y1="83" x2="720" y2="40"/><line x1="720" y1="83" x2="672" y2="62"/><line x1="720" y1="83" x2="770" y2="56"/><line x1="720" y1="83" x2="680" y2="120"/><line x1="720" y1="83" x2="764" y2="118"/></g>
+            <g fill="#F1EDE6" stroke="#A9742A" stroke-width="1.3"><circle cx="720" cy="40" r="6"/><circle cx="672" cy="62" r="6"/><circle cx="770" cy="56" r="6"/><circle cx="680" cy="120" r="6"/><circle cx="764" cy="118" r="6"/></g>
+            <circle cx="720" cy="83" r="13" fill="#A9742A"/>
+            <circle cx="720" cy="83" r="21" fill="none" stroke="#8C8377" stroke-width="1" stroke-dasharray="3 4"/>
+            <path d="M912 83h-112m0 0 7-6m-7 6 7 6" fill="none" stroke="#A9742A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            <text x="856" y="72" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" fill="#8C8377">accept · reject</text>
+            <rect x="920" y="40" width="176" height="86" rx="6" fill="none" stroke="#D7D0C3" stroke-width="1"/>
+            <text x="936" y="66" font-family="Fraunces, Georgia, serif" font-size="19" fill="#211D18">Named acceptor</text>
+            <text x="936" y="88" font-size="12.5" fill="#4C463D">recorded in the</text>
+            <text x="936" y="106" font-size="12.5" fill="#4C463D">transition log by name</text>
+          </svg>
+          <div class="bind-body" style="grid-template-columns:1fr 1fr 1fr;margin-top:6px">
+            <div class="bind-col a" style="padding:0 30px 4px 0">
+              <div class="bind-k">Setup &mdash; one committed file</div>
+              <p class="bind-lead"><code style="font-family:var(--mono);font-size:14px;color:var(--ochre)">fleet.json</code> declares the canonical branch and each agent: <b>handle</b>, <b>role</b>, <b>entity types</b>.</p>
+              <div class="bind-list">
+                <div class="bind-item">The role names the agent&rsquo;s <b>skill</b>; its entity types are its <b>propose&#8209;grant</b>.</div>
+                <div class="bind-item">N+1 worktrees over one <code>.git</code>; proposers live under <code>&lt;project&gt;-fleet/</code>. Paths are derived, not stored.</div>
+              </div>
+            </div>
+            <div class="bind-col b" style="padding:0 30px 4px;border-left:1px solid var(--rule)">
+              <div class="bind-k">Authority &mdash; a setup gate</div>
+              <p class="bind-lead">Setup <b>refuses</b> until the instance declares a granted acceptor and <code style="font-family:var(--mono);font-size:14px;color:var(--ochre)">KONSPEKT_PRINCIPAL</code> resolves to it.</p>
+              <div class="bind-list">
+                <div class="bind-item">A read&#8209;only <code>doctor</code> runs the same checks and reports what is missing.</div>
+                <div class="bind-item"><code>doctor</code> and every <code>run-pass</code> refuse when the canonical worktree and the config name different branches.</div>
+              </div>
+            </div>
+            <div class="bind-col c" style="padding:0 0 4px 30px;border-left:1px solid var(--rule)">
+              <div class="bind-k">Proven &mdash; a second repository</div>
+              <p class="bind-lead"><b>cdm-collateral</b>, a CDM project sharing none of konspekt&rsquo;s code, ran the whole loop.</p>
+              <div class="bind-list">
+                <div class="bind-item">Two design documents went through, each carrying its source, its agent, and the named acceptor.</div>
+                <div class="bind-item">Its first acceptance had <b>no name</b> on it; that gap is now the setup gate.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <!-- 9 · PROVENANCE -->
       <section class="slide" data-bg="paper" data-title="Provenance">
         <div class="wrap">
@@ -1089,11 +1164,13 @@ VFS-native change source, so the reader ships with the plugin …</pre>
               </g>
               <!-- leaf dots -->
               <g fill="#F1EDE6" stroke="#A9742A" stroke-width="1.2">
-                <circle cx="234" cy="74" r="4"/><circle cx="262" cy="128" r="4"/>
+                <circle cx="234" cy="74" r="4"/>
                 <circle cx="832" cy="80" r="4"/><circle cx="826" cy="128" r="4"/>
                 <circle cx="248" cy="238" r="4"/><circle cx="266" cy="278" r="4"/><circle cx="232" cy="312" r="4"/>
                 <circle cx="832" cy="272" r="4"/>
               </g>
+              <!-- delivered leaf: filled -->
+              <circle cx="262" cy="128" r="4" fill="#A9742A" stroke="#A9742A" stroke-width="1.2"/>
               <!-- cluster nodes -->
               <g fill="#A9742A"><circle cx="360" cy="96" r="8"/><circle cx="700" cy="96" r="8"/><circle cx="380" cy="262" r="8"/><circle cx="700" cy="264" r="8"/></g>
               <!-- centre -->
@@ -1108,7 +1185,7 @@ VFS-native change source, so the reader ships with the plugin …</pre>
               </g>
               <g font-family="Fraunces, Georgia, serif" fill="#211D18" font-size="16">
                 <text x="226" y="79" text-anchor="end">Multi-author review</text>
-                <text x="254" y="133" text-anchor="end">Agent fleet</text>
+                <text x="254" y="133" text-anchor="end">Agent fleet <tspan fill="#A9742A" font-style="italic">· delivered</tspan></text>
                 <text x="844" y="85">Graph analytics</text>
                 <text x="838" y="133">Real-time monitoring</text>
                 <text x="240" y="243" text-anchor="end">Responsibility report</text>
