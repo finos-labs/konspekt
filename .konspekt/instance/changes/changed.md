@@ -408,3 +408,8 @@ commit order; the channel was not live during that work.
 | task-agent-fleet | 6097d650bdec55812c91a112dcf4ace0e367f3c0 | ROADMAP.md | 2026-10-25T14:15:00Z |
 | task-fleet-adjustments | b39ac80f1537cb41ef3625bcafee1489d4c793c5 | .konspekt/agents/skills/fleet-proposer-common/SKILL.md | 2026-10-25T14:25:00Z |
 | task-fleet-adjustments | b39ac80f1537cb41ef3625bcafee1489d4c793c5 | .claude/skills/fleet-proposer-common/SKILL.md | 2026-10-25T14:25:00Z |
+| task-fleet-adjustments | 68178f8cb373e79e3e32e6c07da2e810da8c76db | implementations/fleet/app/cli.mjs | 2026-10-25T15:05:00Z |
+| task-fleet-adjustments | 68178f8cb373e79e3e32e6c07da2e810da8c76db | implementations/fleet/app/worktrees.mjs | 2026-10-25T15:05:00Z |
+| task-fleet-adjustments | 68178f8cb373e79e3e32e6c07da2e810da8c76db | implementations/fleet/app/fold.mjs | 2026-10-25T15:05:00Z |
+| task-fleet-adjustments | 68178f8cb373e79e3e32e6c07da2e810da8c76db | implementations/fleet/app/test/config.test.mjs | 2026-10-25T15:05:00Z |
+| task-fleet-adjustments | 68178f8cb373e79e3e32e6c07da2e810da8c76db | implementations/fleet/app/test/fold.test.mjs | 2026-10-25T15:05:00Z |

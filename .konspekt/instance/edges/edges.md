@@ -543,3 +543,5 @@ proposal.
 <!-- === first fleet adjustment: proposers never offer accept/push (accepted 2026-10-25; conversation fleet-resolve-and-adjustments-2026-10-25) === -->
 | e-not-adjustments-noacceptpush | notes | node:task-fleet-adjustments | noteworthy:nw-fleet-proposer-no-accept-or-push |  | accepted |
 | e-not-agentfleet-noacceptpush | notes | node:task-agent-fleet | noteworthy:nw-fleet-proposer-no-accept-or-push |  | accepted |
+<!-- === fleet adjustment: committer resolves instanceSubdir from config + fold fails closed (accepted 2026-10-25) === -->
+| e-not-adjustments-instancesubdir | notes | node:task-fleet-adjustments | noteworthy:nw-fleet-committer-instance-subdir-from-config |  | accepted |
