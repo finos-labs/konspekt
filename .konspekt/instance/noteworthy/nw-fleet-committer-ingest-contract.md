@@ -1,7 +1,7 @@
 ```yaml
 id: nw-fleet-committer-ingest-contract
 kind: decision
-review: proposed
+review: accepted
 provenance:
   sourceRef: 15e3edd1b6fef47c8e08cf98dabf42f8bc7e277e
   contentHash: 15e3edd1b6fef47c8e08cf98dabf42f8bc7e277e
@@ -9,7 +9,7 @@ provenance:
   timestamp: 2026-10-02T02:30:00Z
   confidence: 0.78
 createdAt: 2026-10-02T02:30:00Z
-updatedAt: 2026-10-02T02:30:00Z
+updatedAt: 2026-10-25T14:10:00Z
 ```
 # Noteworthy: the fleet generalizes to one committer accepting proposals over a defined ingest contract
 

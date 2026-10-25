@@ -2,7 +2,7 @@
 id: task-cursor-implementation
 type: task
 title: Cursor implementation of the fleet
-status: open
+status: resolved
 summary:
   origin: machine
   pinned: false
@@ -15,7 +15,7 @@ provenance:
   timestamp: 2026-10-03T14:00:00Z
   confidence: 0.8
 createdAt: 2026-10-03T14:00:00Z
-updatedAt: 2026-10-03T14:00:00Z
+updatedAt: 2026-10-25T14:10:00Z
 ```
 # Task: Cursor implementation of the fleet
 

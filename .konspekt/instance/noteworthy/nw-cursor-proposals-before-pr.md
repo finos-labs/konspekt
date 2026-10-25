@@ -1,7 +1,7 @@
 ```yaml
 id: nw-cursor-proposals-before-pr
 kind: decision
-review: proposed
+review: accepted
 provenance:
   sourceRef: afe1a5babb2999e9f74e89140952271b7653e505
   contentHash: afe1a5babb2999e9f74e89140952271b7653e505
@@ -9,7 +9,7 @@ provenance:
   timestamp: 2026-10-03T14:00:00Z
   confidence: 0.8
 createdAt: 2026-10-03T14:00:00Z
-updatedAt: 2026-10-03T15:35:00Z
+updatedAt: 2026-10-25T14:10:00Z
 ```
 # Noteworthy: Cursor proposers send konspekt proposals before raising their code PR
 

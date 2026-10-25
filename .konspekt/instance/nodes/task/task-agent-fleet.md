@@ -2,7 +2,7 @@
 id: task-agent-fleet
 type: task
 title: One reviewer over a fleet of agents
-status: open
+status: resolved
 summary:
   origin: machine
   pinned: false
@@ -14,7 +14,7 @@ provenance:
   timestamp: 2026-08-28T11:49:13Z
   confidence: 0.9
 createdAt: 2026-08-28T11:49:13Z
-updatedAt: 2026-08-28T11:49:13Z
+updatedAt: 2026-10-25T14:10:00Z
 ```
 # Task: One reviewer over a fleet of agents
 

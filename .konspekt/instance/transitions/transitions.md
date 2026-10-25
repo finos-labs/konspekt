@@ -1165,3 +1165,15 @@ proposing agent was not recorded.
 | node:task-fleet-committer-startup-scan | review | proposed | accepted | 2026-10-24T15:03:30Z |  | denisurusov |
 | edge:e-dec-agentfleet-committer-startup | review | proposed | accepted | 2026-10-24T15:03:30Z |  | denisurusov |
 | edge:e-link-committer-startup-committer | review | proposed | accepted | 2026-10-24T15:03:30Z |  | denisurusov |
+| node:task-fleet-committer-startup-scan | status | open | resolved | 2026-10-25T13:49:02Z |  | denisurusov |
+| node:task-agent-fleet | status | open | resolved | 2026-10-25T14:10:00Z | d61ec0b88a72ed3c0401e5c552e6ef0e4afaedce | denisurusov |
+| node:task-fleet-proposal-carries-files | status | open | resolved | 2026-10-25T14:10:00Z | d61ec0b88a72ed3c0401e5c552e6ef0e4afaedce | denisurusov |
+| node:task-cursor-implementation | status | open | resolved | 2026-10-25T14:10:00Z | d61ec0b88a72ed3c0401e5c552e6ef0e4afaedce | denisurusov |
+| node:task-fleet-adjustments | review |  | accepted | 2026-10-25T14:10:00Z | d61ec0b88a72ed3c0401e5c552e6ef0e4afaedce | denisurusov |
+| node:task-fleet-adjustments | status |  | active | 2026-10-25T14:10:00Z | d61ec0b88a72ed3c0401e5c552e6ef0e4afaedce | denisurusov |
+| edge:e-dec-agentfleet-adjustments | review |  | accepted | 2026-10-25T14:10:00Z | d61ec0b88a72ed3c0401e5c552e6ef0e4afaedce | denisurusov |
+| noteworthy:nw-fleet-committer-ingest-contract | review | proposed | accepted | 2026-10-25T14:10:00Z | b40c52fee8db65ca5965ac74e60062cfa1fecb3b | denisurusov |
+| noteworthy:nw-fleet-commit-then-call | review | proposed | accepted | 2026-10-25T14:10:00Z | b40c52fee8db65ca5965ac74e60062cfa1fecb3b | denisurusov |
+| noteworthy:nw-fleet-proposer-outbox-write-scope | review | proposed | accepted | 2026-10-25T14:10:00Z | b40c52fee8db65ca5965ac74e60062cfa1fecb3b | denisurusov |
+| noteworthy:nw-fleet-retraction-is-rejection | review | proposed | accepted | 2026-10-25T14:10:00Z | b40c52fee8db65ca5965ac74e60062cfa1fecb3b | denisurusov |
+| noteworthy:nw-cursor-proposals-before-pr | review | proposed | accepted | 2026-10-25T14:10:00Z | b40c52fee8db65ca5965ac74e60062cfa1fecb3b | denisurusov |

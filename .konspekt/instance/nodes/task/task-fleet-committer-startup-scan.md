@@ -2,7 +2,7 @@
 id: task-fleet-committer-startup-scan
 type: task
 title: Committer scans existing outboxes on start, not only on a manual pass
-status: open
+status: resolved
 summary:
   origin: human
   pinned: false

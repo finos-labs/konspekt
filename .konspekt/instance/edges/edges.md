@@ -538,3 +538,5 @@ proposal.
 | e-not-agentfleet-skill-root-flag | notes | node:task-agent-fleet | noteworthy:nw-fleet-skill-root-flag-stale |  | accepted |
 | e-dec-agentfleet-committer-startup | decomposes | node:task-agent-fleet | node:task-fleet-committer-startup-scan |  | accepted |
 | e-link-committer-startup-committer | links | node:task-fleet-committer-startup-scan | node:task-fleet-worktree-committer | 0.5 | accepted |
+<!-- === fleet build tasks resolved + ongoing adjustments task opened (accepted 2026-10-25; conversation fleet-resolve-and-adjustments-2026-10-25) === -->
+| e-dec-agentfleet-adjustments | decomposes | node:task-agent-fleet | node:task-fleet-adjustments |  | accepted |

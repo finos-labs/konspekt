@@ -3,7 +3,7 @@
      Check freshness with: node tools/roadmap.mjs --check
      This file is a pure function of .konspekt/instance/ (no timestamps baked in).
      Goals and tasks are graph nodes; the horizon is derived from node status/review.
-     contentHash: sha256:9bf0df5beb44d05d -->
+     contentHash: sha256:689360447467eec8 -->
 
 # konspekt roadmap
 
@@ -182,12 +182,9 @@ Make a konspekt instance operable by a human through a visual interface, not onl
 
 Let several participants — people and agents — propose into and review one shared instance without weakening propose→accept, with accept authority named in config so it survives a change of backing store. Platforms build collaboration into their own closed state; the version that works across a neutral, portable record is the one no single vendor is incentivized to build. The hardest open part is concurrency control on the single edge table, unresolved and shared by both the human and the agent case.
 
-**Next** — _accepted and planned_
+**Now** — _in progress_
 
-- One reviewer over a fleet of agents
-- Cursor implementation of the fleet
-- Committer scans existing outboxes on start, not only on a manual pass
-- Let a fleet proposal land repository files, not only graph atoms
+- Fleet adjustments (ongoing)
 
 **Later** — _proposed, not yet committed_
 
@@ -197,11 +194,15 @@ Let several participants — people and agents — propose into and review one s
 
 **Shipped** — _resolved_
 
+- One reviewer over a fleet of agents
+- Cursor implementation of the fleet
 - Idempotent fold — stop re-fold clobbering blessed atoms
+- Committer scans existing outboxes on start, not only on a manual pass
 - Config-driven fleet setup from the canonical fleet.json
 - Implement idempotent fold in fold.mjs
+- Let a fleet proposal land repository files, not only graph atoms
 - Worktree-outbox fleet committer implementation
 
 ---
 
-Generated from 8 goal(s) and 84 task-listing(s) over the instance graph.
+Generated from 8 goal(s) and 85 task-listing(s) over the instance graph.

@@ -2,7 +2,7 @@
 id: task-fleet-proposal-carries-files
 type: task
 title: Let a fleet proposal land repository files, not only graph atoms
-status: open
+status: resolved
 summary:
   origin: machine
   pinned: false
@@ -15,7 +15,7 @@ provenance:
   timestamp: 2026-10-24T14:25:57Z
   confidence: 0.75
 createdAt: 2026-10-24T14:25:57Z
-updatedAt: 2026-10-24T14:31:08Z
+updatedAt: 2026-10-25T14:10:00Z
 ```
 # Task: Let a fleet proposal land repository files, not only graph atoms
 
