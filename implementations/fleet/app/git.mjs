@@ -18,6 +18,11 @@ export function git(cwd, args, { input } = {}) {
       input,
       encoding: "utf8",
       stdio: ["pipe", "pipe", "pipe"],
+      // Without this, a git subprocess spawned from a process that has no
+      // attached console (the detached watcher the SessionStart hook starts)
+      // opens a new console window on Windows — one per git call, several per
+      // watch tick. windowsHide sets CREATE_NO_WINDOW; it is ignored off Windows.
+      windowsHide: true,
     }).trim();
   } catch (err) {
     const stderr = err.stderr ? String(err.stderr).trim() : "";

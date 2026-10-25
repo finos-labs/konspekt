@@ -120,6 +120,9 @@ function main() {
       cwd: projectDir,
       detached: true,
       stdio: ["ignore", out, out],
+      // Hide the watcher's own console window on Windows; its git subprocesses
+      // set windowsHide themselves (git.mjs). Ignored off Windows.
+      windowsHide: true,
     });
     child.unref();
     writeFileSync(pidFile, String(child.pid) + "\n", "utf8");
