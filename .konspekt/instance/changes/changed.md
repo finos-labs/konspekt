@@ -413,3 +413,7 @@ commit order; the channel was not live during that work.
 | task-fleet-adjustments | 68178f8cb373e79e3e32e6c07da2e810da8c76db | implementations/fleet/app/fold.mjs | 2026-10-25T15:05:00Z |
 | task-fleet-adjustments | 68178f8cb373e79e3e32e6c07da2e810da8c76db | implementations/fleet/app/test/config.test.mjs | 2026-10-25T15:05:00Z |
 | task-fleet-adjustments | 68178f8cb373e79e3e32e6c07da2e810da8c76db | implementations/fleet/app/test/fold.test.mjs | 2026-10-25T15:05:00Z |
+| task-fleet-adjustments | 7214040f8d7b28bddcd570d860c1e9d67f5ac914 | implementations/fleet/app/committer-watch-hook.mjs | 2026-10-25T15:30:00Z |
+| task-fleet-adjustments | 7214040f8d7b28bddcd570d860c1e9d67f5ac914 | implementations/fleet/app/test/committer-watch-hook.test.mjs | 2026-10-25T15:30:00Z |
+| task-fleet-adjustments | 7214040f8d7b28bddcd570d860c1e9d67f5ac914 | .konspekt/agents/skills/fleet-committer/SKILL.md | 2026-10-25T15:30:00Z |
+| task-fleet-adjustments | 7214040f8d7b28bddcd570d860c1e9d67f5ac914 | .claude/skills/fleet-committer/SKILL.md | 2026-10-25T15:30:00Z |

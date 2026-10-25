@@ -1182,3 +1182,5 @@ proposing agent was not recorded.
 | edge:e-not-agentfleet-noacceptpush | review |  | accepted | 2026-10-25T14:20:00Z | 4dca7f84eee42618e6bbf9400bd69d00bade7da0 | denisurusov |
 | noteworthy:nw-fleet-committer-instance-subdir-from-config | review |  | accepted | 2026-10-25T15:05:00Z | 72d499f10c8947695c7543e5089ef0526025e824 | denisurusov |
 | edge:e-not-adjustments-instancesubdir | review |  | accepted | 2026-10-25T15:05:00Z | 72d499f10c8947695c7543e5089ef0526025e824 | denisurusov |
+| noteworthy:nw-fleet-committer-watch-on-session-start | review |  | accepted | 2026-10-25T15:30:00Z | ceb072d676b19ac68f58395baf4bc28f761bb41f | denisurusov |
+| edge:e-not-adjustments-watchsession | review |  | accepted | 2026-10-25T15:30:00Z | ceb072d676b19ac68f58395baf4bc28f761bb41f | denisurusov |

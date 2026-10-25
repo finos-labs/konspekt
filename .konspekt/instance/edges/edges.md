@@ -545,3 +545,5 @@ proposal.
 | e-not-agentfleet-noacceptpush | notes | node:task-agent-fleet | noteworthy:nw-fleet-proposer-no-accept-or-push |  | accepted |
 <!-- === fleet adjustment: committer resolves instanceSubdir from config + fold fails closed (accepted 2026-10-25) === -->
 | e-not-adjustments-instancesubdir | notes | node:task-fleet-adjustments | noteworthy:nw-fleet-committer-instance-subdir-from-config |  | accepted |
+<!-- === fleet adjustment: committer fold watcher auto-started by a SessionStart hook (accepted 2026-10-25) === -->
+| e-not-adjustments-watchsession | notes | node:task-fleet-adjustments | noteworthy:nw-fleet-committer-watch-on-session-start |  | accepted |
