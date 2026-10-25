@@ -419,3 +419,5 @@ commit order; the channel was not live during that work.
 | task-fleet-adjustments | 7214040f8d7b28bddcd570d860c1e9d67f5ac914 | .claude/skills/fleet-committer/SKILL.md | 2026-10-25T15:30:00Z |
 | task-fleet-adjustments | 211b21419906740729ae18ae60024e0d9c3e0dd5 | implementations/fleet/app/committer-watch-hook.mjs | 2026-10-25T15:45:00Z |
 | task-fleet-adjustments | 211b21419906740729ae18ae60024e0d9c3e0dd5 | implementations/fleet/app/test/committer-watch-hook.test.mjs | 2026-10-25T15:45:00Z |
+| task-fleet-adjustments | 4d9032cc826609a00ad849857de3f1d15230444d | implementations/fleet/app/git.mjs | 2026-10-25T16:05:00Z |
+| task-fleet-adjustments | 4d9032cc826609a00ad849857de3f1d15230444d | implementations/fleet/app/committer-watch-hook.mjs | 2026-10-25T16:05:00Z |
