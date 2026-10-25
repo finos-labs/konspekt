@@ -1184,3 +1184,5 @@ proposing agent was not recorded.
 | edge:e-not-adjustments-instancesubdir | review |  | accepted | 2026-10-25T15:05:00Z | 72d499f10c8947695c7543e5089ef0526025e824 | denisurusov |
 | noteworthy:nw-fleet-committer-watch-on-session-start | review |  | accepted | 2026-10-25T15:30:00Z | ceb072d676b19ac68f58395baf4bc28f761bb41f | denisurusov |
 | edge:e-not-adjustments-watchsession | review |  | accepted | 2026-10-25T15:30:00Z | ceb072d676b19ac68f58395baf4bc28f761bb41f | denisurusov |
+| noteworthy:nw-fleet-committer-bless-queue-status-line | review |  | proposed | 2026-10-25T17:30:00Z | 22ad8247c37c705af7655fe84293621798294898 | claude |
+| edge:e-not-adjustments-blessstatus | review |  | proposed | 2026-10-25T17:30:00Z | 22ad8247c37c705af7655fe84293621798294898 | claude |
