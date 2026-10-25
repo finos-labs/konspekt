@@ -110,6 +110,37 @@ identity; otherwise the watcher uses the repo's configured git identity. The
 watcher folds as `review: proposed` only — `bless` stays the separate
 human-gated pass above.
 
+## See the bless queue (status line)
+
+The watcher folds in the background with no console, so register a Claude Code
+command status line in the committer repo's `.claude/settings.json` to show the
+bless-queue depth in the committer's own terminal
+(`nw-fleet-committer-bless-queue-status-line`):
+
+```json
+{
+  "statusLine": {
+    "type": "command",
+    "command": "node \"${CLAUDE_PROJECT_DIR:-.}/<app-path>/committer-statusline.mjs\"",
+    "refreshInterval": 5
+  }
+}
+```
+
+`APP/committer-statusline.mjs` reads the status-line JSON on stdin, takes the
+project directory from `workspace.project_dir`, and prints one line: the model
+name, the current directory, the context-window percentage, and the bless-queue
+depth — the count of atoms folded onto canonical at `review: proposed` and not
+yet blessed or rejected, which equals `buildIndex(...).counts.pending` and the
+number `cli.mjs review` prints. `refreshInterval: 5` re-runs it every 5 seconds,
+so the count rises as the watcher folds and drops as you bless. It makes no git
+subprocess (`withCommits: false`), so it is fast enough for every refresh. It
+prints nothing when the repo carries no `fleet.json`, which leaves a
+non-committer repo's default status line in place, so register it only in a
+committer repo. `CLAUDE_PROJECT_DIR` is not part of the status-line contract; the
+`${CLAUDE_PROJECT_DIR:-.}` fallback locates the script from the current directory
+when the variable is unset.
+
 ## Switching the canonical branch
 
 When the human says to move the fleet's canonical branch (e.g. "change the branch
