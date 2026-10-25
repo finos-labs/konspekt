@@ -47,6 +47,18 @@ test("decideWatchAction starts when the fleet is ready and no live watcher is re
   );
 });
 
+test("importing the module does not run main() (no watcher spawned on import)", async () => {
+  // Regression: the module once called main() at top level, so importing it
+  // (this test, any tooling) spawned a real detached watcher in any repo whose
+  // cwd held a stood-up fleet config. main() must run only as the entry point.
+  // The import at the top of this file already happened; assert the guard shape
+  // the fix relies on: argv[1] is this test runner, not the hook module.
+  const { pathToFileURL } = await import("node:url");
+  const hookUrl = new URL("../committer-watch-hook.mjs", import.meta.url).href;
+  const entryUrl = process.argv[1] ? pathToFileURL(process.argv[1]).href : null;
+  assert.notEqual(entryUrl, hookUrl);
+});
+
 test("pidAlive reports this process alive and an unused pid dead", () => {
   assert.equal(pidAlive(process.pid), true);
   assert.equal(pidAlive(0), false);

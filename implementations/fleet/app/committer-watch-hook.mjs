@@ -31,7 +31,7 @@
 import { spawn } from "node:child_process";
 import { existsSync, readFileSync, writeFileSync, mkdirSync, openSync } from "node:fs";
 import { join, dirname } from "node:path";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 import { loadFromConfig } from "./worktrees.mjs";
 
 // Pure decision: given whether a fleet config exists, whether the fleet is
@@ -133,4 +133,10 @@ function main() {
   }
 }
 
-main();
+// Run main() only when invoked as the entry point (`node committer-watch-hook.mjs`).
+// Importing the module (the unit test, any tooling) must not spawn a watcher: the
+// side effect is a real detached fold process against the current repo, so the
+// unconditional top-level call made import depend on cwd lacking a fleet config.
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+  main();
+}
