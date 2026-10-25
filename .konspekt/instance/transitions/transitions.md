@@ -1177,3 +1177,6 @@ proposing agent was not recorded.
 | noteworthy:nw-fleet-proposer-outbox-write-scope | review | proposed | accepted | 2026-10-25T14:10:00Z | b40c52fee8db65ca5965ac74e60062cfa1fecb3b | denisurusov |
 | noteworthy:nw-fleet-retraction-is-rejection | review | proposed | accepted | 2026-10-25T14:10:00Z | b40c52fee8db65ca5965ac74e60062cfa1fecb3b | denisurusov |
 | noteworthy:nw-cursor-proposals-before-pr | review | proposed | accepted | 2026-10-25T14:10:00Z | b40c52fee8db65ca5965ac74e60062cfa1fecb3b | denisurusov |
+| noteworthy:nw-fleet-proposer-no-accept-or-push | review |  | accepted | 2026-10-25T14:20:00Z | 4dca7f84eee42618e6bbf9400bd69d00bade7da0 | denisurusov |
+| edge:e-not-adjustments-noacceptpush | review |  | accepted | 2026-10-25T14:20:00Z | 4dca7f84eee42618e6bbf9400bd69d00bade7da0 | denisurusov |
+| edge:e-not-agentfleet-noacceptpush | review |  | accepted | 2026-10-25T14:20:00Z | 4dca7f84eee42618e6bbf9400bd69d00bade7da0 | denisurusov |

@@ -115,7 +115,9 @@ payload-format fix fed a proposer `body_file` and a `worktree/app` path
    ```
    Fix any CLI error and retry until it prints `proposed <id> by HANDLE`.
 7. **Report** your atom id, the accepted node you bound to, your confidence, and
-   the proposal id the CLI printed.
+   the proposal id the CLI printed. Report only these. Do not offer to accept,
+   bless, reject, push, or merge; those are not yours to do or to offer (see
+   Hard rules).
 
 ## Edge domain/range (core kinds)
 
@@ -136,6 +138,21 @@ node ids live under `nodes/<type>/` and carry no fixed prefix.
 
 - Atoms you propose are always `atom_state: proposed`. Agents propose; humans
   accept. Never propose `accepted`.
+- You do not accept, bless, or reject — and do not offer to. Accepting,
+  blessing, and rejecting atoms belong to the human acceptor and to the committer
+  that executes those decisions. Never set `review: accepted` or `review:
+  rejected` on any atom, never run the committer's `bless` or `reject`, and never
+  ask the human to accept, bless, approve, or sign off your atom or another's.
+  Review does not block persist (`spec/architecture/REVIEW.md`): once the
+  `propose` CLI prints `proposed <id> by HANDLE`, your write is complete. Do not
+  wait for acceptance, and do not read a go-ahead as acceptance.
+- You do not write or push canonical, and do not move your outbox branch. Your
+  only durable write is the one atom the `propose` CLI commits to your own outbox
+  branch; the committer reads that branch from the shared object store. Never
+  commit or push to canonical, never run `git push`, never merge your outbox
+  branch into canonical, and never raise a pull request for your proposal. Do not
+  ask the human whether to push, merge, or land anything. The committer alone
+  holds canonical write, the signing key, and every merge to canonical.
 - Write only under `AUTHORING` and your own outbox (through the CLI). Never edit
   `CANONICAL` or another proposer's worktree.
 - Read your protocol/role skill from the neutral source

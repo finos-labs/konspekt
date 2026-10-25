@@ -540,3 +540,6 @@ proposal.
 | e-link-committer-startup-committer | links | node:task-fleet-committer-startup-scan | node:task-fleet-worktree-committer | 0.5 | accepted |
 <!-- === fleet build tasks resolved + ongoing adjustments task opened (accepted 2026-10-25; conversation fleet-resolve-and-adjustments-2026-10-25) === -->
 | e-dec-agentfleet-adjustments | decomposes | node:task-agent-fleet | node:task-fleet-adjustments |  | accepted |
+<!-- === first fleet adjustment: proposers never offer accept/push (accepted 2026-10-25; conversation fleet-resolve-and-adjustments-2026-10-25) === -->
+| e-not-adjustments-noacceptpush | notes | node:task-fleet-adjustments | noteworthy:nw-fleet-proposer-no-accept-or-push |  | accepted |
+| e-not-agentfleet-noacceptpush | notes | node:task-agent-fleet | noteworthy:nw-fleet-proposer-no-accept-or-push |  | accepted |
