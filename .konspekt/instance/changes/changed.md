@@ -405,3 +405,4 @@ commit order; the channel was not live during that work.
 | task-fleet-proposal-carries-files | 849e2192ec02e1dd7661671002526282429f7d8c | .claude/skills/fleet-proposer-common/SKILL.md | 2026-10-24T15:55:00Z |
 | task-linkedin-announce-fleet | b9b42fe5d6c6742de0ff6510d9973a3500070a0b | docs/index.html | 2026-10-25T01:49:00Z |
 | task-linkedin-announce-fleet | 98fb8fccd5eb07c6c5a624c294a0adb68c6f208b | docs/index.html | 2026-10-25T01:49:00Z |
+| task-agent-fleet | 6097d650bdec55812c91a112dcf4ace0e367f3c0 | ROADMAP.md | 2026-10-25T14:15:00Z |
