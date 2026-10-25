@@ -25,6 +25,26 @@ test("parseEdgeRows reads the table body and skips the header", () => {
   assert.equal(rows[0].review, "proposed");
 });
 
+test("fold refuses a dir that is not a konspekt instance and writes nothing", () => {
+  // An un-seeded dir has no edges/edges.md: a wrong --instance-subdir (or an
+  // unset config instanceSubdir) that points fold at the repo root must fail
+  // closed BEFORE the source/entity writes, so it cannot scatter files
+  // (task-fleet-adjustments).
+  const p = conceptProposal();
+  assert.throws(() => foldProposal(dir, p, {}), /no konspekt instance|missing edges\/edges\.md/);
+  assert.ok(!existsSync(join(dir, "concepts")), "entity dir must not be created");
+  assert.ok(!existsSync(join(dir, "sources")), "sources dir must not be created");
+});
+
+test("foldProposals sets a missing-instance proposal aside, scattering nothing", () => {
+  const res = foldProposals(dir, [{ ...conceptProposal(), proposalId: "p1" }], {});
+  assert.equal(res.folded.length, 0);
+  assert.equal(res.setAside.length, 1);
+  assert.match(res.setAside[0].reason, /no konspekt instance|missing edges\/edges\.md/);
+  assert.ok(!existsSync(join(dir, "concepts")));
+  assert.ok(!existsSync(join(dir, "sources")));
+});
+
 test("a folded concept yields a tree that passes lib/validate.mjs", () => {
   writeSeed(dir);
   const p = conceptProposal();

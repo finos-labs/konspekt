@@ -14,6 +14,7 @@
 import { join, dirname, basename, resolve } from "node:path";
 import { writeFileSync, readFileSync, existsSync } from "node:fs";
 import { init, addWorktree, removeWorktree, commitAll, currentBranch, listWorktrees } from "./git.mjs";
+import { DEFAULT_INSTANCE_SUBDIR } from "./preflight.mjs";
 
 export const OUTBOX_PREFIX = "outbox/";
 const MANIFEST = "fleet.json";
@@ -74,12 +75,18 @@ export function setupFleet({ root, canonicalBranch = "canonical", proposers = []
 
 // Build a fleet descriptor (data plus the owner/proposer lookups) from the plain
 // data a manifest holds. One builder keeps setupFleet and loadFleet identical.
-function descriptorFrom({ root, canonicalPath, canonicalBranch, proposers }) {
+// `instanceSubdir` is where the portable instance sits under the canonical
+// worktree; it rides on the descriptor so every committer command reads/writes
+// the same instance without a repeated --instance-subdir flag. It defaults to ""
+// (flat throwaway stores seed the instance at the canonical root); config-driven
+// attach sets it from the committed config (task-fleet-adjustments).
+function descriptorFrom({ root, canonicalPath, canonicalBranch, proposers, instanceSubdir = "" }) {
   const owners = new Map(proposers.map((p) => [p.branch, p.handle]));
   return {
     root,
     canonicalPath,
     canonicalBranch,
+    instanceSubdir,
     proposers,
     // The anti-spoof binding: known outbox branch -> owner handle, else null.
     ownerOf(branch) {
@@ -169,7 +176,8 @@ export function setupFromConfig({ canonicalPath, worktreeDir, config, configRel 
     built.push({ handle: a.handle, path, branch });
   }
 
-  const descriptor = descriptorFrom({ root: dir, canonicalPath, canonicalBranch, proposers: built });
+  const instanceSubdir = cfg.instanceSubdir ?? DEFAULT_INSTANCE_SUBDIR;
+  const descriptor = descriptorFrom({ root: dir, canonicalPath, canonicalBranch, proposers: built, instanceSubdir });
   return { descriptor, grants: grantsFromConfig(cfg), config: cfg };
 }
 
@@ -188,7 +196,8 @@ export function loadFromConfig({ canonicalPath, configRel } = {}) {
     if (!path) throw new Error(`outbox worktree for agent "${a.handle}" (branch ${branch}) is not stood up; run setup`);
     return { handle: a.handle, path, branch };
   });
-  const fleet = descriptorFrom({ root: canonicalPath, canonicalPath, canonicalBranch, proposers });
+  const instanceSubdir = cfg.instanceSubdir ?? DEFAULT_INSTANCE_SUBDIR;
+  const fleet = descriptorFrom({ root: canonicalPath, canonicalPath, canonicalBranch, proposers, instanceSubdir });
   return { fleet, grants: grantsFromConfig(cfg), config: cfg };
 }
 

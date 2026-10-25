@@ -69,6 +69,18 @@ const edgeRow = (r) => `| ${r.id} | ${r.kind} | ${r.from} | ${r.to} | ${r.weight
 // never a partial write — the caller appends the batch in one commit, so a throw
 // here aborts before any commit.
 export function foldProposal(instanceDir, { entityMd, sourceMd, edgesMd, meta = {}, files = [], proposalId = null }, { now, fleetDir, repoRoot = null, instanceSubdir = "" } = {}) {
+  // Fail closed before any write: if `instanceDir` is not a konspekt instance
+  // (its append-only `edges/edges.md` is absent), a wrong --instance-subdir or an
+  // unset fleet.json instanceSubdir has pointed fold at the wrong directory —
+  // typically the repo root. Refuse here, before the source-excerpt and entity
+  // writes, so a misconfigured pass cannot scatter files outside the instance
+  // and then fail on the edges append (task-fleet-adjustments).
+  if (!existsSync(join(instanceDir, "edges", "edges.md"))) {
+    throw new Error(
+      `no konspekt instance at "${instanceDir}" (missing edges/edges.md); refusing ` +
+        `to fold — check --instance-subdir or the fleet config's instanceSubdir`,
+    );
+  }
   const entityText = canonicalizeEntity(entityMd).toString("utf8");
   const { front } = splitEntityFile(entityText);
   const id = front.id;

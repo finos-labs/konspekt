@@ -95,6 +95,23 @@ test("loadFromConfig attaches with no manifest, resolving paths from git worktre
   assert.deepEqual(grants["skill-builder"], { entityTypes: ["artifact"] });
 });
 
+test("setupFromConfig defaults the descriptor instanceSubdir to .konspekt/instance", () => {
+  // A config that omits instanceSubdir resolves to the standard adopter layout,
+  // so a config-driven run-pass needs no --instance-subdir flag
+  // (task-fleet-adjustments).
+  seedCanonical();
+  const { descriptor } = setupFromConfig({ canonicalPath, worktreeDir });
+  assert.equal(descriptor.instanceSubdir, join(".konspekt", "instance"));
+});
+
+test("setupFromConfig carries an explicit config instanceSubdir onto the descriptor", () => {
+  canonicalPath = join(root, "c-sub");
+  worktreeDir = join(root, "wt-sub");
+  seedCanonical({ ...CONFIG, instanceSubdir: "graph" });
+  const { descriptor } = setupFromConfig({ canonicalPath, worktreeDir });
+  assert.equal(descriptor.instanceSubdir, "graph");
+});
+
 test("loadFromConfig errors when a configured agent's outbox is not stood up", () => {
   seedCanonical();
   // No setup run: the outbox worktrees do not exist yet.

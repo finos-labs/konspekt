@@ -68,6 +68,18 @@ function need(args, key) {
   return args[key];
 }
 
+// Resolve where the portable instance sits under the canonical worktree. An
+// explicit --instance-subdir wins; otherwise the attached descriptor's value
+// (config-driven attach sets it from fleet.json's instanceSubdir, defaulting to
+// .konspekt/instance; flat --root attach leaves it ""). This is why a
+// config-driven `run-pass --canonical <path>` needs no --instance-subdir flag
+// (task-fleet-adjustments).
+function instanceSubdirOf(args, fleet) {
+  const flag = args["instance-subdir"];
+  if (flag !== undefined && flag !== true) return flag;
+  return fleet.instanceSubdir ?? "";
+}
+
 // Attach to a fleet for a read/write command. Prefers config-driven attach from
 // a committed `.konspekt/fleet/config/fleet.json` when `--canonical <path>` is
 // given (no hand-written manifest, grants read from config); otherwise falls
@@ -270,10 +282,10 @@ function cmdRelease(args) {
 function cmdAcceptRelease(args) {
   const by = need(args, "by");
   const claimId = need(args, "claim");
-  const instanceSubdir = args["instance-subdir"] && args["instance-subdir"] !== true ? args["instance-subdir"] : "";
   const now = args["now"] && args["now"] !== true ? args["now"] : null;
   const identity = { name: args["name"] || undefined, email: args["email"] || undefined };
   const { fleet } = attach(args);
+  const instanceSubdir = instanceSubdirOf(args, fleet);
   const r = acceptRelease(fleet, { claimId, by, instanceSubdir, now, identity });
   console.log(`released ${r.node} -> ${r.to} by ${r.by} in ${r.commit}`);
 }
@@ -344,10 +356,10 @@ function passTick(fleet, grants, { dryRun, identity, instanceSubdir, now }) {
 async function cmdRunPass(args) {
   const dryRun = Boolean(args["dry-run"]);
   const identity = { name: args["name"] || undefined, email: args["email"] || undefined };
-  const instanceSubdir = args["instance-subdir"] && args["instance-subdir"] !== true ? args["instance-subdir"] : "";
   const now = args["now"] && args["now"] !== true ? args["now"] : null;
 
   const { fleet, grants } = attach(args);
+  const instanceSubdir = instanceSubdirOf(args, fleet);
   const tickOpts = { dryRun, identity, instanceSubdir, now };
 
   if (!args["watch"]) {
@@ -385,7 +397,6 @@ async function cmdRunPass(args) {
 function cmdBless(args) {
   const by = need(args, "by");
   const mode = args["mode"] && args["mode"] !== true ? args["mode"] : "inspection";
-  const instanceSubdir = args["instance-subdir"] && args["instance-subdir"] !== true ? args["instance-subdir"] : "";
   const now = args["now"] && args["now"] !== true ? args["now"] : null;
   const identity = { name: args["name"] || undefined, email: args["email"] || undefined };
 
@@ -398,16 +409,17 @@ function cmdBless(args) {
   if (decisions.length === 0) throw new Error("nothing to do: pass --accept and/or --reject with proposal ids");
 
   const { fleet } = attach(args);
+  const instanceSubdir = instanceSubdirOf(args, fleet);
   const { done, setAside } = blessPass(fleet, decisions, { identity, instanceSubdir, now });
   for (const d of done) console.log(`${d.decision === "accepted" ? "blessed" : "rejected"} ${d.ref}  (${d.proposalId.slice(0, 12)}) in ${d.commit}`);
   for (const s of setAside) console.log(`  not applied ${s.proposalId ? s.proposalId.slice(0, 12) : "(?)"}: ${s.reason}`);
 }
 
 function cmdRebuildIndex(args) {
-  const instanceSubdir = args["instance-subdir"] && args["instance-subdir"] !== true ? args["instance-subdir"] : "";
   // The fleet log and instance live in the canonical worktree, not the fleet
   // root; resolve it the same way run-pass and bless do.
   const { fleet } = attach(args);
+  const instanceSubdir = instanceSubdirOf(args, fleet);
   const index = rebuildIndex(fleet.canonicalPath, { instanceSubdir });
   const c = index.counts;
   console.log(`rebuilt proposed index from canonical: ${c.total} proposal(s)`);
@@ -422,8 +434,8 @@ function cmdRebuildIndex(args) {
 // human, lowest-confidence first, with near-duplicate hints. Writes nothing and
 // calls no model.
 function cmdReview(args) {
-  const instanceSubdir = args["instance-subdir"] && args["instance-subdir"] !== true ? args["instance-subdir"] : "";
   const { fleet } = attach(args);
+  const instanceSubdir = instanceSubdirOf(args, fleet);
   const digest = reviewDigest(fleet.canonicalPath, { instanceSubdir });
   console.log(renderReviewPrompt(digest));
 }
