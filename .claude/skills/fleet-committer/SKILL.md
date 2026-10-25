@@ -81,6 +81,37 @@ re-checks the canonical-branch safety each pass, and blocks until Ctrl-C. It
 `--interval` for the 5-second default; `--watch` cannot be combined with
 `--dry-run`.
 
+## Start watch on session start (hook)
+
+So a committer session does not forget to launch the watcher, register the
+`SessionStart` hook `APP/committer-watch-hook.mjs` in the committer repo's
+`.claude/settings.json` (`nw-fleet-committer-watch-on-session-start`):
+
+```json
+{
+  "hooks": {
+    "SessionStart": [
+      { "hooks": [ { "type": "command", "command": "node \"$CLAUDE_PROJECT_DIR/<app-path>/committer-watch-hook.mjs\"" } ] }
+    ]
+  }
+}
+```
+
+On session start the hook starts the watcher (`run-pass --watch --interval 5`,
+config-driven attach off `CLAUDE_PROJECT_DIR`) in the background, detached, with
+output to `.konspekt-fleet/watch.log`. It starts nothing unless the repo is a
+running committer — a `.konspekt/fleet/config/fleet.json` must exist and its
+outbox worktrees must be stood up (`loadFromConfig` succeeds) — so the same
+registration is a silent no-op in a repo that only carries a config. It is
+idempotent: a live watcher pid in `.konspekt-fleet/watch.pid` is left alone, a
+dead one re-starts. It always exits 0, so it never blocks session start.
+
+Register it only in a committer repo. Set `KONSPEKT_COMMITTER_NAME` /
+`KONSPEKT_COMMITTER_EMAIL` in the environment to control the fold commit
+identity; otherwise the watcher uses the repo's configured git identity. The
+watcher folds as `review: proposed` only — `bless` stays the separate
+human-gated pass above.
+
 ## Switching the canonical branch
 
 When the human says to move the fleet's canonical branch (e.g. "change the branch
