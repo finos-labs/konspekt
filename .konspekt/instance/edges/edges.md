@@ -549,3 +549,5 @@ proposal.
 | e-not-adjustments-watchsession | notes | node:task-fleet-adjustments | noteworthy:nw-fleet-committer-watch-on-session-start |  | accepted |
 <!-- === fleet adjustment: committer bless queue surfaced by a status line (proposed 2026-10-25) === -->
 | e-not-adjustments-blessstatus | notes | node:task-fleet-adjustments | noteworthy:nw-fleet-committer-bless-queue-status-line |  | proposed |
+<!-- === persona brief vs SPEC/registry drift check task opened (accepted 2026-10-26; conversation fleet-adjustments-persona-drift-2026-10-26) === -->
+| e-dec-agentfleet-briefdrift | decomposes | node:task-agent-fleet | node:task-persona-brief-spec-drift-check |  | accepted |

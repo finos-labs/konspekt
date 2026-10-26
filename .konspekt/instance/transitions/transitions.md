@@ -1186,3 +1186,6 @@ proposing agent was not recorded.
 | edge:e-not-adjustments-watchsession | review |  | accepted | 2026-10-25T15:30:00Z | ceb072d676b19ac68f58395baf4bc28f761bb41f | denisurusov |
 | noteworthy:nw-fleet-committer-bless-queue-status-line | review |  | proposed | 2026-10-25T17:30:00Z | 22ad8247c37c705af7655fe84293621798294898 | claude |
 | edge:e-not-adjustments-blessstatus | review |  | proposed | 2026-10-25T17:30:00Z | 22ad8247c37c705af7655fe84293621798294898 | claude |
+| node:task-persona-brief-spec-drift-check | review |  | accepted | 2026-10-26T21:30:00Z | 6d6895c8f348be0c0168c747d7ba6f2e065b5707 | denisurusov |
+| node:task-persona-brief-spec-drift-check | status |  | open | 2026-10-26T21:30:00Z | 6d6895c8f348be0c0168c747d7ba6f2e065b5707 | denisurusov |
+| edge:e-dec-agentfleet-briefdrift | review |  | accepted | 2026-10-26T21:30:00Z | 6d6895c8f348be0c0168c747d7ba6f2e065b5707 | denisurusov |
