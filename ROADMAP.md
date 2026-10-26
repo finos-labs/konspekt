@@ -3,7 +3,7 @@
      Check freshness with: node tools/roadmap.mjs --check
      This file is a pure function of .konspekt/instance/ (no timestamps baked in).
      Goals and tasks are graph nodes; the horizon is derived from node status/review.
-     contentHash: sha256:689360447467eec8 -->
+     contentHash: sha256:4a4a404ca72b88d4 -->
 
 # konspekt roadmap
 
@@ -186,6 +186,10 @@ Let several participants — people and agents — propose into and review one s
 
 - Fleet adjustments (ongoing)
 
+**Next** — _accepted and planned_
+
+- Conformance check for persona brief vs. SPEC/registry vocabulary drift
+
 **Later** — _proposed, not yet committed_
 
 - Per-atom compare-and-swap and a store cursor
@@ -205,4 +209,4 @@ Let several participants — people and agents — propose into and review one s
 
 ---
 
-Generated from 8 goal(s) and 85 task-listing(s) over the instance graph.
+Generated from 8 goal(s) and 86 task-listing(s) over the instance graph.
