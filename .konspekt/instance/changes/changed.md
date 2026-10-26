@@ -425,3 +425,4 @@ commit order; the channel was not live during that work.
 | task-fleet-adjustments | eccd9af4e2ce694acf9c5c136d75d65197beba26 | implementations/fleet/app/test/committer-statusline.test.mjs | 2026-10-25T17:30:00Z |
 | task-fleet-adjustments | eccd9af4e2ce694acf9c5c136d75d65197beba26 | .konspekt/agents/skills/fleet-committer/SKILL.md | 2026-10-25T17:30:00Z |
 | task-fleet-adjustments | eccd9af4e2ce694acf9c5c136d75d65197beba26 | .claude/skills/fleet-committer/SKILL.md | 2026-10-25T17:30:00Z |
+| task-fleet-adjustments | e65347006e8cf2b8cc625b3434e22d2742ce68ec | spec/personas/engineer/AGENTS.md | 2026-10-26T00:00:00Z |
