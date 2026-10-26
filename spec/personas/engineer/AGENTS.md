@@ -37,12 +37,14 @@ mirroring `sources/`:
 
 - Store the command text alone (no output) at `commands/<contentHash>.md`, where
   the filename is the git blob SHA of the file; the channel is append-only.
-- Attach an `executed` edge from the enacting entity to `command:<hash>`,
-  carrying a `timestamp`. The `from` is the ADR when the command carried out that
-  decision, otherwise the active task node. A command run twice is one file and
-  two edges.
-- The execution timeline is a query — `edges where kind = executed` ordered by
-  `timestamp`, ties broken on edge id — never a stored list.
+- Append one row `| <entity-id> | <hash> |` to the executed log
+  `commands/executed.md` per execution. The entity is the ADR when the command
+  carried out that decision, otherwise the active task node; any entity type is
+  allowed. A command run twice is one file and two rows.
+- Row order is execution order: the log has no timestamp column, and the
+  execution timeline is the log read top to bottom. "The commands for entity X"
+  is a filter over the `entity` column, never a stored list. Commands are not
+  recorded as edges (`./SPEC.md` § The executed log).
 
 **Exempt konspekt-maintenance commands** — git, hashing, and the push that
 persists the ledger itself. Recording those would make persisting a command
