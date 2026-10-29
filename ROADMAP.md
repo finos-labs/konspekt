@@ -3,7 +3,7 @@
      Check freshness with: node tools/roadmap.mjs --check
      This file is a pure function of .konspekt/instance/ (no timestamps baked in).
      Goals and tasks are graph nodes; the horizon is derived from node status/review.
-     contentHash: sha256:92bfebac3d93f278 -->
+     contentHash: sha256:be450110adc070ae -->
 
 # konspekt roadmap
 
@@ -48,6 +48,9 @@ Bring technical adopters from first contact to a running instance in their own r
 
 - init.mjs does not scaffold instance/authority/ tables
 - Make notifications portable
+
+**Shipped** — _resolved_
+
 - Produce a hands-on promo video for technical adopters
 
 ## Restore cost stays bounded as the graph grows
