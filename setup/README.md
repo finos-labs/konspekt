@@ -14,8 +14,11 @@ use it.
 
 ## What it sets up
 
-A fully adopted repo has four surfaces. The scaffolder writes the base; the
-optional components — the Claude Code layer among them — add the rest.
+A fully adopted **adopter** repo has four surfaces. The scaffolder writes the
+base; the optional components — the Claude Code layer among them — add the rest.
+The tree below is that adopter repo; konspekt's own `.konspekt/` carries extra
+internal surfaces the kit never installs (see **konspekt's own repo differs** at
+the end of this section).
 Everything the adopter *runs* lives under `.konspekt/`; only the
 agent-instruction files and the tool-fixed `.claude/` and `.github/` directories
 sit outside it.
@@ -130,6 +133,24 @@ team wants them — redundant with native `AGENTS.md` support, so off by default
 The instance always lives at `.konspekt/instance`. That path is a constant of
 this binding, not a setting: this script is what writes it, so a tool that
 hardcodes it is conforming rather than assuming.
+
+**konspekt's own repo differs.** The tree above is what an adopter gets.
+konspekt's own `.konspekt/` additionally carries surfaces the kit neither
+scaffolds nor installs into an adopter:
+
+- `fleet/` and `agents/skills/` — the maintenance agent fleet and its
+  vendor-neutral skills. konspekt-internal, tracked by `task-agent-fleet`; the
+  kit installs the Claude Code skills to `.claude/skills/` (via the
+  `claude-code` component) but never the fleet or the neutral `agents/skills/`
+  source.
+- `instance/authority/` — this instance's declared principals and grants
+  (`principals.md`, `grants.md`). `init.mjs` does **not** seed these; an adopter
+  that stays single-writer needs none, and one that adds a second acceptor
+  writes its own tables (`spec/architecture/AUTHORITY.md`).
+- `binding-audit.json` — the audit baseline and allowlist, written by hand only
+  when an adopter starts the binding audit mid-history or exempts a commit.
+
+None of these ship through `init.mjs` or a component today.
 
 ## Run it
 

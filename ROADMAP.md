@@ -3,7 +3,7 @@
      Check freshness with: node tools/roadmap.mjs --check
      This file is a pure function of .konspekt/instance/ (no timestamps baked in).
      Goals and tasks are graph nodes; the horizon is derived from node status/review.
-     contentHash: sha256:066c8a85f7fe2234 -->
+     contentHash: sha256:92bfebac3d93f278 -->
 
 # konspekt roadmap
 
@@ -46,6 +46,7 @@ Bring technical adopters from first contact to a running instance in their own r
 
 **Next** — _accepted and planned_
 
+- init.mjs does not scaffold instance/authority/ tables
 - Make notifications portable
 - Produce a hands-on promo video for technical adopters
 
@@ -140,6 +141,7 @@ Keep a project's working context — its instructions, accumulated decisions, an
 
 **Next** — _accepted and planned_
 
+- init.mjs does not scaffold instance/authority/ tables
 - Decide whether instance/ directory layout should be regularized
 - Consider an "outcome" node type for testable controls
 - Make notifications portable
@@ -223,4 +225,4 @@ Let several participants — people and agents — propose into and review one s
 
 ---
 
-Generated from 9 goal(s) and 90 task-listing(s) over the instance graph.
+Generated from 9 goal(s) and 92 task-listing(s) over the instance graph.
