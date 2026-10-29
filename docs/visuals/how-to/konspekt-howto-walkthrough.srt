@@ -1,0 +1,112 @@
+1
+00:00:00,600 --> 00:00:02,734
+So, what is konspekt really?
+
+2
+00:00:02,804 --> 00:00:12,639
+Technically, it's just a directory that lives inside your repository — one place that holds your project's evolving state: the decisions, the tasks, the context behind them.
+
+3
+00:00:12,709 --> 00:00:16,208
+Think of it as the memory your project keeps about itself.
+
+4
+00:00:16,978 --> 00:00:18,728
+And it travels with you.
+
+5
+00:00:18,798 --> 00:00:25,689
+Use it inside your IDE, in a local Gen-AI app, or on the web — anywhere, as long as there's a repo behind it.
+
+6
+00:00:25,759 --> 00:00:27,403
+No repo yet?
+
+7
+00:00:27,473 --> 00:00:32,060
+No problem: seed a session with the konspekt web-and-mobile prompt and you're off.
+
+8
+00:00:32,830 --> 00:00:42,409
+The first time you actually notice konspekt is right at the start of a session, when it asks you one simple thing: which node in the graph do you want to bind this conversation to?
+
+9
+00:00:43,179 --> 00:00:45,079
+Not sure what to bind to?
+
+10
+00:00:45,149 --> 00:00:49,437
+Pop open the IntelliJ plugin and pick the node you want to work on.
+
+11
+00:00:49,507 --> 00:00:51,812
+Working outside IntelliJ?
+
+12
+00:00:51,882 --> 00:00:56,875
+There's a standalone UI app that ships with the tool and does exactly the same job.
+
+13
+00:00:57,645 --> 00:01:00,099
+That UI is also where you browse.
+
+14
+00:01:00,169 --> 00:01:07,295
+Filter and search across nodes in every state — it's basically your to-do list and a lightweight project manager in one view.
+
+15
+00:01:08,065 --> 00:01:11,138
+From there, konspekt quietly keeps the receipts.
+
+16
+00:01:11,207 --> 00:01:13,747
+It tracks which commands were executed.
+
+17
+00:01:14,067 --> 00:01:16,009
+which files were changed.
+
+18
+00:01:16,329 --> 00:01:19,124
+and, maybe most importantly, who said what
+
+19
+00:01:19,894 --> 00:01:29,922
+Every provenance record is backed by a hashed, verbatim transcript of the decision-making chain — so the trail isn't a tidy summary after the fact, it's the real conversation.
+
+20
+00:01:30,692 --> 00:01:37,434
+And that pays off the moment you need to trace your ASR and ADR roots and ask, "wait, why did we decide this?"
+
+21
+00:01:38,204 --> 00:01:42,791
+Here's the best part: you don't have to do anything special to make any of this happen.
+
+22
+00:01:42,861 --> 00:01:49,411
+A konspekt-equipped agent suggests the state changes for you — creating nodes, accepting them, moving them along.
+
+23
+00:01:50,181 --> 00:01:52,336
+Here's a task being proposed.
+
+24
+00:01:52,656 --> 00:01:55,473
+and here it is, completed and accepted
+
+25
+00:01:56,243 --> 00:02:03,476
+Finally, a couple of git checks keep everyone honest — for example, you have to accept a task before you're allowed to commit against it.
+
+26
+00:02:04,246 --> 00:02:05,953
+So that's konspekt.
+
+27
+00:02:06,023 --> 00:02:09,586
+The agent proposes, you accept, and git keeps the record.
+
+28
+00:02:09,656 --> 00:02:17,252
+It's open source under FINOS Labs, so grab it from the repo on screen, try it on a project of your own, and tell us what you think.
+

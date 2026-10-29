@@ -5,6 +5,9 @@ image for each beat is named in parentheses. Beat order follows the files in
 this folder. Keep the delivery conversational — this is a friendly tour, not a
 spec reading.
 
+Rendered video: `konspekt-howto-walkthrough.mp4` (1080p, captions in
+`konspekt-howto-walkthrough.srt`). Beat 11 plays over `title_card.png`.
+
 1. So, what is konspekt really? Technically, it's just a directory that lives
    inside your repository — one place that holds your project's evolving state:
    the decisions, the tasks, the context behind them. Think of it as the memory
@@ -51,3 +54,8 @@ spec reading.
 
 14. Finally, a couple of git checks keep everyone honest — for example, you have
     to accept a task before you're allowed to commit against it. (git_checkers.png)
+
+15. So that's konspekt. The agent proposes, you accept, and git keeps the
+    record. It's open source under FINOS Labs, so grab it from the repo on
+    screen, try it on a project of your own, and tell us what you think.
+    (end_card.png)
