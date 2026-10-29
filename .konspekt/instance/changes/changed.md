@@ -429,3 +429,5 @@ commit order; the channel was not live during that work.
 | task-fleet-adjustments | 2de7d453415d37481613dbff4b08362c3cdc0bf3 | ROADMAP.md | 2026-10-26T21:35:00Z |
 | goal-adoption | b595d5589c8a9e47ba729a8cd97e6f9a8d7308c9 | setup/README.md | 2026-10-29T20:40:18Z |
 | goal-adoption | b595d5589c8a9e47ba729a8cd97e6f9a8d7308c9 | ROADMAP.md | 2026-10-29T20:40:18Z |
+| goal-adoption | 4bdc2459925ffe75cf9271f99b2e6f0e6d186c7e | docs/visuals/how-to/how-to.demo.flow.md | 2026-10-29T21:24:56Z |
+| task-binding-gap-audit | fe5fc1b2c8f807b04163b76f630254d35bc1876b | .konspekt/binding-audit.json | 2026-10-29T21:25:20Z |
