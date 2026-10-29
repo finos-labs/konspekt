@@ -553,3 +553,6 @@ proposal.
 | e-dec-agentfleet-briefdrift | decomposes | node:task-agent-fleet | node:task-persona-brief-spec-drift-check |  | accepted |
 | e-dec-adoption-promovideo | decomposes | node:goal-adoption | node:task-promo-video |  | accepted |
 | e-dec-adoption-adoptionpath | decomposes | node:goal-adoption | node:task-adoption-path |  | accepted |
+| e-not-promovideo-framing | notes | node:task-promo-video | noteworthy:nw-promo-video-framing |  | proposed |
+| e-prod-promovideo-script | produces | node:task-promo-video | artifact:artifact-promo-video-script |  | proposed |
+| e-dec-usability-footerfix | decomposes | node:goal-usability | node:task-ui-footer-write-actions |  | accepted |

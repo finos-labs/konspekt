@@ -1195,3 +1195,10 @@ proposing agent was not recorded.
 | node:task-promo-video | status |  | open | 2026-10-29T00:50:00Z | 8cf9840edb089f38a787f87cbc46c8050ab4ee69 | denisurusov |
 | edge:e-dec-adoption-promovideo | review |  | accepted | 2026-10-29T00:50:00Z | 8cf9840edb089f38a787f87cbc46c8050ab4ee69 | denisurusov |
 | edge:e-dec-adoption-adoptionpath | review |  | accepted | 2026-10-29T00:50:00Z | 8cf9840edb089f38a787f87cbc46c8050ab4ee69 | denisurusov |
+| noteworthy:nw-promo-video-framing | review |  | proposed | 2026-10-29T02:30:00Z | 63f1250644ed1210ca5f3b625eb0b1b9f8864e4b | claude |
+| artifact:artifact-promo-video-script | review |  | proposed | 2026-10-29T02:30:00Z | 63f1250644ed1210ca5f3b625eb0b1b9f8864e4b | claude |
+| edge:e-not-promovideo-framing | review |  | proposed | 2026-10-29T02:30:00Z | 63f1250644ed1210ca5f3b625eb0b1b9f8864e4b | claude |
+| edge:e-prod-promovideo-script | review |  | proposed | 2026-10-29T02:30:00Z | 63f1250644ed1210ca5f3b625eb0b1b9f8864e4b | claude |
+| node:task-ui-footer-write-actions | review |  | accepted | 2026-10-29T02:30:00Z | 63f1250644ed1210ca5f3b625eb0b1b9f8864e4b | denisurusov |
+| node:task-ui-footer-write-actions | status |  | open | 2026-10-29T02:30:00Z | 63f1250644ed1210ca5f3b625eb0b1b9f8864e4b | denisurusov |
+| edge:e-dec-usability-footerfix | review |  | accepted | 2026-10-29T02:30:00Z | 63f1250644ed1210ca5f3b625eb0b1b9f8864e4b | denisurusov |
