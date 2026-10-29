@@ -55,3 +55,8 @@ New rows below this backfill are recorded live.
 | task-promo-video | 3fd14eb58151f8a510b548161e3d704bfd03590b |
 | task-promo-video | 8809283644f194a8c0098da1aaa75873da99ba12 |
 | task-promo-video | e8a82913459b5b1695be5b1345992514f5707695 |
+| task-promo-video | 1e417676bb1d6aef2341639fb74f6c91b4e972e3 |
+| task-promo-video | 9dfcd8c4d894296ebc7ebca0e546e541b5db6356 |
+| task-promo-video | 85357314a5b1ac8164f5dad0c40931c99dd5c5ee |
+| task-promo-video | e01105c9b9c64f87e33a738d9e983f466295e411 |
+| task-promo-video | 358fb6b6e8e9f752e9357506322f89509678b56b |

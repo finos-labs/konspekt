@@ -1207,3 +1207,5 @@ proposing agent was not recorded.
 | edge:e-dec-adoptionpath-authscaffold | review |  | proposed | 2026-10-29T20:21:24Z |  | claude |
 | node:task-authority-not-scaffolded | review | proposed | accepted | 2026-10-29T20:40:18Z |  | denisurusov |
 | edge:e-dec-adoptionpath-authscaffold | review | proposed | accepted | 2026-10-29T20:40:18Z |  | denisurusov |
+| artifact:artifact-howto-walkthrough-video | review |  | proposed | 2026-10-29T21:57:04Z | 2d004d035f3542ee9aff6f2654e0befc348fce31 | claude |
+| edge:e-prod-promovideo-howtovideo | review |  | proposed | 2026-10-29T21:57:04Z | 2d004d035f3542ee9aff6f2654e0befc348fce31 | claude |

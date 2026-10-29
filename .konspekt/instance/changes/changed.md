@@ -441,3 +441,8 @@ commit order; the channel was not live during that work.
 | goal-adoption | 8e5642f305f4d707cf61e827d818470993f3519d | docs/visuals/how-to/ui_desktop.png | 2026-10-29T21:45:08Z |
 | goal-adoption | 8e5642f305f4d707cf61e827d818470993f3519d | docs/visuals/how-to/ui_provenance.png | 2026-10-29T21:45:08Z |
 | goal-adoption | 8e5642f305f4d707cf61e827d818470993f3519d | docs/visuals/how-to/ui_selection.png | 2026-10-29T21:45:08Z |
+| task-promo-video | 37ce34cc7c03431927d7ee9920d4fe652249fed0 | docs/visuals/how-to/end_card.png | 2026-10-29T21:57:04Z |
+| task-promo-video | 37ce34cc7c03431927d7ee9920d4fe652249fed0 | docs/visuals/how-to/how-to.demo.flow.md | 2026-10-29T21:57:04Z |
+| task-promo-video | 37ce34cc7c03431927d7ee9920d4fe652249fed0 | docs/visuals/how-to/konspekt-howto-walkthrough.mp4 | 2026-10-29T21:57:04Z |
+| task-promo-video | 37ce34cc7c03431927d7ee9920d4fe652249fed0 | docs/visuals/how-to/konspekt-howto-walkthrough.srt | 2026-10-29T21:57:04Z |
+| task-promo-video | 37ce34cc7c03431927d7ee9920d4fe652249fed0 | docs/visuals/how-to/title_card.png | 2026-10-29T21:57:04Z |

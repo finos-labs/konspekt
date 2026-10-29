@@ -558,3 +558,4 @@ proposal.
 | e-dec-usability-footerfix | decomposes | node:goal-usability | node:task-ui-footer-write-actions |  | accepted |
 <!-- === authority-not-scaffolded task opened (accepted 2026-10-29; conversation adoption-readme-what-it-sets-up-2026-10-29) === -->
 | e-dec-adoptionpath-authscaffold | decomposes | node:task-adoption-path | node:task-authority-not-scaffolded |  | accepted |
+| e-prod-promovideo-howtovideo | produces | node:task-promo-video | artifact:artifact-howto-walkthrough-video |  | proposed |
