@@ -1202,3 +1202,8 @@ proposing agent was not recorded.
 | node:task-ui-footer-write-actions | review |  | accepted | 2026-10-29T02:30:00Z | 63f1250644ed1210ca5f3b625eb0b1b9f8864e4b | denisurusov |
 | node:task-ui-footer-write-actions | status |  | open | 2026-10-29T02:30:00Z | 63f1250644ed1210ca5f3b625eb0b1b9f8864e4b | denisurusov |
 | edge:e-dec-usability-footerfix | review |  | accepted | 2026-10-29T02:30:00Z | 63f1250644ed1210ca5f3b625eb0b1b9f8864e4b | denisurusov |
+| node:task-authority-not-scaffolded | review |  | proposed | 2026-10-29T20:21:24Z |  | claude |
+| node:task-authority-not-scaffolded | status |  | open | 2026-10-29T20:21:24Z |  | claude |
+| edge:e-dec-adoptionpath-authscaffold | review |  | proposed | 2026-10-29T20:21:24Z |  | claude |
+| node:task-authority-not-scaffolded | review | proposed | accepted | 2026-10-29T20:40:18Z |  | denisurusov |
+| edge:e-dec-adoptionpath-authscaffold | review | proposed | accepted | 2026-10-29T20:40:18Z |  | denisurusov |
