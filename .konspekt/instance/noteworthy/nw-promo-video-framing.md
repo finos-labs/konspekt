@@ -1,7 +1,7 @@
 ```yaml
 id: nw-promo-video-framing
 kind: decision
-review: proposed
+review: accepted
 provenance:
   sourceRef: 63f1250644ed1210ca5f3b625eb0b1b9f8864e4b
   contentHash: 63f1250644ed1210ca5f3b625eb0b1b9f8864e4b
@@ -9,7 +9,7 @@ provenance:
   timestamp: 2026-10-29T02:30:00Z
   confidence: 0.75
 createdAt: 2026-10-29T02:30:00Z
-updatedAt: 2026-10-29T02:30:00Z
+updatedAt: 2026-10-29T22:12:01Z
 ```
 # Noteworthy: the promo video walks the deck on a live adopter instance
 

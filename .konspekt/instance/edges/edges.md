@@ -553,9 +553,9 @@ proposal.
 | e-dec-agentfleet-briefdrift | decomposes | node:task-agent-fleet | node:task-persona-brief-spec-drift-check |  | accepted |
 | e-dec-adoption-promovideo | decomposes | node:goal-adoption | node:task-promo-video |  | accepted |
 | e-dec-adoption-adoptionpath | decomposes | node:goal-adoption | node:task-adoption-path |  | accepted |
-| e-not-promovideo-framing | notes | node:task-promo-video | noteworthy:nw-promo-video-framing |  | proposed |
-| e-prod-promovideo-script | produces | node:task-promo-video | artifact:artifact-promo-video-script |  | proposed |
+| e-not-promovideo-framing | notes | node:task-promo-video | noteworthy:nw-promo-video-framing |  | accepted |
+| e-prod-promovideo-script | produces | node:task-promo-video | artifact:artifact-promo-video-script |  | accepted |
 | e-dec-usability-footerfix | decomposes | node:goal-usability | node:task-ui-footer-write-actions |  | accepted |
 <!-- === authority-not-scaffolded task opened (accepted 2026-10-29; conversation adoption-readme-what-it-sets-up-2026-10-29) === -->
 | e-dec-adoptionpath-authscaffold | decomposes | node:task-adoption-path | node:task-authority-not-scaffolded |  | accepted |
-| e-prod-promovideo-howtovideo | produces | node:task-promo-video | artifact:artifact-howto-walkthrough-video |  | proposed |
+| e-prod-promovideo-howtovideo | produces | node:task-promo-video | artifact:artifact-howto-walkthrough-video |  | accepted |

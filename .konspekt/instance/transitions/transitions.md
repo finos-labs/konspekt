@@ -1209,3 +1209,10 @@ proposing agent was not recorded.
 | edge:e-dec-adoptionpath-authscaffold | review | proposed | accepted | 2026-10-29T20:40:18Z |  | denisurusov |
 | artifact:artifact-howto-walkthrough-video | review |  | proposed | 2026-10-29T21:57:04Z | 2d004d035f3542ee9aff6f2654e0befc348fce31 | claude |
 | edge:e-prod-promovideo-howtovideo | review |  | proposed | 2026-10-29T21:57:04Z | 2d004d035f3542ee9aff6f2654e0befc348fce31 | claude |
+| noteworthy:nw-promo-video-framing | review | proposed | accepted | 2026-10-29T22:12:01Z | d559e051c230584ca469ec9b05f9b4890c0f8213 | denisurusov |
+| artifact:artifact-promo-video-script | review | proposed | accepted | 2026-10-29T22:12:01Z | d559e051c230584ca469ec9b05f9b4890c0f8213 | denisurusov |
+| artifact:artifact-howto-walkthrough-video | review | proposed | accepted | 2026-10-29T22:12:01Z | d559e051c230584ca469ec9b05f9b4890c0f8213 | denisurusov |
+| edge:e-not-promovideo-framing | review | proposed | accepted | 2026-10-29T22:12:01Z | d559e051c230584ca469ec9b05f9b4890c0f8213 | denisurusov |
+| edge:e-prod-promovideo-script | review | proposed | accepted | 2026-10-29T22:12:01Z | d559e051c230584ca469ec9b05f9b4890c0f8213 | denisurusov |
+| edge:e-prod-promovideo-howtovideo | review | proposed | accepted | 2026-10-29T22:12:01Z | d559e051c230584ca469ec9b05f9b4890c0f8213 | denisurusov |
+| node:task-promo-video | status | open | resolved | 2026-10-29T22:12:01Z | d559e051c230584ca469ec9b05f9b4890c0f8213 | denisurusov |

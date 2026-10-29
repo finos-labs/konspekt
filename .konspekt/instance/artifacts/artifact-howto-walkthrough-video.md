@@ -3,7 +3,7 @@ id: artifact-howto-walkthrough-video
 name: konspekt how-to walkthrough video
 kind: video
 location: docs/visuals/how-to/konspekt-howto-walkthrough.mp4
-review: proposed
+review: accepted
 provenance:
   sourceRef: 2d004d035f3542ee9aff6f2654e0befc348fce31
   contentHash: 2d004d035f3542ee9aff6f2654e0befc348fce31
@@ -11,7 +11,7 @@ provenance:
   timestamp: 2026-10-29T21:57:04Z
   confidence: 0.8
 createdAt: 2026-10-29T21:57:04Z
-updatedAt: 2026-10-29T21:57:04Z
+updatedAt: 2026-10-29T22:12:01Z
 ```
 # Artifact: konspekt how-to walkthrough video
 
