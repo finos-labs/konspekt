@@ -3,7 +3,7 @@
      Check freshness with: node tools/roadmap.mjs --check
      This file is a pure function of .konspekt/instance/ (no timestamps baked in).
      Goals and tasks are graph nodes; the horizon is derived from node status/review.
-     contentHash: sha256:4a4a404ca72b88d4 -->
+     contentHash: sha256:372fc3abac27182c -->
 
 # konspekt roadmap
 
@@ -35,6 +35,19 @@ Make the facts a responsibility question needs answerable with evidence. The law
 - Ask-at-open binding behavior in the operating loop
 - Serialize executed-command provenance as an ordered log
 - Record the source and config changes associated with a task
+
+## Get konspekt adopted by technical teams
+
+Bring technical adopters from first contact to a running instance in their own repository. Covers the outward-facing material that shows what adopting konspekt involves in practice (walkthroughs, demos, announcements) and the path an adopter follows once convinced. Measured by repositories that run `init.mjs` and keep an instance live, of which `denisurusov/code_tracer` is the first.
+
+**Now** — _in progress_
+
+- Build the adoption path
+
+**Next** — _accepted and planned_
+
+- Make notifications portable
+- Produce a hands-on promo video for technical adopters
 
 ## Restore cost stays bounded as the graph grows
 
@@ -209,4 +222,4 @@ Let several participants — people and agents — propose into and review one s
 
 ---
 
-Generated from 8 goal(s) and 86 task-listing(s) over the instance graph.
+Generated from 9 goal(s) and 89 task-listing(s) over the instance graph.
