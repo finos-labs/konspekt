@@ -1189,3 +1189,9 @@ proposing agent was not recorded.
 | node:task-persona-brief-spec-drift-check | review |  | accepted | 2026-10-26T21:30:00Z | 6d6895c8f348be0c0168c747d7ba6f2e065b5707 | denisurusov |
 | node:task-persona-brief-spec-drift-check | status |  | open | 2026-10-26T21:30:00Z | 6d6895c8f348be0c0168c747d7ba6f2e065b5707 | denisurusov |
 | edge:e-dec-agentfleet-briefdrift | review |  | accepted | 2026-10-26T21:30:00Z | 6d6895c8f348be0c0168c747d7ba6f2e065b5707 | denisurusov |
+| node:goal-adoption | review |  | accepted | 2026-10-29T00:50:00Z | 8cf9840edb089f38a787f87cbc46c8050ab4ee69 | denisurusov |
+| node:goal-adoption | status |  | active | 2026-10-29T00:50:00Z | 8cf9840edb089f38a787f87cbc46c8050ab4ee69 | denisurusov |
+| node:task-promo-video | review |  | accepted | 2026-10-29T00:50:00Z | 8cf9840edb089f38a787f87cbc46c8050ab4ee69 | denisurusov |
+| node:task-promo-video | status |  | open | 2026-10-29T00:50:00Z | 8cf9840edb089f38a787f87cbc46c8050ab4ee69 | denisurusov |
+| edge:e-dec-adoption-promovideo | review |  | accepted | 2026-10-29T00:50:00Z | 8cf9840edb089f38a787f87cbc46c8050ab4ee69 | denisurusov |
+| edge:e-dec-adoption-adoptionpath | review |  | accepted | 2026-10-29T00:50:00Z | 8cf9840edb089f38a787f87cbc46c8050ab4ee69 | denisurusov |
