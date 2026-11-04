@@ -446,3 +446,5 @@ commit order; the channel was not live during that work.
 | task-promo-video | 37ce34cc7c03431927d7ee9920d4fe652249fed0 | docs/visuals/how-to/konspekt-howto-walkthrough.mp4 | 2026-10-29T21:57:04Z |
 | task-promo-video | 37ce34cc7c03431927d7ee9920d4fe652249fed0 | docs/visuals/how-to/konspekt-howto-walkthrough.srt | 2026-10-29T21:57:04Z |
 | task-promo-video | 37ce34cc7c03431927d7ee9920d4fe652249fed0 | docs/visuals/how-to/title_card.png | 2026-10-29T21:57:04Z |
+| task-presentation-refresh | 3f76163fe2e518b5a386f6581d32956af48e325e | docs/index.html | 2026-11-04T02:53:33Z |
+| task-promo-video | 99c67afcec56f91260973ecc5a9e3825a279e5a6 | ROADMAP.md | 2026-11-04T02:54:47Z |
