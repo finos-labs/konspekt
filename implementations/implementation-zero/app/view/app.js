@@ -409,6 +409,7 @@ backdrop.addEventListener("click", closeDetail);
 document.addEventListener("keydown", (e) => { if (e.key === "Escape" && drawer.classList.contains("open")) closeDetail(); });
 
 // ---------- Decisions (ASR/ADR) ----------
+const UNDRIVEN = "__undriven__"; // group id for ADRs with no drives edge from an ASR
 async function updateDecisionsTab() {
   try {
     const d = await (await fetch("/api/asradr", { cache: "no-store" })).json();
@@ -423,25 +424,29 @@ async function refreshDecisions() {
     if (d.error) { $("asrList").innerHTML = '<p class="muted pad">' + d.error + "</p>"; return; }
     state.decisionsLoaded = true;
     const list = $("asrList"); list.innerHTML = "";
-    if (!d.asrs.length) { list.innerHTML = '<p class="muted pad">No ASRs recorded.</p>'; $("asrHead").innerHTML = ""; $("adrList").innerHTML = ""; return; }
-    for (const a of d.asrs) {
+    // ADRs that no ASR drives form one extra group, so the view lists every ADR.
+    const groups = d.asrs.slice();
+    const undriven = d.undriven || [];
+    if (undriven.length) groups.push({ id: UNDRIVEN, label: "Not driven by an ASR", review: null, adrs: undriven, undriven: true });
+    if (!groups.length) { list.innerHTML = '<p class="muted pad">No ASRs or ADRs recorded.</p>'; $("asrHead").innerHTML = ""; $("adrList").innerHTML = ""; return; }
+    for (const a of groups) {
       const b = document.createElement("button"); b.className = "gitem"; b.type = "button"; b.dataset.asr = a.id;
       b.setAttribute("aria-selected", String(state.asr === a.id));
-      b.innerHTML = `<span class="gt">${a.label}</span><span class="gm">${a.adrs.length} ADR${a.adrs.length === 1 ? "" : "s"}${a.review !== "accepted" ? " · (" + a.review + ")" : ""}</span>`;
+      b.innerHTML = `<span class="gt">${a.label}</span><span class="gm">${a.adrs.length} ADR${a.adrs.length === 1 ? "" : "s"}${a.review && a.review !== "accepted" ? " · (" + a.review + ")" : ""}</span>`;
       b.addEventListener("click", () => selectAsr(a));
       list.appendChild(b);
     }
-    selectAsr(d.asrs.find((a) => a.id === state.asr) || d.asrs[0]);
+    selectAsr(groups.find((a) => a.id === state.asr) || groups[0]);
   } catch { $("asrList").innerHTML = '<p class="muted pad">server unreachable.</p>'; }
 }
 function selectAsr(a) {
   state.asr = a.id;
   document.querySelectorAll("#asrList .gitem").forEach((b) => b.setAttribute("aria-selected", String(b.dataset.asr === a.id)));
-  $("asrHead").innerHTML = `<span class="gh-t">${a.label}</span><span class="gh-r">${a.adrs.length} ADR${a.adrs.length === 1 ? "" : "s"} driven</span>`;
+  $("asrHead").innerHTML = `<span class="gh-t">${a.label}</span><span class="gh-r">${a.adrs.length} ADR${a.adrs.length === 1 ? "" : "s"}${a.undriven ? " with no drives edge" : " driven"}</span>`;
   const wrap = $("adrList"); wrap.innerHTML = "";
-  const asrRow = drow("ASR", a.id, a.review, false); asrRow.addEventListener("click", () => openDetail(a.id)); wrap.appendChild(asrRow);
+  if (!a.undriven) { const asrRow = drow("ASR", a.id, a.review, false); asrRow.addEventListener("click", () => openDetail(a.id)); wrap.appendChild(asrRow); }
   if (!a.adrs.length) { const p = document.createElement("p"); p.className = "muted"; p.style.padding = "8px 14px"; p.textContent = "This ASR drives no ADRs yet."; wrap.appendChild(p); }
-  for (const adr of a.adrs) { const r = drow("ADR", adr.id, adr.review, true); r.addEventListener("click", () => openDetail(adr.id)); wrap.appendChild(r); }
+  for (const adr of a.adrs) { const r = drow("ADR", adr.id, adr.superseded ? "superseded" : adr.review, true); r.addEventListener("click", () => openDetail(adr.id)); wrap.appendChild(r); }
   $("asrDetail").textContent = "Click an ASR or ADR to open its details and provenance.";
 }
 function drow(kind, id, review, isAdr) {

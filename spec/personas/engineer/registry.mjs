@@ -15,9 +15,13 @@ export const persona = "engineer";
 // Subtypes this layer defines. `entityType` is the core entity the subtype
 // refines; `constrainKind` (optional) pins the entity's core `kind`; `requires`
 // lists any extra non-empty fields (none here — an ADR's decision is its body).
+// `inbound` (optional) lists edges the entity needs pointing at it: an ADR's
+// context is its inbound `drives` edges from ASRs (SPEC.md § ADR), so an ADR
+// with none has no recorded context and the checker warns.
 export const subtypes = {
   asr: { entityType: "concept", requires: [] },
-  adr: { entityType: "waypoint", constrainKind: "decision", requires: [] },
+  adr: { entityType: "waypoint", constrainKind: "decision", requires: [],
+         inbound: [{ kind: "drives", fromSubtype: "asr" }] },
 };
 
 // Edge kinds this layer adds, with domain/range in the same shape as core

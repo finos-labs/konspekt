@@ -457,15 +457,25 @@ object InstanceReader {
     return "{\"entity\":${q(entity)},\"changes\":[${groups.joinToString(",")}]}"
   }
 
-  // ASRs (concepts subtype asr) with the ADRs each drives; count is all ASRs+ADRs.
+  // ASRs (concepts subtype asr) with the ADRs each drives, plus `undriven`: every
+  // ADR that no ASR drives, so the view lists all `adrCount` ADRs. `superseded`
+  // marks an ADR that is the `to` of a supersedes edge. count is all ASRs+ADRs.
+  // Mirrors implementation-zero's /api/asradr.
   fun asradrJson(g: Graph): String {
     val drives = g.edges.filter { it.kind == "drives" }
-    val asrs = g.entities.filter { it.entityType == "concept" && it.subtype == "asr" }.map { a ->
+    val superseded = g.edges.filter { it.kind == "supersedes" }.map { stripType(it.to) }.toSet()
+    fun adrRow(w: Entity) = "{\"id\":${q(w.id)},\"review\":${q(w.review)},\"superseded\":${w.id in superseded}}"
+    val asrList = g.entities.filter { it.entityType == "concept" && it.subtype == "asr" }
+    val asrIds = asrList.map { it.id }.toSet()
+    val asrs = asrList.map { a ->
       val adrs = drives.filter { stripType(it.from) == a.id }.mapNotNull { g.byId[stripType(it.to)] }
-        .joinToString(",") { "{\"id\":${q(it.id)},\"review\":${q(it.review)}}" }
+        .joinToString(",") { adrRow(it) }
       "{\"id\":${q(a.id)},\"label\":${q(a.title ?: a.id)},\"review\":${q(a.review)},\"adrs\":[$adrs]}"
     }
-    val adrCount = g.entities.count { it.entityType == "waypoint" && it.subtype == "adr" }
-    return "{\"count\":${asrs.size + adrCount},\"asrs\":[${asrs.joinToString(",")}]}"
+    val driven = drives.filter { stripType(it.from) in asrIds }.map { stripType(it.to) }.toSet()
+    val allAdrs = g.entities.filter { it.entityType == "waypoint" && it.subtype == "adr" }
+    val undriven = allAdrs.filter { it.id !in driven }.joinToString(",") { adrRow(it) }
+    return "{\"count\":${asrs.size + allAdrs.size},\"adrCount\":${allAdrs.size}," +
+      "\"asrs\":[${asrs.joinToString(",")}],\"undriven\":[$undriven]}"
   }
 }
