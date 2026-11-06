@@ -30,6 +30,23 @@ touches; status rides the core `review` state plus `supersedes` for replacement
 — reuse the existing supersedes / companion-atom pattern and add no ADR-specific
 states.
 
+Propose an ADR together with its inbound `drives` edges, in the same write. A
+`marks` edge to the task that made the decision records where it was made, not
+why; it does not replace a `drives` edge. Before proposing the ADR, find the
+ASRs that forced it among the instance's `subtype: asr` concepts:
+
+- If one or more fit, propose a `drives` edge from each.
+- If none fits and the force is architectural, propose the ASR in the same
+  write.
+- If no architectural force stands behind the decision (tooling, environment,
+  test setup), record it as a `kind: decision` waypoint without `subtype: adr`.
+
+The checker reports a proposed ADR with no inbound `drives` edge as an error
+(`subtype-missing-inbound-proposed`), so the conformance workflow fails before
+the proposal can merge. An ASR written after the ADR it drives, to supply a
+missing context, says so in a closing note of its body, so a reader can tell it
+from a requirement stated before the decision.
+
 ## Executed-command provenance
 
 Record **every bash command you execute** as content-addressed provenance,

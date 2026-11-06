@@ -65,7 +65,7 @@ When `engineer` is active, the checker (via `registry.mjs`) additionally:
 
 - accepts `subtype: asr` on a concept and `subtype: adr` on a waypoint, and warns on an ADR whose `kind` is not `decision`;
 - accepts `drives` as an edge kind with the domain/range above (an out-of-range end is a warning, matching core edge domain/range);
-- warns (`subtype-missing-inbound`) on an ADR that no ASR drives: with no inbound `drives` edge the ADR has no recorded context. A rejected ADR and an ADR that is the `to` of a `supersedes` edge are exempt;
+- reports an ADR that no ASR drives, since with no inbound `drives` edge the ADR has no recorded context: an error (`subtype-missing-inbound-proposed`) when the ADR is `proposed`, because a proposal lands wired, and a warning (`subtype-missing-inbound`) when it is `accepted`. A rejected ADR and an ADR that is the `to` of a `supersedes` edge are exempt;
 - resolves a `command:<hash>` reference against `commands/<hash>.md` — missing file is `dangling-provenance-ref` (error), and a hash that does not match the file is `provenance-ref-hash-mismatch` (warning);
 - validates `commands/executed.md`: each row's `entity` must resolve to an entity file (`dangling-executed` error) and be an allowed subject type, and its `command` hash must resolve and verify like any provenance-ref;
 - leaves every core rule untouched, so an instance without `engineer` sees none of the above.

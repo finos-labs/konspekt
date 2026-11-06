@@ -2,9 +2,10 @@
 // Conformance test for the engineer persona's inbound-drives rule.
 //
 // An ADR's context is its inbound `drives` edges from ASRs
-// (spec/personas/engineer/SPEC.md § ADR). The checker warns
-// `subtype-missing-inbound` on an ADR that no ASR drives, except a rejected ADR
-// or one that is the `to` of a supersedes edge. Each case builds a minimal
+// (spec/personas/engineer/SPEC.md § ADR). The checker reports an ADR that no
+// ASR drives — an error (`subtype-missing-inbound-proposed`) when the ADR is
+// proposed, a warning (`subtype-missing-inbound`) when accepted — except a
+// rejected ADR or one that is the `to` of a supersedes edge. Each case builds a minimal
 // instance with one ASR and one ADR and asserts the codes it yields.
 //
 // Run:  node test/conformance-adr-drives.test.mjs   (exit 0 = pass, 1 = fail)
@@ -56,7 +57,7 @@ const codesFor = (opts) => {
   const dir = build(opts);
   try {
     const r = loadInstance(dir, { personas: [engineer], checkSources: false });
-    return r.problems.filter((p) => p.code === "subtype-missing-inbound")
+    return r.problems.filter((p) => p.code.startsWith("subtype-missing-inbound"))
       .map((p) => `${p.severity}:${p.code}:${p.ref}`).sort();
   } finally {
     rmSync(dir, { recursive: true, force: true });
@@ -72,6 +73,9 @@ const CASES = [
   ["a proposed drives edge satisfies the rule", { rows: [DRIVES.replace("|  |  |", "|  | proposed |")] }, []],
   ["a rejected drives edge does not", { rows: [DRIVES.replace("|  |  |", "|  | rejected |")] }, MISSING_A],
   ["a rejected ADR is exempt", { adrReview: "rejected" }, []],
+  ["a proposed ADR with no drives edge is an error", { adrReview: "proposed" },
+    ["error:subtype-missing-inbound-proposed:wp-adr-a"]],
+  ["a proposed ADR with a drives edge passes", { adrReview: "proposed", rows: [DRIVES] }, []],
   ["a superseded ADR is exempt",
     { extraAdr: true, rows: ["| e-sup-ba | supersedes | waypoint:wp-adr-b | waypoint:wp-adr-a |  |  |"] },
     ["warning:subtype-missing-inbound:wp-adr-b"]],
@@ -90,7 +94,7 @@ for (const [name, opts, want] of CASES) {
   const dir = build({});
   try {
     const r = loadInstance(dir, { checkSources: false });
-    const n = r.problems.filter((p) => p.code === "subtype-missing-inbound").length;
+    const n = r.problems.filter((p) => p.code.startsWith("subtype-missing-inbound")).length;
     const ok = n === 0;
     if (!ok) failed++;
     console.log(`${ok ? "ok  " : "FAIL"} no engineer persona, no inbound rule`);
