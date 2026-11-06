@@ -94,6 +94,7 @@ tr.st-abandoned td.id .txt{text-decoration:line-through}
 .rev{display:inline-flex;align-items:center;font-size:11px;font-weight:500;padding:2px 9px;border-radius:999px;white-space:nowrap}
 .rev.proposed{color:var(--rev-proposed-ink);background:var(--rev-proposed-bg);border:1px solid var(--rev-proposed-line)}
 .rev.accepted{color:var(--rev-accepted-ink);background:var(--rev-accepted-bg);border:1px solid transparent}
+.rev.superseded{opacity:.6;border:1px dashed currentColor}
 td.upd{color:var(--ink-2);font-size:12px;white-space:nowrap}
 .empty{padding:40px 14px;text-align:center;color:var(--ink-3);font-size:13px}
 

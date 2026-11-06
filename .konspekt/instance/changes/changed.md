@@ -448,3 +448,11 @@ commit order; the channel was not live during that work.
 | task-promo-video | 37ce34cc7c03431927d7ee9920d4fe652249fed0 | docs/visuals/how-to/title_card.png | 2026-10-29T21:57:04Z |
 | task-presentation-refresh | 3f76163fe2e518b5a386f6581d32956af48e325e | docs/index.html | 2026-11-04T02:53:33Z |
 | task-promo-video | 99c67afcec56f91260973ecc5a9e3825a279e5a6 | ROADMAP.md | 2026-11-04T02:54:47Z |
+| task-undriven-adr-visibility | ebc2f13d98e9cbf344d42083246c37f446a14dcb | implementations/implementation-zero/app/server.mjs | 2026-11-06T21:47:34Z |
+| task-undriven-adr-visibility | ebc2f13d98e9cbf344d42083246c37f446a14dcb | implementations/implementation-zero/app/view/app.css | 2026-11-06T21:47:34Z |
+| task-undriven-adr-visibility | ebc2f13d98e9cbf344d42083246c37f446a14dcb | implementations/implementation-zero/app/view/app.js | 2026-11-06T21:47:34Z |
+| task-undriven-adr-visibility | ebc2f13d98e9cbf344d42083246c37f446a14dcb | implementations/intellij-plugin/app/src/main/kotlin/dev/konspekt/plugin/InstanceReader.kt | 2026-11-06T21:47:34Z |
+| task-undriven-adr-visibility | ebc2f13d98e9cbf344d42083246c37f446a14dcb | lib/conformance.mjs | 2026-11-06T21:47:34Z |
+| task-undriven-adr-visibility | ebc2f13d98e9cbf344d42083246c37f446a14dcb | spec/personas/engineer/SPEC.md | 2026-11-06T21:47:34Z |
+| task-undriven-adr-visibility | ebc2f13d98e9cbf344d42083246c37f446a14dcb | spec/personas/engineer/registry.mjs | 2026-11-06T21:47:34Z |
+| task-undriven-adr-visibility | ebc2f13d98e9cbf344d42083246c37f446a14dcb | test/conformance-adr-drives.test.mjs | 2026-11-06T21:47:34Z |

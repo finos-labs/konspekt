@@ -1216,3 +1216,10 @@ proposing agent was not recorded.
 | edge:e-prod-promovideo-script | review | proposed | accepted | 2026-10-29T22:12:01Z | d559e051c230584ca469ec9b05f9b4890c0f8213 | denisurusov |
 | edge:e-prod-promovideo-howtovideo | review | proposed | accepted | 2026-10-29T22:12:01Z | d559e051c230584ca469ec9b05f9b4890c0f8213 | denisurusov |
 | node:task-promo-video | status | open | resolved | 2026-10-29T22:12:01Z | d559e051c230584ca469ec9b05f9b4890c0f8213 | denisurusov |
+| node:task-undriven-adr-visibility | review |  | proposed | 2026-11-06T21:45:07Z |  | claude |
+| node:task-undriven-adr-visibility | status |  | open | 2026-11-06T21:45:07Z |  | claude |
+| edge:e-dec-usability-undrivenadr | review |  | proposed | 2026-11-06T21:45:07Z |  | claude |
+| edge:e-lnk-undrivenadr-asradrui | review |  | proposed | 2026-11-06T21:45:07Z |  | claude |
+| node:task-undriven-adr-visibility | review | proposed | accepted | 2026-11-06T21:47:21Z | 829d8c363566cc594a64ceba99799db7c79872b5 | denisurusov |
+| edge:e-dec-usability-undrivenadr | review | proposed | accepted | 2026-11-06T21:47:21Z | 829d8c363566cc594a64ceba99799db7c79872b5 | denisurusov |
+| edge:e-lnk-undrivenadr-asradrui | review | proposed | accepted | 2026-11-06T21:47:21Z | 829d8c363566cc594a64ceba99799db7c79872b5 | denisurusov |

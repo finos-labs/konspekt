@@ -398,17 +398,25 @@ const server = createServer((req, res) => {
     return sendJson(res, { entity: id, changes: groups });
   }
   // ASRs (concepts subtype asr) with the ADRs each drives (waypoints subtype adr,
-  // via drives edges). `count` is all ASRs+ADRs, for data-presence tab gating.
+  // via drives edges), plus `undriven`: every ADR that no ASR drives, so the
+  // view lists all `adrCount` ADRs. `superseded` marks an ADR that is the `to`
+  // of a supersedes edge. `count` is all ASRs+ADRs, for data-presence tab gating.
   if (path === "/api/asradr") {
     if (!graph) return sendJson(res, { error: snapshot.error || "not loaded" }, 503);
     const drives = graph.edges.filter((e) => e.kind === "drives");
-    const asrs = graph.concepts.filter((c) => c.subtype === "asr").map((a) => {
+    const superseded = new Set(graph.edges.filter((e) => e.kind === "supersedes").map((e) => e.to.id));
+    const adrRow = (w) => ({ id: w.id, review: w.review || null, superseded: superseded.has(w.id) });
+    const asrList = graph.concepts.filter((c) => c.subtype === "asr");
+    const asrIds = new Set(asrList.map((a) => a.id));
+    const asrs = asrList.map((a) => {
       const adrs = drives.filter((e) => e.from.id === a.id).map((e) => graph.byId.get(e.to.id)).filter(Boolean)
-        .map((w) => ({ id: w.id, review: w.review || null }));
+        .map(adrRow);
       return { id: a.id, label: a.label || a.id, review: a.review || null, adrs };
     });
-    const adrCount = graph.waypoints.filter((w) => w.subtype === "adr").length;
-    return sendJson(res, { count: asrs.length + adrCount, asrs });
+    const driven = new Set(drives.filter((e) => asrIds.has(e.from.id)).map((e) => e.to.id));
+    const allAdrs = graph.waypoints.filter((w) => w.subtype === "adr");
+    const undriven = allAdrs.filter((w) => !driven.has(w.id)).map(adrRow);
+    return sendJson(res, { count: asrs.length + allAdrs.length, adrCount: allAdrs.length, asrs, undriven });
   }
 
   if (path === "/events") {
