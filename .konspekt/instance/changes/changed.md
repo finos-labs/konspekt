@@ -456,3 +456,7 @@ commit order; the channel was not live during that work.
 | task-undriven-adr-visibility | ebc2f13d98e9cbf344d42083246c37f446a14dcb | spec/personas/engineer/SPEC.md | 2026-11-06T21:47:34Z |
 | task-undriven-adr-visibility | ebc2f13d98e9cbf344d42083246c37f446a14dcb | spec/personas/engineer/registry.mjs | 2026-11-06T21:47:34Z |
 | task-undriven-adr-visibility | ebc2f13d98e9cbf344d42083246c37f446a14dcb | test/conformance-adr-drives.test.mjs | 2026-11-06T21:47:34Z |
+| task-undriven-adr-visibility | f83a8301f719bf089f033ad9684bf147b95e1253 | lib/conformance.mjs | 2026-11-06T22:39:42Z |
+| task-undriven-adr-visibility | f83a8301f719bf089f033ad9684bf147b95e1253 | spec/personas/engineer/AGENTS.md | 2026-11-06T22:39:42Z |
+| task-undriven-adr-visibility | f83a8301f719bf089f033ad9684bf147b95e1253 | spec/personas/engineer/SPEC.md | 2026-11-06T22:39:42Z |
+| task-undriven-adr-visibility | f83a8301f719bf089f033ad9684bf147b95e1253 | test/conformance-adr-drives.test.mjs | 2026-11-06T22:39:42Z |

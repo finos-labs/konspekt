@@ -2,7 +2,7 @@
 id: task-undriven-adr-visibility
 type: task
 title: Show and check ADRs that no ASR drives
-status: open
+status: resolved
 review: accepted
 provenance:
   sourceRef: 0953f7c00879df50b76efe55dc3ad8bdd95ed118
@@ -11,7 +11,7 @@ provenance:
   timestamp: 2026-11-06T21:45:07Z
   confidence: 0.8
 createdAt: 2026-11-06T21:45:07Z
-updatedAt: 2026-11-06T21:47:21Z
+updatedAt: 2026-11-06T22:39:42Z
 ```
 # Task: Show and check ADRs that no ASR drives
 
