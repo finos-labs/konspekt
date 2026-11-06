@@ -559,3 +559,5 @@ proposal.
 <!-- === authority-not-scaffolded task opened (accepted 2026-10-29; conversation adoption-readme-what-it-sets-up-2026-10-29) === -->
 | e-dec-adoptionpath-authscaffold | decomposes | node:task-adoption-path | node:task-authority-not-scaffolded |  | accepted |
 | e-prod-promovideo-howtovideo | produces | node:task-promo-video | artifact:artifact-howto-walkthrough-video |  | accepted |
+| e-dec-usability-undrivenadr | decomposes | node:goal-usability | node:task-undriven-adr-visibility |  | accepted |
+| e-lnk-undrivenadr-asradrui | links | node:task-undriven-adr-visibility | node:task-asr-adr-ui |  | accepted |
