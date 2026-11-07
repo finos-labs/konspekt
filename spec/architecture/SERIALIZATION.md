@@ -78,6 +78,19 @@ A row is written **push-based**, in the same write that sets the value, by the w
 
 The log is part of the instance and is copied with it between stores. No reader resolves it against a version-control history. An instance without the file is v1-conformant and records no state history. When the file exists, the three rules are enforced. A log reconstructed from earlier history states in the file's prose header how its timestamps were derived.
 
+## Checkpoints
+
+`checkpoints/checkpoints.md` is an append-only table, `| timestamp | entity | source | venue | model | by |`. It contains one row each time a human issues `checkpoint` (`TRANSPORT.md` § Checkpoint and resume). Rows appear in the order they were written. The last row is the one `resume` reads.
+
+- `timestamp` is ISO 8601 and records when the checkpoint was written. Timestamps do not decrease from one row to the next.
+- `entity` is the `id` of the conversation's active entity when the checkpoint was issued (`BINDING.md`). It MUST resolve to an entity file. The entity need not be accepted: a checkpoint records where a conversation stood, which is not work bound to the entity.
+- `source` is the `contentHash` of the `sources/` excerpt that holds, verbatim, the human's `checkpoint` command and the conversation content it saves: each binding switch made in the conversation, each proposal discussed and not yet persisted, and the open-items list as it was last presented. It is resolved and verified by the same probe as `provenance.sourceRef`. The excerpt is the record of these items. They are not written as atoms, because a paraphrased item would be an atom without the human acceptance an atom needs.
+- `venue` names where the conversation ran, as free text: for example `claude.ai-web`, `claude-mobile`, `claude-code-cli`, `intellij`. It may be empty.
+- `model` names the LLM the conversation ran on, as free text. It may be empty.
+- `by` is optional in an instance that declares no principals. In an instance that declares principals, it MUST name a `human` principal: `checkpoint` is a human command.
+
+The log is part of the instance and is copied with it between stores, which is what lets a different LLM or venue read it. An instance without the file is v1-conformant and has no checkpoints.
+
 ## Authority
 
 Two optional tables declare who may accept (`AUTHORITY.md`). An instance without `authority/principals.md` declares no principals and is v1-conformant.

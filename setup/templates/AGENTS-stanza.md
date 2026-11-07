@@ -18,6 +18,10 @@ model and transport are defined by the konspekt standard
 - **Review does not block persist.** Proposals are persisted as `proposed` and
   reviewed in batch later — do not withhold them pending a blessing, and do not
   ask for acceptance in order to write them.
+- If `.konspekt/instance/checkpoints/checkpoints.md` has rows, read the last row
+  and its `sources/` excerpt at open: offer its entity as the default binding
+  and list its open items. Write a checkpoint only when the human types
+  `checkpoint`.
 - Operating policy (the loop, triggers) is `.konspekt/OPERATING.md`.
 - `note:` / `note "…"` appends to `.konspekt/NOTES.md` (human scratchpad); it is
   not a konspekt capture verb.

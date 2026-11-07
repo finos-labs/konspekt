@@ -630,6 +630,7 @@ if (personas.length) console.log(`  persona layer(s): ${personas.join(", ")}\n`)
 put(`${INSTANCE}/project.md`, tpl("project.md"));
 put(`${INSTANCE}/edges/edges.md`, tpl("edges.md"));
 put(`${INSTANCE}/transitions/transitions.md`, tpl("transitions.md"));
+put(`${INSTANCE}/checkpoints/checkpoints.md`, tpl("checkpoints.md"));
 put(`${INSTANCE}/sources/README.md`, tpl("sources-README.md"));
 for (const d of ["nodes", "concepts", "noteworthy", "artifacts", "waypoints"]) {
   put(`${INSTANCE}/${d}/.gitkeep`, "");

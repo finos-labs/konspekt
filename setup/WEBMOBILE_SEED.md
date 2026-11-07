@@ -69,6 +69,18 @@ Then treat this conversation as konspekt-enabled and operate the loop:
   `optional` lets me decline, recorded as a waypoint. On web/mobile there is no
   `SessionStart` hook and no `PreToolUse` gate — nothing enforces this but you,
   so issue the ask before anything else.
+- **Resume from the last checkpoint.** If your backend repo has
+  `.konspekt/instance/checkpoints/checkpoints.md`, read its last row and the
+  `sources/` excerpt it names before the binding ask, and offer that row's entity
+  as the default answer ("Last checkpoint was bound to X on <date> via <venue>,
+  with N open items; bind to X, or name another?"). I still answer. Once bound,
+  list the checkpoint's open items and pending proposals with the current review
+  and status of each id they name.
+- When I type **`checkpoint`**, write in one commit a `sources/` excerpt holding
+  verbatim my command, the binding switches, the pending proposals, and the
+  open-items list as last presented, plus one row in `checkpoints/checkpoints.md`
+  (`spec/architecture/SERIALIZATION.md` § Checkpoints). Never checkpoint on your
+  own.
 - As durable atoms crystallize, **propose** them as `review: proposed`. Never self-accept.
 - I accept and persist with `sync` / `persist`; the verbs (`pin`, `validate`,
   `resolve`, …) are defined in the spec.

@@ -37,7 +37,7 @@ Columns: **disposition** (alias of an existing verb, new, or dropped), **issuer*
 (role plus grant scope), **record effect** (what it reads and writes, and the
 deterministic tool that implements the write), **notes / overlap**.
 
-Existing vocabulary the protocol sits alongside: checkpoint verbs `load`, `sync`,
+Existing vocabulary the protocol sits alongside: orchestration verbs `load`, `sync`,
 `persist`, `sync_persist` (`spec/architecture/TRANSPORT.md`) and authority verbs
 `pin`, `validate`, `refute`, `resolve`, `abandon`, `lift`
 (`spec/data-model/SPEC.md` § Human vocabulary).

@@ -6,16 +6,16 @@ Triggers — *when* a pass fires — are deliberately absent. Once re-runs are n
 
 ## The contract
 
-A konspekt instance is a directory of human-readable markdown (`SERIALIZATION.md`). A transport is any store that can hold that directory and hand it back. The contract is deliberately dumber than the checkpoint vocabulary that sits on top of it: two operations.
+A konspekt instance is a directory of human-readable markdown (`SERIALIZATION.md`). A transport is any store that can hold that directory and hand it back. The contract is deliberately dumber than the orchestration vocabulary that sits on top of it: two operations.
 
 - **read** — pull the current instance (or a subtree) out of the store.
 - **write** — put a set of changed files back, producing a new durable version.
 
 That is all. Versioning (each write yields a recoverable prior state) and neutral, public access (below) are required; branching, locking, and merge are not — the model leans on none of them.
 
-### The checkpoint verbs map onto read/write
+### The orchestration verbs map onto read/write
 
-The operating loop's checkpoint vocabulary — `sync`, `persist`, `sync_persist`, and the `load` precondition — is *orchestration* over the two store operations, not part of the store contract:
+The operating loop's orchestration vocabulary — `sync`, `persist`, `sync_persist`, the `load` precondition, and `checkpoint` / `resume` — is *orchestration* over the two store operations, not part of the store contract:
 
 | verb | store op | touches |
 |------|----------|---------|
@@ -23,8 +23,19 @@ The operating loop's checkpoint vocabulary — `sync`, `persist`, `sync_persist`
 | `sync` | — | reconciles incoming atoms into the **working copy** only; no store op |
 | `persist` | write | flushes the working copy to the store |
 | `sync_persist` | write | `sync` then `persist`, as one durable step |
+| `checkpoint` | write | appends one row to `checkpoints/checkpoints.md` and its `sources/` excerpt |
+| `resume` | read | reads the last checkpoint row and its excerpt |
 
 So the store only ever sees `read` and `write`. A binding implements *those two*; the verbs are identical everywhere because they are defined above the binding. This is why `sync` needs no store at all — it is pure working-copy reconciliation, which is why it was excluded from the durable family.
+
+### Checkpoint and resume
+
+A conversation holds state the graph does not: the entity it is bound to, proposals it has discussed and not persisted, and open items that never became atoms. `checkpoint` and `resume` carry that state to a later conversation, whether it runs the next day, on a different LLM, or through a different venue for the same LLM. Both work through the store's `read` and `write`, so any conforming binding supports them, and the record is in the instance, where a different vendor's conversation can read it.
+
+- **`checkpoint`** is issued by a human. The maintainer writes one row to `checkpoints/checkpoints.md` and one `sources/` excerpt, in the same write (`SERIALIZATION.md` § Checkpoints). The row names the active entity. The excerpt holds, verbatim, the human's command, each binding switch made in the conversation, each pending proposal, and the open-items list as last presented. The maintainer does not issue `checkpoint` on its own judgment and does not paraphrase the items into atoms.
+- **`resume`** is a read at conversation open, after `load`. The maintainer reads the last row and its excerpt, offers the row's entity as the default answer to the binding ask (`BINDING.md`), and lists the excerpt's open items, giving the current `review` and `status` of each id the excerpt names. The human confirms the binding as usual. A checkpoint never binds a conversation by itself, and an instance's binding policy applies unchanged.
+
+A pending proposal recorded in a checkpoint is still only a proposal. Resuming does not persist it; the next conversation proposes it again if it still applies.
 
 ## Conformance
 
