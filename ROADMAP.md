@@ -3,7 +3,7 @@
      Check freshness with: node tools/roadmap.mjs --check
      This file is a pure function of .konspekt/instance/ (no timestamps baked in).
      Goals and tasks are graph nodes; the horizon is derived from node status/review.
-     contentHash: sha256:555c344da47f8945 -->
+     contentHash: sha256:937626c949df50a6 -->
 
 # konspekt roadmap
 
@@ -169,6 +169,7 @@ Make a konspekt instance operable by a human through a visual interface, not onl
 **Next** — _accepted and planned_
 
 - Navigate from a goal to its open tasks
+- November 2026 LinkedIn post — checkpoint and resume
 - Checkpoint and resume conversation context across sessions, LLMs and venues
 - Work through and disposition tasks in the interface
 - Correct the UI footer text to name both write actions
@@ -230,4 +231,4 @@ Let several participants — people and agents — propose into and review one s
 
 ---
 
-Generated from 9 goal(s) and 94 task-listing(s) over the instance graph.
+Generated from 9 goal(s) and 95 task-listing(s) over the instance graph.
