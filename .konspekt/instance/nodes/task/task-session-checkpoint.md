@@ -2,7 +2,7 @@
 id: task-session-checkpoint
 type: task
 title: Checkpoint and resume conversation context across sessions, LLMs and venues
-status: open
+status: resolved
 review: accepted
 provenance:
   sourceRef: 441a37e735189c3d6447dde1f314cc583893cf81

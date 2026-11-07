@@ -1238,3 +1238,5 @@ proposing agent was not recorded.
 | node:task-linkedin-announce-checkpoint | review | proposed | accepted | 2026-11-07T18:20:57Z | 82283c4ab6cd3010b52b817769faa60b717c8f73 | denisurusov |
 | edge:e-dec-usability-linkedincheckpoint | review | proposed | accepted | 2026-11-07T18:20:57Z | 82283c4ab6cd3010b52b817769faa60b717c8f73 | denisurusov |
 | edge:e-lnk-linkedincheckpoint-checkpoint | review | proposed | accepted | 2026-11-07T18:20:57Z | 82283c4ab6cd3010b52b817769faa60b717c8f73 | denisurusov |
+| node:task-linkedin-announce-checkpoint | status | open | resolved | 2026-11-07T22:09:57Z |  | denisurusov |
+| node:task-session-checkpoint | status | open | resolved | 2026-11-07T22:10:24Z |  | denisurusov |

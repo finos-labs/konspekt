@@ -2,7 +2,7 @@
 id: task-linkedin-announce-checkpoint
 type: task
 title: November 2026 LinkedIn post — checkpoint and resume
-status: open
+status: resolved
 review: accepted
 provenance:
   sourceRef: 0ffaee955ab91d66fa27e637b787858c3cf5d8b5
