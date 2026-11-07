@@ -1224,3 +1224,10 @@ proposing agent was not recorded.
 | edge:e-dec-usability-undrivenadr | review | proposed | accepted | 2026-11-06T21:47:21Z | 829d8c363566cc594a64ceba99799db7c79872b5 | denisurusov |
 | edge:e-lnk-undrivenadr-asradrui | review | proposed | accepted | 2026-11-06T21:47:21Z | 829d8c363566cc594a64ceba99799db7c79872b5 | denisurusov |
 | node:task-undriven-adr-visibility | status | open | resolved | 2026-11-06T22:39:42Z | 22aa20e558831db58e7cbd2e41943f4ee16e1f11 | denisurusov |
+| node:task-session-checkpoint | review |  | proposed | 2026-11-07T14:18:16Z |  | claude |
+| node:task-session-checkpoint | status |  | open | 2026-11-07T14:18:16Z |  | claude |
+| edge:e-dec-usability-checkpoint | review |  | proposed | 2026-11-07T14:18:16Z |  | claude |
+| edge:e-lnk-checkpoint-bindingbehavior | review |  | proposed | 2026-11-07T14:18:16Z |  | claude |
+| node:task-session-checkpoint | review | proposed | accepted | 2026-11-07T15:29:25Z | 9efbea5d514a320a0ca0cedf917496dada1b1d8c | denisurusov |
+| edge:e-dec-usability-checkpoint | review | proposed | accepted | 2026-11-07T15:29:25Z | 9efbea5d514a320a0ca0cedf917496dada1b1d8c | denisurusov |
+| edge:e-lnk-checkpoint-bindingbehavior | review | proposed | accepted | 2026-11-07T15:29:25Z | 9efbea5d514a320a0ca0cedf917496dada1b1d8c | denisurusov |

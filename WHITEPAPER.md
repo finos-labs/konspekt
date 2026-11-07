@@ -344,7 +344,7 @@ Versioning (each write yields a recoverable prior state) and neutral, public
 access are required. Branching, locking, and merge are not required; the model
 requires none of them.
 
-The operating loop's checkpoint verbs are orchestration above the two store
+The operating loop's orchestration verbs sit above the two store
 operations, not part of the store contract:
 
 | Verb | Store op | Touches |

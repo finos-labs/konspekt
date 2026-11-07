@@ -81,6 +81,37 @@ host policy and lives here.
 Recorded in the instance as `task-conversation-binding` and the five
 `nw-binding-*` decisions; marked by `wp-conversation-binding`.
 
+## Checkpoint and resume
+
+The record format and the verbs are spec (`/spec/architecture/TRANSPORT.md`
+§ Checkpoint and resume, `/spec/architecture/SERIALIZATION.md` § Checkpoints).
+This section is how this instance uses them.
+
+- **`checkpoint` is manual.** The human types `checkpoint` when leaving a
+  conversation they expect to continue: the next day, on another LLM, or through
+  another venue. The maintainer does not suggest or issue one on its own.
+- **What the maintainer writes.** In one persist: a `sources/` excerpt holding,
+  verbatim, the `checkpoint` command, each binding switch made in the
+  conversation, each proposal discussed and not persisted, and the open-items
+  list as last presented; one row in
+  `.konspekt/instance/checkpoints/checkpoints.md` naming the active entity, the
+  excerpt's `contentHash`, the venue (`claude.ai-web`, `claude-mobile`,
+  `claude-code-cli`, `intellij`, …), the model id, and `by: denisurusov`. It then
+  shows the row and the excerpt path. A checkpoint touches only
+  `.konspekt/instance/**`, so it is bookkeeping and needs no changed-code row.
+- **`resume` at open.** After `load`, if the log has rows, the binding ask
+  becomes: "Last checkpoint (date, venue, model) was bound to `<entity>`, with N
+  open items. Bind to `<entity>`, or name another?" After the human answers, the
+  maintainer lists the checkpoint's open items and pending proposals, giving the
+  current `review` and `status` of each id they name, and marks any id that has
+  since been accepted, rejected, or resolved. The human may also type `resume`
+  mid-conversation to get the same list. The binding gate is unchanged: the
+  checkpoint supplies a default answer, and the human still gives the answer.
+- **Pending proposals do not carry over as proposals.** The maintainer proposes
+  each one again if it still applies after resume.
+
+Recorded in the instance as `task-session-checkpoint`.
+
 ## Accept authority
 
 This instance runs **single-individual** accept authority: one human is the sole
@@ -161,8 +192,11 @@ Not duplicated here — single source of truth:
 
 - Authority verbs (`pin`, `validate`, `refute`, `resolve`, `abandon`, `lift`):
   `/spec/data-model/SPEC.md` § Human vocabulary (v1).
-- Checkpoint verbs (`load`, `sync`, `persist`, `sync_persist`):
-  `/spec/architecture/TRANSPORT.md` § The checkpoint verbs map onto read/write.
+- Orchestration verbs (`load`, `sync`, `persist`, `sync_persist`):
+  `/spec/architecture/TRANSPORT.md` § The orchestration verbs map onto read/write.
+- Context carry-over verbs (`checkpoint`, `resume`):
+  `/spec/architecture/TRANSPORT.md` § Checkpoint and resume, and Checkpoint and
+  resume above.
 - `note:` / `note "…"` is **not** a konspekt capture verb — it appends to
   `.konspekt/NOTES.md` (human scratchpad), never reconciled into the graph.
 

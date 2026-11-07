@@ -59,6 +59,22 @@ field of `instance/project.md`; the Claude Code hooks installed by the
 - **Retroactive binding** is allowed in the working copy — a span may be bound
   once its significance is clear — but never after `persist`.
 
+## Checkpoint and resume
+
+`checkpoint` and `resume` carry a conversation's binding and open items to a
+later conversation on any LLM or venue (`spec/architecture/TRANSPORT.md`
+§ Checkpoint and resume; format in `spec/architecture/SERIALIZATION.md`
+§ Checkpoints).
+
+- **`checkpoint` is manual.** Only the human issues it. The maintainer writes, in
+  one persist, a `sources/` excerpt holding verbatim the command, the binding
+  switches, the pending proposals, and the open-items list as last presented, and
+  one row in `instance/checkpoints/checkpoints.md`.
+- **`resume` at open.** After `load`, if the log has rows, the binding ask offers
+  the last row's entity as the default; the human still answers. Once bound, the
+  maintainer lists the checkpoint's open items and pending proposals with the
+  current review and status of each id they name.
+
 ## Acceptance before work
 
 The `basis:` field of `instance/project.md` decides whether work may be bound to

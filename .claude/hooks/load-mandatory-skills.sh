@@ -98,6 +98,33 @@ if [[ -f "$operating_md" ]]; then
   context+=$'\n\nMANDATORY — Conversation binding "Ask at open" (OPERATING.md § Conversation\nbinding): before any durable work this session, your FIRST user-facing message\nMUST ask the human which graph entity this conversation attaches to — an\nexisting entity (give the id) or a new one (name the type), proposing\n`investigation` as the default for an exploratory start. '"$policy_text"$'\nDo not begin implementation, edits, or research before issuing the ask.\n'
 fi
 
+# Last checkpoint (spec/architecture/TRANSPORT.md § Checkpoint and resume). When
+# the instance has a checkpoint log with rows, inject the last row and the
+# sources/ excerpt it names, so `resume` does not depend on the agent finding the
+# file. The row's entity is offered as the default binding; the human still
+# answers. A row whose excerpt is missing is injected with a warning.
+checkpoints_md="${CLAUDE_PROJECT_DIR:-.}/.konspekt/instance/checkpoints/checkpoints.md"
+resume_entity=""
+if [[ -f "$checkpoints_md" ]]; then
+  last_row="$(grep -E '^\|' "$checkpoints_md" | grep -vE '^\|[[:space:]]*(timestamp|-+)[[:space:]]*\|' | tail -n 1 || true)"
+  if [[ -n "$last_row" ]]; then
+    IFS='|' read -r _ cp_ts cp_entity cp_source cp_venue cp_model cp_by _ <<< "$last_row"
+    trim() { local v="$1"; v="${v#"${v%%[![:space:]]*}"}"; v="${v%"${v##*[![:space:]]}"}"; printf '%s' "$v"; }
+    cp_ts="$(trim "$cp_ts")"; cp_entity="$(trim "$cp_entity")"; cp_source="$(trim "$cp_source")"
+    cp_venue="$(trim "$cp_venue")"; cp_model="$(trim "$cp_model")"
+    resume_entity="$cp_entity"
+    context+=$'\n\nRESUME — last checkpoint (OPERATING.md § Checkpoint and resume): '"$cp_ts"$', bound to `'"$cp_entity"$'`, venue '"${cp_venue:-unknown}"$', model '"${cp_model:-unknown}"$'.\nIn the binding ask, offer `'"$cp_entity"$'` as the default; the human still answers. Once bound, list the open items and pending proposals from the excerpt below with the current review and status of each id they name.\n'
+    excerpt="${CLAUDE_PROJECT_DIR:-.}/.konspekt/instance/sources/${cp_source}.md"
+    if [[ -n "$cp_source" && -f "$excerpt" ]]; then
+      context+=$'\n===== BEGIN CHECKPOINT EXCERPT: '"$excerpt"$' =====\n\n'
+      context+="$(cat "$excerpt")"
+      context+=$'\n\n===== END CHECKPOINT EXCERPT =====\n'
+    else
+      context+=$'\nWARNING: the last checkpoint names source "'"$cp_source"$'", which is not in .konspekt/instance/sources/.\n'
+    fi
+  fi
+fi
+
 # Escape a string for embedding as a JSON string value (no jq dependency).
 json_escape() {
   local s="$1"
@@ -116,6 +143,9 @@ json_escape() {
 # silent. If a future Claude Code build does not render systemMessage at
 # SessionStart, the turn-one ask (driven by the directive above) is still visible.
 notice='konspekt: conversation binding not yet established — Claude will ask which graph entity this conversation attaches to before any durable work (OPERATING.md § Conversation binding).'
+if [[ -n "$resume_entity" ]]; then
+  notice+=" Last checkpoint was bound to ${resume_entity}; it will be offered as the default."
+fi
 
 printf '{"systemMessage":"%s","hookSpecificOutput":{"hookEventName":"SessionStart","additionalContext":"%s"}}\n' \
   "$(json_escape "$notice")" \

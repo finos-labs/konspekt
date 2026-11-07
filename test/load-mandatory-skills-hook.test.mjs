@@ -21,7 +21,7 @@ const HOOK = join(HERE, "..", ".claude", "hooks", "load-mandatory-skills.sh");
 const BRIEF = "ENGINEER-BRIEF-MARKER";
 
 // Returns the additionalContext string the hook emits for a temporary project.
-function context({ briefAt, binding }) {
+function context({ briefAt, binding, checkpoint, excerpt }) {
   const dir = mkdtempSync(join(tmpdir(), "konspekt-ssh-"));
   try {
     const instance = join(dir, ".konspekt", "instance");
@@ -34,6 +34,16 @@ function context({ briefAt, binding }) {
       const d = join(dir, briefAt, "engineer");
       mkdirSync(d, { recursive: true });
       writeFileSync(join(d, "AGENTS.md"), BRIEF + "\n");
+    }
+    if (checkpoint) {
+      mkdirSync(join(instance, "checkpoints"), { recursive: true });
+      writeFileSync(join(instance, "checkpoints", "checkpoints.md"),
+        "# Checkpoints\n\n| timestamp | entity | source | venue | model | by |\n" +
+        "|-----------|--------|--------|-------|-------|----|\n" + checkpoint.map((r) => `| ${r.join(" | ")} |\n`).join(""));
+    }
+    if (excerpt) {
+      mkdirSync(join(instance, "sources"), { recursive: true });
+      writeFileSync(join(instance, "sources", `${excerpt}.md`), "CHECKPOINT-EXCERPT-MARKER\n");
     }
     const r = spawnSync("bash", [HOOK], { encoding: "utf8", env: { ...process.env, CLAUDE_PROJECT_DIR: dir } });
     if (r.status !== 0) throw new Error(`exit ${r.status}: ${r.stderr}`);
@@ -52,6 +62,15 @@ const CASES = [
   ["binding absent reads as required", {}, (c) => c.includes("`binding: required`")],
   ["binding optional allows a decline", { binding: "optional" },
     (c) => c.includes("`binding: optional`") && !c.includes("`binding: required`")],
+  ["no checkpoint log injects no resume", {}, (c) => !c.includes("RESUME")],
+  ["header-only checkpoint log injects no resume", { checkpoint: [] }, (c) => !c.includes("RESUME")],
+  ["last checkpoint row and its excerpt are injected",
+    { checkpoint: [["2026-01-01T00:00:00Z", "task-old", "aaa", "web", "m1", "h"],
+      ["2026-01-02T00:00:00Z", "task-new", "bbb", "claude-mobile", "m2", "h"]], excerpt: "bbb" },
+    (c) => c.includes("bound to `task-new`") && !c.includes("task-old") && c.includes("CHECKPOINT-EXCERPT-MARKER")],
+  ["missing checkpoint excerpt is named in a warning",
+    { checkpoint: [["2026-01-02T00:00:00Z", "task-new", "ccc", "", "", "h"]] },
+    (c) => c.includes("bound to `task-new`") && c.includes('names source "ccc"')],
 ];
 
 const failures = [];
