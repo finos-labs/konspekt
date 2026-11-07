@@ -563,3 +563,5 @@ proposal.
 | e-lnk-undrivenadr-asradrui | links | node:task-undriven-adr-visibility | node:task-asr-adr-ui |  | accepted |
 | e-dec-usability-checkpoint | decomposes | node:goal-usability | node:task-session-checkpoint |  | accepted |
 | e-lnk-checkpoint-bindingbehavior | links | node:task-session-checkpoint | node:task-binding-operating-behavior |  | accepted |
+| e-dec-usability-linkedincheckpoint | decomposes | node:goal-usability | node:task-linkedin-announce-checkpoint |  | accepted |
+| e-lnk-linkedincheckpoint-checkpoint | links | node:task-linkedin-announce-checkpoint | node:task-session-checkpoint |  | accepted |

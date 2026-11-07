@@ -1231,3 +1231,10 @@ proposing agent was not recorded.
 | node:task-session-checkpoint | review | proposed | accepted | 2026-11-07T15:29:25Z | 9efbea5d514a320a0ca0cedf917496dada1b1d8c | denisurusov |
 | edge:e-dec-usability-checkpoint | review | proposed | accepted | 2026-11-07T15:29:25Z | 9efbea5d514a320a0ca0cedf917496dada1b1d8c | denisurusov |
 | edge:e-lnk-checkpoint-bindingbehavior | review | proposed | accepted | 2026-11-07T15:29:25Z | 9efbea5d514a320a0ca0cedf917496dada1b1d8c | denisurusov |
+| node:task-linkedin-announce-checkpoint | review |  | proposed | 2026-11-07T18:18:01Z |  | claude |
+| node:task-linkedin-announce-checkpoint | status |  | open | 2026-11-07T18:18:01Z |  | claude |
+| edge:e-dec-usability-linkedincheckpoint | review |  | proposed | 2026-11-07T18:18:01Z |  | claude |
+| edge:e-lnk-linkedincheckpoint-checkpoint | review |  | proposed | 2026-11-07T18:18:01Z |  | claude |
+| node:task-linkedin-announce-checkpoint | review | proposed | accepted | 2026-11-07T18:20:57Z | 82283c4ab6cd3010b52b817769faa60b717c8f73 | denisurusov |
+| edge:e-dec-usability-linkedincheckpoint | review | proposed | accepted | 2026-11-07T18:20:57Z | 82283c4ab6cd3010b52b817769faa60b717c8f73 | denisurusov |
+| edge:e-lnk-linkedincheckpoint-checkpoint | review | proposed | accepted | 2026-11-07T18:20:57Z | 82283c4ab6cd3010b52b817769faa60b717c8f73 | denisurusov |
