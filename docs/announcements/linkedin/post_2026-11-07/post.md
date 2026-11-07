@@ -2,7 +2,7 @@
 platform: linkedin
 format: feed
 date: 2026-11-07
-url:
+url: https://www.linkedin.com/feed/update/urn:li:activity:7524955739543560192/
 announces: "checkpoint and resume: hand a conversation to another LLM, the next day, or another device"
 assets:
   - file: images/checkpoint.png
@@ -14,7 +14,8 @@ first_comment: |
   Repo: https://github.com/finos-labs/konspekt
 ---
 
-Switching LLMs in the middle of a project usually means starting the conversation over. konspekt now lets you hand a conversation to a different LLM, or to tomorrow's session, or to another device, and pick up where you stopped.
+Switching LLMs in the middle of a project usually means starting the conversation over. Konspekt now lets you hand a 
+conversation to a different LLM, or to tomorrow's session, or to another device, and pick up where you stopped.
 
 At the end of a conversation you type "checkpoint". konspekt writes one row into the project's graph, which lives in your git repository. The row records the item the conversation was working on, the proposals still pending, and the open-items list, saved word for word. The next conversation reads it first and opens with: "Last checkpoint was on task-X, Saturday, via Claude mobile, 4 open items. Continue there?" You confirm, and it lists what is still open and what has been accepted since.
 
