@@ -475,3 +475,10 @@ commit order; the channel was not live during that work.
 | task-session-checkpoint | ef5644e47f9a3e154fa8c73d2ba106d8165d6df8 | spec/architecture/TRANSPORT.md | 2026-11-07T16:00:00Z |
 | task-session-checkpoint | ef5644e47f9a3e154fa8c73d2ba106d8165d6df8 | test/conformance-checkpoints.test.mjs | 2026-11-07T16:00:00Z |
 | task-session-checkpoint | ef5644e47f9a3e154fa8c73d2ba106d8165d6df8 | test/load-mandatory-skills-hook.test.mjs | 2026-11-07T16:00:00Z |
+| task-linkedin-announce-checkpoint | 88422d7af0e950e27f547e9b56504673c69bd180 | ROADMAP.md | 2026-11-07T18:20:59Z |
+| task-linkedin-announce-checkpoint | 88422d7af0e950e27f547e9b56504673c69bd180 | docs/announcements/linkedin/README.md | 2026-11-07T18:20:59Z |
+| task-linkedin-announce-checkpoint | 88422d7af0e950e27f547e9b56504673c69bd180 | docs/announcements/linkedin/post_2026-11-07/images/CAPTURE.md | 2026-11-07T18:20:59Z |
+| task-linkedin-announce-checkpoint | 88422d7af0e950e27f547e9b56504673c69bd180 | docs/announcements/linkedin/post_2026-11-07/images/checkpoint.png | 2026-11-07T18:20:59Z |
+| task-linkedin-announce-checkpoint | 88422d7af0e950e27f547e9b56504673c69bd180 | docs/announcements/linkedin/post_2026-11-07/post.md | 2026-11-07T18:20:59Z |
+| task-linkedin-announce-checkpoint | 88422d7af0e950e27f547e9b56504673c69bd180 | docs/index.html | 2026-11-07T18:20:59Z |
+| task-linkedin-announce-checkpoint | 88422d7af0e950e27f547e9b56504673c69bd180 | docs/visuals/posters/konspekt-checkpoint-poster.html | 2026-11-07T18:20:59Z |

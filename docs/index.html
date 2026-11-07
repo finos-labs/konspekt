@@ -267,6 +267,7 @@
   .faq{display:grid;grid-template-columns:1fr 1fr;gap:26px 56px;flex:1;align-content:center;margin-top:14px}
   .faq-q{font-family:var(--disp);font-size:23px;color:var(--ochre);margin-bottom:8px;line-height:1.1}
   .faq-a{font-size:16.5px;line-height:1.5;color:var(--ink-soft)}
+  .faq-a code{font-family:var(--mono);font-size:15px;color:var(--ink)}
   /* ---- dogfooding file tree ---- */
   .dogfood{display:grid;grid-template-columns:1fr 1fr;gap:48px;flex:1;align-items:center;margin-top:12px}
   .tree{font-family:var(--mono);font-size:13.5px;line-height:1.85}
@@ -1238,7 +1239,7 @@ VFS-native change source, so the reader ships with the plugin …</pre>
           <div class="faq">
             <div class="faq-item">
               <div class="faq-q">Why not the model&rsquo;s built-in memory?</div>
-              <div class="faq-a">Native memory re-derives context, and the cost grows super-linearly with complexity. konspekt keeps a typed, verifiable record whose cost stays flat. The record lives in your repository, so it&rsquo;s portable across vendors and across one vendor&rsquo;s cloud, CLI and IDE tools, which often keep separate sessions and memory. A chat with no repository access cannot read it.</div>
+              <div class="faq-a">Native memory re-derives context, and the cost grows super-linearly with complexity. konspekt keeps a typed, verifiable record whose cost stays flat. The record lives in your repository, so it&rsquo;s portable across vendors and across one vendor&rsquo;s cloud, CLI and IDE tools, which often keep separate sessions and memory. Type <code>checkpoint</code> and the next conversation, on another LLM, the next day, or another device, resumes on the same item with the same open items. A chat with no repository access cannot read it.</div>
             </div>
             <div class="faq-item">
               <div class="faq-q">Why not a wiki or a doc?</div>

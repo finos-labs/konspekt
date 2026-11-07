@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>konspekt — checkpoint and resume</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* Layout concept: one SVG figure. A conversation on the left writes a checkpoint
+     (teal, the single write) into the repository in the centre; three later
+     conversations on the right read it at open (dashed). Below it, a two-column
+     comparison with the memory and project context built into LLM tools.
+     Palette and type follow the other posters in this directory. */
+  :root {
+    --bg: #f4f6f8; --surface: #ffffff; --surface-2: #eef1f5; --line: #c7ccd6;
+    --fg: #1a1d24; --muted: #59606e;
+    --accent: #0e7c86;
+    --proposed: #9c6612; --proposed-bg: #f6e8cb;
+    --accepted: #2f7d4f; --accepted-bg: #d8edda;
+    --sans: "IBM Plex Sans", system-ui, sans-serif;
+    --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #13161b; --surface: #1c212a; --surface-2: #232b35; --line: #38414e;
+      --fg: #e7eaf0; --muted: #99a2b1; --accent: #3fb6c0;
+      --proposed: #e0a94a; --proposed-bg: #392f18;
+      --accepted: #5fc487; --accepted-bg: #173120;
+      color-scheme: dark;
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--sans); line-height: 1.5; }
+  .wrap { max-width: 1200px; margin: 0 auto; padding: 40px 20px 44px; }
+  .eyebrow { font-family: var(--mono); font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); margin: 0 0 10px; }
+  h1 { font-size: 40px; font-weight: 600; letter-spacing: -.02em; line-height: 1.15; margin: 0 0 12px; max-width: 26ch; }
+  .lede { font-size: 17px; color: var(--muted); max-width: 74ch; margin: 0 0 26px; }
+  .lede code, td code { font-family: var(--mono); font-size: .92em; color: var(--fg); }
+  .fig-shell { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 18px; }
+  svg { display: block; width: 100%; height: auto; }
+  .panel { fill: var(--surface); stroke: var(--line); stroke-width: 1.5; }
+  .sub { fill: var(--surface-2); stroke: var(--line); stroke-width: 1.2; }
+  .store { fill: var(--surface-2); stroke: var(--accent); stroke-width: 1.8; }
+  .t { fill: var(--fg); font-family: var(--sans); }
+  .ttl { fill: var(--fg); font-family: var(--sans); font-weight: 600; }
+  .mono { fill: var(--fg); font-family: var(--mono); }
+  .mut { fill: var(--muted); font-family: var(--sans); }
+  .mutm { fill: var(--muted); font-family: var(--mono); }
+  .num { fill: var(--accent); font-family: var(--mono); font-weight: 600; }
+  .acc { fill: var(--accent); font-family: var(--mono); font-weight: 600; }
+  .write { stroke: var(--accent); stroke-width: 2.4; fill: none; }
+  .read { stroke: var(--muted); stroke-width: 1.8; stroke-dasharray: 6 5; fill: none; }
+  .fa { fill: var(--accent); } .fm { fill: var(--muted); }
+  .chip-p { fill: var(--proposed-bg); stroke: var(--proposed); stroke-width: 1; }
+  .chip-a { fill: var(--accepted-bg); stroke: var(--accepted); stroke-width: 1; }
+  .tp { fill: var(--proposed); font-family: var(--mono); font-weight: 600; }
+  .ta { fill: var(--accepted); font-family: var(--mono); font-weight: 600; }
+  table { width: 100%; border-collapse: collapse; margin-top: 22px; font-size: 15px; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+  th, td { text-align: left; padding: 10px 16px; vertical-align: top; border-bottom: 1px solid var(--line); }
+  tr:last-child td { border-bottom: 0; }
+  th { font-family: var(--mono); font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); font-weight: 500; background: var(--surface-2); }
+  th.k, td.k { color: var(--accent); }
+  td.q { color: var(--muted); width: 18%; }
+  .foot { margin-top: 16px; font-family: var(--mono); font-size: 12.5px; color: var(--muted); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <p class="eyebrow">konspekt · checkpoint and resume</p>
+    <h1>Hand a conversation to another LLM, the next day, or another device</h1>
+    <p class="lede">Type <code>checkpoint</code> and konspekt writes one row into the project graph in your git repository: the item the conversation is bound to, plus the pending proposals and open items, kept word for word. The next conversation reads it first and offers to continue there. You confirm.</p>
+  </header>
+
+  <figure class="fig-shell">
+    <svg viewBox="0 28 1160 494" role="img" aria-labelledby="ftitle">
+      <title id="ftitle">One conversation writes a checkpoint into the repository; three later conversations read it at open</title>
+      <defs>
+        <marker id="ha" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" class="fa"/></marker>
+        <marker id="hm" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" class="fm"/></marker>
+      </defs>
+
+      <!-- Left: the conversation that checkpoints -->
+      <rect class="panel" x="10" y="40" width="290" height="440" rx="12"/>
+      <text class="mutm" x="30" y="72" font-size="12" letter-spacing="1.4">TODAY · CLAUDE · WEB</text>
+      <text class="ttl" x="30" y="100" font-size="19">A working conversation</text>
+      <text class="mut" x="30" y="136" font-size="14">bound to</text>
+      <rect class="chip-a" x="30" y="146" width="250" height="30" rx="6"/>
+      <text class="ta" x="42" y="166" font-size="13">task-session-checkpoint</text>
+      <text class="mut" x="30" y="206" font-size="14">open items</text>
+      <rect class="sub" x="30" y="216" width="250" height="132" rx="8"/>
+      <text class="t" x="44" y="242" font-size="14">1. Claude Code hook</text>
+      <text class="t" x="44" y="270" font-size="14">2. Re-paste project seed</text>
+      <text class="t" x="44" y="298" font-size="14">3. Rename heading</text>
+      <text class="t" x="44" y="326" font-size="14">4. First real checkpoint</text>
+      <text class="mut" x="30" y="378" font-size="14">pending proposal</text>
+      <rect class="chip-p" x="30" y="388" width="250" height="30" rx="6"/>
+      <text class="tp" x="42" y="408" font-size="13">proposed · not yet persisted</text>
+      <rect x="30" y="430" width="250" height="34" rx="6" fill="none" stroke="var(--accent)" stroke-width="1.6"/>
+      <text class="acc" x="44" y="452" font-size="15">&gt; checkpoint</text>
+
+      <!-- Write arrow -->
+      <path class="write" d="M300,260 L378,260" marker-end="url(#ha)"/>
+      <text class="acc" x="339" y="248" font-size="11.5" text-anchor="middle">WRITE</text>
+      <text class="mutm" x="339" y="282" font-size="11" text-anchor="middle">one commit</text>
+
+      <!-- Centre: the repository -->
+      <rect class="store" x="384" y="40" width="330" height="440" rx="12"/>
+      <text class="mutm" x="404" y="72" font-size="12" letter-spacing="1.4">YOUR GIT REPOSITORY</text>
+      <text class="ttl" x="404" y="100" font-size="19">The checkpoint record</text>
+      <text class="mutm" x="404" y="138" font-size="12">checkpoints/checkpoints.md</text>
+      <rect class="panel" x="404" y="148" width="290" height="148" rx="8"/>
+      <text class="mut" x="418" y="174" font-size="13">entity</text>
+      <text class="mono" x="490" y="174" font-size="13">task-session-checkpoint</text>
+      <text class="mut" x="418" y="200" font-size="13">source</text>
+      <text class="mono" x="490" y="200" font-size="13">sources/&lt;blob-sha&gt;.md</text>
+      <text class="mut" x="418" y="226" font-size="13">venue</text>
+      <text class="mono" x="490" y="226" font-size="13">claude.ai-web</text>
+      <text class="mut" x="418" y="252" font-size="13">model</text>
+      <text class="mono" x="490" y="252" font-size="13">claude-opus-5-5</text>
+      <text class="mut" x="418" y="278" font-size="13">by</text>
+      <text class="mono" x="490" y="278" font-size="13">denisurusov (human)</text>
+      <text class="mutm" x="404" y="330" font-size="12">sources/&lt;blob-sha&gt;.md</text>
+      <rect class="panel" x="404" y="340" width="290" height="120" rx="8"/>
+      <text class="t" x="418" y="366" font-size="13.5">The command, binding switches,</text>
+      <text class="t" x="418" y="388" font-size="13.5">pending proposals and the</text>
+      <text class="t" x="418" y="410" font-size="13.5">open-items list, word for word.</text>
+      <text class="mutm" x="418" y="440" font-size="11.5">named by its git blob hash</text>
+
+      <!-- Read arrows -->
+      <path class="read" d="M714,200 C760,200 770,110 818,110" marker-end="url(#hm)"/>
+      <path class="read" d="M714,260 L818,260" marker-end="url(#hm)"/>
+      <path class="read" d="M714,320 C760,320 770,410 818,410" marker-end="url(#hm)"/>
+      <text class="mutm" x="766" y="250" font-size="11" text-anchor="middle">READ</text>
+      <text class="mutm" x="766" y="282" font-size="11" text-anchor="middle">at open</text>
+
+      <!-- Right: three later conversations -->
+      <rect class="panel" x="824" y="40" width="326" height="136" rx="12"/>
+      <text class="num" x="844" y="72" font-size="14">1</text>
+      <text class="ttl" x="866" y="72" font-size="17">Another LLM</text>
+      <text class="t" x="844" y="102" font-size="14">Grok reads the same files and</text>
+      <text class="t" x="844" y="124" font-size="14">resumes on the same item.</text>
+      <text class="mutm" x="844" y="156" font-size="12">plain markdown · no vendor format</text>
+
+      <rect class="panel" x="824" y="192" width="326" height="136" rx="12"/>
+      <text class="num" x="844" y="224" font-size="14">2</text>
+      <text class="ttl" x="866" y="224" font-size="17">The next day</text>
+      <text class="t" x="844" y="254" font-size="14">A fresh conversation opens with</text>
+      <text class="t" x="844" y="276" font-size="14">the same item and open list.</text>
+      <text class="mutm" x="844" y="308" font-size="12">no re-explaining</text>
+
+      <rect class="panel" x="824" y="344" width="326" height="136" rx="12"/>
+      <text class="num" x="844" y="376" font-size="14">3</text>
+      <text class="ttl" x="866" y="376" font-size="17">Another device</text>
+      <text class="t" x="844" y="406" font-size="14">Phone to IDE or terminal. Claude</text>
+      <text class="t" x="844" y="428" font-size="14">Code loads it at session start.</text>
+      <text class="mutm" x="844" y="460" font-size="12">web · mobile · IDE · CLI</text>
+
+      <!-- Resume prompt, shared -->
+      <text class="t" x="580" y="508" font-size="14" text-anchor="middle">Each one opens with: <tspan class="mono" font-size="13">“Last checkpoint: task-session-checkpoint, 4 open items. Continue there?”</tspan></text>
+    </svg>
+  </figure>
+
+  <table>
+    <tr><th></th><th>Memory and project context built into LLM tools</th><th class="k">konspekt checkpoint</th></tr>
+    <tr><td class="q">Who writes it</td><td>The model, as a summary</td><td>You issue it; the text is kept word for word</td></tr>
+    <tr><td class="q">Where it lives</td><td>With the vendor, in one product and one account</td><td>In your git repository, under version control</td></tr>
+    <tr><td class="q">Who can read it</td><td>That product</td><td>Any LLM or tool that can read the repository</td></tr>
+    <tr><td class="q">What it records</td><td>Facts and files, with no position in the work</td><td>Where the work stopped, checked against the graph on resume</td></tr>
+  </table>
+  <p class="foot">github.com/finos-labs/konspekt · spec/architecture/TRANSPORT.md § Checkpoint and resume</p>
+</div>
+</body>
+</html>
