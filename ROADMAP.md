@@ -3,7 +3,7 @@
      Check freshness with: node tools/roadmap.mjs --check
      This file is a pure function of .konspekt/instance/ (no timestamps baked in).
      Goals and tasks are graph nodes; the horizon is derived from node status/review.
-     contentHash: sha256:937626c949df50a6 -->
+     contentHash: sha256:1a40851b962941ae -->
 
 # konspekt roadmap
 
@@ -169,8 +169,6 @@ Make a konspekt instance operable by a human through a visual interface, not onl
 **Next** — _accepted and planned_
 
 - Navigate from a goal to its open tasks
-- November 2026 LinkedIn post — checkpoint and resume
-- Checkpoint and resume conversation context across sessions, LLMs and venues
 - Work through and disposition tasks in the interface
 - Correct the UI footer text to name both write actions
 
@@ -190,10 +188,12 @@ Make a konspekt instance operable by a human through a visual interface, not onl
 - Build the konspekt UI app as one view with two shells
 - September 2026 LinkedIn announcements — plugin/UI, and binding
 - October 2026 LinkedIn announcement — acceptance & authority
+- November 2026 LinkedIn post — checkpoint and resume
 - LinkedIn announcement — the agent fleet
 - Configurable popup mode for the IntelliJ plugin
 - Refresh presentation materials for the plugin, UI writes, and binding
 - Related-commands tab in the entity detail panel
+- Checkpoint and resume conversation context across sessions, LLMs and venues
 - State in the spec that acceptance is prose
 - Resolve a work node from the UI (POST /api/resolve)
 - Take simple actions from the UI (accept a proposed entity)
