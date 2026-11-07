@@ -561,3 +561,5 @@ proposal.
 | e-prod-promovideo-howtovideo | produces | node:task-promo-video | artifact:artifact-howto-walkthrough-video |  | accepted |
 | e-dec-usability-undrivenadr | decomposes | node:goal-usability | node:task-undriven-adr-visibility |  | accepted |
 | e-lnk-undrivenadr-asradrui | links | node:task-undriven-adr-visibility | node:task-asr-adr-ui |  | accepted |
+| e-dec-usability-checkpoint | decomposes | node:goal-usability | node:task-session-checkpoint |  | accepted |
+| e-lnk-checkpoint-bindingbehavior | links | node:task-session-checkpoint | node:task-binding-operating-behavior |  | accepted |
