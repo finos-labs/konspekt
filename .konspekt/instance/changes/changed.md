@@ -485,3 +485,15 @@ commit order; the channel was not live during that work.
 | task-linkedin-announce-checkpoint | e719182b239a3b9492b65ec0aa4f8c0afdb4a11b | docs/announcements/linkedin/post_2026-11-07/post.md | 2026-11-07T22:10:47Z |
 | task-linkedin-announce-checkpoint | cf443de939130e9a7b27985b57fa2a8ca6eab557 | ROADMAP.md | 2026-11-07T22:10:47Z |
 | task-fleet-canonical-follow | d749f88dca932c443767f58c3e7f44c66c4242db | ROADMAP.md | 2026-11-11T18:00:07Z |
+| task-fleet-canonical-follow | ecf115121c74006473371f29ef50a4396fea6949 | .claude/skills/fleet-committer/SKILL.md | 2026-11-11T18:14:03Z |
+| task-fleet-canonical-follow | ecf115121c74006473371f29ef50a4396fea6949 | .claude/skills/fleet-proposer-common/SKILL.md | 2026-11-11T18:14:03Z |
+| task-fleet-canonical-follow | ecf115121c74006473371f29ef50a4396fea6949 | .konspekt/agents/skills/fleet-committer/SKILL.md | 2026-11-11T18:14:03Z |
+| task-fleet-canonical-follow | ecf115121c74006473371f29ef50a4396fea6949 | .konspekt/agents/skills/fleet-proposer-common/SKILL.md | 2026-11-11T18:14:03Z |
+| task-fleet-canonical-follow | ecf115121c74006473371f29ef50a4396fea6949 | implementations/fleet/app/README.md | 2026-11-11T18:14:03Z |
+| task-fleet-canonical-follow | ecf115121c74006473371f29ef50a4396fea6949 | implementations/fleet/app/cli.mjs | 2026-11-11T18:14:03Z |
+| task-fleet-canonical-follow | ecf115121c74006473371f29ef50a4396fea6949 | implementations/fleet/app/committer-watch-hook.mjs | 2026-11-11T18:14:03Z |
+| task-fleet-canonical-follow | ecf115121c74006473371f29ef50a4396fea6949 | implementations/fleet/app/committer.mjs | 2026-11-11T18:14:03Z |
+| task-fleet-canonical-follow | ecf115121c74006473371f29ef50a4396fea6949 | implementations/fleet/app/follow.mjs | 2026-11-11T18:14:03Z |
+| task-fleet-canonical-follow | ecf115121c74006473371f29ef50a4396fea6949 | implementations/fleet/app/git.mjs | 2026-11-11T18:14:03Z |
+| task-fleet-canonical-follow | ecf115121c74006473371f29ef50a4396fea6949 | implementations/fleet/app/test/follow.test.mjs | 2026-11-11T18:14:03Z |
+| task-fleet-canonical-follow | ecf115121c74006473371f29ef50a4396fea6949 | implementations/fleet/app/worktrees.mjs | 2026-11-11T18:14:03Z |
