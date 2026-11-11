@@ -497,3 +497,9 @@ commit order; the channel was not live during that work.
 | task-fleet-canonical-follow | ecf115121c74006473371f29ef50a4396fea6949 | implementations/fleet/app/git.mjs | 2026-11-11T18:14:03Z |
 | task-fleet-canonical-follow | ecf115121c74006473371f29ef50a4396fea6949 | implementations/fleet/app/test/follow.test.mjs | 2026-11-11T18:14:03Z |
 | task-fleet-canonical-follow | ecf115121c74006473371f29ef50a4396fea6949 | implementations/fleet/app/worktrees.mjs | 2026-11-11T18:14:03Z |
+| task-fleet-canonical-follow | 78df98db206fe23016077fe84934de238b48304e | ROADMAP.md | 2026-11-11T18:23:11Z |
+| task-fleet-adjustments | 74874643390b09d42fdfe42f025f0fe0d41d1042 | .claude/skills/fleet-committer/SKILL.md | 2026-11-11T18:23:11Z |
+| task-fleet-adjustments | 74874643390b09d42fdfe42f025f0fe0d41d1042 | .konspekt/agents/skills/fleet-committer/SKILL.md | 2026-11-11T18:23:11Z |
+| task-fleet-adjustments | 74874643390b09d42fdfe42f025f0fe0d41d1042 | implementations/fleet/app/claims.mjs | 2026-11-11T18:23:11Z |
+| task-fleet-adjustments | 74874643390b09d42fdfe42f025f0fe0d41d1042 | implementations/fleet/app/follow.mjs | 2026-11-11T18:23:11Z |
+| task-fleet-adjustments | 74874643390b09d42fdfe42f025f0fe0d41d1042 | implementations/fleet/app/test/follow.test.mjs | 2026-11-11T18:23:11Z |
