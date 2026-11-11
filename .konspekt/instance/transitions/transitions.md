@@ -1240,3 +1240,11 @@ proposing agent was not recorded.
 | edge:e-lnk-linkedincheckpoint-checkpoint | review | proposed | accepted | 2026-11-07T18:20:57Z | 82283c4ab6cd3010b52b817769faa60b717c8f73 | denisurusov |
 | node:task-linkedin-announce-checkpoint | status | open | resolved | 2026-11-07T22:09:57Z |  | denisurusov |
 | node:task-session-checkpoint | status | open | resolved | 2026-11-07T22:10:24Z |  | denisurusov |
+| node:task-fleet-canonical-follow | review |  | proposed | 2026-11-11T17:59:09Z |  | claude |
+| node:task-fleet-canonical-follow | status |  | open | 2026-11-11T17:59:09Z |  | claude |
+| edge:e-dec-agentfleet-canonicalfollow | review |  | proposed | 2026-11-11T17:59:09Z |  | claude |
+| edge:e-not-canonicalfollow-foldfollows | review |  | proposed | 2026-11-11T17:59:09Z |  | claude |
+| node:task-fleet-canonical-follow | review | proposed | accepted | 2026-11-11T17:59:09Z | 6ab9fc3a8f7eeb80f752d2fb04b1e709d0ecfb89 | denisurusov |
+| edge:e-dec-agentfleet-canonicalfollow | review | proposed | accepted | 2026-11-11T17:59:09Z | 6ab9fc3a8f7eeb80f752d2fb04b1e709d0ecfb89 | denisurusov |
+| edge:e-not-canonicalfollow-foldfollows | review | proposed | accepted | 2026-11-11T17:59:09Z | 6ab9fc3a8f7eeb80f752d2fb04b1e709d0ecfb89 | denisurusov |
+| node:task-fleet-canonical-follow | status | open | active | 2026-11-11T17:59:09Z | 6ab9fc3a8f7eeb80f752d2fb04b1e709d0ecfb89 | denisurusov |

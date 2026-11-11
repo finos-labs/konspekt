@@ -565,3 +565,5 @@ proposal.
 | e-lnk-checkpoint-bindingbehavior | links | node:task-session-checkpoint | node:task-binding-operating-behavior |  | accepted |
 | e-dec-usability-linkedincheckpoint | decomposes | node:goal-usability | node:task-linkedin-announce-checkpoint |  | accepted |
 | e-lnk-linkedincheckpoint-checkpoint | links | node:task-linkedin-announce-checkpoint | node:task-session-checkpoint |  | accepted |
+| e-dec-agentfleet-canonicalfollow | decomposes | node:task-agent-fleet | node:task-fleet-canonical-follow |  | accepted |
+| e-not-canonicalfollow-foldfollows | notes | node:task-fleet-canonical-follow | noteworthy:nw-fleet-fold-follows-worktree-branch |  | accepted |
