@@ -11,7 +11,7 @@ provenance:
   timestamp: 2026-11-11T17:59:09Z
   confidence: 0.7
 createdAt: 2026-11-11T17:59:09Z
-updatedAt: 2026-11-11T18:40:00Z
+updatedAt: 2026-11-11T18:14:03Z
 ```
 # Task: Fleet follows a canonical branch switch
 
