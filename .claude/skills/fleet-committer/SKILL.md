@@ -165,13 +165,15 @@ The command, in order:
 
 1. **Refuses unless clean.** The canonical worktree and every outbox worktree must
    have no uncommitted changes or untracked files (`.konspekt-fleet/` excepted).
-   It also refuses when any pending outbox proposal fails verification: a drain
-   folds all pending proposals or none.
+   It also refuses when any pending outbox proposal fails verification (a drain
+   folds all pending proposals or none), and when a release awaits the human's
+   accept: apply it with `accept-release` or remove it from the outbox first.
 2. **Drains onto the old branch.** Folds every pending proposal onto the current
    canonical branch as `review: proposed` and applies pending claims there.
-3. **Clears the outboxes.** Deletes each drained proposal directory and each
-   applied claim from its outbox branch, one signed-off commit per outbox, so
-   they do not fold again onto the new branch. Pending releases stay.
+3. **Clears the outboxes.** Deletes each drained proposal directory, and each
+   claim request whose node already holds the claim's target status (applied in
+   this drain or earlier), from its outbox branch, one signed-off commit per
+   outbox, so nothing folds or applies again onto the new branch.
 4. **Switches the canonical worktree** to `<new-branch>`.
 5. **Writes the config.** Sets `canonicalBranch` to `<new-branch>` in the config on
    the new branch and commits that file alone. A new branch without the config
@@ -188,7 +190,9 @@ overrides it. The fold watcher (`run-pass --watch`) performs the same follow on
 its own when it observes the switch; while a refusal condition holds it logs the
 refusal once, skips its passes, and follows on the first pass after the condition
 clears. A one-shot `run-pass` refuses on the mismatch and names
-`follow-canonical`.
+`follow-canonical`. Known limitation: a manual `git switch` while the watcher is
+committing a fold can land that one fold on the new branch, or fail on the
+fold's uncommitted files; prefer `switch-canonical` while the watcher runs.
 
 `setup` also writes the canonical worktree's current branch into
 `canonicalBranch` (one commit of the config file) when the config names another

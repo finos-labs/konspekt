@@ -86,6 +86,17 @@ function findNode(instanceDir, id) {
   throw new Error(`worked node "${id}" is not on canonical`);
 }
 
+// The current status of node `id` on the instance at `instanceDir`, or null when
+// the node is absent. Used by the canonical-branch drain to tell a pending
+// release from a settled claim (task-fleet-adjustments).
+export function nodeStatus(instanceDir, id) {
+  try {
+    return findNode(instanceDir, id).front.status ?? null;
+  } catch {
+    return null;
+  }
+}
+
 const txRow = (ref, field, from, to, ts, by) => `| ${ref} | ${field} | ${from} | ${to} | ${ts} |  | ${by} |`;
 
 function appendTransition(instanceDir, row) {

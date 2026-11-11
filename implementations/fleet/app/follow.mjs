@@ -4,9 +4,12 @@
 //
 //   1. refuse unless the canonical worktree and every outbox worktree are clean;
 //   2. drain: fold every pending outbox proposal onto the OLD canonical branch,
-//      and apply pending claims there;
-//   3. clear: delete the drained proposal directories from each outbox branch
-//      (one commit per outbox), so they do not fold again onto the new branch;
+//      and apply pending claims there; a release still awaiting the human's
+//      accept blocks the switch;
+//   3. clear: delete the drained proposal directories, and every claim request
+//      whose node already holds the claim's target status, from each outbox
+//      branch (one commit per outbox), so nothing folds or applies again onto
+//      the new branch;
 //   4. write the new branch name into the fleet config's `canonicalBranch` on
 //      the new branch (the value is dynamic: it names the branch the committer
 //      created or cloned into);
@@ -25,13 +28,19 @@
 // Both act only in fleet mode (`fleetMode` in worktrees.mjs): the caller attaches
 // config-driven and passes the attached descriptor. The committer writes to the
 // outbox branches only in steps 3 and 5. It never accepts: drained proposals
-// land as `review: proposed`, and pending releases stay pending.
+// land as `review: proposed`, and a pending release is left for the human to
+// accept before the switch can proceed.
+//
+// Known limitation, accepted (task-fleet-adjustments): a manual `git switch` in
+// the canonical worktree while the watcher is committing a fold can land that
+// one fold commit on the new branch. `switch-canonical` does not have this race,
+// because it drains and switches in one process.
 
 import { join } from "node:path";
 import { existsSync, readFileSync, writeFileSync, mkdirSync, mkdtempSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { verifyPass, foldPass } from "./committer.mjs";
-import { applyClaims } from "./claims.mjs";
+import { applyClaims, readClaimRequests, nodeStatus } from "./claims.mjs";
 import { writeConfigBranch, CONFIG_REL } from "./worktrees.mjs";
 import { FLEET_DIR } from "./proposed-ref.mjs";
 import {
@@ -112,8 +121,10 @@ function refuseIfDirty(fleet) {
 // `fleet.canonicalPath`, apply pending claims there, and delete the drained
 // proposal and applied-claim directories from each outbox branch.
 //
-// Refuses before writing anything when any proposal fails verification: a drain
-// folds ALL pending proposals or none. A fold-time set-aside after verification
+// Refuses before writing anything when any proposal fails verification (a drain
+// folds ALL pending proposals or none) or when a release is pending, i.e. its
+// node on the old canonical is still `active` and awaits the human's
+// accept-release (task-fleet-adjustments). A fold-time set-aside after verification
 // throws after the fold commit and before any outbox is cleared, so a retry sees
 // the folded proposals as already folded and clears them then.
 //
@@ -134,6 +145,21 @@ export function drainOutboxes(fleet, { grants = {}, identity = {}, instanceSubdi
     );
   }
 
+  const instanceDir = instanceSubdir ? join(fleet.canonicalPath, instanceSubdir) : fleet.canonicalPath;
+  const pendingReleases = readClaimRequests(fleet).filter((r) =>
+    r.claim?.kind === "release" &&
+    fleet.ownerOf(r.branch) === r.claim.agent &&
+    nodeStatus(instanceDir, r.claim.node) === "active");
+  if (pendingReleases.length) {
+    const detail = pendingReleases
+      .map((r) => `  - ${r.owner} ${r.claimId.slice(0, 12)}: release ${r.claim.node} -> ${r.claim.to}`)
+      .join("\n");
+    throw new FollowRefused(
+      `refusing to follow the canonical branch: ${pendingReleases.length} release(s) await the human's accept. ` +
+        `Apply each with \`accept-release --claim <id> --by <principal>\`, or remove it from the outbox, then retry:\n${detail}`,
+    );
+  }
+
   const res = foldPass(fleet, { grants, identity, instanceSubdir, now, fleetDir });
   if (res.setAside.length) {
     const detail = res.setAside.map((s) => `  - ${s.proposalId ? s.proposalId.slice(0, 12) : "(?)"}: ${s.reason}`).join("\n");
@@ -146,8 +172,10 @@ export function drainOutboxes(fleet, { grants = {}, identity = {}, instanceSubdi
   const claims = applyClaims(fleet, { instanceSubdir, identity, now });
 
   // Which outbox directories to delete, per owner: every proposal that is now on
-  // the old canonical (folded in this drain or earlier), and every claim applied
-  // in this drain. Pending releases and set-aside claims stay.
+  // the old canonical (folded in this drain or earlier), every claim applied in
+  // this drain, and every claim request whose node already holds the claim's
+  // target status (applied in an earlier pass, or a release already accepted).
+  // Other set-aside claims stay.
   const ownerOf = new Map(verdicts.map((v) => [v.proposalId, v.owner]));
   const toClear = new Map();
   const add = (owner, id) => {
@@ -157,6 +185,11 @@ export function drainOutboxes(fleet, { grants = {}, identity = {}, instanceSubdi
   };
   for (const f of [...res.folded, ...res.alreadyFolded]) add(ownerOf.get(f.proposalId), f.proposalId);
   for (const a of claims.applied) add(a.agent, a.claimId);
+  const applied = new Set(claims.applied.map((a) => a.claimId));
+  for (const r of readClaimRequests(fleet)) {
+    if (applied.has(r.claimId) || !r.claim?.node || !r.claim?.to) continue;
+    if (nodeStatus(instanceDir, r.claim.node) === r.claim.to) add(r.owner, r.claimId);
+  }
 
   const cleared = [];
   for (const p of fleet.proposers) {

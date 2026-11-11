@@ -223,6 +223,9 @@ test("run-pass --watch follows a manual switch, logging a dirty-worktree refusal
     // First tick folds onto fleet_main and records it.
     await until(/folded 1 onto canonical/);
     proposeToOutbox(outboxPath(fleet), conceptProposal({ id: "concept-bar", edgeId: "e-bar" }), { identity: IDENTITY });
+    // Let the watcher finish folding concept-bar before switching: a manual
+    // switch during a fold commit is the accepted race this test does not cover.
+    await until(/folded 1 onto canonical[\s\S]*folded 1 onto canonical/);
     writeFileSync(join(outboxPath(fleet), "scratch.txt"), "wip\n", "utf8");
     switchBranch(canonicalPath, "other");
     await until(/not following yet/);
@@ -233,7 +236,38 @@ test("run-pass --watch follows a manual switch, logging a dirty-worktree refusal
   } finally {
     child.kill();
   }
-  assert.ok(conceptOn("fleet_main", "concept-bar"), "the proposal pending at the switch drained onto the old branch");
+  assert.ok(conceptOn("fleet_main", "concept-bar"), "concept-bar is on the old branch only");
   assert.equal(conceptOn("other", "concept-bar"), false);
   assert.equal(readFleetConfig(canonicalPath).canonicalBranch, "other");
+});
+
+test("a release awaiting accept blocks the switch; an earlier-applied claim is cleared", async () => {
+  const { assembleClaim, writeClaimToOutbox, applyClaims, nodeStatus } = await import("../claims.mjs");
+  const { fleet, grants } = standUp();
+  git(canonicalPath, ["branch", "other"]);
+  const box = outboxPath(fleet);
+  const write = (c) => writeClaimToOutbox(box, assembleClaim({ ...c, agent: "agent-a", created: "2026-10-12T00:00:00Z" }), { identity: IDENTITY });
+
+  // A claim applied in an earlier pass: task-demo is now active, the claim stays in the outbox.
+  const claimed = write({ kind: "claim", node: "task-demo" });
+  applyClaims(fleet, { instanceSubdir: SUB, identity: IDENTITY });
+  assert.equal(nodeStatus(join(canonicalPath, SUB), "task-demo"), "active");
+
+  // A release now awaits the human's accept: the switch refuses and writes nothing.
+  const release = write({ kind: "release", node: "task-demo", to: "resolved" });
+  const head = git(canonicalPath, ["rev-parse", "HEAD"]);
+  assert.throws(
+    () => switchCanonical(fleet, { to: "other", grants, identity: IDENTITY, instanceSubdir: SUB }),
+    (e) => e instanceof FollowRefused && /await the human's accept/.test(e.message) && e.message.includes(release.claimId.slice(0, 12)),
+  );
+  assert.equal(git(canonicalPath, ["rev-parse", "HEAD"]), head);
+  assert.equal(currentBranch(canonicalPath), "fleet_main");
+
+  // With the release removed from the outbox, the switch proceeds and clears the
+  // earlier-applied claim, whose node already holds its target status.
+  git(box, ["rm", "-r", "-q", `proposals/${release.claimId}`]);
+  git(box, ["-c", `user.name=${IDENTITY.name}`, "-c", `user.email=${IDENTITY.email}`, "commit", "-q", "-m", "drop release"]);
+  const r = switchCanonical(fleet, { to: "other", grants, identity: IDENTITY, instanceSubdir: SUB });
+  assert.deepEqual(r.drain.cleared.map((c) => c.ids).flat(), [claimed.claimId]);
+  assert.equal(outboxItems(fleet).length, 0);
 });
