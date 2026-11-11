@@ -43,6 +43,8 @@ in-memory state between commands.
 | `bless --accept … --reject …` | operator | after the human decides | one field-only commit per atom: flip `review`, append the decision record |
 | `accept-release --claim … --by …` | operator | to apply a pending release | flip the worked node `active → resolved\|abandoned`, attributed to the human acceptor |
 | `teardown` | operator | to dismantle | remove the proposer worktrees (keeps canonical, the object store, and the outbox branches) |
+| `switch-canonical --to <branch> [--create]` | operator | to move the fleet to another canonical branch | fleet mode only; refuse unless every worktree is clean and every pending proposal verifies; drain onto the current branch; delete the drained items from each outbox; switch canonical; write `canonicalBranch` into the config; merge the new branch into each outbox |
+| `follow-canonical [--from <branch>]` | operator | after switching the canonical worktree by hand | the same follow, draining onto the previous branch through a temporary worktree; `run-pass --watch` runs it on its own when it observes the switch |
 
 Attach model: config-driven commands take `--canonical <path>` and read the
 committed `.konspekt/fleet/config/fleet.json` — no hand-written manifest, and the
@@ -119,6 +121,7 @@ proposer agent only ever touches step 2, only on its own branch.
 | `proposed-ref.mjs` | `run-pass` (fold) and `rebuild-index` | append the fold log; build/rebuild the derived index from canonical |
 | `bless.mjs` | `bless` | field-only accept (flip `review`, append accept record) and reject tombstone |
 | `committer.mjs` | `run-pass`, `bless` | the deterministic passes: `verifyPass`, `foldPass`, `blessPass` — read every outbox, apply one pass, commit |
+| `follow.mjs` | `switch-canonical`, `follow-canonical`, `run-pass --watch` | canonical branch following: clean check, drain onto the old branch, outbox clear, config write, outbox merge, recorded branch in `.konspekt-fleet/canonical-branch` (task-fleet-canonical-follow) |
 | `git.mjs` | most of the above | plumbing: `hash-object`, worktree add/remove, commit with DCO sign-off, post-write SHA recheck |
 
 The modules that touch the stored form (`payload`, `verify`, `fold`,
@@ -132,8 +135,8 @@ The modules that touch the stored form (`payload`, `verify`, `fold`,
   atoms. Authoritative.
 - **`outbox/<handle>` branches** — each proposer's `proposals/<id>/` stored-form
   atoms (`entity.md`, `source.md`, `edges.md`, `meta.json`).
-- **`.konspekt-fleet/`** (gitignored) — `folded.md`, `decisions.md`, and the
-  materialized index. Runtime logs, rebuildable from canonical, never committed
+- **`.konspekt-fleet/`** (gitignored) — `folded.md`, `decisions.md`, the
+  materialized index, and `canonical-branch` (the last branch folded onto). Runtime logs, rebuildable from canonical, never committed
   (`fleet-spec.md` § Runtime state outside history).
 - **`fleet.json`** (at the fleet root) — the session manifest: canonical path
   and branch, and each proposer's handle/path/branch. `loadFleet` reads it.

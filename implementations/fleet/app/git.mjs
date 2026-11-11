@@ -61,6 +61,88 @@ export function commitAll(cwd, message, { name, email, signoff = false, allowEmp
   return git(cwd, ["rev-parse", "HEAD"]);
 }
 
+// The identity flags every committer-authored commit carries. Passed per call,
+// so the object store holds no ambient identity.
+function identityArgs({ name, email } = {}) {
+  return ["-c", `user.name=${name ?? "konspekt-committer"}`, "-c", `user.email=${email ?? "committer@konspekt.local"}`];
+}
+
+// Commit only `paths` (other staged or unstaged changes stay as they are). Used
+// where the committer writes one file into a worktree it does not otherwise own
+// the state of, e.g. the fleet config's canonicalBranch. Returns the new HEAD.
+export function commitPaths(cwd, message, paths, { name, email, signoff = true } = {}) {
+  git(cwd, ["add", "--", ...paths]);
+  const args = [...identityArgs({ name, email }), "commit", "-m", message];
+  if (signoff) args.push("--signoff");
+  args.push("--", ...paths);
+  git(cwd, args);
+  return git(cwd, ["rev-parse", "HEAD"]);
+}
+
+// Remove `paths` from the index and the worktree and commit the removal.
+// Returns the new HEAD.
+export function removeAndCommit(cwd, message, paths, { name, email, signoff = true } = {}) {
+  git(cwd, ["rm", "-r", "-q", "--", ...paths]);
+  const args = [...identityArgs({ name, email }), "commit", "-m", message];
+  if (signoff) args.push("--signoff");
+  git(cwd, args);
+  return git(cwd, ["rev-parse", "HEAD"]);
+}
+
+// `git status --porcelain` lines for `cwd`: tracked changes and untracked files,
+// excluding ignored paths. An empty array means the worktree is clean.
+export function statusLines(cwd) {
+  const out = git(cwd, ["status", "--porcelain"]);
+  return out ? out.split("\n").filter(Boolean) : [];
+}
+
+// Does local branch `branch` exist?
+export function branchExists(cwd, branch) {
+  try {
+    git(cwd, ["rev-parse", "--verify", "--quiet", `refs/heads/${branch}`]);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+// Is commit-ish `ancestor` reachable from `descendant`?
+export function isAncestor(cwd, ancestor, descendant) {
+  try {
+    git(cwd, ["merge-base", "--is-ancestor", ancestor, descendant]);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+// Check out `branch` in `cwd`; with `create`, create it off the current HEAD.
+export function switchBranch(cwd, branch, { create = false } = {}) {
+  git(cwd, create ? ["switch", "-c", branch] : ["switch", branch]);
+}
+
+// Merge `branch` into the branch checked out in `cwd` (DCO sign-off on the merge
+// commit). On failure the merge is aborted so the worktree is left as it was,
+// and the error is rethrown. Returns the new HEAD.
+export function mergeBranch(cwd, branch, { name, email } = {}) {
+  try {
+    git(cwd, [...identityArgs({ name, email }), "merge", "--no-edit", "--signoff", branch]);
+  } catch (e) {
+    try { git(cwd, ["merge", "--abort"]); } catch { /* nothing to abort */ }
+    throw e;
+  }
+  return git(cwd, ["rev-parse", "HEAD"]);
+}
+
+// The content of `rel` at `rev`, or null when the path is absent there.
+export function showFile(cwd, rev, rel) {
+  try {
+    return git(cwd, ["show", `${rev}:${rel.split("\\").join("/")}`]);
+  } catch {
+    return null;
+  }
+}
+
 // Add a linked worktree at `path`. With `newBranch`, create `branch` off the
 // current HEAD (the canonical base a proposer reads from); otherwise check out
 // an existing `branch`.

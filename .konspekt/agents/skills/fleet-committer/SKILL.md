@@ -143,35 +143,60 @@ when the variable is unset.
 
 ## Switching the canonical branch
 
-When the human says to move the fleet's canonical branch (e.g. "change the branch
-to `new-branch`, make the fleet follow"), move three things together — the fold
-target is the worktree's **current** branch, not the configured `canonicalBranch`
-(`nw-fleet-fold-follows-worktree-branch`):
+The fleet follows a canonical branch switch only in fleet mode: the fleet config
+`.konspekt/fleet/config/fleet.json` is present and every configured outbox
+worktree is stood up (`task-fleet-canonical-follow`). `canonicalBranch` in the
+config is dynamic: it names the branch you created or cloned into, and you write
+it for the proposers to follow. The fold target is the canonical worktree's
+**current** branch (`nw-fleet-fold-follows-worktree-branch`).
 
-1. **Switch the canonical worktree** to the new branch — this is what actually
-   redirects where folds land:
-   ```
-   git -C "<canonical>" switch <new-branch>
-   ```
-   The new branch must not be checked out in another worktree.
-2. **Update the config** so it does not lie: set `canonicalBranch` in
-   `.konspekt/fleet/config/fleet.json` to `<new-branch>` and commit it. `setup`
-   forks outbox branches off this field, and attach/`doctor` report it.
-3. **Refresh each proposer outbox onto the new canonical.** An `outbox/<handle>`
-   branch was forked from the old canonical and does not follow; merge the new
-   canonical into each outbox worktree so the proposer authors against the new
-   graph (binding resolves) and loads current skills:
-   ```
-   git -C "<outbox-worktree>" merge <new-branch>
-   ```
-   This is non-destructive and keeps un-folded proposals. Do **not** teardown +
-   re-`setup` to achieve it: `setup` creates outbox branches with `newBranch` and
-   fails on an existing one, and deleting the branch first drops un-folded proposals.
+When the human says to move the fleet's canonical branch (e.g. "change the branch
+to `new-branch`, make the fleet follow"), run:
+
+```
+node "<app>/cli.mjs" switch-canonical --canonical "<canonical>" --to <new-branch> [--create]
+```
+
+`--create` creates `<new-branch>` off the current canonical HEAD after the drain.
+Without it the branch must exist and must not be checked out in another worktree.
+The command, in order:
+
+1. **Refuses unless clean.** The canonical worktree and every outbox worktree must
+   have no uncommitted changes or untracked files (`.konspekt-fleet/` excepted).
+   It also refuses when any pending outbox proposal fails verification: a drain
+   folds all pending proposals or none.
+2. **Drains onto the old branch.** Folds every pending proposal onto the current
+   canonical branch as `review: proposed` and applies pending claims there.
+3. **Clears the outboxes.** Deletes each drained proposal directory and each
+   applied claim from its outbox branch, one signed-off commit per outbox, so
+   they do not fold again onto the new branch. Pending releases stay.
+4. **Switches the canonical worktree** to `<new-branch>`.
+5. **Writes the config.** Sets `canonicalBranch` to `<new-branch>` in the config on
+   the new branch and commits that file alone. A new branch without the config
+   gets the old branch's config with the new value.
+6. **Moves the outboxes.** Merges `<new-branch>` into each outbox branch. A merge
+   that conflicts is aborted and reported; resolve it by hand.
+
+When the canonical worktree was switched by hand (`git switch`), run
+`follow-canonical --canonical "<canonical>"` instead. It drains onto the previous
+branch through a temporary worktree, then performs steps 3, 5, and 6. The
+previous branch is the last one the committer folded onto (recorded in
+`.konspekt-fleet/canonical-branch`), else the config value; `--from <branch>`
+overrides it. The fold watcher (`run-pass --watch`) performs the same follow on
+its own when it observes the switch; while a refusal condition holds it logs the
+refusal once, skips its passes, and follows on the first pass after the condition
+clears. A one-shot `run-pass` refuses on the mismatch and names
+`follow-canonical`.
+
+`setup` also writes the canonical worktree's current branch into
+`canonicalBranch` (one commit of the config file) when the config names another
+branch.
 
 The proposer handle and its outbox branch name are keyed to the handle, not the
-canonical branch, so they do not change. Verify with `doctor --canonical "<canonical>"`
-(authority still declared) and `run-pass --canonical "<canonical>" --instance-subdir
-.konspekt/instance --dry-run` (proposals bind and verify against the new canonical).
+canonical branch, so they do not change. Do **not** teardown + re-`setup` to
+follow a switch: `setup` creates outbox branches with `newBranch` and fails on an
+existing one. Verify with `doctor --canonical "<canonical>"` and `run-pass
+--canonical "<canonical>" --dry-run`.
 
 ## Invariants you enforce
 

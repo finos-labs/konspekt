@@ -11,7 +11,7 @@ provenance:
   timestamp: 2026-11-11T17:59:09Z
   confidence: 0.7
 createdAt: 2026-11-11T17:59:09Z
-updatedAt: 2026-11-11T17:59:09Z
+updatedAt: 2026-11-11T18:40:00Z
 ```
 # Task: Fleet follows a canonical branch switch
 
@@ -44,5 +44,21 @@ Scope, as decided by the human on 2026-11-11:
 - **`canonicalBranch` is dynamic.** It names the branch the committer created or
   cloned into, and the committer writes it into the config for the proposers to
   follow.
+
+Second round, same day (source excerpt
+`df4c113e11a1bb3047695574ad11482465d73633`):
+
+- **The watcher remembers the previous branch.** It records the last branch it
+  folded onto in runtime state under `.konspekt-fleet/`, and after a switch it
+  drains onto that branch through a temporary worktree.
+- **`setup` writes `canonicalBranch` too.** It writes the canonical worktree's
+  current branch into the config and commits it when the config names another.
+- **Clearing deletes.** The committer deletes the drained `proposals/<id>/`
+  directories in one commit per outbox branch.
+
+Implemented in `implementations/fleet/app/follow.mjs` with the
+`switch-canonical` and `follow-canonical` commands and the `run-pass --watch`
+follow; the committer procedure is in `fleet-committer` § Switching the canonical
+branch.
 
 Decomposes [[task-agent-fleet]].

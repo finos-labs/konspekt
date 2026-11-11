@@ -153,6 +153,11 @@ node ids live under `nodes/<type>/` and carry no fixed prefix.
   branch into canonical, and never raise a pull request for your proposal. Do not
   ask the human whether to push, merge, or land anything. The committer alone
   holds canonical write, the signing key, and every merge to canonical.
+- When the committer switches the canonical branch, it writes to your outbox
+  branch: it deletes your proposals that it folded, and merges the new canonical
+  branch in (`task-fleet-canonical-follow`). It refuses to do so while your
+  outbox worktree has uncommitted changes, so leave nothing uncommitted there;
+  `AUTHORING` drafts belong outside the outbox worktree.
 - Write only under `AUTHORING` and your own outbox (through the CLI). Never edit
   `CANONICAL` or another proposer's worktree.
 - Read your protocol/role skill from the neutral source

@@ -11,6 +11,10 @@
 //              (--watch [--interval <sec>] keeps folding on a loop until Ctrl-C)
 //   bless      apply the human's per-proposal accept/reject decisions
 //   rebuild-index  rebuild the derived proposed index from canonical
+//   switch-canonical  drain the outboxes onto canonical, switch it to --to, and
+//              move every outbox onto the new branch (fleet mode only)
+//   follow-canonical  after the canonical worktree was switched by hand, drain
+//              onto the previous branch and move the outboxes (fleet mode only)
 //
 // Attach model: config-driven commands take `--canonical <path>` and read the
 // committed `.konspekt/fleet/config/fleet.json` (no hand-written manifest;
@@ -30,6 +34,8 @@ import { assembleClaim, writeClaimToOutbox, readClaimRequests, applyClaims, acce
 import { rebuildIndex } from "./proposed-ref.mjs";
 import { reviewDigest, renderReviewPrompt } from "./review-assistant.mjs";
 import { authorityPreflight, canonicalBranchCheck, DEFAULT_INSTANCE_SUBDIR } from "./preflight.mjs";
+import { switchCanonical, followSwitch, describeFollow, readRecordedBranch, recordBranch, FollowRefused } from "./follow.mjs";
+import { currentBranch } from "./git.mjs";
 
 function parseArgs(argv) {
   const out = { _: [] };
@@ -95,6 +101,17 @@ function attach(args) {
   const grants = mode === "flat"
     ? (args["grants"] ? JSON.parse(readFileSync(args["grants"], "utf8")) : {})
     : cfgGrants;
+  return { fleet, grants, mode };
+}
+
+// Attach for a branch-following command. Branch following applies only in
+// fleet mode: config-driven attach (`--canonical`) with every outbox worktree
+// stood up (task-fleet-canonical-follow). A flat throwaway store is refused.
+function attachFleetMode(args, command) {
+  const { fleet, grants, mode } = attach(args);
+  if (mode !== "config" || fleet.proposers.length === 0) {
+    throw new Error(`${command} applies only in fleet mode: attach with --canonical <path> to a fleet whose outbox worktrees are stood up`);
+  }
   return { fleet, grants };
 }
 
@@ -118,7 +135,8 @@ function cmdSetup(args) {
     );
   }
 
-  const { descriptor } = setupFromConfig({ canonicalPath, worktreeDir, configRel });
+  const identity = { name: args["name"] || undefined, email: args["email"] || undefined };
+  const { descriptor } = setupFromConfig({ canonicalPath, worktreeDir, configRel, identity });
   console.log(`set up fleet from config at ${canonicalPath}`);
   console.log(`  acceptance authority: ${pf.principal} (granted: ${pf.acceptors.join(", ")})`);
   console.log(`  canonical branch: ${descriptor.canonicalBranch}`);
@@ -293,15 +311,49 @@ function cmdAcceptRelease(args) {
 // One run-pass over every outbox: the branch-safety check, then fold (or, for a
 // dry run, verify only), then claims. Printing is unchanged from the single-pass
 // command; the watch loop calls this once per tick (task-fleet-committer-startup-scan).
-function passTick(fleet, grants, { dryRun, identity, instanceSubdir, now }) {
+function passTick(fleet, grants, { dryRun, identity, instanceSubdir, now, follow = false, followState = null }) {
+  // Watch mode in fleet mode follows a canonical branch switch made outside the
+  // fleet (task-fleet-canonical-follow): when the canonical worktree is on a
+  // branch other than the last one folded onto, drain onto that previous branch,
+  // write the config, and move the outboxes before folding anything new. A
+  // refusal (dirty worktree, unverifiable proposal) is logged once and the tick
+  // is skipped, so the watcher retries after the operator cleans up.
+  if (follow) {
+    const actual = currentBranch(fleet.canonicalPath);
+    const previous = readRecordedBranch(fleet.canonicalPath) || fleet.canonicalBranch;
+    if (previous && actual !== previous) {
+      try {
+        const r = followSwitch(fleet, { from: previous, grants, identity, instanceSubdir, now });
+        if (r) for (const line of describeFollow(r)) console.log(line);
+        if (followState) followState.lastRefusal = null;
+      } catch (e) {
+        if (!(e instanceof FollowRefused)) throw e;
+        if (!followState || followState.lastRefusal !== e.message) {
+          console.log(`canonical branch changed ${previous} -> ${actual}; not following yet:\n${e.message}`);
+        }
+        if (followState) followState.lastRefusal = e.message;
+        return null;
+      }
+    }
+  }
+
   // Refuse if the canonical worktree has drifted off the branch the fleet
   // records as canonical: folds follow the worktree's current branch, so a
   // mismatch would land them on the wrong branch (nw-fleet-fold-follows-worktree-branch).
   // Blocks the dry-run too — you want the mismatch before, not after, a live pass.
   const bc = canonicalBranchCheck({ canonicalPath: fleet.canonicalPath, configuredBranch: fleet.canonicalBranch });
+  if (!bc.ok && follow) {
+    // In watch mode a switch can land between the follow check above and this
+    // check; skip the tick so the next one follows it, and keep the watcher up.
+    // A persisting mismatch (the config edited by hand) is logged once.
+    if (!followState || followState.lastRefusal !== bc.problem) console.log(`skipping this pass: ${bc.problem}`);
+    if (followState) followState.lastRefusal = bc.problem;
+    return null;
+  }
   if (!bc.ok) {
     throw new Error(
-      `${bc.problem}\nRun \`cli.mjs doctor --canonical <path>\` after fixing to re-check.`,
+      `${bc.problem}\nTo make the fleet follow the switch, run \`cli.mjs follow-canonical --canonical <path>\`; ` +
+        `run \`cli.mjs doctor --canonical <path>\` after fixing to re-check.`,
     );
   }
 
@@ -311,6 +363,9 @@ function passTick(fleet, grants, { dryRun, identity, instanceSubdir, now }) {
     ? { verdicts: verifyPass(fleet, { grants }), folded: [], alreadyFolded: [], setAside: [], commit: null }
     : foldPass(fleet, { grants, identity, instanceSubdir, now });
   const { verdicts, folded, alreadyFolded = [], setAside, commit } = res;
+  // Remember the branch this pass folded onto, so a later switch is detected
+  // against it (task-fleet-canonical-follow).
+  if (!dryRun) recordBranch(fleet.canonicalPath, bc.actual);
 
   console.log(`read ${verdicts.length} proposal(s) across ${fleet.proposers.length} outbox(es)\n`);
 
@@ -358,7 +413,7 @@ async function cmdRunPass(args) {
   const identity = { name: args["name"] || undefined, email: args["email"] || undefined };
   const now = args["now"] && args["now"] !== true ? args["now"] : null;
 
-  const { fleet, grants } = attach(args);
+  const { fleet, grants, mode } = attach(args);
   const instanceSubdir = instanceSubdirOf(args, fleet);
   const tickOpts = { dryRun, identity, instanceSubdir, now };
 
@@ -385,13 +440,52 @@ async function cmdRunPass(args) {
   process.on("SIGINT", onSignal);
   process.on("SIGTERM", onSignal);
 
+  // Branch following runs only in fleet mode (config-driven attach).
+  const following = mode === "config" && fleet.proposers.length > 0;
+  const followState = { lastRefusal: null };
   console.log(`watching ${fleet.proposers.length} outbox(es) every ${intervalSec}s; Ctrl-C to stop.\n`);
   const passes = await watchLoop({
     intervalMs: intervalSec * 1000,
     stop: () => stopped,
-    tick: () => { passTick(fleet, grants, { ...tickOpts, dryRun: false }); console.log(""); },
+    tick: () => { passTick(fleet, grants, { ...tickOpts, dryRun: false, follow: following, followState }); console.log(""); },
   });
   console.log(`watch stopped after ${passes} pass(es).`);
+}
+
+// Explicit canonical switch (task-fleet-canonical-follow): drain every pending
+// proposal onto the current canonical branch, clear the drained items from the
+// outboxes, switch the canonical worktree to --to (--create makes it), write the
+// config, and merge the new branch into each outbox. Fleet mode only.
+function cmdSwitchCanonical(args) {
+  const to = need(args, "to");
+  const identity = { name: args["name"] || undefined, email: args["email"] || undefined };
+  const now = args["now"] && args["now"] !== true ? args["now"] : null;
+  const { fleet, grants } = attachFleetMode(args, "switch-canonical");
+  const instanceSubdir = instanceSubdirOf(args, fleet);
+  const r = switchCanonical(fleet, { to, create: Boolean(args["create"]), grants, identity, instanceSubdir, now });
+  for (const line of describeFollow(r)) console.log(line);
+  if (r.outboxes.some((o) => o.status === "failed")) process.exitCode = 1;
+}
+
+// Follow a switch already made in the canonical worktree: drain onto the
+// previous branch (--from, else the recorded runtime branch, else the config
+// value) and move the outboxes. Fleet mode only. With nothing to follow it
+// records the current branch.
+function cmdFollowCanonical(args) {
+  const identity = { name: args["name"] || undefined, email: args["email"] || undefined };
+  const now = args["now"] && args["now"] !== true ? args["now"] : null;
+  const from = args["from"] && args["from"] !== true ? args["from"] : null;
+  const { fleet, grants } = attachFleetMode(args, "follow-canonical");
+  const instanceSubdir = instanceSubdirOf(args, fleet);
+  const r = followSwitch(fleet, { from, grants, identity, instanceSubdir, now });
+  if (!r) {
+    const actual = currentBranch(fleet.canonicalPath);
+    recordBranch(fleet.canonicalPath, actual);
+    console.log(`nothing to follow: canonical is on "${actual}"`);
+    return;
+  }
+  for (const line of describeFollow(r)) console.log(line);
+  if (r.outboxes.some((o) => o.status === "failed")) process.exitCode = 1;
 }
 
 function cmdBless(args) {
@@ -457,8 +551,10 @@ async function main() {
     else if (command === "review") cmdReview(args);
     else if (command === "bless") cmdBless(args);
     else if (command === "rebuild-index") cmdRebuildIndex(args);
+    else if (command === "switch-canonical") cmdSwitchCanonical(args);
+    else if (command === "follow-canonical") cmdFollowCanonical(args);
     else {
-      console.error("usage: cli.mjs <init|setup|doctor|teardown|propose|claim|release|accept-release|run-pass|review|bless|rebuild-index> [--flags]");
+      console.error("usage: cli.mjs <init|setup|doctor|teardown|propose|claim|release|accept-release|run-pass|review|bless|rebuild-index|switch-canonical|follow-canonical> [--flags]");
       console.error("  config-driven commands take --canonical <path> (reads .konspekt/fleet/config/fleet.json);");
       console.error("  the flat manifest path takes --root <dir> (legacy).");
       console.error("  run-pass --watch [--interval <sec>] folds live on a loop until Ctrl-C.");

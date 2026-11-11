@@ -60,3 +60,16 @@ New rows below this backfill are recorded live.
 | task-promo-video | 85357314a5b1ac8164f5dad0c40931c99dd5c5ee |
 | task-promo-video | e01105c9b9c64f87e33a738d9e983f466295e411 |
 | task-promo-video | 358fb6b6e8e9f752e9357506322f89509678b56b |
+| task-fleet-canonical-follow | 24ae0461d166c4493ee735fb619af0ccb88fa11f |
+| task-fleet-canonical-follow | 32bdea93662a075f8b1f7f5ca3cbe88b19fe7ac4 |
+| task-fleet-canonical-follow | e370e92b8178b15d99c6de969c100fb5a6666889 |
+| task-fleet-canonical-follow | adb263a0898a9c5df0e005e8177d17e9de9b6d6b |
+| task-fleet-canonical-follow | 57e8f6659ec44c66f8cb4ebcbd430cffa2cf5d4e |
+| task-fleet-canonical-follow | 2f497489027bef90cd52eb67d56769741bd04645 |
+| task-fleet-canonical-follow | 9bd2c4a96a2f169fb677448c4226bb8f0064582b |
+| task-fleet-canonical-follow | 6be10756ecf82b28a9c6025c3f5cfd16a5c35eb8 |
+| task-fleet-canonical-follow | 181c946eb29b46ab9ce3d899e2dd1c49ffe98be9 |
+| task-fleet-canonical-follow | 6cbeb47cb2d0dfc36e300773fd421efac1fd4424 |
+| task-fleet-canonical-follow | 899a9bbaa6baf96178a771cf0ab1d19da26edce8 |
+| task-fleet-canonical-follow | 6499eca019f2ee4b02705a7e843fb1e00910c3c6 |
+| task-fleet-canonical-follow | d84f94a2e7416c4297eb0f50cceed6b52b5dd219 |

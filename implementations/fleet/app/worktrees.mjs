@@ -12,8 +12,8 @@
 // else, so an unregistered branch owns nothing.
 
 import { join, dirname, basename, resolve } from "node:path";
-import { writeFileSync, readFileSync, existsSync } from "node:fs";
-import { init, addWorktree, removeWorktree, commitAll, currentBranch, listWorktrees } from "./git.mjs";
+import { writeFileSync, readFileSync, existsSync, mkdirSync } from "node:fs";
+import { init, addWorktree, removeWorktree, commitAll, commitPaths, currentBranch, listWorktrees } from "./git.mjs";
 import { DEFAULT_INSTANCE_SUBDIR } from "./preflight.mjs";
 
 export const OUTBOX_PREFIX = "outbox/";
@@ -160,8 +160,22 @@ const agentBranch = (a) => a.branch || branchForHandle(a.handle);
 // worktrees are created; it is NOT persisted (derived on attach), defaulting to
 // a `<name>-fleet` sibling of the canonical worktree. Returns { descriptor,
 // grants, config }.
-export function setupFromConfig({ canonicalPath, worktreeDir, config, configRel } = {}) {
+//
+// `canonicalBranch` is dynamic (task-fleet-canonical-follow): it names the
+// branch the committer created or cloned into, which is the canonical worktree's
+// current branch. When setup reads the config from disk and the recorded value
+// differs, setup writes the current branch into the config and commits that one
+// file before forking the outboxes, so the proposers fork from a config that
+// names the branch they follow. A config passed in memory is not written back.
+export function setupFromConfig({ canonicalPath, worktreeDir, config, configRel, identity = {} } = {}) {
   const cfg = config || readFleetConfig(canonicalPath, { configRel });
+  if (!config) {
+    const actual = currentBranch(canonicalPath);
+    if (cfg.canonicalBranch !== actual) {
+      writeConfigBranch(canonicalPath, actual, { configRel, identity });
+      cfg.canonicalBranch = actual;
+    }
+  }
   const canonicalBranch = cfg.canonicalBranch || currentBranch(canonicalPath);
   const dir = worktreeDir || join(dirname(canonicalPath), `${basename(canonicalPath)}-fleet`);
 
@@ -179,6 +193,63 @@ export function setupFromConfig({ canonicalPath, worktreeDir, config, configRel 
   const instanceSubdir = cfg.instanceSubdir ?? DEFAULT_INSTANCE_SUBDIR;
   const descriptor = descriptorFrom({ root: dir, canonicalPath, canonicalBranch, proposers: built, instanceSubdir });
   return { descriptor, grants: grantsFromConfig(cfg), config: cfg };
+}
+
+// Write `branch` as `canonicalBranch` into the committed fleet config in the
+// canonical worktree and commit that file alone (task-fleet-canonical-follow).
+// The value is edited in place in the file's text, so the rest of the file keeps
+// its formatting; a config without the field gets it inserted after `version`.
+// When the config is absent on the checked-out branch, `fallbackText` (the
+// config as it was on the previous canonical branch) is written instead, with
+// the new value. Returns the commit SHA, or null when the config already names
+// `branch` and nothing was written.
+export function writeConfigBranch(canonicalPath, branch, { configRel = CONFIG_REL, identity = {}, fallbackText = null } = {}) {
+  const path = join(canonicalPath, configRel);
+  let text;
+  if (existsSync(path)) text = readFileSync(path, "utf8");
+  else if (fallbackText != null) text = fallbackText.endsWith("\n") ? fallbackText : fallbackText + "\n";
+  else throw new Error(`no fleet config at ${configRel} in ${canonicalPath} and no previous config to carry over`);
+
+  const cfg = JSON.parse(text);
+  if (existsSync(path) && cfg.canonicalBranch === branch) return null;
+
+  const field = /("canonicalBranch"\s*:\s*)"(?:[^"\\]|\\.)*"/;
+  const version = /("version"\s*:\s*[^,\n]+,)/;
+  let next;
+  if (field.test(text)) next = text.replace(field, (_m, head) => `${head}${JSON.stringify(branch)}`);
+  else if (version.test(text)) {
+    next = text.replace(version, (_m, head) => `${head}\n  "canonicalBranch": ${JSON.stringify(branch)},`);
+  } else next = JSON.stringify({ ...cfg, canonicalBranch: branch }, null, 2) + "\n";
+  if (JSON.parse(next).canonicalBranch !== branch) throw new Error(`could not write canonicalBranch into ${configRel}`);
+
+  mkdirSync(dirname(path), { recursive: true });
+  writeFileSync(path, next, "utf8");
+  return commitPaths(canonicalPath, `fleet: canonicalBranch -> ${branch}`, [configRel], {
+    name: identity.name,
+    email: identity.email,
+    signoff: true,
+  });
+}
+
+// The fleet-mode gate (task-fleet-canonical-follow). A repo runs in fleet mode
+// when it carries the committed fleet config AND every configured outbox
+// worktree is stood up, i.e. config-driven attach succeeds with at least one
+// proposer. A repo that merely carries a config (the konspekt dogfood repo) is
+// not in fleet mode. Branch following and the committer watcher act only when
+// this returns active. Read-only. Returns { active, reason, fleet, grants, config }.
+export function fleetMode(canonicalPath, { configRel } = {}) {
+  if (!existsSync(join(canonicalPath, configRel || CONFIG_REL))) {
+    return { active: false, reason: "no fleet config", fleet: null, grants: null, config: null };
+  }
+  try {
+    const { fleet, grants, config } = loadFromConfig({ canonicalPath, configRel });
+    if (fleet.proposers.length === 0) {
+      return { active: false, reason: "fleet config lists no agents", fleet: null, grants: null, config: null };
+    }
+    return { active: true, reason: null, fleet, grants, config };
+  } catch (e) {
+    return { active: false, reason: e.message, fleet: null, grants: null, config: null };
+  }
 }
 
 // Attach to a config-driven fleet with no hand-written manifest: read the

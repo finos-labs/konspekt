@@ -32,7 +32,7 @@ import { spawn } from "node:child_process";
 import { existsSync, readFileSync, writeFileSync, mkdirSync, openSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
-import { loadFromConfig } from "./worktrees.mjs";
+import { fleetMode } from "./worktrees.mjs";
 
 // Pure decision: given whether a fleet config exists, whether the fleet is
 // actually attachable (its outbox worktrees are stood up), and whether the
@@ -80,15 +80,9 @@ function main() {
     // watcher there errors on its first tick. loadFromConfig succeeds only when
     // every configured outbox worktree is stood up, so use it as the readiness
     // gate. It is read-only (reads the config, lists git worktrees).
-    let outboxesReady = false;
-    if (hasConfig) {
-      try {
-        const { fleet } = loadFromConfig({ canonicalPath: projectDir });
-        outboxesReady = fleet.proposers.length > 0;
-      } catch {
-        outboxesReady = false;
-      }
-    }
+    // fleetMode (worktrees.mjs) is the shared fleet-mode gate; branch following
+    // uses the same test (task-fleet-canonical-follow).
+    const outboxesReady = hasConfig && fleetMode(projectDir).active;
     let recorded = null;
     if (existsSync(pidFile)) {
       const n = parseInt(readFileSync(pidFile, "utf8").trim(), 10);

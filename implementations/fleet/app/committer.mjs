@@ -110,7 +110,11 @@ export function verifyPass(fleet, { grants = {}, known = null, instanceSubdir = 
 // { verdicts, folded, setAside, commit }. A verified proposal the fold cannot
 // place is reported in `setAside`, and nothing partial is committed — fold
 // writes files and this commits once, so an aborted fold leaves canonical clean.
-export function foldPass(fleet, { grants = {}, known = null, identity = {}, instanceSubdir = "", now = null } = {}) {
+// `fleetDir` is where the fold log (.konspekt-fleet/) is written; it defaults to
+// the canonical worktree. A drain that folds through a temporary worktree on the
+// previous canonical branch passes the real canonical worktree here, so the
+// runtime log stays in one place (task-fleet-canonical-follow).
+export function foldPass(fleet, { grants = {}, known = null, identity = {}, instanceSubdir = "", now = null, fleetDir = null } = {}) {
   const verdicts = [];
   const verified = [];
   for (const pr of readProposals(fleet)) {
@@ -131,7 +135,7 @@ export function foldPass(fleet, { grants = {}, known = null, identity = {}, inst
   }
 
   const instanceDir = instanceSubdir ? join(fleet.canonicalPath, instanceSubdir) : fleet.canonicalPath;
-  const { folded, alreadyFolded, setAside } = foldProposals(instanceDir, foldOrder(verified), { now, fleetDir: fleet.canonicalPath, repoRoot: fleet.canonicalPath, instanceSubdir });
+  const { folded, alreadyFolded, setAside } = foldProposals(instanceDir, foldOrder(verified), { now, fleetDir: fleetDir || fleet.canonicalPath, repoRoot: fleet.canonicalPath, instanceSubdir });
 
   // Commit only when the fold wrote something. An already-folded proposal
   // writes nothing, so a pass that folds nothing new leaves canonical byte-for-
