@@ -1248,3 +1248,6 @@ proposing agent was not recorded.
 | edge:e-dec-agentfleet-canonicalfollow | review | proposed | accepted | 2026-11-11T17:59:09Z | 6ab9fc3a8f7eeb80f752d2fb04b1e709d0ecfb89 | denisurusov |
 | edge:e-not-canonicalfollow-foldfollows | review | proposed | accepted | 2026-11-11T17:59:09Z | 6ab9fc3a8f7eeb80f752d2fb04b1e709d0ecfb89 | denisurusov |
 | node:task-fleet-canonical-follow | status | open | active | 2026-11-11T17:59:09Z | 6ab9fc3a8f7eeb80f752d2fb04b1e709d0ecfb89 | denisurusov |
+| noteworthy:nw-fleet-canonical-follow-drain-then-move | review |  | proposed | 2026-11-11T18:19:12Z |  | claude |
+| edge:e-not-adjustments-canonicalfollowdecision | review |  | proposed | 2026-11-11T18:19:12Z |  | claude |
+| node:task-fleet-canonical-follow | status | active | resolved | 2026-11-11T18:19:12Z | 853e31626f2212ff25762bfceb7dec90596eaf36 | denisurusov |

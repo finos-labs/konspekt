@@ -73,3 +73,10 @@ New rows below this backfill are recorded live.
 | task-fleet-canonical-follow | 899a9bbaa6baf96178a771cf0ab1d19da26edce8 |
 | task-fleet-canonical-follow | 6499eca019f2ee4b02705a7e843fb1e00910c3c6 |
 | task-fleet-canonical-follow | d84f94a2e7416c4297eb0f50cceed6b52b5dd219 |
+| task-fleet-adjustments | dfc62d5ec9f67f04787faa24ab1680eddec7850f |
+| task-fleet-adjustments | 48cb9171fb9969e3bffdfeeba22900639b2d8c7f |
+| task-fleet-adjustments | 276ba8b223d618a3784de0b1680170a3627361b4 |
+| task-fleet-adjustments | fb656378b674f051cba456f94d3f45273b38fd20 |
+| task-fleet-adjustments | 22fee60bdad894ac62e738748b6d6ca789a68c05 |
+| task-fleet-adjustments | cd1d9436553919517cf8127dec9164608f3c545a |
+| task-fleet-adjustments | 7fa54f875715c5883006bd11b35f5775c770153d |

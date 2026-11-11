@@ -2,7 +2,7 @@
 id: task-fleet-canonical-follow
 type: task
 title: "Fleet follows a canonical branch switch: fold pending proposals, re-base outboxes, fleet mode only"
-status: active
+status: resolved
 review: accepted
 provenance:
   sourceRef: 6ab9fc3a8f7eeb80f752d2fb04b1e709d0ecfb89
@@ -11,7 +11,7 @@ provenance:
   timestamp: 2026-11-11T17:59:09Z
   confidence: 0.7
 createdAt: 2026-11-11T17:59:09Z
-updatedAt: 2026-11-11T18:14:03Z
+updatedAt: 2026-11-11T18:19:12Z
 ```
 # Task: Fleet follows a canonical branch switch
 
@@ -60,5 +60,12 @@ Implemented in `implementations/fleet/app/follow.mjs` with the
 `switch-canonical` and `follow-canonical` commands and the `run-pass --watch`
 follow; the committer procedure is in `fleet-committer` § Switching the canonical
 branch.
+
+
+Resolved 2026-11-11 (source excerpt `853e31626f2212ff25762bfceb7dec90596eaf36`).
+Three follow-ups moved to `[[task-fleet-adjustments]]`: a pending release blocks
+the switch; the drain clears every claim whose node already has the claim's
+target status; a manual `git switch` during a watcher fold commit can land that
+fold on the new branch, which is accepted as a known limitation and documented.
 
 Decomposes [[task-agent-fleet]].
