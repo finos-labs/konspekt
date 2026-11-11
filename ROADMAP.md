@@ -3,7 +3,7 @@
      Check freshness with: node tools/roadmap.mjs --check
      This file is a pure function of .konspekt/instance/ (no timestamps baked in).
      Goals and tasks are graph nodes; the horizon is derived from node status/review.
-     contentHash: sha256:567b652bc006d35b -->
+     contentHash: sha256:6175f5e57c742d8e -->
 
 # konspekt roadmap
 
@@ -207,7 +207,6 @@ Let several participants — people and agents — propose into and review one s
 **Now** — _in progress_
 
 - Fleet adjustments (ongoing)
-- Fleet follows a canonical branch switch: fold pending proposals, re-base outboxes, fleet mode only
 
 **Next** — _accepted and planned_
 
@@ -223,6 +222,7 @@ Let several participants — people and agents — propose into and review one s
 
 - One reviewer over a fleet of agents
 - Cursor implementation of the fleet
+- Fleet follows a canonical branch switch: fold pending proposals, re-base outboxes, fleet mode only
 - Idempotent fold — stop re-fold clobbering blessed atoms
 - Committer scans existing outboxes on start, not only on a manual pass
 - Config-driven fleet setup from the canonical fleet.json
