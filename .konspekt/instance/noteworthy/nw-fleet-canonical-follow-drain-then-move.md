@@ -1,7 +1,7 @@
 ```yaml
 id: nw-fleet-canonical-follow-drain-then-move
 kind: decision
-review: proposed
+review: accepted
 provenance:
   sourceRef: 853e31626f2212ff25762bfceb7dec90596eaf36
   contentHash: 853e31626f2212ff25762bfceb7dec90596eaf36
@@ -9,7 +9,7 @@ provenance:
   timestamp: 2026-11-11T18:19:12Z
   confidence: 0.7
 createdAt: 2026-11-11T18:19:12Z
-updatedAt: 2026-11-11T18:19:12Z
+updatedAt: 2026-11-11T18:25:33Z
 ```
 # Noteworthy: a canonical branch switch drains the outboxes onto the old branch, clears them, then moves them
 

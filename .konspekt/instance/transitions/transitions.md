@@ -1251,3 +1251,5 @@ proposing agent was not recorded.
 | noteworthy:nw-fleet-canonical-follow-drain-then-move | review |  | proposed | 2026-11-11T18:19:12Z |  | claude |
 | edge:e-not-adjustments-canonicalfollowdecision | review |  | proposed | 2026-11-11T18:19:12Z |  | claude |
 | node:task-fleet-canonical-follow | status | active | resolved | 2026-11-11T18:19:12Z | 853e31626f2212ff25762bfceb7dec90596eaf36 | denisurusov |
+| noteworthy:nw-fleet-canonical-follow-drain-then-move | review | proposed | accepted | 2026-11-11T18:25:33Z | 609b78255338d3df310ea92f2a0ddeed2c2bc9a1 | denisurusov |
+| edge:e-not-adjustments-canonicalfollowdecision | review | proposed | accepted | 2026-11-11T18:25:33Z | 609b78255338d3df310ea92f2a0ddeed2c2bc9a1 | denisurusov |
