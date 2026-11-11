@@ -484,3 +484,4 @@ commit order; the channel was not live during that work.
 | task-linkedin-announce-checkpoint | 88422d7af0e950e27f547e9b56504673c69bd180 | docs/visuals/posters/konspekt-checkpoint-poster.html | 2026-11-07T18:20:59Z |
 | task-linkedin-announce-checkpoint | e719182b239a3b9492b65ec0aa4f8c0afdb4a11b | docs/announcements/linkedin/post_2026-11-07/post.md | 2026-11-07T22:10:47Z |
 | task-linkedin-announce-checkpoint | cf443de939130e9a7b27985b57fa2a8ca6eab557 | ROADMAP.md | 2026-11-07T22:10:47Z |
+| task-fleet-canonical-follow | d749f88dca932c443767f58c3e7f44c66c4242db | ROADMAP.md | 2026-11-11T18:00:07Z |
