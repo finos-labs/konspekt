@@ -3,7 +3,7 @@ id: artifact-fleet-protocol
 name: fleet protocol — roles and verbs
 kind: doc
 location: implementations/fleet/design/fleet-protocol.md
-review: proposed
+review: accepted
 provenance:
   sourceRef: a5ab6d58fdcc0a8944e90ae083077b5a8332bf2a
   contentHash: a5ab6d58fdcc0a8944e90ae083077b5a8332bf2a
@@ -11,7 +11,7 @@ provenance:
   conversationId: fleet-as-protocol
   confidence: 0.7
 createdAt: 2026-10-11T14:29:55Z
-updatedAt: 2026-11-13T01:01:49Z
+updatedAt: 2026-11-13T01:20:22Z
 ```
 # Artifact: fleet protocol — roles and verbs
 

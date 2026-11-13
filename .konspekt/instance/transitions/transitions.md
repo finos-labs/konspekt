@@ -1275,3 +1275,9 @@ proposing agent was not recorded.
 | artifact:artifact-fleet-outbox-lifecycle | review | accepted | proposed | 2026-11-13T01:01:49Z |  | claude |
 | artifact:artifact-fleet-confidence-scale | review | accepted | proposed | 2026-11-13T01:01:49Z |  | claude |
 | artifact:artifact-fleet-worktree-design | review | accepted | proposed | 2026-11-13T01:01:49Z |  | claude |
+| artifact:artifact-fleet-spec | review | proposed | accepted | 2026-11-13T01:20:22Z | 770a3ad99faf1eb0e72672daea37b14bcd8dbf6c | denisurusov |
+| artifact:artifact-fleet-protocol | review | proposed | accepted | 2026-11-13T01:20:22Z | 770a3ad99faf1eb0e72672daea37b14bcd8dbf6c | denisurusov |
+| artifact:artifact-fleet-recovery | review | proposed | accepted | 2026-11-13T01:20:22Z | 770a3ad99faf1eb0e72672daea37b14bcd8dbf6c | denisurusov |
+| artifact:artifact-fleet-outbox-lifecycle | review | proposed | accepted | 2026-11-13T01:20:22Z | 770a3ad99faf1eb0e72672daea37b14bcd8dbf6c | denisurusov |
+| artifact:artifact-fleet-confidence-scale | review | proposed | accepted | 2026-11-13T01:20:22Z | 770a3ad99faf1eb0e72672daea37b14bcd8dbf6c | denisurusov |
+| artifact:artifact-fleet-worktree-design | review | proposed | accepted | 2026-11-13T01:20:22Z | 770a3ad99faf1eb0e72672daea37b14bcd8dbf6c | denisurusov |

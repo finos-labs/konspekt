@@ -3,7 +3,7 @@ id: artifact-fleet-worktree-design
 name: worktree-outbox committer implementation design
 kind: doc
 location: implementations/fleet/worktree/docs/DESIGN.md
-review: proposed
+review: accepted
 provenance:
   sourceRef: d1f27d9c19df3cee92f67d1cc8b11d432acc537c
   contentHash: d1f27d9c19df3cee92f67d1cc8b11d432acc537c
@@ -11,7 +11,7 @@ provenance:
   timestamp: 2026-10-10T16:30:00Z
   confidence: 0.85
 createdAt: 2026-10-10T16:30:00Z
-updatedAt: 2026-11-13T01:01:49Z
+updatedAt: 2026-11-13T01:20:22Z
 ```
 # Artifact: worktree-outbox committer implementation design
 

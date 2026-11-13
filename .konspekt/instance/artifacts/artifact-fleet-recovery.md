@@ -4,8 +4,8 @@ name: fleet committer recovery and proposed-index durability note
 kind: doc
 location: implementations/fleet/design/fleet-recovery.md
 createdAt: 2026-10-21T00:00:00Z
-updatedAt: 2026-11-13T01:01:49Z
-review: proposed
+updatedAt: 2026-11-13T01:20:22Z
+review: accepted
 provenance:
   sourceRef: 3b2d2e9ad4faba2bdc8997dc5399f2c356f280df
   contentHash: 3b2d2e9ad4faba2bdc8997dc5399f2c356f280df
