@@ -4,8 +4,8 @@ name: fleet proposer confidence scale
 kind: doc
 location: implementations/fleet/design/fleet-confidence-scale.md
 createdAt: 2026-10-22T16:56:02Z
-updatedAt: 2026-11-13T01:01:33Z
-review: accepted
+updatedAt: 2026-11-13T01:01:49Z
+review: proposed
 provenance:
   sourceRef: fbf04d9c2e5ef1d7ca1b0c7dd9368742572caf24
   contentHash: fbf04d9c2e5ef1d7ca1b0c7dd9368742572caf24
@@ -26,7 +26,7 @@ A queue sorted lowest-first across all three proposers therefore orders values
 taken on three different scales, and a 0.6 from one role carries no information
 relative to a 0.6 from another.
 
-This note, placed under `docs/design/` because proposer and outbox are
+This note, placed under `implementations/fleet/design/` because proposer and outbox are
 fleet-binding vocabulary, closes that ambiguity. It states:
 
 1. **One criterion for every role.** `confidence` is the proposer's estimate of
@@ -55,6 +55,6 @@ per-role confidence sentences with a reference to this scale, and
 `fleet-proposer-common` points to it from step 5.
 
 Canonical surfaces checked: `spec/architecture/REVIEW.md` § Confidence
-triages attention, `docs/design/fleet-spec.md`, the three role skills under
+triages attention, `implementations/fleet/design/fleet-spec.md`, the three role skills under
 `.claude/skills/`, `task-agent-fleet`, and the existing fleet artifacts
 (no artifact defines a confidence scale).

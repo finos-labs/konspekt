@@ -3,7 +3,7 @@ id: artifact-fleet-worktree-design
 name: worktree-outbox committer implementation design
 kind: doc
 location: implementations/fleet/worktree/docs/DESIGN.md
-review: accepted
+review: proposed
 provenance:
   sourceRef: d1f27d9c19df3cee92f67d1cc8b11d432acc537c
   contentHash: d1f27d9c19df3cee92f67d1cc8b11d432acc537c
@@ -11,7 +11,7 @@ provenance:
   timestamp: 2026-10-10T16:30:00Z
   confidence: 0.85
 createdAt: 2026-10-10T16:30:00Z
-updatedAt: 2026-10-10T16:30:00Z
+updatedAt: 2026-11-13T01:01:49Z
 ```
 # Artifact: worktree-outbox committer implementation design
 
@@ -27,5 +27,5 @@ line endings, a single trailing newline).
 
 Produced by [[task-fleet-worktree-committer]]. **Non-normative**, like
 [[artifact-fleet-spec]] and [[artifact-implementation-zero-design]]: `spec/`
-governs on any conflict, and `docs/design/fleet-spec.md` is the authoritative
+governs on any conflict, and `implementations/fleet/design/fleet-spec.md` is the authoritative
 fleet design this implements.

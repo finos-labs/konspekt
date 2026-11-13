@@ -4,8 +4,8 @@ name: fleet committer recovery and proposed-index durability note
 kind: doc
 location: implementations/fleet/design/fleet-recovery.md
 createdAt: 2026-10-21T00:00:00Z
-updatedAt: 2026-11-13T01:01:33Z
-review: accepted
+updatedAt: 2026-11-13T01:01:49Z
+review: proposed
 provenance:
   sourceRef: 3b2d2e9ad4faba2bdc8997dc5399f2c356f280df
   contentHash: 3b2d2e9ad4faba2bdc8997dc5399f2c356f280df
@@ -20,7 +20,7 @@ The fleet design asserts that a crash between the fold commit and a
 rebuilt with `rebuild-index`, but the recovery contract itself is never written
 down in one place: it survives only as a fleet-spec sentence, a README table
 row, and code comments in `proposed-ref.mjs`. This note closes that ambiguity. It
-names the committer's durability contract under `docs/design/` (fleet-vocabulary
+names the committer's durability contract under `implementations/fleet/design/` (fleet-vocabulary
 territory, not `spec/`): the single invariant that canonical is the only
 authoritative input and the index is never read back onto it; the enumerated
 crash points along the fold / materialize / bless / record path and what each

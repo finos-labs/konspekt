@@ -4,8 +4,8 @@ name: fleet outbox lifecycle and idempotent-fold contract
 kind: doc
 location: implementations/fleet/design/fleet-outbox-lifecycle.md
 createdAt: 2026-10-22T00:00:00Z
-updatedAt: 2026-11-13T01:01:33Z
-review: accepted
+updatedAt: 2026-11-13T01:01:49Z
+review: proposed
 provenance:
   sourceRef: 99060bd063e1a70fb8e93477e77bd982f3610884
   contentHash: 99060bd063e1a70fb8e93477e77bd982f3610884
@@ -26,7 +26,7 @@ next pass. `task-fleet-committer-refold-dedup` lists two candidate fixes
 (dedup by folded proposal id, or an incremental outbox read) and selects
 neither.
 
-This note, placed under `docs/design/` because outbox and proposal id are
+This note, placed under `implementations/fleet/design/` because outbox and proposal id are
 fleet-binding vocabulary, closes that ambiguity. It states:
 
 1. **Proposal states.** A proposal in an outbox is `pending` (not yet on
@@ -44,7 +44,7 @@ fleet-binding vocabulary, closes that ambiguity. It states:
 4. **Dedup key from canonical alone.** The fold decides "already folded" by
    reading canonical: the target entity file exists and its `provenance`
    `contentHash` equals the proposal's source hash. The `.konspekt-fleet/`
-   fold log is gitignored derived state (`docs/design/fleet-recovery.md`), so
+   fold log is gitignored derived state (`implementations/fleet/design/fleet-recovery.md`), so
    it cannot decide a write to canonical. An already-folded proposal is
    reported as `ALREADY FOLDED` and skipped. Its entity, edges, and transition
    rows are not rewritten, so a blessed or rejected `review` value is kept.
