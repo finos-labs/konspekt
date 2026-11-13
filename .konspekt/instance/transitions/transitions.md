@@ -1264,3 +1264,8 @@ proposing agent was not recorded.
 | artifact:artifact-fleet-recovery | review | accepted | proposed | 2026-11-13T00:57:37Z |  | claude |
 | artifact:artifact-fleet-outbox-lifecycle | review | accepted | proposed | 2026-11-13T00:57:37Z |  | claude |
 | artifact:artifact-fleet-confidence-scale | review | accepted | proposed | 2026-11-13T00:57:37Z |  | claude |
+| artifact:artifact-fleet-spec | review | proposed | accepted | 2026-11-13T01:01:33Z | 27625c7d0b306c03dfd9fb3f8c6a718807dbdc14 | denisurusov |
+| artifact:artifact-fleet-protocol | review | proposed | accepted | 2026-11-13T01:01:33Z | 27625c7d0b306c03dfd9fb3f8c6a718807dbdc14 | denisurusov |
+| artifact:artifact-fleet-recovery | review | proposed | accepted | 2026-11-13T01:01:33Z | 27625c7d0b306c03dfd9fb3f8c6a718807dbdc14 | denisurusov |
+| artifact:artifact-fleet-outbox-lifecycle | review | proposed | accepted | 2026-11-13T01:01:33Z | 27625c7d0b306c03dfd9fb3f8c6a718807dbdc14 | denisurusov |
+| artifact:artifact-fleet-confidence-scale | review | proposed | accepted | 2026-11-13T01:01:33Z | 27625c7d0b306c03dfd9fb3f8c6a718807dbdc14 | denisurusov |
