@@ -268,10 +268,40 @@ git -C /path/to/session/canonical worktree remove /path/to/session/outbox-agent-
 git -C /path/to/session/canonical worktree remove /path/to/session/outbox-agent-b
 ```
 
+## Vendoring into an adopter repo
+
+To run the committer against your own repository's `.konspekt/lib` with no
+konspekt checkout, copy the fleet into your repository's `.konspekt/fleet/`. Each
+fleet folder in the konspekt standard maps to one folder under `.konspekt/fleet/`:
+
+| konspekt standard | adopter repository |
+|-------------------|--------------------|
+| `implementations/fleet/app/` | `.konspekt/fleet/app/` |
+| `implementations/fleet/design/` | `.konspekt/fleet/design/` |
+| `tools/sync-agents.mjs` | `.konspekt/fleet/tools/sync-agents.mjs` |
+| `.konspekt/agents/skills/fleet-*/` | `.konspekt/agents/skills/fleet-*/` |
+
+- Copy the folders whole. The relative links between `app/` and `design/` (for
+  example `../design/fleet-spec.md` in `app/README.md`) resolve unchanged when
+  both land under `.konspekt/fleet/`.
+- Rewrite the engine's imports of `../../../lib/conformance.mjs` and
+  `../../../lib/authority.mjs` to your repository's `.konspekt/lib/` copies of
+  those files. These two files are the engine's only imports outside `app/` and
+  Node's built-in modules.
+- Write your fleet config at `.konspekt/fleet/config/fleet.json`.
+- Regenerate the Claude Code skill mirror with
+  `node .konspekt/fleet/tools/sync-agents.mjs`, which writes `.claude/skills/`
+  from `.konspekt/agents/skills/`.
+- Do not copy the fleet design notes into your repository's own `docs/`. They
+  stay under `.konspekt/fleet/design/`, apart from your project's documentation;
+  the fleet skills name that folder as the fleet design folder.
+- `.konspekt-fleet/` is the committer's gitignored runtime folder (see
+  § Where state lives). Do not put vendored files in it.
+
 ## Reference
 
 - Commands and modules: `../app/README.md`.
-- Fleet model and protocol: `../../../docs/design/fleet-spec.md` and
-  `../../../docs/design/fleet-protocol.md`.
+- Fleet model and protocol: `../design/fleet-spec.md` and
+  `../design/fleet-protocol.md`.
 - The data model the atoms must satisfy: `../../../spec/data-model/SPEC.md` and
   `../../../spec/architecture/SERIALIZATION.md`.

@@ -2,7 +2,7 @@
 
 Status: design (non-normative). `spec/` governs on any conflict. The git-binding
 vocabulary this document introduces — `outbox`, the `proposed` ref, grant, branch
-owner — stays in `docs/design/` and must not enter `spec/data-model` or
+owner — stays in the fleet design folder and must not enter `spec/data-model` or
 `spec/architecture`; the standard's unit remains a directory of markdown with a
 `review` field per atom.
 

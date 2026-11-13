@@ -1,6 +1,6 @@
 # Fleet proposer confidence scale
 
-Status: non-normative design note (`docs/design/` — fleet vocabulary, not
+Status: non-normative design note (fleet design folder — fleet vocabulary, not
 `spec/`). `spec/` governs on any conflict. Realizes the artifact record
 `artifact-fleet-confidence-scale`; serves `task-agent-fleet`.
 

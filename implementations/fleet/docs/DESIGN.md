@@ -1,7 +1,7 @@
 # Worktree-outbox fleet committer — implementation design
 
 Status: design (non-normative). `spec/` governs on any conflict, and
-`docs/design/fleet-spec.md` is the authoritative fleet design this implements.
+`../design/fleet-spec.md` is the authoritative fleet design this implements.
 This document is the implementation-level plan for `task-fleet-worktree-committer`
 in `.konspekt/instance/`: the co-located worktree-outbox ingest channel and the
 deterministic committer behind it.

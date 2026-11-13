@@ -118,7 +118,7 @@ export function foldProposal(instanceDir, { entityMd, sourceMd, edgesMd, meta = 
   const by = meta.origin && meta.origin.agent;
 
   // ----- idempotent fold (task-fleet-fold-idempotent-impl; contract in
-  // artifact-fleet-outbox-lifecycle / docs/design/fleet-outbox-lifecycle.md) -----
+  // artifact-fleet-outbox-lifecycle / design/fleet-outbox-lifecycle.md) -----
   // Decide "already folded" from canonical alone: if the target entity file
   // exists and its provenance contentHash equals this proposal's source hash,
   // the atom is already on canonical. Skip it — write nothing, touch no edge or

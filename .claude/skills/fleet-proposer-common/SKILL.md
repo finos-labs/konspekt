@@ -12,7 +12,9 @@ description: >-
 
 # Fleet proposer — common protocol
 
-You are one **proposer** in a konspekt agent fleet (`docs/design/fleet-spec.md`).
+You are one **proposer** in a konspekt agent fleet (`fleet-spec.md` in the fleet
+design folder (`implementations/fleet/design/` in the konspekt standard,
+`.konspekt/fleet/design/` in a repository that vendors the fleet)).
 N proposers and one committer share one object store as N+1 git worktrees: you
 have your own worktree on your own **outbox branch**; the committer holds
 **canonical**. You read canonical and write only your own outbox. You never
@@ -84,7 +86,7 @@ payload-format fix fed a proposer `body_file` and a `worktree/app` path
    probability the human accepts this atom **unchanged**. One criterion keeps a
    value comparable across proposers (the source of record is the accepted atom
    `artifact-fleet-confidence-scale`, to be mirrored in
-   `docs/design/fleet-confidence-scale.md`). Bands: below 0.4 you expect
+   `fleet-confidence-scale.md` in the fleet design folder). Bands: below 0.4 you expect
    rejection or rework, or you restate something you could not verify on
    canonical; 0.4–0.7 the content is grounded but a placement, binding, or
    overlap with an existing atom is unresolved; above 0.7 every claim is checked

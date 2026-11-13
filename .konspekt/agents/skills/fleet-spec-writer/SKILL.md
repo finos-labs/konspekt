@@ -25,7 +25,7 @@ document lives.
 - `entity_type`: `Artifact`.
 - Entity fence fields: `id` starting `artifact-`; `name`; `kind: doc`;
   `location` a plausible repo path (e.g. `spec/architecture/<NAME>.md`,
-  `docs/design/<name>.md`, or an implementation's `docs/`); `createdAt`,
+  `<fleet design folder>/<name>.md`, or an implementation's `docs/`); `createdAt`,
   `updatedAt`.
 - Wiring edge: `produces`, from the accepted node the document serves
   (`node:<id>`), to your artifact (`artifact:<id>`), `review: proposed`.
@@ -33,10 +33,13 @@ document lives.
 ## Placement rule (important)
 
 konspekt keeps its vocabulary layered. The git-fleet vocabulary (outbox, the
-proposed ref, grant, branch owner) stays in `docs/design/` and must **not** enter
-`spec/data-model/` or `spec/architecture/` (`docs/design/fleet-spec.md`
-preamble). If your document is about the fleet's git binding, propose a
-`location` under `docs/design/`, not `spec/`. Proposing a fleet-vocabulary doc
+proposed ref, grant, branch owner) stays in the fleet design folder and must
+**not** enter `spec/data-model/` or `spec/architecture/` (`fleet-spec.md`
+preamble). The fleet design folder is `implementations/fleet/design/` in the
+konspekt standard and `.konspekt/fleet/design/` in a repository that vendors
+the fleet. If your document is about the fleet's git binding, propose a
+`location` under the fleet design folder of the repository you propose into,
+not `spec/` and not that repository's own `docs/`. Proposing a fleet-vocabulary doc
 under `spec/architecture/` is a correct reason for the human to reject it.
 
 ## Taste
