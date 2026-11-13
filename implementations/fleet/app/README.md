@@ -7,7 +7,7 @@ agents each write to their own git **outbox** branch; one deterministic
 
 This README explains **when, how, and why each `.mjs` runs**. For the design
 and rationale see `../docs/DESIGN.md`; for the fleet model see
-`../../../docs/design/fleet-spec.md`; `spec/` governs on any conflict.
+`../design/fleet-spec.md`; `spec/` governs on any conflict.
 
 ## What triggers the code
 

@@ -11,7 +11,7 @@ The ADR minimizes the committer's JavaScript machinery in favor of agentic
 communication and permits the committer to be an agent that executes writes
 under human-authorized acceptance. It supersedes `nw-fleet-committer-role-split`,
 so the "deterministic writer plus LLM review assistant" split in
-`docs/design/fleet-spec.md` § Model is superseded and that document needs a
+`fleet-spec.md` § Model is superseded and that document needs a
 follow-up edit. There is one fleet model at the konspekt level; how the git store
 is laid out — N+1 worktrees in one repository, N separate local repositories, or
 protected remote outbox namespaces — is a binding concern below the standard and

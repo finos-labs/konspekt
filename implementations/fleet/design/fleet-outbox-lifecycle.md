@@ -1,6 +1,6 @@
 # Fleet outbox lifecycle and idempotent-fold contract
 
-Status: non-normative design note (`docs/design/` — fleet vocabulary, not
+Status: non-normative design note (fleet design folder — fleet vocabulary, not
 `spec/`). `spec/` governs on any conflict. Realizes the artifact record
 `artifact-fleet-outbox-lifecycle`; serves `task-fleet-worktree-committer`.
 
