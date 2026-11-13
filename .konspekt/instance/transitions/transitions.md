@@ -1253,3 +1253,9 @@ proposing agent was not recorded.
 | node:task-fleet-canonical-follow | status | active | resolved | 2026-11-11T18:19:12Z | 853e31626f2212ff25762bfceb7dec90596eaf36 | denisurusov |
 | noteworthy:nw-fleet-canonical-follow-drain-then-move | review | proposed | accepted | 2026-11-11T18:25:33Z | 609b78255338d3df310ea92f2a0ddeed2c2bc9a1 | denisurusov |
 | edge:e-not-adjustments-canonicalfollowdecision | review | proposed | accepted | 2026-11-11T18:25:33Z | 609b78255338d3df310ea92f2a0ddeed2c2bc9a1 | denisurusov |
+| node:task-fleet-design-docs-placement | review |  | proposed | 2026-11-13T00:55:48Z |  | claude |
+| node:task-fleet-design-docs-placement | status |  | open | 2026-11-13T00:55:48Z |  | claude |
+| edge:e-dec-agentfleet-designdocsplacement | review |  | proposed | 2026-11-13T00:55:48Z |  | claude |
+| node:task-fleet-design-docs-placement | review | proposed | accepted | 2026-11-13T00:55:48Z | c5b67de2993cffaa775c1393b3d2466c0baa3a0e | denisurusov |
+| edge:e-dec-agentfleet-designdocsplacement | review | proposed | accepted | 2026-11-13T00:55:48Z | c5b67de2993cffaa775c1393b3d2466c0baa3a0e | denisurusov |
+| node:task-fleet-design-docs-placement | status | open | active | 2026-11-13T00:55:48Z | c5b67de2993cffaa775c1393b3d2466c0baa3a0e | denisurusov |
