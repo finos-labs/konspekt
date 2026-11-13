@@ -2,8 +2,8 @@
 id: artifact-fleet-spec
 name: fleet-mode design spec
 kind: doc
-location: docs/design/fleet-spec.md
-review: accepted
+location: implementations/fleet/design/fleet-spec.md
+review: proposed
 provenance:
   sourceRef: 5f34d6cb478b39588f700dc7cd3d731d9c6efe2e
   contentHash: 5f34d6cb478b39588f700dc7cd3d731d9c6efe2e
@@ -11,7 +11,7 @@ provenance:
   timestamp: 2026-09-28T23:07:00Z
   confidence: 0.9
 createdAt: 2026-09-28T23:07:00Z
-updatedAt: 2026-09-28T23:07:00Z
+updatedAt: 2026-11-13T00:57:37Z
 ```
 # Artifact: fleet-mode design spec
 

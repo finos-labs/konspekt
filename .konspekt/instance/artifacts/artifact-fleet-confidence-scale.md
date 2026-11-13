@@ -2,10 +2,10 @@
 id: artifact-fleet-confidence-scale
 name: fleet proposer confidence scale
 kind: doc
-location: docs/design/fleet-confidence-scale.md
+location: implementations/fleet/design/fleet-confidence-scale.md
 createdAt: 2026-10-22T16:56:02Z
-updatedAt: 2026-10-22T16:56:02Z
-review: accepted
+updatedAt: 2026-11-13T00:57:37Z
+review: proposed
 provenance:
   sourceRef: fbf04d9c2e5ef1d7ca1b0c7dd9368742572caf24
   contentHash: fbf04d9c2e5ef1d7ca1b0c7dd9368742572caf24

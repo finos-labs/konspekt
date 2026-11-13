@@ -2,10 +2,10 @@
 id: artifact-fleet-outbox-lifecycle
 name: fleet outbox lifecycle and idempotent-fold contract
 kind: doc
-location: docs/design/fleet-outbox-lifecycle.md
+location: implementations/fleet/design/fleet-outbox-lifecycle.md
 createdAt: 2026-10-22T00:00:00Z
-updatedAt: 2026-10-22T00:00:00Z
-review: accepted
+updatedAt: 2026-11-13T00:57:37Z
+review: proposed
 provenance:
   sourceRef: 99060bd063e1a70fb8e93477e77bd982f3610884
   contentHash: 99060bd063e1a70fb8e93477e77bd982f3610884

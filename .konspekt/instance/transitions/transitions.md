@@ -1259,3 +1259,8 @@ proposing agent was not recorded.
 | node:task-fleet-design-docs-placement | review | proposed | accepted | 2026-11-13T00:55:48Z | c5b67de2993cffaa775c1393b3d2466c0baa3a0e | denisurusov |
 | edge:e-dec-agentfleet-designdocsplacement | review | proposed | accepted | 2026-11-13T00:55:48Z | c5b67de2993cffaa775c1393b3d2466c0baa3a0e | denisurusov |
 | node:task-fleet-design-docs-placement | status | open | active | 2026-11-13T00:55:48Z | c5b67de2993cffaa775c1393b3d2466c0baa3a0e | denisurusov |
+| artifact:artifact-fleet-spec | review | accepted | proposed | 2026-11-13T00:57:37Z |  | claude |
+| artifact:artifact-fleet-protocol | review | accepted | proposed | 2026-11-13T00:57:37Z |  | claude |
+| artifact:artifact-fleet-recovery | review | accepted | proposed | 2026-11-13T00:57:37Z |  | claude |
+| artifact:artifact-fleet-outbox-lifecycle | review | accepted | proposed | 2026-11-13T00:57:37Z |  | claude |
+| artifact:artifact-fleet-confidence-scale | review | accepted | proposed | 2026-11-13T00:57:37Z |  | claude |
