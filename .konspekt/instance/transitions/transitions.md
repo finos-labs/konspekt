@@ -1307,3 +1307,17 @@ proposing agent was not recorded.
 | node:task-setup-init-check-policy-fields | review |  | proposed | 2026-11-14T18:50:36Z | d1dae8f32d04b04997ec93a28d445e23de3dbc59 | claude |
 | node:task-setup-init-check-policy-fields | status |  | open | 2026-11-14T18:50:36Z | d1dae8f32d04b04997ec93a28d445e23de3dbc59 | claude |
 | edge:e-dec-adoption-setupinitcheck | review |  | proposed | 2026-11-14T18:50:36Z |  | claude |
+| node:task-setup-init-check-policy-fields | review | proposed | accepted | 2026-11-14T19:30:00Z | 2d296b259f15b202811037e7cf0af1ce311769fe | denisurusov |
+| concept:concept-asr-hash-independent-identity | review |  | proposed | 2026-11-14T19:30:00Z | 79351f57f62b5883e4590949d7c1a1061dde8bd8 | claude |
+| concept:concept-asr-store-agnostic-references | review |  | proposed | 2026-11-14T19:30:00Z | 79351f57f62b5883e4590949d7c1a1061dde8bd8 | claude |
+| concept:concept-asr-lossless-provenance-migration | review |  | proposed | 2026-11-14T19:30:00Z | 79351f57f62b5883e4590949d7c1a1061dde8bd8 | claude |
+| waypoint:wp-adr-ni-sha256-references | review |  | proposed | 2026-11-14T19:30:00Z | 79351f57f62b5883e4590949d7c1a1061dde8bd8 | claude |
+| waypoint:wp-adr-store-resolve-rule | review |  | proposed | 2026-11-14T19:30:00Z | 79351f57f62b5883e4590949d7c1a1061dde8bd8 | claude |
+| waypoint:wp-adr-in-place-ni-migration | review |  | proposed | 2026-11-14T19:30:00Z | 79351f57f62b5883e4590949d7c1a1061dde8bd8 | claude |
+| edge:e-drv-hashident-adrniref | review |  | proposed | 2026-11-14T19:30:00Z |  | claude |
+| edge:e-drv-storeagnostic-adrniref | review |  | proposed | 2026-11-14T19:30:00Z |  | claude |
+| edge:e-mark-adrniref-sourceuris | review |  | proposed | 2026-11-14T19:30:00Z |  | claude |
+| edge:e-drv-storeagnostic-adrresolve | review |  | proposed | 2026-11-14T19:30:00Z |  | claude |
+| edge:e-mark-adrresolve-sourceuris | review |  | proposed | 2026-11-14T19:30:00Z |  | claude |
+| edge:e-drv-losslessmig-adrinplace | review |  | proposed | 2026-11-14T19:30:00Z |  | claude |
+| edge:e-mark-adrinplace-sourceuris | review |  | proposed | 2026-11-14T19:30:00Z |  | claude |

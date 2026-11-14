@@ -7,7 +7,7 @@ summary:
   origin: machine
   pinned: false
   updatedAt: 2026-11-14T18:50:36Z
-review: proposed
+review: accepted
 provenance:
   sourceRef: d1dae8f32d04b04997ec93a28d445e23de3dbc59
   contentHash: d1dae8f32d04b04997ec93a28d445e23de3dbc59
@@ -15,7 +15,7 @@ provenance:
   timestamp: 2026-11-14T18:50:36Z
   confidence: 0.8
 createdAt: 2026-11-14T18:50:36Z
-updatedAt: 2026-11-14T18:50:36Z
+updatedAt: 2026-11-14T19:30:00Z
 ```
 # Task: Make setup/init.mjs --check report missing binding and basis fields
 
