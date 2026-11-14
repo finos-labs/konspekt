@@ -227,8 +227,14 @@ const entityUrl = (id) => {
   const e = after.get(id);
   return e ? `${SERVER}/${REPO}/blob/${afterSha}/${e.path}` : null;
 };
+// An `ni:///sha-256;<base64url>` reference names sources/sha-256/<hex>.md; a
+// legacy git blob SHA names sources/<sha>.md.
+const sourcePath = (ref) => {
+  const m = /^ni:\/\/\/sha-256;([A-Za-z0-9_-]{43})$/.exec(ref);
+  return m ? `sha-256/${Buffer.from(m[1], "base64url").toString("hex")}.md` : `${ref}.md`;
+};
 const sourceUrl = (ref) =>
-  ref ? `${SERVER}/${REPO}/blob/${afterSha}/${INSTANCE}/sources/${ref}.md` : null;
+  ref ? `${SERVER}/${REPO}/blob/${afterSha}/${INSTANCE}/sources/${sourcePath(ref)}` : null;
 
 const lines = [];
 for (const ev of matched) {
