@@ -95,3 +95,7 @@ New rows below this backfill are recorded live.
 | task-fleet-design-docs-placement | 2f1dd1090efdf5d1f339d80443b9c7ba204452d9 |
 | task-fleet-design-docs-placement | d353407b01e816ae2d1d9b1a11cd85864ed3af91 |
 | task-fleet-design-docs-placement | cdfa1806edf9c0ae7841846a3f6629e9e7000f89 |
+| task-ni-references | e28345f985aeb540fc17845b18f047e1511ad18b |
+| task-ni-references | 519553cfcd27076f605e4e6c26be53988efcba0d |
+| task-ni-references | 643c73a27933926d2d6128d07c2e0bcb5f7c58c0 |
+| task-ni-references | 7cc585df88f66191419e12d0814d25041d7bd6c0 |

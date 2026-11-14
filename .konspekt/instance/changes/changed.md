@@ -518,3 +518,4 @@ commit order; the channel was not live during that work.
 | task-fleet-design-docs-placement | 3beb05691360ac0671444a1744fda647aeeaada5 | implementations/fleet/design/fleet-spec.md | 2026-11-13T00:58:16Z |
 | task-fleet-design-docs-placement | 3beb05691360ac0671444a1744fda647aeeaada5 | implementations/fleet/docs/ADOPTING.md | 2026-11-13T00:58:16Z |
 | task-fleet-design-docs-placement | 3beb05691360ac0671444a1744fda647aeeaada5 | implementations/fleet/docs/DESIGN.md | 2026-11-13T00:58:16Z |
+| task-ni-references | bd14a5ecb6b8f3754f985e138d7035345314e7bf | docs/design/source-addressing.md | 2026-11-14T14:31:52Z |
