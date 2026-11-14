@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // Test for lib/locator-reach.mjs, the network check behind
-// `lib/validate.mjs --check-locators` (task-ni-references;
+// `lib/validate.mjs`, on by default (task-ni-references;
 // SERIALIZATION.md § Sources: an unreachable locator is a warning).
 //
 // Runs against a local HTTP server on 127.0.0.1, so it needs no outside
@@ -122,11 +122,11 @@ try {
       (err, stdout) => (stdout ? res(JSON.parse(stdout)) : rej(err))));
   const codes = (out) => out.problems.map((p) => p.code);
   requests.length = 0;
-  const off = await run([]);
-  check("without --check-locators no request is made",
+  const off = await run(["--no-check-locators"]);
+  check("--no-check-locators makes no request",
     !codes(off).includes("locator-unreachable") && requests.length === 0, requests.join(","));
-  const on = await run(["--check-locators"]);
-  check("--check-locators adds locator-unreachable to the report",
+  const on = await run([]);
+  check("by default locator-unreachable is in the report",
     codes(on).includes("locator-unreachable"), JSON.stringify(codes(on)));
 } finally {
   rmSync(dir, { recursive: true, force: true });
