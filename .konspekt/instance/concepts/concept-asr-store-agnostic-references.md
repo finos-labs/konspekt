@@ -3,7 +3,7 @@ id: concept-asr-store-agnostic-references
 subtype: asr
 label: Atoms reference stored content without naming a store, host or URL
 aliases: [no store URLs in atoms, store-independent references]
-review: proposed
+review: accepted
 provenance:
   sourceRef: ni:///sha-256;idqFoT14UBvBzfEOpS8AD5WPfA1E5Q2PaYK3Vo7RxO4
   conversationId: source-uris
@@ -14,7 +14,7 @@ provenance:
     sourceRef: 79351f57f62b5883e4590949d7c1a1061dde8bd8
     contentHash: 79351f57f62b5883e4590949d7c1a1061dde8bd8
 createdAt: 2026-11-14T19:30:00Z
-updatedAt: 2026-11-14T19:30:00Z
+updatedAt: 2026-11-14T19:43:57Z
 ```
 # Concept: Atoms reference stored content without naming a store, host or URL
 

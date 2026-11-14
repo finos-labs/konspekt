@@ -2,7 +2,7 @@
 id: task-ni-test-migration
 type: task
 title: Test the ni: migration on the task-ni-references branch
-status: active
+status: resolved
 summary:
   origin: machine
   pinned: false
@@ -18,7 +18,7 @@ provenance:
     sourceRef: a125b5a624c8072d4f7c41de493c38ddf2d794e7
     contentHash: a125b5a624c8072d4f7c41de493c38ddf2d794e7
 createdAt: 2026-11-14T14:45:53Z
-updatedAt: 2026-11-14T18:46:20Z
+updatedAt: 2026-11-14T19:43:57Z
 ```
 # Task: Test the ni: migration on the task-ni-references branch
 

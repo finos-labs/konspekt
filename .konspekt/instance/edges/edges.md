@@ -575,10 +575,10 @@ proposal.
 | e-dec-nirefs-impact | decomposes | node:task-ni-references | node:task-ni-impact-analysis |  | accepted |
 | e-dec-nirefs-testmigration | decomposes | node:task-ni-references | node:task-ni-test-migration |  | accepted |
 | e-dec-adoption-setupinitcheck | decomposes | node:goal-adoption | node:task-setup-init-check-policy-fields |  | proposed |
-| e-drv-hashident-adrniref | drives | concept:concept-asr-hash-independent-identity | waypoint:wp-adr-ni-sha256-references |  | proposed |
-| e-drv-storeagnostic-adrniref | drives | concept:concept-asr-store-agnostic-references | waypoint:wp-adr-ni-sha256-references |  | proposed |
-| e-mark-adrniref-sourceuris | marks | waypoint:wp-adr-ni-sha256-references | node:investigation-source-uris |  | proposed |
-| e-drv-storeagnostic-adrresolve | drives | concept:concept-asr-store-agnostic-references | waypoint:wp-adr-store-resolve-rule |  | proposed |
-| e-mark-adrresolve-sourceuris | marks | waypoint:wp-adr-store-resolve-rule | node:investigation-source-uris |  | proposed |
-| e-drv-losslessmig-adrinplace | drives | concept:concept-asr-lossless-provenance-migration | waypoint:wp-adr-in-place-ni-migration |  | proposed |
-| e-mark-adrinplace-sourceuris | marks | waypoint:wp-adr-in-place-ni-migration | node:investigation-source-uris |  | proposed |
+| e-drv-hashident-adrniref | drives | concept:concept-asr-hash-independent-identity | waypoint:wp-adr-ni-sha256-references |  | accepted |
+| e-drv-storeagnostic-adrniref | drives | concept:concept-asr-store-agnostic-references | waypoint:wp-adr-ni-sha256-references |  | accepted |
+| e-mark-adrniref-sourceuris | marks | waypoint:wp-adr-ni-sha256-references | node:investigation-source-uris |  | accepted |
+| e-drv-storeagnostic-adrresolve | drives | concept:concept-asr-store-agnostic-references | waypoint:wp-adr-store-resolve-rule |  | accepted |
+| e-mark-adrresolve-sourceuris | marks | waypoint:wp-adr-store-resolve-rule | node:investigation-source-uris |  | accepted |
+| e-drv-losslessmig-adrinplace | drives | concept:concept-asr-lossless-provenance-migration | waypoint:wp-adr-in-place-ni-migration |  | accepted |
+| e-mark-adrinplace-sourceuris | marks | waypoint:wp-adr-in-place-ni-migration | node:investigation-source-uris |  | accepted |

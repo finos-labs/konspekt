@@ -1321,3 +1321,17 @@ proposing agent was not recorded.
 | edge:e-mark-adrresolve-sourceuris | review |  | proposed | 2026-11-14T19:30:00Z |  | claude |
 | edge:e-drv-losslessmig-adrinplace | review |  | proposed | 2026-11-14T19:30:00Z |  | claude |
 | edge:e-mark-adrinplace-sourceuris | review |  | proposed | 2026-11-14T19:30:00Z |  | claude |
+| concept:concept-asr-hash-independent-identity | review | proposed | accepted | 2026-11-14T19:43:57Z | ni:///sha-256;Z6nxkuUt-AFAiYwlhX4b27TfwfzHcOZZIW8pkiWBxB0 | denisurusov |
+| concept:concept-asr-store-agnostic-references | review | proposed | accepted | 2026-11-14T19:43:57Z | ni:///sha-256;Z6nxkuUt-AFAiYwlhX4b27TfwfzHcOZZIW8pkiWBxB0 | denisurusov |
+| concept:concept-asr-lossless-provenance-migration | review | proposed | accepted | 2026-11-14T19:43:57Z | ni:///sha-256;Z6nxkuUt-AFAiYwlhX4b27TfwfzHcOZZIW8pkiWBxB0 | denisurusov |
+| waypoint:wp-adr-ni-sha256-references | review | proposed | accepted | 2026-11-14T19:43:57Z | ni:///sha-256;Z6nxkuUt-AFAiYwlhX4b27TfwfzHcOZZIW8pkiWBxB0 | denisurusov |
+| waypoint:wp-adr-store-resolve-rule | review | proposed | accepted | 2026-11-14T19:43:57Z | ni:///sha-256;Z6nxkuUt-AFAiYwlhX4b27TfwfzHcOZZIW8pkiWBxB0 | denisurusov |
+| waypoint:wp-adr-in-place-ni-migration | review | proposed | accepted | 2026-11-14T19:43:57Z | ni:///sha-256;Z6nxkuUt-AFAiYwlhX4b27TfwfzHcOZZIW8pkiWBxB0 | denisurusov |
+| edge:e-drv-hashident-adrniref | review | proposed | accepted | 2026-11-14T19:43:57Z | ni:///sha-256;Z6nxkuUt-AFAiYwlhX4b27TfwfzHcOZZIW8pkiWBxB0 | denisurusov |
+| edge:e-drv-storeagnostic-adrniref | review | proposed | accepted | 2026-11-14T19:43:57Z | ni:///sha-256;Z6nxkuUt-AFAiYwlhX4b27TfwfzHcOZZIW8pkiWBxB0 | denisurusov |
+| edge:e-mark-adrniref-sourceuris | review | proposed | accepted | 2026-11-14T19:43:57Z | ni:///sha-256;Z6nxkuUt-AFAiYwlhX4b27TfwfzHcOZZIW8pkiWBxB0 | denisurusov |
+| edge:e-drv-storeagnostic-adrresolve | review | proposed | accepted | 2026-11-14T19:43:57Z | ni:///sha-256;Z6nxkuUt-AFAiYwlhX4b27TfwfzHcOZZIW8pkiWBxB0 | denisurusov |
+| edge:e-mark-adrresolve-sourceuris | review | proposed | accepted | 2026-11-14T19:43:57Z | ni:///sha-256;Z6nxkuUt-AFAiYwlhX4b27TfwfzHcOZZIW8pkiWBxB0 | denisurusov |
+| edge:e-drv-losslessmig-adrinplace | review | proposed | accepted | 2026-11-14T19:43:57Z | ni:///sha-256;Z6nxkuUt-AFAiYwlhX4b27TfwfzHcOZZIW8pkiWBxB0 | denisurusov |
+| edge:e-mark-adrinplace-sourceuris | review | proposed | accepted | 2026-11-14T19:43:57Z | ni:///sha-256;Z6nxkuUt-AFAiYwlhX4b27TfwfzHcOZZIW8pkiWBxB0 | denisurusov |
+| node:task-ni-test-migration | status | active | resolved | 2026-11-14T19:43:57Z | ni:///sha-256;Z6nxkuUt-AFAiYwlhX4b27TfwfzHcOZZIW8pkiWBxB0 | denisurusov |
