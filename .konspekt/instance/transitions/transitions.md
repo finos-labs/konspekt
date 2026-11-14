@@ -1295,3 +1295,10 @@ proposing agent was not recorded.
 | node:task-ni-test-migration | review |  | proposed | 2026-11-14T14:45:53Z | a125b5a624c8072d4f7c41de493c38ddf2d794e7 | claude |
 | node:task-ni-test-migration | status |  | open | 2026-11-14T14:45:53Z | a125b5a624c8072d4f7c41de493c38ddf2d794e7 | claude |
 | edge:e-dec-nirefs-testmigration | review |  | proposed | 2026-11-14T14:45:53Z |  | claude |
+| node:task-ni-test-migration | review | proposed | accepted | 2026-11-14T18:35:40Z | 456c115e3356b222c9ec89a8948ac6c4ab336bd1 | denisurusov |
+| node:task-ni-impact-analysis | review | proposed | accepted | 2026-11-14T18:35:40Z | 456c115e3356b222c9ec89a8948ac6c4ab336bd1 | denisurusov |
+| node:task-enterprise-persistence | review | proposed | accepted | 2026-11-14T18:35:40Z | 456c115e3356b222c9ec89a8948ac6c4ab336bd1 | denisurusov |
+| edge:e-dec-enterprise-nirefs | review | proposed | accepted | 2026-11-14T18:35:40Z | 456c115e3356b222c9ec89a8948ac6c4ab336bd1 | denisurusov |
+| edge:e-link-nirefs-sourcesmigration | review | proposed | accepted | 2026-11-14T18:35:40Z | 456c115e3356b222c9ec89a8948ac6c4ab336bd1 | denisurusov |
+| edge:e-dec-nirefs-impact | review | proposed | accepted | 2026-11-14T18:35:40Z | 456c115e3356b222c9ec89a8948ac6c4ab336bd1 | denisurusov |
+| edge:e-dec-nirefs-testmigration | review | proposed | accepted | 2026-11-14T18:35:40Z | 456c115e3356b222c9ec89a8948ac6c4ab336bd1 | denisurusov |

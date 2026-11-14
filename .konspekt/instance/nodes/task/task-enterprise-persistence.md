@@ -7,14 +7,14 @@ summary:
   origin: machine
   pinned: false
   updatedAt: 2026-08-28T11:49:13Z
-review: proposed
+review: accepted
 provenance:
   sourceRef: 59f0929da44315acea7393b38a6a9db554f5d523
   contentHash: 59f0929da44315acea7393b38a6a9db554f5d523
   timestamp: 2026-08-28T11:49:13Z
   confidence: 0.9
 createdAt: 2026-08-28T11:49:13Z
-updatedAt: 2026-08-28T11:49:13Z
+updatedAt: 2026-11-14T18:35:40Z
 ```
 # Task: A durable store other than git
 
@@ -40,6 +40,6 @@ lock-in.
 **The store adjudicates nothing.** It stays read/write only; review stays in
 the conversation.
 
-Success is an instance running on a non-git store, passing the conformance
-checker, with content addresses matching what git would produce for the same
-excerpts.
+Success is an instance running on a non-git store and passing the conformance
+checker, with no loss of provenance on existing data and no breakage of
+existing tooling.

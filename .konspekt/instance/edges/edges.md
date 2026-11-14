@@ -570,7 +570,7 @@ proposal.
 | e-not-adjustments-canonicalfollowdecision | notes | node:task-fleet-adjustments | noteworthy:nw-fleet-canonical-follow-drain-then-move |  | accepted |
 | e-dec-agentfleet-designdocsplacement | decomposes | node:task-agent-fleet | node:task-fleet-design-docs-placement |  | accepted |
 | e-dec-enterprise-sourceuris | decomposes | node:task-enterprise-persistence | node:investigation-source-uris |  |  |
-| e-dec-enterprise-nirefs | decomposes | node:task-enterprise-persistence | node:task-ni-references |  | proposed |
-| e-link-nirefs-sourcesmigration | links | node:task-ni-references | node:task-sources-sha256-migration | 0.8 | proposed |
-| e-dec-nirefs-impact | decomposes | node:task-ni-references | node:task-ni-impact-analysis |  | proposed |
-| e-dec-nirefs-testmigration | decomposes | node:task-ni-references | node:task-ni-test-migration |  | proposed |
+| e-dec-enterprise-nirefs | decomposes | node:task-enterprise-persistence | node:task-ni-references |  | accepted |
+| e-link-nirefs-sourcesmigration | links | node:task-ni-references | node:task-sources-sha256-migration | 0.8 | accepted |
+| e-dec-nirefs-impact | decomposes | node:task-ni-references | node:task-ni-impact-analysis |  | accepted |
+| e-dec-nirefs-testmigration | decomposes | node:task-ni-references | node:task-ni-test-migration |  | accepted |

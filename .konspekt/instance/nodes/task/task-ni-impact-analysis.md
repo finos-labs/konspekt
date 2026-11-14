@@ -7,7 +7,7 @@ summary:
   origin: machine
   pinned: false
   updatedAt: 2026-11-14T14:31:52Z
-review: proposed
+review: accepted
 provenance:
   sourceRef: 68ef8f82d0b05369b631b6715a607008f414cec7
   contentHash: 68ef8f82d0b05369b631b6715a607008f414cec7
@@ -15,7 +15,7 @@ provenance:
   timestamp: 2026-11-14T14:31:52Z
   confidence: 0.8
 createdAt: 2026-11-14T14:31:52Z
-updatedAt: 2026-11-14T14:31:52Z
+updatedAt: 2026-11-14T18:35:40Z
 ```
 # Task: Verify the impact of ni: source addressing, file by file
 

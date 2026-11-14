@@ -7,7 +7,7 @@ summary:
   origin: machine
   pinned: false
   updatedAt: 2026-11-14T14:45:53Z
-review: proposed
+review: accepted
 provenance:
   sourceRef: a125b5a624c8072d4f7c41de493c38ddf2d794e7
   contentHash: a125b5a624c8072d4f7c41de493c38ddf2d794e7
@@ -15,7 +15,7 @@ provenance:
   timestamp: 2026-11-14T14:45:53Z
   confidence: 0.85
 createdAt: 2026-11-14T14:45:53Z
-updatedAt: 2026-11-14T14:45:53Z
+updatedAt: 2026-11-14T18:35:40Z
 ```
 # Task: Test the ni: migration on the task-ni-references branch
 
