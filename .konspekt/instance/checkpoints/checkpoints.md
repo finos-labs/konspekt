@@ -11,3 +11,4 @@ open, `resume` reads the last row.
 | timestamp | entity | source | venue | model | by |
 |-----------|--------|--------|-------|-------|----|
 | 2026-11-14T14:51:05Z | task-ni-references | ni:///sha-256;qOerW6MRS-tplQ3PVgtkOvRYjPXTb3iNCbrhJDga0yU | claude-mobile | claude-opus-5-5 | denisurusov |
+| 2026-11-14T19:59:20Z | task-ni-references | ni:///sha-256;IFQtEzY7_YOT4d9vmohmgwK6E1K3oCld1AHrPCzzxYg | claude-code-cli | claude-opus-5-5 | denisurusov |
