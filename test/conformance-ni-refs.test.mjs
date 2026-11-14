@@ -201,6 +201,35 @@ for (const [name, opts, want] of LOG_CASES) {
   check(name, JSON.stringify(codes) === JSON.stringify(want.slice().sort()), `wanted [${want}] got [${codes}]`);
 }
 
+// ----- store and locators -----
+
+const STORE = "store:\n  kind: git\n  ref: main\n  resolve:\n    source: https://h/{hex}\n    entity: https://h/{path}\n    edges: https://h/edges.md";
+function projectCodes(projectExtra, prov) {
+  const dir = build({ "task-a": prov }, [newFile]);
+  writeFileSync(join(dir, "project.md"),
+    entity(`id: project-t\ngoal: test\n${projectExtra}\ncreatedAt: ${TS}\nupdatedAt: ${TS}`, "# t"));
+  try {
+    return loadInstance(dir, {}).problems
+      .filter((p) => /^(store-|locator|unexpected-field)/.test(p.code)).map((p) => `${p.severity}:${p.code}`).sort();
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+}
+const loc = (uri, kind = "web", at = TS) => `${niProv}\n  locators:\n    - uri: ${uri}\n      kind: ${kind}\n      retrievedAt: ${at}`;
+const PROJECT_CASES = [
+  ["a complete store block and an allow-list are known fields", `${STORE}\nlocators:\n  allow: [github.com]`, niProv, []],
+  ["a store block missing resolve.edges is incomplete",
+    STORE.replace("\n    edges: https://h/edges.md", ""), niProv, ["warning:store-incomplete"]],
+  ["a locator on an allowed host passes", "locators:\n  allow: [github.com]", loc("https://github.com/o/r/blob/c/x.md", "git-permalink"), []],
+  ["a locator on a host outside the allow-list is reported", "locators:\n  allow: [github.com]", loc("https://intranet.example/x"), ["warning:locator-not-allowed"]],
+  ["a locator with no allow-list declared is reported", "", loc("https://github.com/x"), ["warning:locator-not-allowed"]],
+  ["a locator with an unknown kind is malformed", "locators:\n  allow: [github.com]", loc("https://github.com/x", "email"), ["warning:locator-malformed"]],
+];
+for (const [name, extra, prov, want] of PROJECT_CASES) {
+  const codes = projectCodes(extra, prov);
+  check(name, JSON.stringify(codes) === JSON.stringify(want.slice().sort()), `wanted [${want}] got [${codes}]`);
+}
+
 if (failures.length) {
   console.error(`\n${failures.length} failure(s):\n  ` + failures.join("\n  "));
   process.exit(1);

@@ -24,7 +24,7 @@ The operating loop's orchestration vocabulary — `sync`, `persist`, `sync_persi
 | `persist` | write | flushes the working copy to the store |
 | `sync_persist` | write | `sync` then `persist`, as one durable step |
 | `checkpoint` | write | appends one row to `checkpoints/checkpoints.md` and its `sources/` excerpt |
-| `resume` | read | reads the last checkpoint row and its excerpt |
+| `resume` | read | reads the last checkpoint row and its excerpt (`STORAGE.md` `getLastCheckpoint`) |
 
 So the store only ever sees `read` and `write`. A binding implements *those two*; the verbs are identical everywhere because they are defined above the binding. This is why `sync` needs no store at all — it is pure working-copy reconciliation, which is why it was excluded from the durable family.
 
@@ -33,7 +33,7 @@ So the store only ever sees `read` and `write`. A binding implements *those two*
 A conversation holds state the graph does not: the entity it is bound to, proposals it has discussed and not persisted, and open items that never became atoms. `checkpoint` and `resume` carry that state to a later conversation, whether it runs the next day, on a different LLM, or through a different venue for the same LLM. Both work through the store's `read` and `write`, so any conforming binding supports them, and the record is in the instance, where a different vendor's conversation can read it.
 
 - **`checkpoint`** is issued by a human. The maintainer writes one row to `checkpoints/checkpoints.md` and one `sources/` excerpt, in the same write (`SERIALIZATION.md` § Checkpoints). The row names the active entity. The excerpt holds, verbatim, the human's command, each binding switch made in the conversation, each pending proposal, and the open-items list as last presented. The maintainer does not issue `checkpoint` on its own judgment and does not paraphrase the items into atoms.
-- **`resume`** is a read at conversation open, after `load`. The maintainer reads the last row and its excerpt, offers the row's entity as the default answer to the binding ask (`BINDING.md`), and lists the excerpt's open items, giving the current `review` and `status` of each id the excerpt names. The human confirms the binding as usual. A checkpoint never binds a conversation by itself, and an instance's binding policy applies unchanged.
+- **`resume`** is a read at conversation open, after `load`. The maintainer reads the last row and its excerpt through the store (`STORAGE.md` `getLastCheckpoint`, which resolves the row's `source` reference), offers the row's entity as the default answer to the binding ask (`BINDING.md`), and lists the excerpt's open items, giving the current `review` and `status` of each id the excerpt names. The human confirms the binding as usual. A checkpoint never binds a conversation by itself, and an instance's binding policy applies unchanged.
 
 A pending proposal recorded in a checkpoint is still only a proposal. Resuming does not persist it; the next conversation proposes it again if it still applies.
 
@@ -42,7 +42,7 @@ A pending proposal recorded in a checkpoint is still only a proposal. Resuming d
 A binding conforms **iff** it offers neutral, public read and write over the instance directory. This is a requirement, not an aspiration, and it is what makes the standard's portability claim hold regardless of who implements a binding.
 
 - **Neutral** — the instance is the agreed markdown serialization, not a vendor-internal representation. What you read is what another binding can write.
-- **Public** — read and write are reachable by something other than the vendor's own surface: an API, a file export, a git remote — any interface a second tool can drive.
+- **Public** — read and write are reachable by something other than the vendor's own surface: an API, a file export, a git remote — any interface a second tool can drive. The by-reference reads a tool performs over them (`getSource`, `getEntity`, `getEdges`, `getLastCheckpoint`) and the `project.md` rule that locates content are specified in `STORAGE.md`; a read server should also serve the RFC 6920 path `/.well-known/ni/sha-256/<digest>`.
 
 **Manual re-upload is the conformance probe.** If a human can round-trip the instance by export-and-paste — pull it out of binding A, hand it to binding B, and have B read it — the interface is public and neutral enough. If they cannot, the binding has defected from the portability goal, however slick its native UX. Manual re-upload is therefore not a fallback tier; it is the test every fancier binding must pass.
 
