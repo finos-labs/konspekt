@@ -43,7 +43,8 @@ Decisions pinned for this cut:
 The committer is orchestration over the existing shared library, not a second
 copy of the data model:
 
-- `lib/conformance.mjs` — `loadInstance`, `gitBlobSha` (the v1 source address),
+- `lib/conformance.mjs` — `loadInstance`, `sha256Hex` and `niRef` (the source and
+  proposal addresses),
   `parseYamlSubset`, `splitEntityFile`, `EDGE_KINDS`, and the validators.
 - `lib/authority.mjs` — grants and principals, for the scope-vs-grant check.
 - `lib/validate.mjs` — the post-fold and post-bless conformance gate.
@@ -57,7 +58,7 @@ per `implementations/README.md`: `app/` for code, `docs/` for this design.
 
 | File | Role |
 |------|------|
-| `git.mjs` | Plumbing: `git hash-object --no-filters`, atomic append+commit, post-write SHA recheck, DCO `Signed-off-by` trailer, worktree add/remove. |
+| `git.mjs` | Git commands: atomic append+commit, DCO `Signed-off-by` trailer, worktree add/remove, branch switch and merge. It computes no hashes; `payload.mjs` does, through `lib/conformance.mjs`. |
 | `worktrees.mjs` | Stand up N+1 worktrees off one object store; map outbox branch to owner handle. |
 | `payload.mjs` | Parse/serialize `proposal.md` + `source.md`; canonicalize and compute `proposal_id`. |
 | `outbox.mjs` | Proposer side: write one `proposals/<id>/` directory onto the agent's own outbox branch. |
@@ -73,10 +74,11 @@ per `implementations/README.md`: `app/` for code, `docs/` for this design.
 
 ## `proposal_id` canonicalization (pinned)
 
-`proposal_id` is the **git blob SHA** (`git hash-object --no-filters`, sha1 over
-`"blob <len>\0" + bytes`) of the **canonicalized proposal**. The v1 fleet binding
-adds no second content-address (`fleet-spec.md` § Proposal payload schema), so the
-id uses the same scheme as every other address in the store.
+`proposal_id` is the **hex SHA-256** over the raw bytes of the **canonicalized
+proposal**, the same digest and encoding the store uses to name content-addressed
+files (`sources/sha-256/<hex>.md`). It names an outbox directory, so it uses the
+hex form, not the `ni:` URI, which contains `/` and `;`
+(`docs/design/source-addressing.md`).
 
 Canonical bytes are the bytes of `proposal.md` with:
 
@@ -85,10 +87,11 @@ Canonical bytes are the bytes of `proposal.md` with:
 - line endings normalized to `LF` (any `CRLF` or lone `CR` becomes `LF`),
 - exactly one trailing `LF`.
 
-`source.hash` is computed separately as `git hash-object --no-filters` over the
-raw bytes of `source.md`, and is embedded in `proposal.md` frontmatter. Because
-the id is taken over `proposal.md` (which carries `source.hash`), the
-`proposal_id` transitively covers the source excerpt without hashing it twice.
+The source reference is computed separately as the `ni:///sha-256;<base64url>`
+reference over the raw bytes of `source.md`, and is embedded in the atom as
+`provenance.sourceRef`; `contentHash` is derived from it and not stored. Because
+the id is taken over the atom (which carries `sourceRef`), the `proposal_id`
+transitively covers the source excerpt without hashing it twice.
 
 The committer recomputes both on receipt and rejects any mismatch, so a proposal
 that was altered after its id was assigned never folds.
@@ -97,7 +100,8 @@ that was altered after its id was assigned never folds.
 
 Each milestone is independently testable.
 
-1. **M1 — payload + addressing.** `payload.mjs` + `git.mjs` `gitBlobSha` reuse;
+1. **M1 — payload + addressing.** `payload.mjs` reusing the `lib/conformance.mjs`
+   hash helpers;
    `proposal_id` canonicalization fixed and tested.
 2. **M2 — worktree harness.** `worktrees.mjs`: N+1 worktrees, branch-to-owner map,
    teardown.
@@ -147,6 +151,7 @@ recorded here so the run is repeatable.
   (`nw-fleet-committer-role-split`).
 - Origin is taken from the outbox branch owner; scope is checked, not trusted —
   triage for accountability, not a security boundary.
-- The v1 source address is the git blob SHA; the SHA-256 migration
-  (`task-sources-sha256-migration`) flips the fleet path when it lands store-wide.
+- The source address is the `ni:///sha-256` reference over the excerpt's raw
+  bytes, and the excerpt lands at `sources/sha-256/<hex>.md`. The store-wide
+  migration of existing atoms is `task-ni-references`.
 - One serialized writer; proposer agents read canonical and never write it.

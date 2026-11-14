@@ -61,14 +61,15 @@ on the human's authorization (`wp-adr-fleet-agentic-committer`).
    crystallized and should be a `concept` atom.
 2. **Proposer — author stored form.** It writes the Concept atom with
    `review: proposed` and a content-addressed source excerpt
-   (`sources/<hash>.md`, `git hash-object`), citing the hash from the atom.
+   (`sources/sha-256/<hex>.md`, SHA-256 over the raw bytes), citing its
+   `ni:///sha-256` reference from the atom's `sourceRef`.
    (`propose`)
 3. **Proposer — hand off.** Worktree mode: commit the atom onto its outbox
    branch, then call the committer with a pointer, the content hash
    (`nw-fleet-commit-then-call`). Pure agentic mode: send the payload in the
    call. Either way the call carries a pointer or payload, never authority.
 4. **Committer — verify.** Fetch the bytes from the trusted store and run the
-   record-level checks: the `git hash-object` source probe, the
+   record-level checks: the SHA-256 source probe, the
    `lib/conformance.mjs` schema check, the binding check, and the
    origin/branch-owner anti-spoof. A failed check sets the proposal aside with
    reasons and writes nothing.

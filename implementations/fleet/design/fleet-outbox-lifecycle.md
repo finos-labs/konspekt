@@ -30,13 +30,13 @@ fix; this note is its contract.
    invariant holds whether or not any proposer has consumed its outbox.
 4. **Dedup key from canonical alone.** The fold decides "already folded" by
    reading canonical: the target entity file exists and its `provenance`
-   `contentHash` equals the proposal's source hash. The `.konspekt-fleet/` fold
+   `sourceRef` equals the proposal's `sourceRef`. The `.konspekt-fleet/` fold
    log is gitignored derived state (`fleet-recovery.md`), so it cannot decide a
    write to canonical. An already-folded proposal is reported as `ALREADY FOLDED`
    and skipped. Its entity, edges, and transition rows are not rewritten, so a
    blessed or rejected `review` value is kept.
 5. **Collision rule.** When the entity id exists on canonical with a different
-   `contentHash`, the proposal is set aside with reason `id collision`. It does
+   `sourceRef`, the proposal is set aside with reason `id collision`. It does
    not overwrite the existing entity. A changed atom is proposed under a new id
    with a `supersedes` edge.
 
@@ -51,8 +51,8 @@ checkout.
 
 Implemented in `implementations/fleet/app/fold.mjs` under
 `task-fleet-fold-idempotent-impl`. `foldProposal` decides "already folded" from
-canonical (items 3–4): a target entity whose `provenance.contentHash` equals the
-proposal's source hash is reported `ALREADY FOLDED` and skipped, writing nothing;
+canonical (items 3–4): a target entity whose `provenance.sourceRef` equals the
+proposal's `sourceRef` is reported `ALREADY FOLDED` and skipped, writing nothing;
 a same-id entity with a different hash is set aside as an `id collision` (item 5).
 `foldProposals` returns the skipped set as `alreadyFolded`, and `foldPass` makes
 no commit when nothing new is folded (item 3's invariant). Covered by tests in

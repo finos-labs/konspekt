@@ -124,7 +124,7 @@ holding four files:
 - `meta.json` — the fleet envelope (origin, binding, depends_on, entity_type),
   which stays out of the stored atom.
 
-`<id>` is the git blob SHA of the canonical `entity.md`, so the directory name,
+`<id>` is the hex SHA-256 of the canonical `entity.md`, so the directory name,
 the proposal id, and the atom's eventual file on canonical share one content
 address.
 
@@ -183,8 +183,8 @@ node ../app/cli.mjs run-pass \
   --dry-run
 ```
 
-Each proposal is checked: the source excerpt hashes to the atom's
-`provenance.contentHash`, the declared origin matches the outbox branch owner,
+Each proposal is checked: the `ni:///sha-256` reference of the source excerpt
+equals the atom's `provenance.sourceRef`, the declared origin matches the outbox branch owner,
 the entity type is within the agent's grant, `review` is `proposed`, confidence
 is in range, binding is resolved, and `depends_on` resolves. A proposal that
 fails any check is printed as `SET ASIDE` with reasons and is not appended.

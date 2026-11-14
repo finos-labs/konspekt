@@ -1,6 +1,7 @@
 # Source addressing: `ni:` references and store resolution
 
-Status: design agreed; parser fix done; fleet moved to `ni:`; migration script next.
+Status: design agreed; parser fix done; fleet moved to `ni:`; conformance reads
+`ni:` in entity provenance, log cells and `command:` refs; migration script next.
 Graph: `investigation-source-uris` (accepted) records the decisions;
 `task-ni-references` (accepted) carries the implementation;
 `task-ni-impact-analysis` (proposed) verifies the change list below.
@@ -182,14 +183,14 @@ did not cover. Their current state:
    SHA-256 of the canonical entity bytes or the claim JSON. They name outbox
    directories, so they use the hex form that `sha-256/<hex>.md` file names
    use, not the `ni:` URI, which contains `/` and `;`.
-3. **Fleet source hashing (done in code).** The proposer writes
+3. **Fleet source hashing (done).** The proposer writes
    `sourceRef: ni:///sha-256;<base64url>` with no stored `contentHash`, verify
    compares the recomputed reference to `sourceRef`, fold writes the excerpt to
    `sources/sha-256/<hex>.md`, and a carried file's declared hash is its `ni:`
    reference. `lib/conformance.mjs` reads both forms, so canonical may mix
-   folded `ni:` atoms and unmigrated ones. The fleet's prose
-   (`fleet-spec.md` and the other documents in the change list) still
-   describes the git blob SHA.
+   folded `ni:` atoms and unmigrated ones. The fleet's README, DESIGN,
+   ADOPTING, spec, protocol and outbox-lifecycle documents and the
+   `fleet-proposer-common` skill describe the `ni:` form.
 4. **Line endings.** Hashing raw bytes keeps the existing dependency on
    working-tree bytes matching the committed bytes. The `.gitattributes`
    `eol=lf` pin must stay; its `.konspekt/instance/**/*.md` pattern already
