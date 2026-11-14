@@ -12,13 +12,13 @@
 //     edges.md    # the edge rows that wire the atom (edges.md table body)
 //     meta.json   # fleet envelope: origin, binding, depends_on, entity_type
 //
-// <proposal-id> is the git blob SHA of the canonicalized entity.md — the same
-// content address the store uses for every other object, and, because the
-// committer writes entity.md unchanged, the git blob SHA the atom's file carries
-// on canonical. This module only hashes and compares; it parses the entity with
+// <proposal-id> is the hex SHA-256 of the canonicalized entity.md, the same
+// digest and encoding the store uses to name content-addressed files
+// (`sha-256/<hex>.md`). Because the committer writes entity.md unchanged, the
+// atom's file on canonical hashes back to the proposal id. This module only hashes and compares; it parses the entity with
 // lib/conformance.mjs (splitEntityFile), the one stored-form reader.
 
-import { gitBlobSha, splitEntityFile } from "../../../lib/conformance.mjs";
+import { sha256Hex, niRef, splitEntityFile } from "../../../lib/conformance.mjs";
 
 // Canonical entity bytes: CRLF/CR normalized to LF, exactly one trailing LF, so
 // a proposer on any platform and the committer agree on the id and on the bytes
@@ -30,15 +30,15 @@ export function canonicalizeEntity(entityMdText) {
   return Buffer.from(s, "utf8");
 }
 
-// The proposal id: the git blob SHA of the canonical entity bytes.
+// The proposal id: the hex SHA-256 of the canonical entity bytes.
 export function computeEntityId(entityMdText) {
-  return gitBlobSha(canonicalizeEntity(entityMdText));
+  return sha256Hex(canonicalizeEntity(entityMdText));
 }
 
-// `provenance.contentHash` (== sourceRef in the git binding) is the git blob SHA
-// over the raw bytes of source.md.
+// `provenance.sourceRef` is the RFC 6920 `ni:///sha-256;<base64url>` reference
+// over the raw bytes of source.md. contentHash is derived from it, not stored.
 export function computeSourceHash(sourceMdBytes) {
-  return gitBlobSha(sourceMdBytes);
+  return niRef(sourceMdBytes);
 }
 
 // Recompute the proposal id over the canonical entity bytes and compare it to
@@ -49,12 +49,12 @@ export function verifyEntityId(entityMdText, claimedId) {
   return { ok: claimedId === expected, claimed: claimedId ?? null, expected };
 }
 
-// Recompute the source hash over source.md and compare it to the entity's own
-// provenance.contentHash. The proposer sets contentHash; the committer confirms
+// Recompute the source reference over source.md and compare it to the entity's
+// own provenance.sourceRef. The proposer sets sourceRef; the committer confirms
 // the excerpt the atom cites is the excerpt that arrived.
 export function verifySourceHash(entityMdText, sourceMdBytes) {
   const { front } = splitEntityFile(entityMdText);
-  const claimed = front.provenance && front.provenance.contentHash;
+  const claimed = front.provenance && front.provenance.sourceRef;
   const expected = computeSourceHash(sourceMdBytes);
   return { ok: claimed === expected, claimed: claimed ?? null, expected };
 }
@@ -62,11 +62,11 @@ export function verifySourceHash(entityMdText, sourceMdBytes) {
 // ----- carried files (task-fleet-proposal-carries-files) -----
 //
 // A proposal may carry repository files to land on canonical beside the atom
-// (documents, code, config). Each is content-addressed by the git blob SHA of
-// its bytes, the same address the store uses everywhere, so the committer can
-// confirm the bytes it folds are the bytes the proposer declared.
+// (documents, code, config). Each is content-addressed by the `ni:` SHA-256
+// reference over its bytes, the same address the store uses for sources, so the
+// committer can confirm the bytes it folds are the bytes the proposer declared.
 export function computeFileHash(bytes) {
-  return gitBlobSha(Buffer.isBuffer(bytes) ? bytes : Buffer.from(bytes));
+  return niRef(Buffer.isBuffer(bytes) ? bytes : Buffer.from(bytes));
 }
 
 // Normalize and vet a carried file's target path (where it lands on canonical).

@@ -10,7 +10,7 @@
 // depends_on, entity_type) that stays out of the stored atom.
 //
 // A proposal is one directory `proposals/<proposal-id>/` holding entity.md,
-// source.md, edges.md, and meta.json. The id is the git blob SHA of the
+// source.md, edges.md, and meta.json. The id is the hex SHA-256 of the
 // canonical entity bytes, so the directory name, the proposal id, and the atom's
 // eventual file on canonical all share one content address. Writing lands only
 // in the proposer's worktree, which is bound to its own outbox branch, so a
@@ -35,11 +35,12 @@ export function renderEdgesBlock(rows = []) {
   return header + body + "\n";
 }
 
-// Render the provenance block the proposer sets on its own atom. In the git
-// binding the source address is one hash: sourceRef == contentHash == the git
-// blob SHA of source.md (SERIALIZATION.md; lib/conformance.mjs enforces it).
+// Render the provenance block the proposer sets on its own atom. sourceRef is
+// the `ni:///sha-256` reference over source.md; contentHash is derived from it
+// and not stored (docs/design/source-addressing.md; lib/conformance.mjs
+// enforces it).
 function renderProvenance({ sourceHash, conversationId, timestamp, confidence }) {
-  const lines = ["provenance:", `  sourceRef: ${sourceHash}`, `  contentHash: ${sourceHash}`];
+  const lines = ["provenance:", `  sourceRef: ${sourceHash}`];
   if (conversationId) lines.push(`  conversationId: ${conversationId}`);
   lines.push(`  timestamp: ${timestamp}`);
   lines.push(`  confidence: ${confidence}`);

@@ -1,6 +1,6 @@
 # Source addressing: `ni:` references and store resolution
 
-Status: design agreed; parser fix done; test migration next.
+Status: design agreed; parser fix done; fleet moved to `ni:`; migration script next.
 Graph: `investigation-source-uris` (accepted) records the decisions;
 `task-ni-references` (accepted) carries the implementation;
 `task-ni-impact-analysis` (proposed) verifies the change list below.
@@ -178,9 +178,18 @@ did not cover. Their current state:
    instance file. The notifier's `readEntity` matches `sourceRef` at exactly
    two spaces of indent, so it already reads the current reference whatever
    the order of the nested block.
-2. **Fleet proposal ids (decided).** They migrate to `ni:` with the rest.
-3. **Fleet source hashing (decided).** It migrates to `ni:`, replacing the git
-   blob SHA that `fleet-spec.md`, `payload.mjs` and `verify.mjs` still compute.
+2. **Fleet proposal ids (done).** A proposal id and a claim id are the hex
+   SHA-256 of the canonical entity bytes or the claim JSON. They name outbox
+   directories, so they use the hex form that `sha-256/<hex>.md` file names
+   use, not the `ni:` URI, which contains `/` and `;`.
+3. **Fleet source hashing (done in code).** The proposer writes
+   `sourceRef: ni:///sha-256;<base64url>` with no stored `contentHash`, verify
+   compares the recomputed reference to `sourceRef`, fold writes the excerpt to
+   `sources/sha-256/<hex>.md`, and a carried file's declared hash is its `ni:`
+   reference. `lib/conformance.mjs` reads both forms, so canonical may mix
+   folded `ni:` atoms and unmigrated ones. The fleet's prose
+   (`fleet-spec.md` and the other documents in the change list) still
+   describes the git blob SHA.
 4. **Line endings.** Hashing raw bytes keeps the existing dependency on
    working-tree bytes matching the committed bytes. The `.gitattributes`
    `eol=lf` pin must stay; its `.konspekt/instance/**/*.md` pattern already

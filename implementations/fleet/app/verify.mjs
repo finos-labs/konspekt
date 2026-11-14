@@ -58,8 +58,8 @@ export function verifyProposal({ entityMd, sourceMd, meta = {}, files = [], bran
   const agent = meta.origin && meta.origin.agent;
   const entityType = String(meta.entity_type || "").toLowerCase();
 
-  // source: recompute the git blob SHA over source.md and compare it to the
-  // atom's own provenance.contentHash.
+  // source: recompute the ni: SHA-256 reference over source.md and compare it
+  // to the atom's own provenance.sourceRef.
   if (sourceMd != null) {
     const sv = verifySourceHash(String(entityMd), Buffer.from(sourceMd, "utf8"));
     checks.source = sv.ok;
