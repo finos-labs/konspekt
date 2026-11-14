@@ -51,24 +51,39 @@ object InstanceReader {
 
   private val KV = Regex("^([A-Za-z0-9_\$.-]+):\\s*(.*)$")
 
-  // Parse the fenced ```yaml front-matter into a flat map, nesting one level as
-  // "parent.key" (summary.updatedAt, provenance.timestamp, ...). Enough for the
-  // fields the view needs; folded/literal block scalars are skipped.
-  private fun parseFront(text: String): Map<String, String> {
+  // Parse the fenced ```yaml front-matter into a flat map keyed by the full
+  // dotted path of each scalar ("summary.updatedAt", "provenance.sourceRef",
+  // "provenance.deprecated.sourceRef", ...), at any nesting depth, so a nested
+  // key never overwrites a shallower one with the same name. Enough for the
+  // fields the view needs: sequence items ("- ...") and folded/literal block
+  // scalars are skipped. The authoritative parser is lib/conformance.mjs.
+  internal fun parseFront(text: String): Map<String, String> {
     val t = text.replace("\r\n", "\n").trimStart()
     val fence = Regex("(?s)^```ya?ml\\n(.*?)\\n```").find(t) ?: return emptyMap()
     val out = HashMap<String, String>()
-    var parent: String? = null
+    val path = ArrayDeque<Pair<Int, String>>() // (indent, key) of each open map
+    var skipDeeperThan = -1                     // inside a block scalar or a sequence
     for (raw in fence.groupValues[1].split("\n")) {
       if (raw.isBlank() || raw.trim().startsWith("#")) continue
       val indent = raw.length - raw.trimStart().length
-      val m = KV.find(raw.trim()) ?: continue
-      val key = m.groupValues[1]; val rest = m.groupValues[2]
-      if (indent == 0) {
-        if (rest.isEmpty() || rest == ">" || rest == ">-" || rest == "|" || rest == "|-") parent = key
-        else { out[key] = stripQuotes(rest); parent = null }
-      } else if (parent != null && rest.isNotEmpty()) {
-        out["$parent.$key"] = stripQuotes(rest)
+      if (skipDeeperThan >= 0) {
+        if (indent > skipDeeperThan) continue
+        skipDeeperThan = -1
+      }
+      val trimmed = raw.trim()
+      while (path.isNotEmpty() && path.last().first >= indent) path.removeLast()
+      if (trimmed.startsWith("- ") || trimmed == "-") {
+        // A sequence item: skip it and anything nested under it.
+        skipDeeperThan = indent
+        continue
+      }
+      val m = KV.find(trimmed) ?: continue
+      val key = m.groupValues[1]; val rest = m.groupValues[2].trim()
+      val full = (path.map { it.second } + key).joinToString(".")
+      when {
+        rest == ">" || rest == ">-" || rest == "|" || rest == "|-" -> skipDeeperThan = indent
+        rest.isEmpty() -> path.addLast(indent to key)
+        else -> out[full] = stripQuotes(rest)
       }
     }
     return out

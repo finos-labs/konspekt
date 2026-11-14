@@ -1,6 +1,6 @@
 # Source addressing: `ni:` references and store resolution
 
-Status: design agreed, implementation not started.
+Status: design agreed; parser fix done; test migration next.
 Graph: `investigation-source-uris` (accepted) records the decisions;
 `task-ni-references` (accepted) carries the implementation;
 `task-ni-impact-analysis` (proposed) verifies the change list below.
@@ -165,26 +165,29 @@ fleet, the UI clients) runs on a migrated instance without breaking.
 ## Questions raised by the impact sweep
 
 The sweep behind the change list turned up four points the design discussion
-did not cover:
+did not cover. Their current state:
 
-1. **Parser depth.** The YAML subset parser in `lib/conformance.mjs` supports
-   one level of nested maps and inline arrays. `provenance.deprecated` is two
-   levels deep, and `locators` is a block list of maps. The parser, the
-   IntelliJ plugin's `InstanceReader.kt` (which reads flattened keys such as
-   `provenance.sourceRef`) and the notifier's front-matter reader all need to
-   handle these shapes, or the shapes need flattening.
-2. **Fleet proposal ids.** The fleet names each proposal by the git blob SHA of
-   its canonical `entity.md`. That is an identifier for proposals, not a
-   source reference. Decide whether it moves to `ni:` as well or stays as an
-   internal id.
-3. **Fleet source hashing.** `nw-fleet-sha256-source-addressing` records that
-   fleet payloads address sources by SHA-256, but `fleet-spec.md`,
-   `payload.mjs` and `verify.mjs` still compute git blob SHAs. The fleet moves
-   straight to `ni:` with this change.
+1. **Parser depth (fixed).** The YAML subset parser in `lib/conformance.mjs`
+   supported one level of nested maps, so `provenance.deprecated.sourceRef`
+   overwrote `provenance.sourceRef` and `locators` items were dropped without
+   an error. The parser now reads maps at any depth and block sequences of
+   maps, and `loadInstance` reports any front-matter line it cannot place as a
+   `frontmatter-unparsed` error. The IntelliJ plugin's `InstanceReader.kt`
+   had the same overwrite and now keys each scalar by its full dotted path.
+   Both produce output identical to the old readers on every existing
+   instance file. The notifier's `readEntity` matches `sourceRef` at exactly
+   two spaces of indent, so it already reads the current reference whatever
+   the order of the nested block.
+2. **Fleet proposal ids (decided).** They migrate to `ni:` with the rest.
+3. **Fleet source hashing (decided).** It migrates to `ni:`, replacing the git
+   blob SHA that `fleet-spec.md`, `payload.mjs` and `verify.mjs` still compute.
 4. **Line endings.** Hashing raw bytes keeps the existing dependency on
    working-tree bytes matching the committed bytes. The `.gitattributes`
-   `eol=lf` pin must stay and must also cover the new `sha-256/` directories,
-   which its `.konspekt/instance/**/*.md` pattern already does.
+   `eol=lf` pin must stay; its `.konspekt/instance/**/*.md` pattern already
+   covers the new `sha-256/` directories.
+
+The migration is first run as a test on the `task-ni-references` branch,
+tracked by `task-ni-test-migration`.
 
 ## Change list
 
