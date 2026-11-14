@@ -549,3 +549,4 @@ commit order; the channel was not live during that work.
 | task-ni-test-migration | bc82b556d441d47128072c349d5edae0012ffd38 | implementations/fleet/docs/ADOPTING.md | 2026-11-14T18:55:49Z |
 | task-ni-test-migration | bc82b556d441d47128072c349d5edae0012ffd38 | implementations/fleet/docs/DESIGN.md | 2026-11-14T18:55:49Z |
 | task-ni-test-migration | 36fc1d8911f9e12625e5195695e63511c35ecd3a | implementations/intellij-plugin/app/gradle.properties | 2026-11-14T18:55:49Z |
+| task-ni-test-migration | 666f911c36db36232b2d7d81934a674451f1bb63 | ROADMAP.md | 2026-11-14T18:56:09Z |
