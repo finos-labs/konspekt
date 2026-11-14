@@ -565,3 +565,15 @@ commit order; the channel was not live during that work.
 | task-ni-test-migration | 3ab83d189d1ba3a099dbc40de2b55e1de8aa7d6e | implementations/intellij-plugin/app/gradle.properties | 2026-11-14T19:40:04Z |
 | task-ni-test-migration | dbbe4d0d3608c24ad223bbb796d0f9fb73cb4df9 | ROADMAP.md | 2026-11-14T19:40:04Z |
 | task-ni-test-migration | 053537c5433614ec66a13b8fb3a8c08ee67b3ba6 | docs/design/source-addressing.md | 2026-11-14T19:40:32Z |
+| task-ni-references | 675b6a29a8cd6f1378664190b76ee0ff18592672 | lib/conformance.mjs | 2026-11-14T19:48:32Z |
+| task-ni-references | 675b6a29a8cd6f1378664190b76ee0ff18592672 | spec/architecture/README.md | 2026-11-14T19:48:32Z |
+| task-ni-references | 675b6a29a8cd6f1378664190b76ee0ff18592672 | spec/architecture/RECONCILIATION.md | 2026-11-14T19:48:32Z |
+| task-ni-references | 675b6a29a8cd6f1378664190b76ee0ff18592672 | spec/architecture/SERIALIZATION.md | 2026-11-14T19:48:32Z |
+| task-ni-references | 675b6a29a8cd6f1378664190b76ee0ff18592672 | spec/architecture/STORAGE.md | 2026-11-14T19:48:32Z |
+| task-ni-references | 675b6a29a8cd6f1378664190b76ee0ff18592672 | spec/architecture/TRANSPORT.md | 2026-11-14T19:48:32Z |
+| task-ni-references | 675b6a29a8cd6f1378664190b76ee0ff18592672 | spec/data-model/SPEC.md | 2026-11-14T19:48:32Z |
+| task-ni-references | 675b6a29a8cd6f1378664190b76ee0ff18592672 | spec/data-model/schema.ts | 2026-11-14T19:48:32Z |
+| task-ni-references | 675b6a29a8cd6f1378664190b76ee0ff18592672 | spec/personas/README.md | 2026-11-14T19:48:32Z |
+| task-ni-references | 675b6a29a8cd6f1378664190b76ee0ff18592672 | spec/personas/engineer/AGENTS.md | 2026-11-14T19:48:32Z |
+| task-ni-references | 675b6a29a8cd6f1378664190b76ee0ff18592672 | spec/personas/engineer/SPEC.md | 2026-11-14T19:48:32Z |
+| task-ni-references | 675b6a29a8cd6f1378664190b76ee0ff18592672 | test/conformance-ni-refs.test.mjs | 2026-11-14T19:48:32Z |
