@@ -3,7 +3,7 @@
      Check freshness with: node tools/roadmap.mjs --check
      This file is a pure function of .konspekt/instance/ (no timestamps baked in).
      Goals and tasks are graph nodes; the horizon is derived from node status/review.
-     contentHash: sha256:6175f5e57c742d8e -->
+     contentHash: sha256:ea1d3719f14b7f3a -->
 
 # konspekt roadmap
 
@@ -145,14 +145,14 @@ Keep a project's working context — its instructions, accumulated decisions, an
 **Next** — _accepted and planned_
 
 - init.mjs does not scaffold instance/authority/ tables
+- A durable store other than git
 - Decide whether instance/ directory layout should be regularized
+- Verify the impact of ni: source addressing, file by file
+- Migrate references to ni:///sha-256 with store resolution
+- Test the ni: migration on the task-ni-references branch
 - Consider an "outcome" node type for testable controls
 - Make notifications portable
 - Find the second implementer
-
-**Later** — _proposed, not yet committed_
-
-- A durable store other than git
 
 **Shipped** — _resolved_
 
@@ -207,6 +207,7 @@ Let several participants — people and agents — propose into and review one s
 **Now** — _in progress_
 
 - Fleet adjustments (ongoing)
+- Place the fleet design docs with the fleet implementation
 
 **Next** — _accepted and planned_
 
@@ -232,4 +233,4 @@ Let several participants — people and agents — propose into and review one s
 
 ---
 
-Generated from 9 goal(s) and 96 task-listing(s) over the instance graph.
+Generated from 9 goal(s) and 100 task-listing(s) over the instance graph.
