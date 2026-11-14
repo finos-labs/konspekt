@@ -550,3 +550,15 @@ commit order; the channel was not live during that work.
 | task-ni-test-migration | bc82b556d441d47128072c349d5edae0012ffd38 | implementations/fleet/docs/DESIGN.md | 2026-11-14T18:55:49Z |
 | task-ni-test-migration | 36fc1d8911f9e12625e5195695e63511c35ecd3a | implementations/intellij-plugin/app/gradle.properties | 2026-11-14T18:55:49Z |
 | task-ni-test-migration | 666f911c36db36232b2d7d81934a674451f1bb63 | ROADMAP.md | 2026-11-14T18:56:09Z |
+| task-ni-test-migration | 01c3029b098b501282922bf9a084b9e458d7a64b | docs/design/source-addressing.md | 2026-11-14T19:37:15Z |
+| task-ni-test-migration | 01c3029b098b501282922bf9a084b9e458d7a64b | implementations/fleet/design/fleet-spec.md | 2026-11-14T19:37:15Z |
+| task-ni-test-migration | 742698af3680a1556db7bfe728023c0a28349c3c | implementations/implementation-zero/app/server.mjs | 2026-11-14T19:37:15Z |
+| task-ni-test-migration | 742698af3680a1556db7bfe728023c0a28349c3c | implementations/implementation-zero/app/test/server.test.mjs | 2026-11-14T19:37:15Z |
+| task-ni-test-migration | 742698af3680a1556db7bfe728023c0a28349c3c | implementations/implementation-zero/app/view/app.js | 2026-11-14T19:37:15Z |
+| task-ni-test-migration | 742698af3680a1556db7bfe728023c0a28349c3c | implementations/intellij-plugin/app/src/main/kotlin/dev/konspekt/plugin/InstanceReader.kt | 2026-11-14T19:37:15Z |
+| task-ni-test-migration | 0000297f1e81b85ae69268df7be8fc3db8800eda | .claude/hooks/load-mandatory-skills.sh | 2026-11-14T19:37:15Z |
+| task-ni-test-migration | 0000297f1e81b85ae69268df7be8fc3db8800eda | .konspekt/lib/konspekt-notify.mjs | 2026-11-14T19:37:15Z |
+| task-ni-test-migration | 0000297f1e81b85ae69268df7be8fc3db8800eda | lib/views.mjs | 2026-11-14T19:37:15Z |
+| task-ni-test-migration | 0000297f1e81b85ae69268df7be8fc3db8800eda | setup/components/notify/konspekt-notify.mjs | 2026-11-14T19:37:15Z |
+| task-ni-test-migration | 0000297f1e81b85ae69268df7be8fc3db8800eda | test/migrate-ni.test.mjs | 2026-11-14T19:37:15Z |
+| task-ni-test-migration | 0000297f1e81b85ae69268df7be8fc3db8800eda | tools/migrate-ni.mjs | 2026-11-14T19:37:15Z |
