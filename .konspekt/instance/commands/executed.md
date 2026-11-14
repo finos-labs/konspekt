@@ -179,3 +179,10 @@ New rows below this backfill are recorded live.
 | task-ni-references | ni:///sha-256;9b_RCatK4lbMwBl5TiadIAjbGm8z0AOxJX8ArqrNuaM |
 | task-ni-references | ni:///sha-256;z2M6yRtRRpC3t-ALc96EZQriBvuyMEn_HOaiT-XZ67A |
 | task-ni-references | ni:///sha-256;CMUvd8wKSxa9lkzsqxF4krciZCox5K1cV6hxNgvmfcI |
+| task-ni-references | ni:///sha-256;MmtbY-ra9wf5OWgU4933UkxSeSWrlV7YBu_iVG-l5H0 |
+| task-ni-references | ni:///sha-256;NPXU6OoxFfsA2J5CrXVs_S0WAtfGUM2b844WbTRxX7Y |
+| task-ni-references | ni:///sha-256;Mt28sIJd47syoWlemC-IWSd-xpNrnrq6C2wfuF4fy9w |
+| task-ni-references | ni:///sha-256;TTsL7N91djSZm8ov0ezRsdHAfBKuy4LkbftG4djTxpc |
+| task-ni-references | ni:///sha-256;0M3HOzAO7DFpNmTzHKNKeCl-smFnt2TU-q4jmBdbzII |
+| task-ni-references | ni:///sha-256;8pqPdeQoggF61pJPopUdy152t0ZcI_WQjZlU_3p0Wl4 |
+| task-ni-references | ni:///sha-256;GrWU2n3vfzVfKM_kx2wZxJI3T87h-PASMGTyLSIu0M8 |

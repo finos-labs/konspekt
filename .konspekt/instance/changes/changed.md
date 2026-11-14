@@ -578,3 +578,7 @@ commit order; the channel was not live during that work.
 | task-ni-references | 675b6a29a8cd6f1378664190b76ee0ff18592672 | spec/personas/engineer/SPEC.md | 2026-11-14T19:48:32Z |
 | task-ni-references | 675b6a29a8cd6f1378664190b76ee0ff18592672 | test/conformance-ni-refs.test.mjs | 2026-11-14T19:48:32Z |
 | task-ni-references | 07cf0d3ab2c7852387537c34af14b2907d72c55f | ROADMAP.md | 2026-11-14T19:48:51Z |
+| task-ni-references | 183cc38da99bcd30880e02034c598eca05778be3 | lib/locator-reach.mjs | 2026-11-14T20:10:28Z |
+| task-ni-references | 183cc38da99bcd30880e02034c598eca05778be3 | lib/validate.mjs | 2026-11-14T20:10:28Z |
+| task-ni-references | 183cc38da99bcd30880e02034c598eca05778be3 | setup/components/conformance/manifest.yml | 2026-11-14T20:10:28Z |
+| task-ni-references | 183cc38da99bcd30880e02034c598eca05778be3 | test/locator-reach.test.mjs | 2026-11-14T20:10:28Z |
