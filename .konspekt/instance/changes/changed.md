@@ -523,3 +523,4 @@ commit order; the channel was not live during that work.
 | task-ni-references | bd177f96d83ac8167437df31996e80a5c4662de7 | implementations/intellij-plugin/app/src/main/kotlin/dev/konspekt/plugin/InstanceReader.kt | 2026-11-14T14:45:53Z |
 | task-ni-references | bd177f96d83ac8167437df31996e80a5c4662de7 | lib/conformance.mjs | 2026-11-14T14:45:53Z |
 | task-ni-references | bd177f96d83ac8167437df31996e80a5c4662de7 | test/conformance-yaml-subset.test.mjs | 2026-11-14T14:45:53Z |
+| task-ni-references | 0c1aee6cd2e09d94e522336efa3ab1fa8a59fc46 | ROADMAP.md | 2026-11-14T18:38:37Z |
