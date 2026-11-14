@@ -1,7 +1,10 @@
 # Source addressing: `ni:` references and store resolution
 
-Status: design agreed; parser fix done; fleet moved to `ni:`; conformance reads
-`ni:` in entity provenance, log cells and `command:` refs; migration script next.
+Status: design agreed; test migration of this repository's instance done on the
+`task-ni-references` branch with `tools/migrate-ni.mjs` (conformance clean, second
+run changes nothing). Spec, schema, setup kit and documentation changes are next.
+Decisions: `wp-adr-ni-sha256-references`, `wp-adr-store-resolve-rule`,
+`wp-adr-in-place-ni-migration` (proposed).
 Graph: `investigation-source-uris` (accepted) records the decisions;
 `task-ni-references` (accepted) carries the implementation;
 `task-ni-impact-analysis` (proposed) verifies the change list below.
