@@ -125,6 +125,82 @@ for (const [name, tasks, files, want] of CASES) {
   check(name, JSON.stringify(codes) === JSON.stringify(want.slice().sort()), `wanted [${want}] got [${codes}]`);
 }
 
+// ----- table cells and channel refs -----
+//
+// The `source` cells of the transitions, checkpoints and grants logs, and the
+// command cells of the engineer executed log, take either form. Each case
+// builds one instance with task-a migrated and checks the codes the log yields.
+
+const REG = await import(pathToFileURL(join(HERE, "..", "spec", "personas", "engineer", "registry.mjs")));
+const engineer = REG.persona ? REG : null;
+const CMD = Buffer.from("node tools/example.mjs\n");
+const cmdRef = niRef(CMD);
+
+function buildLogs({ transitionSource, checkpointSource, grantSource, command, edgeTo }) {
+  const dir = build({ "task-a": niProv }, [newFile, oldFile]);
+  mkdirSync(join(dir, "transitions"));
+  writeFileSync(join(dir, "transitions/transitions.md"),
+    "# Transitions\n\n| ref | field | from | to | timestamp | source | by |\n|-----|-------|------|----|-----------|--------|----|\n" +
+    `| node:task-a | review |  | proposed | ${TS} | ${transitionSource} | alice |\n` +
+    `| node:task-a | status |  | open | ${TS} | ${transitionSource} | alice |\n`);
+  mkdirSync(join(dir, "checkpoints"));
+  writeFileSync(join(dir, "checkpoints/checkpoints.md"),
+    "# Checkpoints\n\n| timestamp | entity | source | venue | model | by |\n|-----------|--------|--------|-------|-------|----|\n" +
+    `| 2026-01-02T00:00:00Z | task-a | ${checkpointSource} | claude-code-cli |  | alice |\n`);
+  mkdirSync(join(dir, "authority"));
+  writeFileSync(join(dir, "authority/principals.md"),
+    "# Principals\n\n| id | kind | roles | key |\n|----|------|-------|-----|\n| alice | human | grantor |  |\n");
+  writeFileSync(join(dir, "authority/grants.md"),
+    "# Grants\n\n| scope | acceptor | action | grantor | timestamp | source |\n" +
+    "|-------|----------|--------|---------|-----------|--------|\n" + `| * | alice | grant | alice | ${TS} | ${grantSource} |\n`);
+  mkdirSync(join(dir, "commands/sha-256"), { recursive: true });
+  writeFileSync(join(dir, `commands/sha-256/${sha256Hex(CMD)}.md`), CMD);
+  writeFileSync(join(dir, "commands/executed.md"),
+    "# Executed\n\n| entity | command |\n|--------|---------|\n" + `| task-a | ${command} |\n`);
+  if (edgeTo) {
+    writeFileSync(join(dir, "edges/edges.md"),
+      entity(`provenance:\n  conversationId: t\n  timestamp: ${TS}\nreview: accepted`,
+        "| id | kind | from | to | weight | review |\n|----|------|------|----|--------|--------|\n" +
+        `| e-cmd | relates | ${edgeTo} | node:task-a |  | proposed |`));
+  }
+  return dir;
+}
+
+const LOG_CODES = new Set(["dangling-source", "content-hash-mismatch", "malformed-source-ref",
+  "dangling-provenance-ref", "provenance-ref-hash-mismatch"]);
+function logCodes(opts) {
+  const dir = buildLogs(opts);
+  try {
+    return loadInstance(dir, { personas: engineer ? [engineer] : [] }).problems
+      .filter((p) => LOG_CODES.has(p.code)).map((p) => `${p.severity}:${p.code}`).sort();
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+}
+
+check("the engineer registry loads", Boolean(engineer));
+const GOOD_LOGS = { transitionSource: newRef, checkpointSource: newRef, grantSource: newRef, command: cmdRef };
+const LOG_CASES = [
+  ["ni: refs in every log resolve and verify", GOOD_LOGS, []],
+  ["legacy git blob SHAs in every log still resolve",
+    { transitionSource: oldSha, checkpointSource: oldSha, grantSource: oldSha, command: cmdRef }, []],
+  ["a transition source with no sha-256 file is dangling",
+    { ...GOOD_LOGS, transitionSource: niRef(Buffer.from("absent")) }, ["error:dangling-source", "error:dangling-source"]],
+  ["a checkpoint source with a malformed ni: ref is an error",
+    { ...GOOD_LOGS, checkpointSource: "ni:///sha-256;bad" }, ["error:malformed-source-ref"]],
+  ["a grant source with a malformed ni: ref is an error",
+    { ...GOOD_LOGS, grantSource: "ni:///sha-256;bad" }, ["error:malformed-source-ref"]],
+  ["an executed command with no sha-256 file is dangling",
+    { ...GOOD_LOGS, command: niRef(Buffer.from("absent")) }, ["error:dangling-provenance-ref"]],
+  ["a command:ni: edge endpoint resolves to commands/sha-256/", { ...GOOD_LOGS, edgeTo: `command:${cmdRef}` }, []],
+  ["a command:ni: edge endpoint with no file is dangling",
+    { ...GOOD_LOGS, edgeTo: `command:${niRef(Buffer.from("absent"))}` }, ["error:dangling-provenance-ref"]],
+];
+for (const [name, opts, want] of LOG_CASES) {
+  const codes = logCodes(opts);
+  check(name, JSON.stringify(codes) === JSON.stringify(want.slice().sort()), `wanted [${want}] got [${codes}]`);
+}
+
 if (failures.length) {
   console.error(`\n${failures.length} failure(s):\n  ` + failures.join("\n  "));
   process.exit(1);

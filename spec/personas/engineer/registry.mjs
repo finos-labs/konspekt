@@ -31,8 +31,10 @@ export const edges = {
 };
 
 // Content-addressed provenance channels this layer adds, parallel to sources/.
-// A `command:<hash>` reference resolves to `<dir>/<hash><ext>` and verifies by
-// git-blob-SHA the same way sources/ does.
+// A `command:ni:///sha-256;<base64url>` reference resolves to
+// `<dir>/sha-256/<hex><ext>` and verifies by SHA-256 over the raw bytes; a legacy
+// `command:<git-blob-sha>` reference resolves to `<dir>/<sha><ext>` and verifies
+// by git blob SHA. Both are read the same way as sources/.
 export const provenanceRefs = {
   command: { dir: "commands", ext: ".md" },
 };
