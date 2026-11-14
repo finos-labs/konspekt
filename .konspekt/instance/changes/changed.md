@@ -535,3 +535,4 @@ commit order; the channel was not live during that work.
 | task-ni-test-migration | 9be768f133536429abe17a6543d4d5bdbc8da72a | implementations/fleet/app/verify.mjs | 2026-11-14T18:47:21Z |
 | task-ni-test-migration | 9be768f133536429abe17a6543d4d5bdbc8da72a | lib/conformance.mjs | 2026-11-14T18:47:21Z |
 | task-ni-test-migration | 9be768f133536429abe17a6543d4d5bdbc8da72a | test/conformance-ni-refs.test.mjs | 2026-11-14T18:47:21Z |
+| task-ni-test-migration | 68de1d218cff26ac6888816517042af25ba74166 | ROADMAP.md | 2026-11-14T18:47:43Z |
