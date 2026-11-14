@@ -1335,3 +1335,5 @@ proposing agent was not recorded.
 | edge:e-drv-losslessmig-adrinplace | review | proposed | accepted | 2026-11-14T19:43:57Z | ni:///sha-256;Z6nxkuUt-AFAiYwlhX4b27TfwfzHcOZZIW8pkiWBxB0 | denisurusov |
 | edge:e-mark-adrinplace-sourceuris | review | proposed | accepted | 2026-11-14T19:43:57Z | ni:///sha-256;Z6nxkuUt-AFAiYwlhX4b27TfwfzHcOZZIW8pkiWBxB0 | denisurusov |
 | node:task-ni-test-migration | status | active | resolved | 2026-11-14T19:43:57Z | ni:///sha-256;Z6nxkuUt-AFAiYwlhX4b27TfwfzHcOZZIW8pkiWBxB0 | denisurusov |
+| noteworthy:nw-setup-templates-crlf-on-windows | review |  | proposed | 2026-11-14T20:17:03Z |  | claude |
+| edge:e-not-nirefs-setupcrlf | review |  | proposed | 2026-11-14T20:17:03Z |  | claude |
