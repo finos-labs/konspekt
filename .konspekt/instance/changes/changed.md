@@ -582,3 +582,4 @@ commit order; the channel was not live during that work.
 | task-ni-references | 183cc38da99bcd30880e02034c598eca05778be3 | lib/validate.mjs | 2026-11-14T20:10:28Z |
 | task-ni-references | 183cc38da99bcd30880e02034c598eca05778be3 | setup/components/conformance/manifest.yml | 2026-11-14T20:10:28Z |
 | task-ni-references | 183cc38da99bcd30880e02034c598eca05778be3 | test/locator-reach.test.mjs | 2026-11-14T20:10:28Z |
+| task-ni-references | b7c26b7ba010b0e9742a7c82a8707815c9ac6fbd | .gitattributes | 2026-11-14T20:12:15Z |
