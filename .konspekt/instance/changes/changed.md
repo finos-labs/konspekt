@@ -536,3 +536,16 @@ commit order; the channel was not live during that work.
 | task-ni-test-migration | 9be768f133536429abe17a6543d4d5bdbc8da72a | lib/conformance.mjs | 2026-11-14T18:47:21Z |
 | task-ni-test-migration | 9be768f133536429abe17a6543d4d5bdbc8da72a | test/conformance-ni-refs.test.mjs | 2026-11-14T18:47:21Z |
 | task-ni-test-migration | 68de1d218cff26ac6888816517042af25ba74166 | ROADMAP.md | 2026-11-14T18:47:43Z |
+| task-ni-test-migration | cc26302bf46a3064f16c5e00d0c4079ac5674e2b | lib/conformance.mjs | 2026-11-14T18:55:49Z |
+| task-ni-test-migration | cc26302bf46a3064f16c5e00d0c4079ac5674e2b | spec/personas/engineer/registry.mjs | 2026-11-14T18:55:49Z |
+| task-ni-test-migration | cc26302bf46a3064f16c5e00d0c4079ac5674e2b | test/conformance-ni-refs.test.mjs | 2026-11-14T18:55:49Z |
+| task-ni-test-migration | bc82b556d441d47128072c349d5edae0012ffd38 | .claude/skills/fleet-proposer-common/SKILL.md | 2026-11-14T18:55:49Z |
+| task-ni-test-migration | bc82b556d441d47128072c349d5edae0012ffd38 | .konspekt/agents/skills/fleet-proposer-common/SKILL.md | 2026-11-14T18:55:49Z |
+| task-ni-test-migration | bc82b556d441d47128072c349d5edae0012ffd38 | docs/design/source-addressing.md | 2026-11-14T18:55:49Z |
+| task-ni-test-migration | bc82b556d441d47128072c349d5edae0012ffd38 | implementations/fleet/app/README.md | 2026-11-14T18:55:49Z |
+| task-ni-test-migration | bc82b556d441d47128072c349d5edae0012ffd38 | implementations/fleet/design/fleet-outbox-lifecycle.md | 2026-11-14T18:55:49Z |
+| task-ni-test-migration | bc82b556d441d47128072c349d5edae0012ffd38 | implementations/fleet/design/fleet-protocol.md | 2026-11-14T18:55:49Z |
+| task-ni-test-migration | bc82b556d441d47128072c349d5edae0012ffd38 | implementations/fleet/design/fleet-spec.md | 2026-11-14T18:55:49Z |
+| task-ni-test-migration | bc82b556d441d47128072c349d5edae0012ffd38 | implementations/fleet/docs/ADOPTING.md | 2026-11-14T18:55:49Z |
+| task-ni-test-migration | bc82b556d441d47128072c349d5edae0012ffd38 | implementations/fleet/docs/DESIGN.md | 2026-11-14T18:55:49Z |
+| task-ni-test-migration | 36fc1d8911f9e12625e5195695e63511c35ecd3a | implementations/intellij-plugin/app/gradle.properties | 2026-11-14T18:55:49Z |
