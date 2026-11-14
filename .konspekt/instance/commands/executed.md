@@ -99,3 +99,7 @@ New rows below this backfill are recorded live.
 | task-ni-references | 519553cfcd27076f605e4e6c26be53988efcba0d |
 | task-ni-references | 643c73a27933926d2d6128d07c2e0bcb5f7c58c0 |
 | task-ni-references | 7cc585df88f66191419e12d0814d25041d7bd6c0 |
+| task-ni-references | 78ba3b33f31cd2934a5c643a341977982453714e |
+| task-ni-references | 4cc1166e9aa59511b9db163bdeebbdaa504142a3 |
+| task-ni-references | 810d30af1fcab72e58e68b56ac2bd6b3c1176148 |
+| task-ni-references | 08494a3d00474fbeaf632d36c5b7bfa6b8448a6d |

@@ -1292,3 +1292,6 @@ proposing agent was not recorded.
 | node:task-ni-impact-analysis | review |  | proposed | 2026-11-14T14:31:52Z | 68ef8f82d0b05369b631b6715a607008f414cec7 | claude |
 | node:task-ni-impact-analysis | status |  | open | 2026-11-14T14:31:52Z | 68ef8f82d0b05369b631b6715a607008f414cec7 | claude |
 | edge:e-dec-nirefs-impact | review |  | proposed | 2026-11-14T14:31:52Z |  | claude |
+| node:task-ni-test-migration | review |  | proposed | 2026-11-14T14:45:53Z | a125b5a624c8072d4f7c41de493c38ddf2d794e7 | claude |
+| node:task-ni-test-migration | status |  | open | 2026-11-14T14:45:53Z | a125b5a624c8072d4f7c41de493c38ddf2d794e7 | claude |
+| edge:e-dec-nirefs-testmigration | review |  | proposed | 2026-11-14T14:45:53Z |  | claude |
