@@ -3,7 +3,7 @@
      Check freshness with: node tools/roadmap.mjs --check
      This file is a pure function of .konspekt/instance/ (no timestamps baked in).
      Goals and tasks are graph nodes; the horizon is derived from node status/review.
-     contentHash: sha256:71d40df727eed85f -->
+     contentHash: sha256:edb4d9d0347523de -->
 
 # konspekt roadmap
 
@@ -48,6 +48,10 @@ Bring technical adopters from first contact to a running instance in their own r
 
 - init.mjs does not scaffold instance/authority/ tables
 - Make notifications portable
+
+**Later** — _proposed, not yet committed_
+
+- Make setup/init.mjs --check report missing binding and basis fields
 
 **Shipped** — _resolved_
 
@@ -212,12 +216,12 @@ Let several participants — people and agents — propose into and review one s
 **Next** — _accepted and planned_
 
 - Conformance check for persona brief vs. SPEC/registry vocabulary drift
+- Re-address existing sources from git blob SHA to SHA-256
 
 **Later** — _proposed, not yet committed_
 
 - Per-atom compare-and-swap and a store cursor
 - Support multiple human authors on one instance
-- Re-address existing sources from git blob SHA to SHA-256
 
 **Shipped** — _resolved_
 
@@ -233,4 +237,4 @@ Let several participants — people and agents — propose into and review one s
 
 ---
 
-Generated from 9 goal(s) and 100 task-listing(s) over the instance graph.
+Generated from 9 goal(s) and 101 task-listing(s) over the instance graph.
