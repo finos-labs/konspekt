@@ -424,11 +424,35 @@ object InstanceReader {
     return "{\"entity\":${q(id)},\"resolved\":true,\"accepted\":$accepted,\"edges\":${flippedEdges.size}}"
   }
 
+  // The hex digest of an RFC 6920 `ni:///sha-256;<base64url>` reference, or null
+  // when `ref` is not one. The digest must be 43 base64url characters that decode
+  // to 32 bytes (lib/conformance.mjs parseNiRef applies the same rule).
+  fun niHex(ref: String): String? {
+    val prefix = "ni:///sha-256;"
+    if (!ref.startsWith(prefix)) return null
+    val b64 = ref.substring(prefix.length)
+    if (!Regex("^[A-Za-z0-9_-]{43}$").matches(b64)) return null
+    val bytes = try { java.util.Base64.getUrlDecoder().decode(b64) } catch (e: IllegalArgumentException) { return null }
+    if (bytes.size != 32) return null
+    if (java.util.Base64.getUrlEncoder().withoutPadding().encodeToString(bytes) != b64) return null
+    return bytes.joinToString("") { "%02x".format(it) }
+  }
+
+  // The instance-relative path of a content-addressed file in `dir` (sources or
+  // commands): an `ni:` reference maps to `<dir>/sha-256/<hex>.md`, a legacy hex
+  // git blob SHA to `<dir>/<sha>.md`, anything else to null.
+  fun contentRel(dir: String, ref: String): String? {
+    val hex = niHex(ref)
+    if (hex != null) return "$dir/sha-256/$hex.md"
+    if (Regex("^[0-9a-f]{7,64}$").matches(ref)) return "$dir/$ref.md"
+    return null
+  }
+
   fun sourceJson(instanceDir: File, ref: String): String {
-    if (!Regex("^[0-9a-f]{7,64}$").matches(ref)) return "{\"error\":\"bad ref\"}"
-    val f = File(File(instanceDir, "sources"), "$ref.md")
+    val rel = contentRel("sources", ref) ?: return "{\"error\":\"bad ref\"}"
+    val f = File(instanceDir, rel)
     if (!f.isFile) return "{\"error\":\"no such source\"}"
-    return "{\"ref\":${q(ref)},\"markdown\":${q(f.readText())}}"
+    return "{\"ref\":${q(ref)},\"path\":${q(rel)},\"markdown\":${q(f.readText())}}"
   }
 
   // Related commands for an entity: the commands/executed.md rows whose entity is
@@ -443,9 +467,11 @@ object InstanceReader {
         val cells = t.trim('|').split("|").map { it.trim() }
         if (cells.size < 2 || cells[0] == "entity" || cells[0].startsWith("---") || cells[0] != entity) continue
         val hash = cells[1]
-        val cf = File(File(instanceDir, "commands"), "$hash.md")
-        val md = if (cf.isFile) cf.readText() else "(command text missing)"
-        rows.add("{\"command\":${q(hash)},\"markdown\":${q(md)}}")
+        val rel = contentRel("commands", hash)
+        val cf = rel?.let { File(instanceDir, it) }
+        val md = if (cf != null && cf.isFile) cf.readText() else "(command text missing)"
+        val pathJson = if (rel != null) q(rel) else "null"
+        rows.add("{\"command\":${q(hash)},\"path\":$pathJson,\"markdown\":${q(md)}}")
       }
     }
     return "{\"entity\":${q(entity)},\"commands\":[${rows.joinToString(",")}]}"

@@ -34,10 +34,21 @@ import { createServer } from "node:http";
 import { readFileSync, writeFileSync, existsSync, watch } from "node:fs";
 import { join, resolve, dirname, extname } from "node:path";
 import { fileURLToPath } from "node:url";
-import { loadInstance } from "../../../lib/conformance.mjs";
+import { loadInstance, parseNiRef } from "../../../lib/conformance.mjs";
 import { loadActivePersonas } from "../../../lib/load-personas.mjs";
 import { goalState } from "../../../lib/views.mjs";
 import { rowsFrom, statsFrom, goalsFrom } from "./projections.mjs";
+
+// The instance-relative path of a content-addressed file in `dir` (sources or
+// commands) for a reference: an `ni:///sha-256` URI maps to `<dir>/sha-256/<hex>.md`,
+// a legacy hex git blob SHA to `<dir>/<sha>.md`. Returns null for anything else,
+// so a caller never builds a path from an unchecked value.
+function contentRel(dir, ref) {
+  const ni = parseNiRef(ref);
+  if (ni) return `${dir}/sha-256/${ni.hex}.md`;
+  if (/^[0-9a-f]{7,64}$/.test(ref)) return `${dir}/${ref}.md`;
+  return null;
+}
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = resolve(__dirname, "..", "..", "..");
@@ -345,15 +356,32 @@ const server = createServer((req, res) => {
       sourceRef: p.sourceRef || null, contentHash: p.contentHash || null,
       acceptedBy: acceptedByOf(`${e.entityType}:${e.id}`) });
   }
-  // One provenance source excerpt by its content hash (git blob SHA). Confined to
-  // sources/ and gated on a hex ref, so no path traversal.
+  // One provenance source excerpt by its reference: an `ni:///sha-256` URI
+  // (sources/sha-256/<hex>.md) or a legacy hex git blob SHA (sources/<sha>.md).
+  // Confined to sources/ and gated on a parsed digest or a hex ref, so no path
+  // traversal. `path` is the file's path relative to the instance.
   if (path === "/api/source") {
     const ref = url.searchParams.get("ref") || "";
-    if (!/^[0-9a-f]{7,64}$/.test(ref)) return sendJson(res, { error: "bad ref" }, 400);
-    const base = join(instanceDir, "sources");
-    const abs = join(base, ref + ".md");
-    if (!abs.startsWith(base) || !existsSync(abs)) return sendJson(res, { error: "no such source" }, 404);
-    return sendJson(res, { ref, markdown: readFileSync(abs, "utf8") });
+    const rel = contentRel("sources", ref);
+    if (!rel) return sendJson(res, { error: "bad ref" }, 400);
+    const abs = join(instanceDir, rel);
+    if (!abs.startsWith(join(instanceDir, "sources")) || !existsSync(abs)) return sendJson(res, { error: "no such source" }, 404);
+    return sendJson(res, { ref, path: rel, markdown: readFileSync(abs, "utf8") });
+  }
+  // RFC 6920 well-known read path (docs/design/source-addressing.md): the raw
+  // bytes of a stored source or command, by its base64url SHA-256 digest.
+  const wk = /^\/\.well-known\/ni\/sha-256\/([A-Za-z0-9_-]{43})$/.exec(path);
+  if (wk) {
+    const ni = parseNiRef("ni:///sha-256;" + wk[1]);
+    if (!ni) return sendJson(res, { error: "bad digest" }, 400);
+    for (const dir of ["sources", "commands"]) {
+      const abs = join(instanceDir, dir, "sha-256", ni.hex + ".md");
+      if (existsSync(abs)) {
+        res.writeHead(200, { "content-type": "text/markdown; charset=utf-8", "cache-control": "no-store" });
+        return res.end(readFileSync(abs));
+      }
+    }
+    return sendJson(res, { error: "no such content" }, 404);
   }
   // Related commands for an entity: the commands/executed.md rows whose entity is
   // this one, in execution order, each resolved to its verbatim text. Empty when
@@ -369,8 +397,9 @@ const server = createServer((req, res) => {
         const cells = t.split("|").slice(1, -1).map((c) => c.trim());
         if (cells.length < 2 || cells[0] === "entity" || /^-+$/.test(cells[0]) || cells[0] !== id) continue;
         const hash = cells[1];
-        const cf = join(instanceDir, "commands", hash + ".md");
-        out.push({ command: hash, markdown: existsSync(cf) ? readFileSync(cf, "utf8") : "(command text missing)" });
+        const rel = contentRel("commands", hash);
+        const cf = rel ? join(instanceDir, rel) : null;
+        out.push({ command: hash, path: rel, markdown: cf && existsSync(cf) ? readFileSync(cf, "utf8") : "(command text missing)" });
       }
     }
     return sendJson(res, { entity: id, commands: out });

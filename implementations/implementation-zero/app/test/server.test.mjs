@@ -5,10 +5,10 @@ import { test, before, after } from "node:test";
 import assert from "node:assert/strict";
 import { spawn } from "node:child_process";
 import { fileURLToPath } from "node:url";
-import { cpSync, mkdtempSync, rmSync, readFileSync } from "node:fs";
+import { cpSync, mkdtempSync, rmSync, readFileSync, mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
-import { loadInstance } from "../../../../lib/conformance.mjs";
+import { loadInstance, niRef, parseNiRef } from "../../../../lib/conformance.mjs";
 
 // The transition-log errors the three rules raise (SERIALIZATION.md § Transitions).
 // After any UI write, none of these may be present: the write must have appended a
@@ -111,7 +111,8 @@ test("GET /api/graph with a bad id returns an error, not a crash", async () => {
 test("GET /api/entity returns the file markdown and its source pointer", async () => {
   const d = await (await get("/api/entity?id=task-implementation-zero")).json();
   assert.ok(d.markdown.includes("task-implementation-zero"), "returns the entity's own file");
-  assert.match(d.sourceRef, /^[0-9a-f]{40}$/, "a content-addressed entity carries a sourceRef");
+  assert.ok(/^[0-9a-f]{40}$/.test(d.sourceRef) || parseNiRef(d.sourceRef),
+    "a content-addressed entity carries a sourceRef (git blob SHA or ni:///sha-256)");
 });
 
 test("GET /api/source returns the excerpt for a valid ref", async () => {
@@ -119,6 +120,23 @@ test("GET /api/source returns the excerpt for a valid ref", async () => {
   const s = await (await get("/api/source?ref=" + e.sourceRef)).json();
   assert.equal(s.ref, e.sourceRef);
   assert.ok(typeof s.markdown === "string" && s.markdown.length > 0);
+});
+
+test("GET /api/source resolves an ni: ref to sources/sha-256/<hex>.md; /.well-known/ni serves the bytes", async () => {
+  const bytes = Buffer.from("# Source excerpt — ni lookup test\n");
+  const ref = niRef(bytes);
+  const { hex, b64 } = parseNiRef(ref);
+  mkdirSync(join(tmpInstance, "sources", "sha-256"), { recursive: true });
+  writeFileSync(join(tmpInstance, "sources", "sha-256", hex + ".md"), bytes);
+  const s = await (await get2("/api/source?ref=" + encodeURIComponent(ref))).json();
+  assert.equal(s.ref, ref);
+  assert.equal(s.path, `sources/sha-256/${hex}.md`);
+  assert.equal(s.markdown, bytes.toString("utf8"));
+  const wk = await get2("/.well-known/ni/sha-256/" + b64);
+  assert.equal(wk.status, 200);
+  assert.equal(Buffer.from(await wk.arrayBuffer()).toString("utf8"), bytes.toString("utf8"));
+  assert.equal((await get2("/.well-known/ni/sha-256/" + niRef(Buffer.from("absent")).split(";")[1])).status, 404);
+  assert.equal((await get2("/api/source?ref=" + encodeURIComponent("ni:///sha-256;short"))).status, 400);
 });
 
 test("GET /api/entity unknown id → 404; /api/source non-hex ref → 400", async () => {

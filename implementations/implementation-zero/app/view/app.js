@@ -356,7 +356,7 @@ function renderDrawer(d, source, cmds, chgs) {
     { label: "Provenance", build: () => {
       const w = document.createElement("div");
       if (d.sourceRef) {
-        const lbl = document.createElement("div"); lbl.className = "src-label"; lbl.textContent = "sources/" + d.sourceRef + ".md";
+        const lbl = document.createElement("div"); lbl.className = "src-label"; lbl.textContent = (source && source.path) ? source.path + "  (" + d.sourceRef + ")" : "sources/" + d.sourceRef + ".md";
         w.appendChild(lbl); w.appendChild(pre(source && !source.error ? source.markdown : (source && source.error ? "error: " + source.error : "(source unavailable)")));
       } else { const p = document.createElement("p"); p.className = "muted"; p.textContent = "No content-addressed provenance for this entity."; w.appendChild(p); }
       return w;
@@ -365,7 +365,7 @@ function renderDrawer(d, source, cmds, chgs) {
   if (cmds.length) tabs.push({ label: "Commands (" + cmds.length + ")", build: () => {
     const w = document.createElement("div"); w.className = "cmd-list";
     cmds.forEach((c, i) => {
-      const lbl = document.createElement("div"); lbl.className = "src-label"; lbl.textContent = (i + 1) + " · commands/" + c.command.slice(0, 10) + "…";
+      const lbl = document.createElement("div"); lbl.className = "src-label"; lbl.textContent = (i + 1) + " · " + (c.path || "commands/" + c.command.slice(0, 10) + "…");
       w.appendChild(lbl); w.appendChild(pre(c.markdown));
     });
     return w;
