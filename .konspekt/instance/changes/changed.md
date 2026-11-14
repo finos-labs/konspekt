@@ -562,3 +562,5 @@ commit order; the channel was not live during that work.
 | task-ni-test-migration | 0000297f1e81b85ae69268df7be8fc3db8800eda | setup/components/notify/konspekt-notify.mjs | 2026-11-14T19:37:15Z |
 | task-ni-test-migration | 0000297f1e81b85ae69268df7be8fc3db8800eda | test/migrate-ni.test.mjs | 2026-11-14T19:37:15Z |
 | task-ni-test-migration | 0000297f1e81b85ae69268df7be8fc3db8800eda | tools/migrate-ni.mjs | 2026-11-14T19:37:15Z |
+| task-ni-test-migration | 3ab83d189d1ba3a099dbc40de2b55e1de8aa7d6e | implementations/intellij-plugin/app/gradle.properties | 2026-11-14T19:40:04Z |
+| task-ni-test-migration | dbbe4d0d3608c24ad223bbb796d0f9fb73cb4df9 | ROADMAP.md | 2026-11-14T19:40:04Z |
