@@ -291,7 +291,9 @@ listed only where they also draw or describe source addressing.
 - `implementations/fleet/app/payload.mjs`, `outbox.mjs`, `fold.mjs`,
   `verify.mjs`: source hashing, the canonical file name on accept, the
   `sourceRef == contentHash` assumption, and proposal ids (question 2 above).
-- `implementations/fleet/app/git.mjs`: the post-write SHA recheck.
+- `implementations/fleet/app/git.mjs`: no change; it computes no hashes. The
+  post-write SHA recheck that `fleet-spec.md` described was never implemented
+  and is removed from the spec.
 - `implementations/fleet/app/test/payload.test.mjs`, `outbox.test.mjs`,
   `fold.test.mjs`: fixtures and assertions.
 - `implementations/fleet/app/README.md`, `implementations/fleet/docs/DESIGN.md`,

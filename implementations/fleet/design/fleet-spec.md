@@ -39,8 +39,7 @@ The committer is two roles kept apart:
   verified proposal onto canonical as `review: proposed`, indexing it on a
   durable `proposed` ref; on human approval it blesses the admitted atom in place
   (flips `review` to `accepted` and appends the accept record) under the push
-  discipline (source-hash verify, atomic append, DCO trailer, post-write SHA
-  recheck).
+  discipline (source-hash verify, atomic append, DCO trailer).
 - An **LLM review assistant** (no write authority to canonical): reads the
   queue, clusters and summarizes, surfaces dependency and near-duplicate hints,
   and relays the human's per-proposal selection to the writer.
@@ -177,7 +176,7 @@ A deterministic loop over the N outbox branches, one pass in flight at a time.
    already-folded atom: flip `review` from `proposed` to `accepted` on the entity
    frontmatter and the atom's `edges.md` rows, and append an accept record tying
    `proposal_id` to acceptor, timestamp, and inspection-or-batch. Pre-write
-   source-hash verify, post-write SHA recheck, DCO trailer. The source excerpt
+   source-hash verify, DCO trailer. The source excerpt
    and entity already landed at fold, so bless re-copies no source and re-authors
    no prose — it changes the `review` field and appends the accept record. The
    atom was wired whole at fold, so canonical never lands partially wired.
