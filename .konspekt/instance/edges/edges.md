@@ -569,3 +569,4 @@ proposal.
 | e-not-canonicalfollow-foldfollows | notes | node:task-fleet-canonical-follow | noteworthy:nw-fleet-fold-follows-worktree-branch |  | accepted |
 | e-not-adjustments-canonicalfollowdecision | notes | node:task-fleet-adjustments | noteworthy:nw-fleet-canonical-follow-drain-then-move |  | accepted |
 | e-dec-agentfleet-designdocsplacement | decomposes | node:task-agent-fleet | node:task-fleet-design-docs-placement |  | accepted |
+| e-dec-enterprise-sourceuris | decomposes | node:task-enterprise-persistence | node:investigation-source-uris |  |  |

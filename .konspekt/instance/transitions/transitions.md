@@ -1282,3 +1282,6 @@ proposing agent was not recorded.
 | artifact:artifact-fleet-confidence-scale | review | proposed | accepted | 2026-11-13T01:20:22Z | 770a3ad99faf1eb0e72672daea37b14bcd8dbf6c | denisurusov |
 | artifact:artifact-fleet-worktree-design | review | proposed | accepted | 2026-11-13T01:20:22Z | 770a3ad99faf1eb0e72672daea37b14bcd8dbf6c | denisurusov |
 | artifact:artifact-fleet-worktree-design | review | accepted | proposed | 2026-11-13T01:20:29Z |  | claude |
+| node:investigation-source-uris | review |  | accepted | 2026-11-14T00:08:05Z | 79351f57f62b5883e4590949d7c1a1061dde8bd8 | denisurusov |
+| node:investigation-source-uris | status |  | active | 2026-11-14T00:08:05Z | 79351f57f62b5883e4590949d7c1a1061dde8bd8 | denisurusov |
+| edge:e-dec-enterprise-sourceuris | review |  | accepted | 2026-11-14T00:08:05Z | 79351f57f62b5883e4590949d7c1a1061dde8bd8 | denisurusov |
