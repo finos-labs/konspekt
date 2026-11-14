@@ -574,3 +574,4 @@ proposal.
 | e-link-nirefs-sourcesmigration | links | node:task-ni-references | node:task-sources-sha256-migration | 0.8 | accepted |
 | e-dec-nirefs-impact | decomposes | node:task-ni-references | node:task-ni-impact-analysis |  | accepted |
 | e-dec-nirefs-testmigration | decomposes | node:task-ni-references | node:task-ni-test-migration |  | accepted |
+| e-dec-adoption-setupinitcheck | decomposes | node:goal-adoption | node:task-setup-init-check-policy-fields |  | proposed |

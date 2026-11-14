@@ -1303,3 +1303,7 @@ proposing agent was not recorded.
 | edge:e-dec-nirefs-impact | review | proposed | accepted | 2026-11-14T18:35:40Z | 456c115e3356b222c9ec89a8948ac6c4ab336bd1 | denisurusov |
 | edge:e-dec-nirefs-testmigration | review | proposed | accepted | 2026-11-14T18:35:40Z | 456c115e3356b222c9ec89a8948ac6c4ab336bd1 | denisurusov |
 | node:task-ni-test-migration | status | open | active | 2026-11-14T18:46:20Z | bc2551c32a7a9f844bb2a2c0ba0e0b1a99973a46 | denisurusov |
+| node:task-sources-sha256-migration | review | proposed | accepted | 2026-11-14T18:50:36Z | d1dae8f32d04b04997ec93a28d445e23de3dbc59 | denisurusov |
+| node:task-setup-init-check-policy-fields | review |  | proposed | 2026-11-14T18:50:36Z | d1dae8f32d04b04997ec93a28d445e23de3dbc59 | claude |
+| node:task-setup-init-check-policy-fields | status |  | open | 2026-11-14T18:50:36Z | d1dae8f32d04b04997ec93a28d445e23de3dbc59 | claude |
+| edge:e-dec-adoption-setupinitcheck | review |  | proposed | 2026-11-14T18:50:36Z |  | claude |

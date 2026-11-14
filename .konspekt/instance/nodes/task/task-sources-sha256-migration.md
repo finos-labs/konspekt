@@ -7,7 +7,7 @@ summary:
   origin: machine
   pinned: false
   updatedAt: 2026-09-28T23:07:00Z
-review: proposed
+review: accepted
 provenance:
   sourceRef: 5f34d6cb478b39588f700dc7cd3d731d9c6efe2e
   contentHash: 5f34d6cb478b39588f700dc7cd3d731d9c6efe2e
@@ -15,7 +15,7 @@ provenance:
   timestamp: 2026-09-28T23:07:00Z
   confidence: 0.9
 createdAt: 2026-09-28T23:07:00Z
-updatedAt: 2026-09-28T23:07:00Z
+updatedAt: 2026-11-14T18:50:36Z
 ```
 # Task: Re-address existing sources from git blob SHA to SHA-256
 
@@ -45,3 +45,10 @@ addressing seam in [[task-provenance-model]].
 
 Success is every source addressed by SHA-256, every reference updated, and the
 checker green.
+
+**Superseded plan (2026-11-14).** The rename-and-overwrite steps above predate
+the in-place decision in [[investigation-source-uris]]. The migration is carried
+out by [[task-ni-references]]: references move to `ni:///sha-256` URIs, each
+excerpt is copied to `sources/sha-256/<hex>.md`, old references are kept under
+`provenance.deprecated` or in `deprecated.md`, and old SHA-1 files are kept.
+Where the steps above conflict with that task, that task applies.
