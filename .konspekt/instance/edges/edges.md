@@ -570,3 +570,5 @@ proposal.
 | e-not-adjustments-canonicalfollowdecision | notes | node:task-fleet-adjustments | noteworthy:nw-fleet-canonical-follow-drain-then-move |  | accepted |
 | e-dec-agentfleet-designdocsplacement | decomposes | node:task-agent-fleet | node:task-fleet-design-docs-placement |  | accepted |
 | e-dec-enterprise-sourceuris | decomposes | node:task-enterprise-persistence | node:investigation-source-uris |  |  |
+| e-dec-enterprise-nirefs | decomposes | node:task-enterprise-persistence | node:task-ni-references |  | proposed |
+| e-link-nirefs-sourcesmigration | links | node:task-ni-references | node:task-sources-sha256-migration | 0.8 | proposed |

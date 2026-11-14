@@ -1285,3 +1285,7 @@ proposing agent was not recorded.
 | node:investigation-source-uris | review |  | accepted | 2026-11-14T00:08:05Z | 79351f57f62b5883e4590949d7c1a1061dde8bd8 | denisurusov |
 | node:investigation-source-uris | status |  | active | 2026-11-14T00:08:05Z | 79351f57f62b5883e4590949d7c1a1061dde8bd8 | denisurusov |
 | edge:e-dec-enterprise-sourceuris | review |  | accepted | 2026-11-14T00:08:05Z | 79351f57f62b5883e4590949d7c1a1061dde8bd8 | denisurusov |
+| node:task-ni-references | review |  | accepted | 2026-11-14T04:51:00Z | f61e6d61d0bd51214259cc517ffc43dc4a2f763a | denisurusov |
+| node:task-ni-references | status |  | open | 2026-11-14T04:51:00Z | f61e6d61d0bd51214259cc517ffc43dc4a2f763a | denisurusov |
+| edge:e-dec-enterprise-nirefs | review |  | proposed | 2026-11-14T04:51:00Z |  | claude |
+| edge:e-link-nirefs-sourcesmigration | review |  | proposed | 2026-11-14T04:51:00Z |  | claude |
