@@ -37,7 +37,8 @@ requires: [workflows]
 #
 # The files list MUST be the static-import closure of the checker's entry
 # points, not just the entry points — `validate.mjs` imports `load-personas.mjs`
-# and `conformance.mjs` imports `authority.mjs`, so all four ship. Installing
+# and `locator-reach.mjs`, and `conformance.mjs` imports `authority.mjs`, so all
+# five ship. Installing
 # fewer makes the checker crash on its first import with ERR_MODULE_NOT_FOUND,
 # before any instance is read (nw-component-ships-import-closure). Persona
 # registries are NOT shipped: load-personas.mjs skips an absent registry with a
@@ -55,6 +56,8 @@ files:
     to: .konspekt/lib/validate.mjs
   - from: ../../../lib/load-personas.mjs
     to: .konspekt/lib/load-personas.mjs
+  - from: ../../../lib/locator-reach.mjs
+    to: .konspekt/lib/locator-reach.mjs
   - from: ../../../lib/authority.mjs
     to: .konspekt/lib/authority.mjs
   # The binding audit is a standalone script (Node built-ins only, no lib
