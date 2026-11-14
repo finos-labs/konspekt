@@ -177,3 +177,5 @@ New rows below this backfill are recorded live.
 | task-ni-references | ni:///sha-256;8H3cjIOUakrVsmmSDMjPSCCylUaJhE3HB5rIVXuIkP0 |
 | task-ni-references | ni:///sha-256;Cyrb9HVWVTO3G0dwH2gCTbJtFNqwuLTndQZfrfGjS4k |
 | task-ni-references | ni:///sha-256;9b_RCatK4lbMwBl5TiadIAjbGm8z0AOxJX8ArqrNuaM |
+| task-ni-references | ni:///sha-256;z2M6yRtRRpC3t-ALc96EZQriBvuyMEn_HOaiT-XZ67A |
+| task-ni-references | ni:///sha-256;CMUvd8wKSxa9lkzsqxF4krciZCox5K1cV6hxNgvmfcI |

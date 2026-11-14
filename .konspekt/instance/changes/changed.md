@@ -577,3 +577,4 @@ commit order; the channel was not live during that work.
 | task-ni-references | 675b6a29a8cd6f1378664190b76ee0ff18592672 | spec/personas/engineer/AGENTS.md | 2026-11-14T19:48:32Z |
 | task-ni-references | 675b6a29a8cd6f1378664190b76ee0ff18592672 | spec/personas/engineer/SPEC.md | 2026-11-14T19:48:32Z |
 | task-ni-references | 675b6a29a8cd6f1378664190b76ee0ff18592672 | test/conformance-ni-refs.test.mjs | 2026-11-14T19:48:32Z |
+| task-ni-references | 07cf0d3ab2c7852387537c34af14b2907d72c55f | ROADMAP.md | 2026-11-14T19:48:51Z |
