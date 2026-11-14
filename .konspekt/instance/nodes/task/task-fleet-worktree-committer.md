@@ -9,11 +9,14 @@ summary:
   updatedAt: 2026-10-10T16:00:00Z
 review: accepted
 provenance:
-  sourceRef: 1e1bc298fb11d1f9fa021fdf96d3f4f901147346
-  contentHash: 1e1bc298fb11d1f9fa021fdf96d3f4f901147346
+  sourceRef: ni:///sha-256;68_5gW8LbiVktg_b2pHlzM2yhBvnTaoJFI0o_fA9qTY
   conversationId: fleet-worktree-committer
   timestamp: 2026-10-10T16:00:00Z
   confidence: 0.8
+  deprecated:
+    migratedAt: 2026-11-14T19:37:32Z
+    sourceRef: 1e1bc298fb11d1f9fa021fdf96d3f4f901147346
+    contentHash: 1e1bc298fb11d1f9fa021fdf96d3f4f901147346
 createdAt: 2026-10-10T16:00:00Z
 updatedAt: 2026-10-22T18:45:00.000Z
 ```

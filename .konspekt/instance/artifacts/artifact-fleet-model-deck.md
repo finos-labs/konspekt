@@ -7,11 +7,14 @@ createdAt: 2026-10-21T00:00:00Z
 updatedAt: 2026-10-21T00:00:00Z
 review: accepted
 provenance:
-  sourceRef: f209adbb9fab36c162ad7968322aecd89969f87a
-  contentHash: f209adbb9fab36c162ad7968322aecd89969f87a
+  sourceRef: ni:///sha-256;fSaG4qYDxyxMZHK43DUaCPIkCLbNu-SRgvIReflKUZ8
   conversationId: fleet-uat-presentation-writer
   timestamp: 2026-10-22T02:19:11.372Z
   confidence: 0.62
+  deprecated:
+    migratedAt: 2026-11-14T19:37:32Z
+    sourceRef: f209adbb9fab36c162ad7968322aecd89969f87a
+    contentHash: f209adbb9fab36c162ad7968322aecd89969f87a
 ```
 # Artifact: The fleet model in one sitting
 

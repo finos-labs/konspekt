@@ -5,10 +5,13 @@ subtype: adr
 timestamp: 2026-08-01T21:31:00Z
 review: accepted
 provenance:
-  sourceRef: 7c50ca7a05678b5e4e0211bf398533f33ff9eeea
-  contentHash: 7c50ca7a05678b5e4e0211bf398533f33ff9eeea
+  sourceRef: ni:///sha-256;KoNRSFRexdV9DhXWAA7C435u2No1VgpuOJ3bt_sY9Mw
   timestamp: 2026-08-01T21:31:00Z
   confidence: 0.9
+  deprecated:
+    migratedAt: 2026-11-14T19:37:32Z
+    sourceRef: 7c50ca7a05678b5e4e0211bf398533f33ff9eeea
+    contentHash: 7c50ca7a05678b5e4e0211bf398533f33ff9eeea
 createdAt: 2026-08-01T21:31:00Z
 updatedAt: 2026-08-01T21:31:00Z
 ```

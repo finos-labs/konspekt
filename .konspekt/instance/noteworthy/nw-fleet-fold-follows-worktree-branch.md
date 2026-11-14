@@ -3,11 +3,14 @@ id: nw-fleet-fold-follows-worktree-branch
 kind: decision
 review: accepted
 provenance:
-  sourceRef: 09bb72e8c8aabdc7e1e84614f1036a3667788db6
-  contentHash: 09bb72e8c8aabdc7e1e84614f1036a3667788db6
+  sourceRef: ni:///sha-256;46QjtKe5aU0HbWgydcN7yC-Ltbn6OIn3oksw-w-ENPg
   conversationId: fleet-adopter-authority-preflight
   timestamp: 2026-10-23T19:46:29Z
   confidence: 0.75
+  deprecated:
+    migratedAt: 2026-11-14T19:37:32Z
+    sourceRef: 09bb72e8c8aabdc7e1e84614f1036a3667788db6
+    contentHash: 09bb72e8c8aabdc7e1e84614f1036a3667788db6
 createdAt: 2026-10-23T19:46:29Z
 updatedAt: 2026-10-23T19:46:29Z
 ```

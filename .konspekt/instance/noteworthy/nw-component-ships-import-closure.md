@@ -4,11 +4,14 @@ kind: constraint
 status: active
 review: accepted
 provenance:
-  sourceRef: 24b3f7fe9f0805f675a27cbfcb3f24bd9b0bdce2
-  contentHash: 24b3f7fe9f0805f675a27cbfcb3f24bd9b0bdce2
+  sourceRef: ni:///sha-256;zC3VVsnyCLbLU04gQQHHIctsMfC9mhXRI4FAMJwpLxc
   timestamp: 2026-10-14T01:44:02Z
   conversationId: cdm-collateral-adoption
   confidence: 0.8
+  deprecated:
+    migratedAt: 2026-11-14T19:37:32Z
+    sourceRef: 24b3f7fe9f0805f675a27cbfcb3f24bd9b0bdce2
+    contentHash: 24b3f7fe9f0805f675a27cbfcb3f24bd9b0bdce2
 createdAt: 2026-10-14T01:44:02Z
 updatedAt: 2026-10-15T00:02:27Z
 ```

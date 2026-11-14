@@ -7,11 +7,14 @@ createdAt: 2026-10-22T16:56:02Z
 updatedAt: 2026-11-13T01:20:22Z
 review: accepted
 provenance:
-  sourceRef: fbf04d9c2e5ef1d7ca1b0c7dd9368742572caf24
-  contentHash: fbf04d9c2e5ef1d7ca1b0c7dd9368742572caf24
+  sourceRef: ni:///sha-256;nJJPJzaojUOJCLmuc4Bt9Xqw36H5EPXaFqDMURCbFCA
   conversationId: f566a79b-eb21-4dba-91e8-01ad540a0b8e
   timestamp: 2026-10-22T16:56:07.396Z
   confidence: 0.6
+  deprecated:
+    migratedAt: 2026-11-14T19:37:32Z
+    sourceRef: fbf04d9c2e5ef1d7ca1b0c7dd9368742572caf24
+    contentHash: fbf04d9c2e5ef1d7ca1b0c7dd9368742572caf24
 ```
 # Artifact: fleet proposer confidence scale
 

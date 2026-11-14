@@ -3,10 +3,13 @@ id: nw-payload-reference-only-admits-enums
 kind: decision
 review: accepted
 provenance:
-  sourceRef: 35a73e563bcbe637251e64a523dbbb5cccd6cca7
-  contentHash: 35a73e563bcbe637251e64a523dbbb5cccd6cca7
+  sourceRef: ni:///sha-256;2qyR2U0nmtPjJIf1242UUQg8u0reUjRaGhLxtKiaJN0
   timestamp: 2026-07-20T17:00:00Z
   confidence: 0.85
+  deprecated:
+    migratedAt: 2026-11-14T19:37:32Z
+    sourceRef: 35a73e563bcbe637251e64a523dbbb5cccd6cca7
+    contentHash: 35a73e563bcbe637251e64a523dbbb5cccd6cca7
 createdAt: 2026-07-20T17:00:00Z
 updatedAt: 2026-07-20T17:00:00Z
 ```

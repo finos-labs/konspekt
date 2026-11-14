@@ -5,11 +5,14 @@ title: Checkpoint and resume conversation context across sessions, LLMs and venu
 status: resolved
 review: accepted
 provenance:
-  sourceRef: 441a37e735189c3d6447dde1f314cc583893cf81
-  contentHash: 441a37e735189c3d6447dde1f314cc583893cf81
+  sourceRef: ni:///sha-256;eB6yjs6tPx364z-1faLdREv1xUFufq2xw0R8_lEkYhs
   conversationId: session-checkpoint
   timestamp: 2026-11-07T14:18:16Z
   confidence: 0.8
+  deprecated:
+    migratedAt: 2026-11-14T19:37:32Z
+    sourceRef: 441a37e735189c3d6447dde1f314cc583893cf81
+    contentHash: 441a37e735189c3d6447dde1f314cc583893cf81
 createdAt: 2026-11-07T14:18:16Z
 updatedAt: 2026-11-07T15:29:25Z
 ```

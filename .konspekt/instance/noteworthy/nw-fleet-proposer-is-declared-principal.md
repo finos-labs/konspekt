@@ -3,11 +3,14 @@ id: nw-fleet-proposer-is-declared-principal
 kind: constraint
 review: accepted
 provenance:
-  sourceRef: 2385057ad39e36378c76ae0f2db14aab2733a081
-  contentHash: 2385057ad39e36378c76ae0f2db14aab2733a081
+  sourceRef: ni:///sha-256;PNb-R9Ubf-3Ci6r4FSY-fTFnLxeVhugwJG9juYyOKTg
   conversationId: fleet-uat-committer-2026-10-21
   timestamp: 2026-10-22T02:16:59.291Z
   confidence: 0.8
+  deprecated:
+    migratedAt: 2026-11-14T19:37:32Z
+    sourceRef: 2385057ad39e36378c76ae0f2db14aab2733a081
+    contentHash: 2385057ad39e36378c76ae0f2db14aab2733a081
 createdAt: 2026-10-22T02:16:59.291Z
 updatedAt: 2026-10-22T02:16:59.291Z
 ```

@@ -4,10 +4,13 @@ kind: decision
 timestamp: 2026-09-12T14:30:00Z
 review: accepted
 provenance:
-  sourceRef: 1c521cd2996ebec25d03424a298bf146305e2c58
-  contentHash: 1c521cd2996ebec25d03424a298bf146305e2c58
+  sourceRef: ni:///sha-256;APNFY7KHdLOOFaMj1MTEsYvBDHqC9Ab_SMP3qqqBTsw
   timestamp: 2026-09-12T14:30:00Z
   confidence: 0.9
+  deprecated:
+    migratedAt: 2026-11-14T19:37:32Z
+    sourceRef: 1c521cd2996ebec25d03424a298bf146305e2c58
+    contentHash: 1c521cd2996ebec25d03424a298bf146305e2c58
 createdAt: 2026-09-12T14:30:00Z
 updatedAt: 2026-09-12T14:30:00Z
 ```

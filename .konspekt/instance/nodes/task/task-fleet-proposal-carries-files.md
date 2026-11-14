@@ -9,11 +9,14 @@ summary:
   updatedAt: 2026-10-24T14:31:08Z
 review: accepted
 provenance:
-  sourceRef: a65bb450013ce6f0751de7b4332dd934083740cb
-  contentHash: a65bb450013ce6f0751de7b4332dd934083740cb
+  sourceRef: ni:///sha-256;Xu_fysvGbDfjhiEwJof3KJY-DTDrLdxlOqieen_Yqsk
   conversationId: fleet-proposal-file-payload
   timestamp: 2026-10-24T14:25:57Z
   confidence: 0.75
+  deprecated:
+    migratedAt: 2026-11-14T19:37:32Z
+    sourceRef: a65bb450013ce6f0751de7b4332dd934083740cb
+    contentHash: a65bb450013ce6f0751de7b4332dd934083740cb
 createdAt: 2026-10-24T14:25:57Z
 updatedAt: 2026-10-25T14:10:00Z
 ```

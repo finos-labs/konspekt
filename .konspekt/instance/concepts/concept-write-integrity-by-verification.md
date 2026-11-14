@@ -5,11 +5,14 @@ label: Write-path integrity rests on record-level verification and human-authori
 aliases: [verification not a model boundary, any writer plus deterministic verification, enforcement over gating on the write path]
 review: accepted
 provenance:
-  sourceRef: 66ce1472f226767b199556329bedbb9d60ca96f6
-  contentHash: 66ce1472f226767b199556329bedbb9d60ca96f6
+  sourceRef: ni:///sha-256;k8Gt6m70zplg3m_pvCTXyDvmjCAZpI3QDDivvvo0RPc
   timestamp: 2026-10-11T13:39:32Z
   conversationId: fleet-as-protocol
   confidence: 0.8
+  deprecated:
+    migratedAt: 2026-11-14T19:37:32Z
+    sourceRef: 66ce1472f226767b199556329bedbb9d60ca96f6
+    contentHash: 66ce1472f226767b199556329bedbb9d60ca96f6
 createdAt: 2026-10-11T13:39:32Z
 updatedAt: 2026-10-11T13:39:32Z
 ```

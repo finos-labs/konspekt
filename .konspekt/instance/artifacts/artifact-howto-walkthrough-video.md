@@ -5,11 +5,14 @@ kind: video
 location: docs/visuals/how-to/konspekt-howto-walkthrough.mp4
 review: accepted
 provenance:
-  sourceRef: 2d004d035f3542ee9aff6f2654e0befc348fce31
-  contentHash: 2d004d035f3542ee9aff6f2654e0befc348fce31
+  sourceRef: ni:///sha-256;KTbMeyI0FHxqt3w-QDkqjeaLfbNtuEW8xoHftDyraX8
   conversationId: walkthrough-video
   timestamp: 2026-10-29T21:57:04Z
   confidence: 0.8
+  deprecated:
+    migratedAt: 2026-11-14T19:37:32Z
+    sourceRef: 2d004d035f3542ee9aff6f2654e0befc348fce31
+    contentHash: 2d004d035f3542ee9aff6f2654e0befc348fce31
 createdAt: 2026-10-29T21:57:04Z
 updatedAt: 2026-10-29T22:12:01Z
 ```

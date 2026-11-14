@@ -3,11 +3,14 @@ id: nw-fleet-committer-watch-on-session-start
 kind: decision
 review: accepted
 provenance:
-  sourceRef: ceb072d676b19ac68f58395baf4bc28f761bb41f
-  contentHash: ceb072d676b19ac68f58395baf4bc28f761bb41f
+  sourceRef: ni:///sha-256;C1PzKRrqTW4RPxjCvGO5fT9m1zFaXsDPSchc9Kuf9GE
   conversationId: fleet-resolve-and-adjustments-2026-10-25
   timestamp: 2026-10-25T15:30:00Z
   confidence: 0.85
+  deprecated:
+    migratedAt: 2026-11-14T19:37:32Z
+    sourceRef: ceb072d676b19ac68f58395baf4bc28f761bb41f
+    contentHash: ceb072d676b19ac68f58395baf4bc28f761bb41f
 createdAt: 2026-10-25T15:30:00Z
 updatedAt: 2026-10-25T15:30:00Z
 ```

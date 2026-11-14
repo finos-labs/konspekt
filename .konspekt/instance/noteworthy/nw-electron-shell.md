@@ -3,11 +3,14 @@ id: nw-electron-shell
 kind: decision
 review: accepted
 provenance:
-  sourceRef: 89c1fe40a5fc1128b55e98e1dd712aac0b7441df
-  contentHash: 89c1fe40a5fc1128b55e98e1dd712aac0b7441df
+  sourceRef: ni:///sha-256;vJYBTmewizDECAVxOJKVeVb5sGMrcjrkPE0MM7aWahs
   timestamp: 2026-09-19T13:00:00Z
   conversationId: app-design-101
   confidence: 0.7
+  deprecated:
+    migratedAt: 2026-11-14T19:37:32Z
+    sourceRef: 89c1fe40a5fc1128b55e98e1dd712aac0b7441df
+    contentHash: 89c1fe40a5fc1128b55e98e1dd712aac0b7441df
 createdAt: 2026-09-19T13:00:00Z
 updatedAt: 2026-09-19T13:00:00Z
 ```

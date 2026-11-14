@@ -4,10 +4,13 @@ label: Instance upgradeability
 aliases: [upgradeable instances, instances must be upgradeable, scaffold drift, adopters get later features]
 review: accepted
 provenance:
-  sourceRef: b38b180d7178d8ca8c41044782fbd0158fd5de05
-  contentHash: b38b180d7178d8ca8c41044782fbd0158fd5de05
+  sourceRef: ni:///sha-256;ZFFCepedzS1zf-wWLU7oQBR3JUztxpxErxkoxbAPFfQ
   timestamp: 2026-07-19T23:35:00Z
   confidence: 0.7
+  deprecated:
+    migratedAt: 2026-11-14T19:37:32Z
+    sourceRef: b38b180d7178d8ca8c41044782fbd0158fd5de05
+    contentHash: b38b180d7178d8ca8c41044782fbd0158fd5de05
 createdAt: 2026-07-19T23:35:00Z
 updatedAt: 2026-07-19T23:50:00Z
 ```

@@ -9,11 +9,14 @@ summary:
   updatedAt: 2026-09-23T13:10:00Z
 review: accepted
 provenance:
-  sourceRef: b81c3f97c5b8e5e7ba5e00c747479f41b76d39b6
-  contentHash: b81c3f97c5b8e5e7ba5e00c747479f41b76d39b6
+  sourceRef: ni:///sha-256;4enFw5A69M4H4uJKQcG--G63S0XKgawu7sFkAfP7E5M
   conversationId: konspekt-deck
   timestamp: 2026-09-23T02:53:00Z
   confidence: 0.7
+  deprecated:
+    migratedAt: 2026-11-14T19:37:32Z
+    sourceRef: b81c3f97c5b8e5e7ba5e00c747479f41b76d39b6
+    contentHash: b81c3f97c5b8e5e7ba5e00c747479f41b76d39b6
 createdAt: 2026-09-23T02:53:00Z
 updatedAt: 2026-09-23T13:10:00Z
 ```

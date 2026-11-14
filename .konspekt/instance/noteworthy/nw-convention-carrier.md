@@ -3,11 +3,14 @@ id: nw-convention-carrier
 kind: statement
 review: proposed
 provenance:
-  sourceRef: bc9b1f5d582eb60076dc3d4ca2b5d70bded9c928
-  contentHash: bc9b1f5d582eb60076dc3d4ca2b5d70bded9c928
+  sourceRef: ni:///sha-256;c_DkZ1GTXdL48af0QgCiqCVlCTkEKPSud_PM1drKBAM
   conversationId: roadmap-plan
   timestamp: 2026-09-11T18:30:00Z
   confidence: 0.85
+  deprecated:
+    migratedAt: 2026-11-14T19:37:32Z
+    sourceRef: bc9b1f5d582eb60076dc3d4ca2b5d70bded9c928
+    contentHash: bc9b1f5d582eb60076dc3d4ca2b5d70bded9c928
 createdAt: 2026-09-11T18:30:00Z
 updatedAt: 2026-09-11T18:30:00Z
 ```

@@ -4,10 +4,13 @@ label: Two pillars of the standard
 aliases: [model plus verbs, standard is model and verbs, binding constraint vs vocabulary]
 review: accepted
 provenance:
-  sourceRef: 37f457f9f4cd3a186c5547f32e0046867a91d2e9
-  contentHash: 37f457f9f4cd3a186c5547f32e0046867a91d2e9
+  sourceRef: ni:///sha-256;jvdREM-JHaheN2YbR9-RcBJ9vCCyssWcRI5rnoMBIpM
   timestamp: 2026-06-27T13:42:26Z
   confidence: 0.8
+  deprecated:
+    migratedAt: 2026-11-14T19:37:32Z
+    sourceRef: 37f457f9f4cd3a186c5547f32e0046867a91d2e9
+    contentHash: 37f457f9f4cd3a186c5547f32e0046867a91d2e9
 createdAt: 2026-06-27T13:42:26Z
 updatedAt: 2026-06-27T13:42:26Z
 ```

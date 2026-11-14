@@ -3,11 +3,14 @@ id: nw-fleet-proposer-outbox-write-scope
 kind: decision
 review: accepted
 provenance:
-  sourceRef: 15e3edd1b6fef47c8e08cf98dabf42f8bc7e277e
-  contentHash: 15e3edd1b6fef47c8e08cf98dabf42f8bc7e277e
+  sourceRef: ni:///sha-256;1b1w-38kO3jqmsbWRE3-6KNLnZyZ4xKDwcKT68kzZsg
   conversationId: fleet-design-ingest
   timestamp: 2026-10-02T02:30:00Z
   confidence: 0.88
+  deprecated:
+    migratedAt: 2026-11-14T19:37:32Z
+    sourceRef: 15e3edd1b6fef47c8e08cf98dabf42f8bc7e277e
+    contentHash: 15e3edd1b6fef47c8e08cf98dabf42f8bc7e277e
 createdAt: 2026-10-02T02:30:00Z
 updatedAt: 2026-10-25T14:10:00Z
 ```

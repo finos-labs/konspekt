@@ -3,11 +3,14 @@ id: nw-instance-single-individual-authority
 kind: decision
 review: accepted
 provenance:
-  sourceRef: 31313e0b47591b17ee59513996bf8f260728ceb7
-  contentHash: 31313e0b47591b17ee59513996bf8f260728ceb7
+  sourceRef: ni:///sha-256;Q2lHVDL3ndjUWEGXrseJw6znpgpMxBymfOMwjQTGbHs
   conversationId: roadmap-plan
   timestamp: 2026-09-11T14:00:00Z
   confidence: 0.9
+  deprecated:
+    migratedAt: 2026-11-14T19:37:32Z
+    sourceRef: 31313e0b47591b17ee59513996bf8f260728ceb7
+    contentHash: 31313e0b47591b17ee59513996bf8f260728ceb7
 createdAt: 2026-09-11T14:00:00Z
 updatedAt: 2026-09-11T14:00:00Z
 ```

@@ -4,10 +4,13 @@ kind: pivot
 timestamp: 2026-06-22T21:00:00Z
 review: accepted
 provenance:
-  sourceRef: bd8a2f4f0cff7b2666ce17c85a5c337375cd12f7
-  contentHash: bd8a2f4f0cff7b2666ce17c85a5c337375cd12f7
+  sourceRef: ni:///sha-256;0t33jwyAlbxf0YBCjCsKmh_PnkwV23IPchbVmo110dk
   timestamp: 2026-06-22T21:00:00Z
   conversationId: setup-and-operating-loop
+  deprecated:
+    migratedAt: 2026-11-14T19:37:32Z
+    sourceRef: bd8a2f4f0cff7b2666ce17c85a5c337375cd12f7
+    contentHash: bd8a2f4f0cff7b2666ce17c85a5c337375cd12f7
 createdAt: 2026-06-22T21:00:00Z
 updatedAt: 2026-06-22T21:00:00Z
 ```

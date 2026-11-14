@@ -3,10 +3,13 @@ id: nw-native-restore-stale-on-live-state
 kind: statement
 review: accepted
 provenance:
-  sourceRef: d40ce7c8d0c9cd565cd2fac43a74401b29345684
-  contentHash: d40ce7c8d0c9cd565cd2fac43a74401b29345684
+  sourceRef: ni:///sha-256;pcv6tCWiasWpEqJixHa8yXaDIHH_l-iqtUIgtcoGOOI
   timestamp: 2026-09-27T02:30:00Z
   conversationId: native-vs-konspekt-validation-run
+  deprecated:
+    migratedAt: 2026-11-14T19:37:32Z
+    sourceRef: d40ce7c8d0c9cd565cd2fac43a74401b29345684
+    contentHash: d40ce7c8d0c9cd565cd2fac43a74401b29345684
 createdAt: 2026-09-27T02:30:00Z
 updatedAt: 2026-09-27T02:30:00Z
 ```

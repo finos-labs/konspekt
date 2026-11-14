@@ -5,11 +5,14 @@ kind: skill
 location: .claude/skills/fleet-skill-builder/SKILL.md
 review: accepted
 provenance:
-  sourceRef: b3dae1e1c2e148a343e166f3e216edd42b948428
-  contentHash: b3dae1e1c2e148a343e166f3e216edd42b948428
+  sourceRef: ni:///sha-256;kUOtffa7AfXOlxj2dojS90sXvMAGyUBkhUNU_BqqbLo
   conversationId: fleet-uat-committer-2026-10-21
   timestamp: 2026-10-22T02:16:59.291Z
   confidence: 0.7
+  deprecated:
+    migratedAt: 2026-11-14T19:37:32Z
+    sourceRef: b3dae1e1c2e148a343e166f3e216edd42b948428
+    contentHash: b3dae1e1c2e148a343e166f3e216edd42b948428
 createdAt: 2026-10-22T02:16:59.291Z
 updatedAt: 2026-10-22T02:16:59.291Z
 ```

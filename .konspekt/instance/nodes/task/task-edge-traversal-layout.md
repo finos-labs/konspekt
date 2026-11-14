@@ -9,10 +9,13 @@ summary:
   updatedAt: 2026-09-27T00:35:00Z
 review: accepted
 provenance:
-  sourceRef: 2eda5a31d3d853894be5b0933ce34a60694d9f21
-  contentHash: 2eda5a31d3d853894be5b0933ce34a60694d9f21
+  sourceRef: ni:///sha-256;hkJNOBNwBtKhJk6ye15n3z2a_jc_UbQTQpIqPL9FqdU
   timestamp: 2026-09-27T00:10:00Z
   confidence: 0.9
+  deprecated:
+    migratedAt: 2026-11-14T19:37:32Z
+    sourceRef: 2eda5a31d3d853894be5b0933ce34a60694d9f21
+    contentHash: 2eda5a31d3d853894be5b0933ce34a60694d9f21
 createdAt: 2026-09-27T00:10:00Z
 updatedAt: 2026-09-27T00:35:00Z
 ```

@@ -3,11 +3,14 @@ id: nw-fleet-setup-authority-preflight
 kind: decision
 review: accepted
 provenance:
-  sourceRef: faa36003d4bf3612e7e677825150d55cd78407e0
-  contentHash: faa36003d4bf3612e7e677825150d55cd78407e0
+  sourceRef: ni:///sha-256;XjHK9L7CVPnP3VnQT_mfCt1cfEHPJ4zmxQC9SF3ZBNE
   conversationId: fleet-adopter-authority-preflight
   timestamp: 2026-10-23T16:44:40Z
   confidence: 0.8
+  deprecated:
+    migratedAt: 2026-11-14T19:37:32Z
+    sourceRef: faa36003d4bf3612e7e677825150d55cd78407e0
+    contentHash: faa36003d4bf3612e7e677825150d55cd78407e0
 createdAt: 2026-10-23T16:44:40Z
 updatedAt: 2026-10-23T16:44:40Z
 ```

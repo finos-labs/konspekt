@@ -3,11 +3,14 @@ id: nw-fleet-proposer-payload-fence-prose
 kind: constraint
 review: accepted
 provenance:
-  sourceRef: 46e52dde99b0c4b37deda4b401ca3662d42832cc
-  contentHash: 46e52dde99b0c4b37deda4b401ca3662d42832cc
+  sourceRef: ni:///sha-256;BJF-c82IZgHYHMpb-Oe5g1w1ea_X6E9fTWQydhb5PTQ
   conversationId: fleet-uat-committer-2026-10-21
   timestamp: 2026-10-22T02:16:59.291Z
   confidence: 0.85
+  deprecated:
+    migratedAt: 2026-11-14T19:37:32Z
+    sourceRef: 46e52dde99b0c4b37deda4b401ca3662d42832cc
+    contentHash: 46e52dde99b0c4b37deda4b401ca3662d42832cc
 createdAt: 2026-10-22T02:16:59.291Z
 updatedAt: 2026-10-22T02:16:59.291Z
 ```

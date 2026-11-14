@@ -5,10 +5,13 @@ kind: doc
 location: WHITEPAPER.md
 review: accepted
 provenance:
-  sourceRef: b75fefa7933493f9a154a76c18bde311cf0e5f5c
-  contentHash: b75fefa7933493f9a154a76c18bde311cf0e5f5c
+  sourceRef: ni:///sha-256;XvcnB6VecyVtlU6YOX3K_xSMsa5px44_vhEBiqMjC4c
   timestamp: 2026-06-24T12:00:00Z
   conversationId: whitepaper
+  deprecated:
+    migratedAt: 2026-11-14T19:37:32Z
+    sourceRef: b75fefa7933493f9a154a76c18bde311cf0e5f5c
+    contentHash: b75fefa7933493f9a154a76c18bde311cf0e5f5c
 createdAt: 2026-06-24T12:00:00Z
 updatedAt: 2026-06-24T12:00:00Z
 ```

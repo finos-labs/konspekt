@@ -4,11 +4,14 @@ kind: constraint
 status: active
 review: accepted
 provenance:
-  sourceRef: 43db4a78c6d33dc2c173264ed3a463927fbe9ff6
-  contentHash: 43db4a78c6d33dc2c173264ed3a463927fbe9ff6
+  sourceRef: ni:///sha-256;HLk5ijVhD4p7O0v8-UOVrSkGGEPCS8EbdWFs7pHALQk
   conversationId: fleet-skill-root-flag-2026-10-24
   timestamp: 2026-10-24T14:52:15Z
   confidence: 0.9
+  deprecated:
+    migratedAt: 2026-11-14T19:37:32Z
+    sourceRef: 43db4a78c6d33dc2c173264ed3a463927fbe9ff6
+    contentHash: 43db4a78c6d33dc2c173264ed3a463927fbe9ff6
 createdAt: 2026-10-24T14:52:15Z
 updatedAt: 2026-10-24T15:00:03Z
 ```

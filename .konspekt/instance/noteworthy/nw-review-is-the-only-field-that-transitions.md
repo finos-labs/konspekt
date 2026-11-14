@@ -3,10 +3,13 @@ id: nw-review-is-the-only-field-that-transitions
 kind: fact
 review: accepted
 provenance:
-  sourceRef: fdead8230bc0ff2436ef21a3b224e35a12eb57b8
-  contentHash: fdead8230bc0ff2436ef21a3b224e35a12eb57b8
+  sourceRef: ni:///sha-256;PhChJRiub0W3x3Kwz6F-8BXoB-TJXuxOHuBEqwvN60Q
   timestamp: 2026-07-19T22:15:00Z
   confidence: 0.8
+  deprecated:
+    migratedAt: 2026-11-14T19:37:32Z
+    sourceRef: fdead8230bc0ff2436ef21a3b224e35a12eb57b8
+    contentHash: fdead8230bc0ff2436ef21a3b224e35a12eb57b8
 createdAt: 2026-07-19T22:15:00Z
 updatedAt: 2026-07-19T22:40:00Z
 ```

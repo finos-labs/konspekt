@@ -3,11 +3,14 @@ id: nw-fleet-canonical-authoritative
 kind: decision
 review: accepted
 provenance:
-  sourceRef: 77bc1cbe2ce94b1bff2412cc27581f4385bc7851
-  contentHash: 77bc1cbe2ce94b1bff2412cc27581f4385bc7851
+  sourceRef: ni:///sha-256;ZGsHkLK9MDf-DD-UZD7htabxKQZgR_75MSAK8NlcsXM
   conversationId: fleet-spec-review
   timestamp: 2026-09-29T02:51:44Z
   confidence: 0.9
+  deprecated:
+    migratedAt: 2026-11-14T19:37:32Z
+    sourceRef: 77bc1cbe2ce94b1bff2412cc27581f4385bc7851
+    contentHash: 77bc1cbe2ce94b1bff2412cc27581f4385bc7851
 createdAt: 2026-09-29T02:51:44Z
 updatedAt: 2026-09-29T02:51:44Z
 ```

@@ -9,11 +9,14 @@ summary:
   updatedAt: 2026-11-14T04:51:00Z
 review: accepted
 provenance:
-  sourceRef: f61e6d61d0bd51214259cc517ffc43dc4a2f763a
-  contentHash: f61e6d61d0bd51214259cc517ffc43dc4a2f763a
+  sourceRef: ni:///sha-256;M9jv5uZziWsm9kFbLRRMDDMOfi5cgLRyCwgQ-8RaR08
   conversationId: source-uris
   timestamp: 2026-11-14T04:51:00Z
   confidence: 0.9
+  deprecated:
+    migratedAt: 2026-11-14T19:37:32Z
+    sourceRef: f61e6d61d0bd51214259cc517ffc43dc4a2f763a
+    contentHash: f61e6d61d0bd51214259cc517ffc43dc4a2f763a
 createdAt: 2026-11-14T04:51:00Z
 updatedAt: 2026-11-14T04:51:00Z
 ```

@@ -4,9 +4,12 @@ kind: constraint
 status: active
 review: accepted
 provenance:
-  sourceRef: 05f79ce4a294a4a0251a6feef26b5a1d287ea16e
-  contentHash: 05f79ce4a294a4a0251a6feef26b5a1d287ea16e
+  sourceRef: ni:///sha-256;jP89OKyOY1aDWLN50poVvAREdWHc6ccXM4sWOn5tup0
   timestamp: 2026-07-19T14:45:00Z
+  deprecated:
+    migratedAt: 2026-11-14T19:37:32Z
+    sourceRef: 05f79ce4a294a4a0251a6feef26b5a1d287ea16e
+    contentHash: 05f79ce4a294a4a0251a6feef26b5a1d287ea16e
 createdAt: 2026-07-19T14:45:00Z
 updatedAt: 2026-07-19T14:45:00Z
 ```

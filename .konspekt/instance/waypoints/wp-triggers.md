@@ -4,10 +4,13 @@ kind: decision
 timestamp: 2026-06-22T20:00:00Z
 review: accepted
 provenance:
-  sourceRef: 5008ae3c57610c790f538129478763d706b3fa34
-  contentHash: 5008ae3c57610c790f538129478763d706b3fa34
+  sourceRef: ni:///sha-256;yMIwJFUOmDJ9zMGKKV4EiD45uW4pRrL4R-WxdUVfIVA
   timestamp: 2026-06-22T20:00:00Z
   conversationId: setup-and-operating-loop
+  deprecated:
+    migratedAt: 2026-11-14T19:37:32Z
+    sourceRef: 5008ae3c57610c790f538129478763d706b3fa34
+    contentHash: 5008ae3c57610c790f538129478763d706b3fa34
 createdAt: 2026-06-22T20:00:00Z
 updatedAt: 2026-06-22T20:00:00Z
 ```

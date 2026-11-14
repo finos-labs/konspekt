@@ -3,11 +3,14 @@ id: nw-scale-sufficient-hold-optimization
 kind: statement
 review: accepted
 provenance:
-  sourceRef: bc1dc878a48b9fb0f292a721849de4953eb00448
-  contentHash: bc1dc878a48b9fb0f292a721849de4953eb00448
+  sourceRef: ni:///sha-256;sa1nvgPtGefcrb1yaYOIlnVCRmTJvXybinkIU7a0KmE
   conversationId: edge-traversal-bounded-cost
   timestamp: 2026-09-27T22:50:00Z
   confidence: 0.8
+  deprecated:
+    migratedAt: 2026-11-14T19:37:32Z
+    sourceRef: bc1dc878a48b9fb0f292a721849de4953eb00448
+    contentHash: bc1dc878a48b9fb0f292a721849de4953eb00448
 createdAt: 2026-09-27T22:50:00Z
 updatedAt: 2026-09-27T22:50:00Z
 ```

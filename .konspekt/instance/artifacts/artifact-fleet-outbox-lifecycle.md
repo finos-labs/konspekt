@@ -7,11 +7,14 @@ createdAt: 2026-10-22T00:00:00Z
 updatedAt: 2026-11-13T01:20:22Z
 review: accepted
 provenance:
-  sourceRef: 99060bd063e1a70fb8e93477e77bd982f3610884
-  contentHash: 99060bd063e1a70fb8e93477e77bd982f3610884
+  sourceRef: ni:///sha-256;AFy2UUQMVsqxGBDccDhOxmIm4x185qAxARKVuNTTq2g
   conversationId: fleet-uat-spec-writer
   timestamp: 2026-10-22T16:21:19.086Z
   confidence: 0.55
+  deprecated:
+    migratedAt: 2026-11-14T19:37:32Z
+    sourceRef: 99060bd063e1a70fb8e93477e77bd982f3610884
+    contentHash: 99060bd063e1a70fb8e93477e77bd982f3610884
 ```
 # Artifact: fleet outbox lifecycle and idempotent-fold contract
 

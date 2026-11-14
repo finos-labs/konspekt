@@ -9,11 +9,14 @@ summary:
   updatedAt: 2026-10-26T21:30:00Z
 review: accepted
 provenance:
-  sourceRef: 6d6895c8f348be0c0168c747d7ba6f2e065b5707
-  contentHash: 6d6895c8f348be0c0168c747d7ba6f2e065b5707
+  sourceRef: ni:///sha-256;hIbdekc-sy2Do50smktgWS9odYBxyg_OEEp803huToA
   conversationId: fleet-adjustments-persona-drift-2026-10-26
   timestamp: 2026-10-26T21:30:00Z
   confidence: 0.8
+  deprecated:
+    migratedAt: 2026-11-14T19:37:32Z
+    sourceRef: 6d6895c8f348be0c0168c747d7ba6f2e065b5707
+    contentHash: 6d6895c8f348be0c0168c747d7ba6f2e065b5707
 createdAt: 2026-10-26T21:30:00Z
 updatedAt: 2026-10-26T21:30:00Z
 ```

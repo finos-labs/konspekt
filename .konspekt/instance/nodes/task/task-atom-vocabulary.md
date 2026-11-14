@@ -9,11 +9,14 @@ summary:
   updatedAt: 2026-09-14T17:45:00Z
 review: accepted
 provenance:
-  sourceRef: de0d9f28163201c628544e1982b1184588da2ec8
-  contentHash: de0d9f28163201c628544e1982b1184588da2ec8
+  sourceRef: ni:///sha-256;z5fK7PerdXKGkrVmtgG6R250lvxTEtYIwyberYURCsI
   conversationId: app-design-101
   timestamp: 2026-09-14T17:45:00Z
   confidence: 0.7
+  deprecated:
+    migratedAt: 2026-11-14T19:37:32Z
+    sourceRef: de0d9f28163201c628544e1982b1184588da2ec8
+    contentHash: de0d9f28163201c628544e1982b1184588da2ec8
 createdAt: 2026-09-14T17:45:00Z
 updatedAt: 2026-09-14T17:45:00Z
 ```

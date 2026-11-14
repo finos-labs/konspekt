@@ -5,11 +5,14 @@ kind: doc
 location: implementations/fleet/docs/DESIGN.md
 review: proposed
 provenance:
-  sourceRef: d1f27d9c19df3cee92f67d1cc8b11d432acc537c
-  contentHash: d1f27d9c19df3cee92f67d1cc8b11d432acc537c
+  sourceRef: ni:///sha-256;R32Y3KPM9fh4CCyFL7YShlSJ5a9QwbRLdXxkgFc0W0M
   conversationId: fleet-worktree-committer
   timestamp: 2026-10-10T16:30:00Z
   confidence: 0.85
+  deprecated:
+    migratedAt: 2026-11-14T19:37:32Z
+    sourceRef: d1f27d9c19df3cee92f67d1cc8b11d432acc537c
+    contentHash: d1f27d9c19df3cee92f67d1cc8b11d432acc537c
 createdAt: 2026-10-10T16:30:00Z
 updatedAt: 2026-11-13T01:20:29Z
 ```

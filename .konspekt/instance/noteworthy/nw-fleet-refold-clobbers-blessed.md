@@ -4,11 +4,14 @@ kind: constraint
 status: lifted
 review: accepted
 provenance:
-  sourceRef: e8c4e203fcc5f80d60fb6363bf6ee35e5bc48b15
-  contentHash: e8c4e203fcc5f80d60fb6363bf6ee35e5bc48b15
+  sourceRef: ni:///sha-256;fBauNdll69IeoXPj6XqOLxt8zJzZ-LJtnQoWf7AWPj4
   conversationId: fleet-uat-committer-2026-10-22
   timestamp: 2026-10-22T12:44:01.258Z
   confidence: 0.9
+  deprecated:
+    migratedAt: 2026-11-14T19:37:32Z
+    sourceRef: e8c4e203fcc5f80d60fb6363bf6ee35e5bc48b15
+    contentHash: e8c4e203fcc5f80d60fb6363bf6ee35e5bc48b15
 createdAt: 2026-10-22T12:44:01.258Z
 updatedAt: 2026-10-22T17:46:00.000Z
 ```

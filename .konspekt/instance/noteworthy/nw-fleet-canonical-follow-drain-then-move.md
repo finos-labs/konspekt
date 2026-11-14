@@ -3,11 +3,14 @@ id: nw-fleet-canonical-follow-drain-then-move
 kind: decision
 review: accepted
 provenance:
-  sourceRef: 853e31626f2212ff25762bfceb7dec90596eaf36
-  contentHash: 853e31626f2212ff25762bfceb7dec90596eaf36
+  sourceRef: ni:///sha-256;iYQ2Ihnsf9MAxye4Uf3k9OzvrUVwD_T0NrRKr7hslfI
   conversationId: fleet-canonical-follow
   timestamp: 2026-11-11T18:19:12Z
   confidence: 0.7
+  deprecated:
+    migratedAt: 2026-11-14T19:37:32Z
+    sourceRef: 853e31626f2212ff25762bfceb7dec90596eaf36
+    contentHash: 853e31626f2212ff25762bfceb7dec90596eaf36
 createdAt: 2026-11-11T18:19:12Z
 updatedAt: 2026-11-11T18:25:33Z
 ```

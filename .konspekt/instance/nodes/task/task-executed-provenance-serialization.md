@@ -9,11 +9,14 @@ summary:
   updatedAt: 2026-09-20T14:00:00Z
 review: accepted
 provenance:
-  sourceRef: 80f080054c0d45db36806a561f1bbedb112dfaa9
-  contentHash: 80f080054c0d45db36806a561f1bbedb112dfaa9
+  sourceRef: ni:///sha-256;h6lGkllQpPpUWummXMcOCBqPgK4rpgG8VOelzK3rpow
   conversationId: engineer-executed-provenance
   timestamp: 2026-09-20T14:00:00Z
   confidence: 0.8
+  deprecated:
+    migratedAt: 2026-11-14T19:37:32Z
+    sourceRef: 80f080054c0d45db36806a561f1bbedb112dfaa9
+    contentHash: 80f080054c0d45db36806a561f1bbedb112dfaa9
 createdAt: 2026-09-20T14:00:00Z
 updatedAt: 2026-09-20T14:00:00Z
 ```

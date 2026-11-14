@@ -4,10 +4,13 @@ label: Not a memory layer
 aliases: [konspekt vs agent memory, upstream of memory, human-authored vs machine-authored]
 review: accepted
 provenance:
-  sourceRef: 1f21343df8ee9ca6b2d00fe6f859ddf278fc5c18
-  contentHash: 1f21343df8ee9ca6b2d00fe6f859ddf278fc5c18
+  sourceRef: ni:///sha-256;2wONDxYg29vA-aW2xX1fvu_hAEk143kQdBuijsquHoc
   timestamp: 2026-06-27T13:14:42Z
   confidence: 0.8
+  deprecated:
+    migratedAt: 2026-11-14T19:37:32Z
+    sourceRef: 1f21343df8ee9ca6b2d00fe6f859ddf278fc5c18
+    contentHash: 1f21343df8ee9ca6b2d00fe6f859ddf278fc5c18
 createdAt: 2026-06-27T13:14:42Z
 updatedAt: 2026-06-27T13:14:42Z
 ```

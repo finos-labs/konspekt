@@ -5,11 +5,14 @@ title: Place the fleet design docs with the fleet implementation
 status: active
 review: accepted
 provenance:
-  sourceRef: c5b67de2993cffaa775c1393b3d2466c0baa3a0e
-  contentHash: c5b67de2993cffaa775c1393b3d2466c0baa3a0e
+  sourceRef: ni:///sha-256;bw8zhKzH9ljIkKlyMRxjQsu-ZbDfVgCtm_qvtDIoayo
   conversationId: fleet-design-docs-placement
   timestamp: 2026-11-13T00:55:48Z
   confidence: 0.75
+  deprecated:
+    migratedAt: 2026-11-14T19:37:32Z
+    sourceRef: c5b67de2993cffaa775c1393b3d2466c0baa3a0e
+    contentHash: c5b67de2993cffaa775c1393b3d2466c0baa3a0e
 createdAt: 2026-11-13T00:55:48Z
 updatedAt: 2026-11-13T00:55:48Z
 ```

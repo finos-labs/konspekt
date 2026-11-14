@@ -3,9 +3,12 @@ id: nw-checker-hashes-raw-disk-bytes
 kind: statement
 review: accepted
 provenance:
-  sourceRef: b84968a4c646e0d05955fc0dcd5d04e7e786d270
-  contentHash: b84968a4c646e0d05955fc0dcd5d04e7e786d270
+  sourceRef: ni:///sha-256;iEZDdwDgNZUmk3DuUh6AF4Xm2XEkyInV5O1yxBVF0wI
   timestamp: 2026-09-10T09:00:00Z
+  deprecated:
+    migratedAt: 2026-11-14T19:37:32Z
+    sourceRef: b84968a4c646e0d05955fc0dcd5d04e7e786d270
+    contentHash: b84968a4c646e0d05955fc0dcd5d04e7e786d270
 createdAt: 2026-09-10T09:00:00Z
 updatedAt: 2026-09-10T09:00:00Z
 ```

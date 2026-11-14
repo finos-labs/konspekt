@@ -3,10 +3,13 @@ id: nw-webmobile-seed-is-pointer-not-payload
 kind: decision
 review: accepted
 provenance:
-  sourceRef: 7f02c2ff4543971f29c6e7298876cc4f6caaf899
-  contentHash: 7f02c2ff4543971f29c6e7298876cc4f6caaf899
+  sourceRef: ni:///sha-256;_qdwkMYV0_EeIfPD2qrMsiH8GiNJgn-n3TPoYGDtlC4
   timestamp: 2026-06-23T20:00:00Z
   conversationId: skills-adoption-review
+  deprecated:
+    migratedAt: 2026-11-14T19:37:32Z
+    sourceRef: 7f02c2ff4543971f29c6e7298876cc4f6caaf899
+    contentHash: 7f02c2ff4543971f29c6e7298876cc4f6caaf899
 createdAt: 2026-06-23T20:00:00Z
 updatedAt: 2026-06-23T20:00:00Z
 ```

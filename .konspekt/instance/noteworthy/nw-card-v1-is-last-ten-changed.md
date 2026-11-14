@@ -3,10 +3,13 @@ id: nw-card-v1-is-last-ten-changed
 kind: decision
 review: proposed
 provenance:
-  sourceRef: 34c923658f7544ebe55d2ca521a3b0d02a33134e
-  contentHash: 34c923658f7544ebe55d2ca521a3b0d02a33134e
+  sourceRef: ni:///sha-256;y3mhnAnog24sbcmgvDJxwulgkn2KGNOh1ayukyD-XHI
   timestamp: 2026-09-14T17:00:00Z
   conversationId: app-design-101
+  deprecated:
+    migratedAt: 2026-11-14T19:37:32Z
+    sourceRef: 34c923658f7544ebe55d2ca521a3b0d02a33134e
+    contentHash: 34c923658f7544ebe55d2ca521a3b0d02a33134e
 createdAt: 2026-09-14T17:00:00Z
 updatedAt: 2026-09-14T17:30:00Z
 ```

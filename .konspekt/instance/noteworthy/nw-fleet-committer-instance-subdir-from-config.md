@@ -3,11 +3,14 @@ id: nw-fleet-committer-instance-subdir-from-config
 kind: decision
 review: accepted
 provenance:
-  sourceRef: 72d499f10c8947695c7543e5089ef0526025e824
-  contentHash: 72d499f10c8947695c7543e5089ef0526025e824
+  sourceRef: ni:///sha-256;ZPPK1Rh-pHiO1LwB3_dxOLEW6ABwk_IpvZ-Ql1KKIVI
   conversationId: fleet-resolve-and-adjustments-2026-10-25
   timestamp: 2026-10-25T15:05:00Z
   confidence: 0.9
+  deprecated:
+    migratedAt: 2026-11-14T19:37:32Z
+    sourceRef: 72d499f10c8947695c7543e5089ef0526025e824
+    contentHash: 72d499f10c8947695c7543e5089ef0526025e824
 createdAt: 2026-10-25T15:05:00Z
 updatedAt: 2026-10-25T15:05:00Z
 ```

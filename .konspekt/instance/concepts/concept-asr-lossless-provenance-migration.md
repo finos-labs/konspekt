@@ -5,11 +5,14 @@ label: Changing the addressing scheme must lose no provenance and break no exist
 aliases: [lossless addressing migration, additive re-addressing]
 review: proposed
 provenance:
-  sourceRef: 79351f57f62b5883e4590949d7c1a1061dde8bd8
-  contentHash: 79351f57f62b5883e4590949d7c1a1061dde8bd8
+  sourceRef: ni:///sha-256;idqFoT14UBvBzfEOpS8AD5WPfA1E5Q2PaYK3Vo7RxO4
   conversationId: source-uris
   timestamp: 2026-11-14T19:30:00Z
   confidence: 0.8
+  deprecated:
+    migratedAt: 2026-11-14T19:37:32Z
+    sourceRef: 79351f57f62b5883e4590949d7c1a1061dde8bd8
+    contentHash: 79351f57f62b5883e4590949d7c1a1061dde8bd8
 createdAt: 2026-11-14T19:30:00Z
 updatedAt: 2026-11-14T19:30:00Z
 ```

@@ -9,11 +9,14 @@ summary:
   updatedAt: 2026-10-22T17:32:42.831Z
 review: accepted
 provenance:
-  sourceRef: 706890226af3d49c42e45964284b4f0b2303c913
-  contentHash: 706890226af3d49c42e45964284b4f0b2303c913
+  sourceRef: ni:///sha-256;uSk6JeaP_XHT4mYkurbJ1xUh--XxaLan7xPkOFn6Fdk
   conversationId: fleet-uat-committer-2026-10-22
   timestamp: 2026-10-22T17:32:42.831Z
   confidence: 0.9
+  deprecated:
+    migratedAt: 2026-11-14T19:37:32Z
+    sourceRef: 706890226af3d49c42e45964284b4f0b2303c913
+    contentHash: 706890226af3d49c42e45964284b4f0b2303c913
 createdAt: 2026-10-22T17:32:42.831Z
 updatedAt: 2026-10-22T17:46:00.000Z
 ```

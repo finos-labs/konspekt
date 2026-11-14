@@ -5,11 +5,14 @@ subtype: adr
 timestamp: 2026-09-20T20:00:00Z
 review: proposed
 provenance:
-  sourceRef: df46fa543395c9f188893c8944453acff0a841bb
-  contentHash: df46fa543395c9f188893c8944453acff0a841bb
+  sourceRef: ni:///sha-256;_M7nFZqHE6PSuN5ggZToWYsYe7pVqt2HmXVCqyZAjDI
   timestamp: 2026-09-20T20:00:00Z
   conversationId: cas-cursor-design
   confidence: 0.75
+  deprecated:
+    migratedAt: 2026-11-14T19:37:32Z
+    sourceRef: df46fa543395c9f188893c8944453acff0a841bb
+    contentHash: df46fa543395c9f188893c8944453acff0a841bb
 createdAt: 2026-09-20T20:00:00Z
 updatedAt: 2026-09-20T20:00:00Z
 ```

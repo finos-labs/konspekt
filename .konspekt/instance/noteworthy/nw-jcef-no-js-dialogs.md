@@ -3,11 +3,14 @@ id: nw-jcef-no-js-dialogs
 kind: constraint
 review: accepted
 provenance:
-  sourceRef: 0508aa2acf48b1f31daafe98a465f29f3a00a487
-  contentHash: 0508aa2acf48b1f31daafe98a465f29f3a00a487
+  sourceRef: ni:///sha-256;OOjOMMhSQ3HfSwJkXeSeaI8-OwHjhIxnkwHOn1ag22E
   timestamp: 2026-09-20T19:00:00Z
   conversationId: ui-simple-actions
   confidence: 0.85
+  deprecated:
+    migratedAt: 2026-11-14T19:37:32Z
+    sourceRef: 0508aa2acf48b1f31daafe98a465f29f3a00a487
+    contentHash: 0508aa2acf48b1f31daafe98a465f29f3a00a487
 createdAt: 2026-09-20T19:00:00Z
 updatedAt: 2026-09-20T19:00:00Z
 ```

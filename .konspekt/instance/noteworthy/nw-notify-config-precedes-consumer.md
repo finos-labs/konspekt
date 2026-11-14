@@ -3,10 +3,13 @@ id: nw-notify-config-precedes-consumer
 kind: decision
 review: accepted
 provenance:
-  sourceRef: 5234c7ba18c1c14c71aaf05c56d9475adfb96da0
-  contentHash: 5234c7ba18c1c14c71aaf05c56d9475adfb96da0
+  sourceRef: ni:///sha-256;YXrU034gCgq-j1C61KzXJSKD5nk5JQbnTIoWwA0rqMs
   timestamp: 2026-07-19T21:10:00Z
   confidence: 0.55
+  deprecated:
+    migratedAt: 2026-11-14T19:37:32Z
+    sourceRef: 5234c7ba18c1c14c71aaf05c56d9475adfb96da0
+    contentHash: 5234c7ba18c1c14c71aaf05c56d9475adfb96da0
 createdAt: 2026-07-19T21:10:00Z
 updatedAt: 2026-07-19T22:40:00Z
 ```

@@ -5,11 +5,14 @@ kind: doc
 location: VALIDATION.md
 review: proposed
 provenance:
-  sourceRef: e8938d35149b0f692e4ab353a21aadd0d8998ff1
-  contentHash: e8938d35149b0f692e4ab353a21aadd0d8998ff1
+  sourceRef: ni:///sha-256;d6KW8L7WHlc3Ax0Bk-4ca4NVjloyGrBpApDeSKgz4l8
   timestamp: 2026-09-27T15:00:00Z
   conversationId: native-vs-konspekt-validation-run
   confidence: 0.7
+  deprecated:
+    migratedAt: 2026-11-14T19:37:32Z
+    sourceRef: e8938d35149b0f692e4ab353a21aadd0d8998ff1
+    contentHash: e8938d35149b0f692e4ab353a21aadd0d8998ff1
 createdAt: 2026-09-27T15:00:00Z
 updatedAt: 2026-09-27T15:00:00Z
 ```

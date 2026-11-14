@@ -5,11 +5,14 @@ kind: code
 location: visual/
 review: accepted
 provenance:
-  sourceRef: edb20fa06fbb6ca03cf4fc84b0a3dbe19b3b9b89
-  contentHash: edb20fa06fbb6ca03cf4fc84b0a3dbe19b3b9b89
+  sourceRef: ni:///sha-256;XtQQDIUrPr_8XKCbm-kMc8pch6qyh7AzePfVgHHl-Ho
   conversationId: roadmap-plan
   timestamp: 2026-09-11T19:00:00Z
   confidence: 0.8
+  deprecated:
+    migratedAt: 2026-11-14T19:37:32Z
+    sourceRef: edb20fa06fbb6ca03cf4fc84b0a3dbe19b3b9b89
+    contentHash: edb20fa06fbb6ca03cf4fc84b0a3dbe19b3b9b89
 createdAt: 2026-09-11T19:00:00Z
 updatedAt: 2026-09-11T19:00:00Z
 ```
