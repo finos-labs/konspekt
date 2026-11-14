@@ -3,7 +3,7 @@
      Check freshness with: node tools/roadmap.mjs --check
      This file is a pure function of .konspekt/instance/ (no timestamps baked in).
      Goals and tasks are graph nodes; the horizon is derived from node status/review.
-     contentHash: sha256:ea1d3719f14b7f3a -->
+     contentHash: sha256:71d40df727eed85f -->
 
 # konspekt roadmap
 
@@ -141,6 +141,7 @@ Keep a project's working context — its instructions, accumulated decisions, an
 **Now** — _in progress_
 
 - Build the adoption path
+- Test the ni: migration on the task-ni-references branch
 
 **Next** — _accepted and planned_
 
@@ -149,7 +150,6 @@ Keep a project's working context — its instructions, accumulated decisions, an
 - Decide whether instance/ directory layout should be regularized
 - Verify the impact of ni: source addressing, file by file
 - Migrate references to ni:///sha-256 with store resolution
-- Test the ni: migration on the task-ni-references branch
 - Consider an "outcome" node type for testable controls
 - Make notifications portable
 - Find the second implementer
