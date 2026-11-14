@@ -524,3 +524,14 @@ commit order; the channel was not live during that work.
 | task-ni-references | bd177f96d83ac8167437df31996e80a5c4662de7 | lib/conformance.mjs | 2026-11-14T14:45:53Z |
 | task-ni-references | bd177f96d83ac8167437df31996e80a5c4662de7 | test/conformance-yaml-subset.test.mjs | 2026-11-14T14:45:53Z |
 | task-ni-references | 0c1aee6cd2e09d94e522336efa3ab1fa8a59fc46 | ROADMAP.md | 2026-11-14T18:38:37Z |
+| task-ni-test-migration | 9be768f133536429abe17a6543d4d5bdbc8da72a | docs/design/source-addressing.md | 2026-11-14T18:47:21Z |
+| task-ni-test-migration | 9be768f133536429abe17a6543d4d5bdbc8da72a | implementations/fleet/app/claims.mjs | 2026-11-14T18:47:21Z |
+| task-ni-test-migration | 9be768f133536429abe17a6543d4d5bdbc8da72a | implementations/fleet/app/fold.mjs | 2026-11-14T18:47:21Z |
+| task-ni-test-migration | 9be768f133536429abe17a6543d4d5bdbc8da72a | implementations/fleet/app/outbox.mjs | 2026-11-14T18:47:21Z |
+| task-ni-test-migration | 9be768f133536429abe17a6543d4d5bdbc8da72a | implementations/fleet/app/payload.mjs | 2026-11-14T18:47:21Z |
+| task-ni-test-migration | 9be768f133536429abe17a6543d4d5bdbc8da72a | implementations/fleet/app/test/fold.test.mjs | 2026-11-14T18:47:21Z |
+| task-ni-test-migration | 9be768f133536429abe17a6543d4d5bdbc8da72a | implementations/fleet/app/test/outbox.test.mjs | 2026-11-14T18:47:21Z |
+| task-ni-test-migration | 9be768f133536429abe17a6543d4d5bdbc8da72a | implementations/fleet/app/test/payload.test.mjs | 2026-11-14T18:47:21Z |
+| task-ni-test-migration | 9be768f133536429abe17a6543d4d5bdbc8da72a | implementations/fleet/app/verify.mjs | 2026-11-14T18:47:21Z |
+| task-ni-test-migration | 9be768f133536429abe17a6543d4d5bdbc8da72a | lib/conformance.mjs | 2026-11-14T18:47:21Z |
+| task-ni-test-migration | 9be768f133536429abe17a6543d4d5bdbc8da72a | test/conformance-ni-refs.test.mjs | 2026-11-14T18:47:21Z |
