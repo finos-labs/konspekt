@@ -673,3 +673,4 @@ commit order; the channel was not live during that work.
 | task-ni-walkthrough-recapture | 9429a61 | ROADMAP.md | 2026-11-15T18:00:01Z |
 | task-ni-walkthrough-recapture | 7a42a91 | docs/visuals/how-to/ui_provenance.png | 2026-11-15T18:11:29Z |
 | task-ni-walkthrough-recapture | 7a42a91 | docs/visuals/how-to/konspekt-howto-walkthrough.mp4 | 2026-11-15T18:11:29Z |
+| task-ni-walkthrough-recapture | 4339330 | ROADMAP.md | 2026-11-15T18:13:18Z |
