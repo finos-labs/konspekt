@@ -118,7 +118,11 @@ conformance at the end.
 Once a repository is migrated, conformance checks only the new form. The
 deprecated values are history and are not verified.
 
-The adopter repositories, cdm-collateral and code_tracer, are migrated later.
+The adopter repositories, cdm-collateral and code_tracer, are migrated later,
+by the procedure in `setup/README.md` § Migrating an adopter instance to `ni:`
+references: refresh the installed kit, keep deliberate customizations, check
+the kit, migrate with `--repo-url` and `--ref`, then verify that a second run
+changes nothing and that conformance and the binding audit are clean.
 
 ## Worked example
 
@@ -394,7 +398,8 @@ listed only where they also draw or describe source addressing.
 - The seed pasted into the claude.ai Konspekt Project's instructions (it
   describes "git blob SHA, `contentHash`" and still names
   `denisurusov/konspekt`).
-- cdm-collateral and code_tracer: run the migration script later.
+- cdm-collateral and code_tracer: run the migration script later, following
+  `setup/README.md` § Migrating an adopter instance to `ni:` references.
 - Any custom GPT or Gemini Gem that carries a copy of the seed.
 
 ## Result of the file-by-file check
@@ -481,12 +486,12 @@ the file; "no change" gives the reason; "open" names what is still missing.
   `sources/<blob-sha>.md` and "named by its git blob hash".
 - `implementations/implementation-zero/app/view/app.js`: the provenance pane
   shows the stored path and the `ni:` reference but not the locators.
-- `setup/init.mjs` and `test/setup-init.test.mjs`: the planned default
-  `store` block, empty `locators.allow` and `sha-256/` directories are not
-  written. A new instance starts in the `ni:` form without them, since the
-  layout convention resolves references when `store` is absent and the
-  directories are created by the first write; whether to seed them is
-  undecided.
+- `setup/init.mjs` and `test/setup-init.test.mjs`: decided by
+  `wp-init-store-block-opt-in`. The scaffold seeds an empty `locators.allow`,
+  and writes a git `store` block only when given `--repo-url` (with `--ref`,
+  default `main`). It creates no empty `sha-256/` directories; the first
+  write creates them. Without `--repo-url`, references resolve by the layout
+  convention.
 - Walkthrough frames `provenance_source.png` and `ui_provenance.png` and the
   video `konspekt-howto-walkthrough.mp4`: they show the SHA-1 path
   `sources/c559e965...md` in cdm-collateral, which is not migrated.
@@ -511,4 +516,5 @@ the file; "no change" gives the reason; "open" names what is still missing.
 - Outside the repository: the seed in the claude.ai Konspekt Project's
   instructions and any GPT or Gem copy of it (not reachable from here; replace
   it with `setup/WEBMOBILE_SEED.md`); cdm-collateral and code_tracer (run
-  `tools/migrate-ni.mjs`).
+  `tools/migrate-ni.mjs` by the procedure in `setup/README.md` § Migrating an
+  adopter instance to `ni:` references).

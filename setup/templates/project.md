@@ -9,7 +9,7 @@ summary:
 {{PERSONAS}}
 binding: required
 basis: proposed
-locators:
+{{STORE}}locators:
   allow: []
 createdAt: {{TS}}
 updatedAt: {{TS}}

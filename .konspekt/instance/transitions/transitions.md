@@ -1351,3 +1351,12 @@ proposing agent was not recorded.
 | edge:e-sup-nirefs-sha256mig | review | proposed | accepted | 2026-11-15T00:50:13Z | ni:///sha-256;YVRw29PATAwNb9bIm5tykn5E1cSA-oYjeJ_aCwoxp4o | denisurusov |
 | edge:e-not-nirefs-setupcrlf | review | proposed | accepted | 2026-11-15T00:50:13Z | ni:///sha-256;YVRw29PATAwNb9bIm5tykn5E1cSA-oYjeJ_aCwoxp4o | denisurusov |
 | node:task-sources-sha256-migration | status | open | abandoned | 2026-11-15T00:50:13Z | ni:///sha-256;YVRw29PATAwNb9bIm5tykn5E1cSA-oYjeJ_aCwoxp4o | denisurusov |
+| node:task-ni-walkthrough-recapture | review |  | proposed | 2026-11-15T15:25:03Z |  | claude |
+| node:task-ni-walkthrough-recapture | status |  | open | 2026-11-15T15:25:03Z |  | claude |
+| edge:e-dec-nirefs-walkthrough | review |  | proposed | 2026-11-15T15:25:03Z |  | claude |
+| node:task-ni-walkthrough-recapture | review | proposed | accepted | 2026-11-15T15:28:12Z | ni:///sha-256;L2HVhz6saqj_do5eknTfWpzya1T2C4gfq3DJAOkVamY | denisurusov |
+| edge:e-dec-nirefs-walkthrough | review | proposed | accepted | 2026-11-15T15:28:12Z | ni:///sha-256;L2HVhz6saqj_do5eknTfWpzya1T2C4gfq3DJAOkVamY | denisurusov |
+| waypoint:wp-init-store-block-opt-in | review |  | proposed | 2026-11-15T15:28:12Z |  | claude |
+| edge:e-mark-initstore-nirefs | review |  | proposed | 2026-11-15T15:28:12Z |  | claude |
+| waypoint:wp-init-store-block-opt-in | review | proposed | accepted | 2026-11-15T15:55:49Z | ni:///sha-256;VybP-MOxzfvsDebYQKizy1CmRbyFZUEpDuNWQAcwBJM | denisurusov |
+| edge:e-mark-initstore-nirefs | review | proposed | accepted | 2026-11-15T15:55:49Z | ni:///sha-256;VybP-MOxzfvsDebYQKizy1CmRbyFZUEpDuNWQAcwBJM | denisurusov |
