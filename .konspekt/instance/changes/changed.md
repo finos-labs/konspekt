@@ -601,3 +601,6 @@ commit order; the channel was not live during that work.
 | task-ni-references | d42c833481f16c2af2a68a45bf58a345d9c3b738 | docs/overview.svg | 2026-11-15T00:21:11Z |
 | task-ni-references | d42c833481f16c2af2a68a45bf58a345d9c3b738 | docs/visuals/posters/konspekt-fleet-poster.html | 2026-11-15T00:21:11Z |
 | task-ni-references | d42c833481f16c2af2a68a45bf58a345d9c3b738 | spec/architecture/SCHEMA-RECONCILIATION.md | 2026-11-15T00:21:11Z |
+| task-ni-references | 3ed03f8610bf24fcc368cf171ccf9d710f20177c | docs/overview.svg | 2026-11-15T00:28:08Z |
+| task-ni-references | 3ed03f8610bf24fcc368cf171ccf9d710f20177c | docs/overview_dark_preview.png | 2026-11-15T00:28:08Z |
+| task-ni-references | 3ed03f8610bf24fcc368cf171ccf9d710f20177c | docs/overview_light_preview.png | 2026-11-15T00:28:08Z |
