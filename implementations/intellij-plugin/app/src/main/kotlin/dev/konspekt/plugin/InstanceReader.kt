@@ -89,6 +89,39 @@ object InstanceReader {
     return out
   }
 
+  // Origin locators (SERIALIZATION.md § Sources): the `provenance.locators`
+  // sequence of maps, which parseFront skips. Each item becomes a flat map of
+  // its scalar fields (uri, kind, retrievedAt, ...). Only a `locators` key that
+  // is a direct child of the top-level `provenance` map counts, so a nested
+  // block such as `provenance.deprecated` cannot contribute one.
+  internal fun parseLocators(text: String): List<Map<String, String>> {
+    val t = text.replace("\r\n", "\n").trimStart()
+    val fence = Regex("(?s)^```ya?ml\\n(.*?)\\n```").find(t) ?: return emptyList()
+    val out = ArrayList<MutableMap<String, String>>()
+    var inProv = false; var provChild = -1; var inLoc = false; var locIndent = -1
+    for (raw in fence.groupValues[1].split("\n")) {
+      if (raw.isBlank() || raw.trim().startsWith("#")) continue
+      val indent = raw.length - raw.trimStart().length
+      val trimmed = raw.trim()
+      if (indent == 0) { inProv = trimmed == "provenance:"; provChild = -1; inLoc = false; continue }
+      if (!inProv) continue
+      val item = trimmed.startsWith("- ") || trimmed == "-"
+      // YAML allows the sequence at the key's own indent ("locators:\n  - uri: ...").
+      if (inLoc && (indent > locIndent || item)) {
+        val body = if (item) trimmed.removePrefix("-").trim() else trimmed
+        if (item) out.add(LinkedHashMap())
+        val m = KV.find(body) ?: continue
+        if (out.isNotEmpty()) out.last()[m.groupValues[1]] = stripQuotes(m.groupValues[2])
+        continue
+      }
+      if (provChild < 0) provChild = indent
+      if (indent != provChild) continue
+      inLoc = trimmed == "locators:"
+      locIndent = indent
+    }
+    return out
+  }
+
   private fun entityFrom(entityType: String, f: File, rel: String): Entity {
     val fr = parseFront(f.readText())
     return Entity(
@@ -259,7 +292,11 @@ object InstanceReader {
     val f = File(instanceDir, e.file)
     if (!f.isFile) return "{\"error\":\"file missing\"}"
     val acceptedBy = acceptedByOf(instanceDir, "${e.entityType}:${e.id}")
-    return "{\"id\":${q(e.id)},\"file\":${q(e.file)},\"markdown\":${q(f.readText())},\"review\":${q(e.review)},\"status\":${q(e.status)},\"entityType\":${q(e.entityType)},\"sourceRef\":${q(e.sourceRef)},\"contentHash\":${q(e.contentHash)},\"acceptedBy\":${q(acceptedBy)}}"
+    val text = f.readText()
+    val locators = parseLocators(text).joinToString(",") { l ->
+      "{" + l.entries.joinToString(",") { (k, v) -> "${q(k)}:${q(v)}" } + "}"
+    }
+    return "{\"id\":${q(e.id)},\"file\":${q(e.file)},\"markdown\":${q(text)},\"review\":${q(e.review)},\"status\":${q(e.status)},\"entityType\":${q(e.entityType)},\"sourceRef\":${q(e.sourceRef)},\"contentHash\":${q(e.contentHash)},\"acceptedBy\":${q(acceptedBy)},\"locators\":[$locators]}"
   }
 
   // One transition-log row to append: an assignment of `field` on `ref`.
