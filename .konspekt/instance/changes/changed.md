@@ -630,3 +630,8 @@ commit order; the channel was not live during that work.
 | task-ni-references | addc3de8f8f4835bdbfb80c1d8c309cba0001df7 | test/setup-init.test.mjs | 2026-11-15T15:24:42Z |
 | task-ni-references | addc3de8f8f4835bdbfb80c1d8c309cba0001df7 | tools/migrate-ni.mjs | 2026-11-15T15:24:42Z |
 | task-ni-references | b94af594c5415a89fdb8bd361cbe5add22fe96a7 | ROADMAP.md | 2026-11-15T15:25:14Z |
+| task-ni-references | 893a717cf59443622d6d4e7ef9eeb0b4ccea192e | docs/design/source-addressing.md | 2026-11-15T15:29:57Z |
+| task-ni-references | 893a717cf59443622d6d4e7ef9eeb0b4ccea192e | setup/README.md | 2026-11-15T15:29:57Z |
+| task-ni-references | 893a717cf59443622d6d4e7ef9eeb0b4ccea192e | setup/init.mjs | 2026-11-15T15:29:57Z |
+| task-ni-references | 893a717cf59443622d6d4e7ef9eeb0b4ccea192e | setup/templates/project.md | 2026-11-15T15:29:57Z |
+| task-ni-references | 893a717cf59443622d6d4e7ef9eeb0b4ccea192e | test/setup-init.test.mjs | 2026-11-15T15:29:57Z |
