@@ -588,3 +588,6 @@ commit order; the channel was not live during that work.
 | task-ni-references | dec86e3aea527c80cd434a0c72704b82283d89a0 | lib/validate.mjs | 2026-11-14T20:16:21Z |
 | task-ni-references | dec86e3aea527c80cd434a0c72704b82283d89a0 | test/locator-reach.test.mjs | 2026-11-14T20:16:21Z |
 | task-ni-references | dec86e3aea527c80cd434a0c72704b82283d89a0 | tools/README.md | 2026-11-14T20:16:21Z |
+| task-ni-references | 7e122952fd5ff63052f4e282ad839e2eb1c31c18 | lib/conformance.mjs | 2026-11-15T00:12:21Z |
+| task-ni-references | 7e122952fd5ff63052f4e282ad839e2eb1c31c18 | spec/architecture/SERIALIZATION.md | 2026-11-15T00:12:21Z |
+| task-ni-references | 7e122952fd5ff63052f4e282ad839e2eb1c31c18 | test/conformance-ni-refs.test.mjs | 2026-11-15T00:12:21Z |

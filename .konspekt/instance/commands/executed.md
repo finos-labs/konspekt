@@ -198,3 +198,9 @@ New rows below this backfill are recorded live.
 | task-ni-references | ni:///sha-256;klFfRCjfo6rUTkuDdMiGqp2cGizwU6kZVywtKLMb3wU |
 | task-ni-references | ni:///sha-256;CALln4iMq8iR0s-mvnztQLkZwA-sqjgpcYu40WxrZAY |
 | task-ni-references | ni:///sha-256;3WoW3gveonnleN0jI-r1euxl9vzC-FOq0yk3XPqxOcs |
+| task-ni-references | ni:///sha-256;Xuai4_T-VFNxFWex2bwxSGd653NlFSahsNkOYFOGnQE |
+| task-ni-references | ni:///sha-256;kyLxCnNmCLPBiCHfJK1Whme0GHrDfX8qpViWnYXWDJ0 |
+| task-ni-references | ni:///sha-256;16NRsTsqDXD5ehjrfjtahJVGpCmqlxxJhh-UuvHw6Nc |
+| task-ni-references | ni:///sha-256;6p9mQwHKxm_QAqHWMYg9AJoa7_AzGwdvsYg-5ae2G_s |
+| task-ni-references | ni:///sha-256;yWa8benqaP1yeYdjLngRWn_Z0D2AGJRAs-3cLqStDjg |
+| task-ni-references | ni:///sha-256;U4wp6MaXjeWm2Kr95HBcJby5XAjvSrxTACIb3rKjI0I |
