@@ -91,13 +91,13 @@
 
     <article class='card'>
       <div class='card-h'><span class='dot' aria-hidden='true'></span><span class='card-title'>Provenance &mdash; citations</span><span class='num mono'>03</span></div>
-      <p class='body'>Every atom cites its source and binds to an entity. Verbatim excerpts from both sides of the exchange, content-addressed by git blob SHA, tied to the conversation. Completeness is an invariant: a conversation resolves to the graph or is recorded as a deliberate non-binding &mdash; none goes silent.</p>
-      <div class='tags'><span class='tag mono'>contentHash</span><span class='tag mono'>sourceRef</span><span class='tag mono'>conversationId</span><span class='tag mono'>binding</span></div>
+      <p class='body'>Every atom cites its source and binds to an entity. Verbatim excerpts from both sides of the exchange, content-addressed by SHA-256 (<span class='mono'>ni:///sha-256</span>), tied to the conversation. Completeness is an invariant: a conversation resolves to the graph or is recorded as a deliberate non-binding &mdash; none goes silent.</p>
+      <div class='tags'><span class='tag mono'>sourceRef</span><span class='tag mono'>ni:///sha-256</span><span class='tag mono'>conversationId</span><span class='tag mono'>binding</span></div>
     </article>
 
     <article class='card'>
       <div class='card-h'><span class='dot' aria-hidden='true'></span><span class='card-title'>GitHub &mdash; backend</span><span class='num mono'>04</span></div>
-      <p class='body'>The store is the repo. Atomic multi-file commits, blob SHA as content hash, human-readable files. Distribution is a regenerable projection of root, never a tracking copy.</p>
+      <p class='body'>The store is the repo. Atomic multi-file commits, SHA-256-named excerpts, human-readable files. Distribution is a regenerable projection of root, never a tracking copy.</p>
       <div class='tags'><span class='tag mono'>nodes/</span><span class='tag mono'>edges/</span><span class='tag mono'>sources/</span><span class='tag mono'>atomic commit</span></div>
     </article>
   </section>
@@ -117,7 +117,7 @@
       <span class='sep' aria-hidden='true'>&rarr;</span>
       <span class='pill'>verbatim source</span>
       <span class='sep' aria-hidden='true'>&rarr;</span>
-      <span class='pill'>blob SHA</span>
+      <span class='pill'>SHA-256</span>
       <span class='sep' aria-hidden='true'>&rarr;</span>
       <span class='pill'>commit history</span>
     </div>

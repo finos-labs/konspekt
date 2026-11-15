@@ -132,9 +132,9 @@ evidential relations such as "supports" are deliberately not typed
 
 ### 2.5 Cross-cutting structures
 
-- **Provenance** (`spec/data-model/schema.ts` lines 64–80): `sourceRef`
-  (content-pinned address of the source excerpt), `contentHash` (digest of that
-  source text captured at construction time), `timestamp` (ISO 8601, when the
+- **Provenance** (`spec/data-model/schema.ts`, `interface Provenance`):
+  `sourceRef` (an RFC 6920 `ni:///sha-256;<base64url>` reference over the bytes
+  of the source excerpt, which is both its address and its digest), `timestamp` (ISO 8601, when the
   source exchange happened — source time, not persist time), optional
   `confidence` (0..1, self-reported by the maintainer), optional
   `conversationId` (host-injected grouping metadata, never minted by the
@@ -226,13 +226,13 @@ same surface form" and must be specified explicitly.
 **Idempotence** is the property that running a pass twice yields the same
 instance as running it once: `f(f(x)) = f(x)`. It rests on **content-addressed
 provenance**. Ingestion is push-based: at extraction time the maintainer writes
-the source excerpt into the store as a content-addressed blob and stamps each
-atom's provenance with that `sourceRef` and its `contentHash`. Identity lives at
-two levels:
+the source excerpt into the store as a content-addressed file and stamps each
+atom's provenance with its `sourceRef`, the `ni:///sha-256` reference over the
+excerpt's bytes. Identity lives at two levels:
 
 - **Match-level (primary).** Re-extracting a consumed exchange reproduces the
-  same source excerpt → the same `contentHash` → the store already holds that
-  blob and the atoms resolve to existing entities. This is robust because the
+  same source excerpt → the same `sourceRef` → the store already holds that
+  file and the atoms resolve to existing entities. This is robust because the
   source text is near-deterministic even when atom extraction is not: copying
   bytes reproduces them; interpreting them need not. The stable key sits
   underneath the unstable extraction layer.
@@ -242,12 +242,15 @@ two levels:
   match-level still makes the pass a no-op.
 
 Edited or branched messages need no special case: changed text hashes to a
-different `contentHash` and is reconciled as a different source. The **verify
-probe**: an entity's provenance verifies iff hashing the text at its `sourceRef`
-reproduces its stored `contentHash`. In the GitHub binding this is structural —
-the blob SHA is the hash — so it can fail only on a dangling pointer or a corrupt
-store; `sourceRef` and `contentHash` are kept as two fields so a future binding
-whose addressed text can drift still has a real integrity gate.
+different `sourceRef` and is reconciled as a different source. The **verify
+probe**: an entity's provenance verifies iff the SHA-256 of the stored excerpt
+bytes equals the digest its `sourceRef` names. The reference carries its own
+digest, so no separate `contentHash` is stored, and the probe works the same on
+any store that returns the bytes (`spec/architecture/STORAGE.md`). It can fail
+only on a dangling pointer or a corrupt store. An instance written before this
+addressing used the excerpt's git blob SHA-1 as both `sourceRef` and
+`contentHash`; it is migrated in place, and readers accept both forms
+(`spec/architecture/SERIALIZATION.md` § Migration).
 
 **Provenance completeness** is the invariant above the verify probe: every
 proposed atom must *bind* — carry a resolvable reference to a source and attach to
@@ -292,7 +295,7 @@ Owned by `spec/architecture/SERIALIZATION.md`. Version **v1**, matched to
   noteworthy/<id>.md
   artifacts/<id>.md
   waypoints/<id>.md
-  sources/<contentHash>.md  # content-addressed provenance excerpts (not entities)
+  sources/sha-256/<hex>.md  # content-addressed provenance excerpts (not entities)
   edges/edges.md            # single typed edge table
 ```
 
@@ -306,8 +309,9 @@ Rules:
 - `id` is kebab-case, globally unique, and equals the filename without `.md`.
 - `Summary` serializes as `summary: { origin, pinned, updatedAt }`; its `text`
   lives in the body, so it is not duplicated.
-- `Provenance` serializes as a nested map (`sourceRef`, `contentHash`,
-  `timestamp`, `confidence?`, `conversationId?`).
+- `Provenance` serializes as a nested map (`sourceRef`, `timestamp`,
+  `confidence?`, `conversationId?`, `locators?`, `deprecated?`); `contentHash`
+  is derived from an `ni:` `sourceRef` and is not stored.
 - A file may declare a file-level `provenance` / `review` default when every
   entry shares it (used by the edge table).
 
@@ -315,11 +319,11 @@ Rules:
 `provenance` and `review` declared once at file level. Per-edge files are a valid
 v1 variant if the table grows unwieldy.
 
-`sources/<contentHash>.md` holds source excerpts, which are not graph entities:
-plain Markdown, no front-matter, no `id`. The filename is the excerpt's git blob
-SHA, so `provenance.sourceRef` resolves to `sources/<sourceRef>.md` and the
-verify probe is `git hash-object` of that file equalling the stored
-`contentHash`. The directory is **append-only**: editing an excerpt yields a new
+`sources/sha-256/<hex>.md` holds source excerpts, which are not graph entities:
+plain Markdown, no front-matter, no `id`. The filename is the hex SHA-256 of the
+excerpt's bytes, so `provenance.sourceRef` (`ni:///sha-256;<base64url>`)
+resolves to that file and the verify probe is the SHA-256 of the file equalling
+the reference's digest. The directory is **append-only**: editing an excerpt yields a new
 hash and a new file. An excerpt is **verbatim and covers every participating
 turn** — human prompts and assistant responses, copied, never paraphrased.
 Curation is permitted only as selection (choosing which spans to include and
