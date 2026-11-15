@@ -604,3 +604,4 @@ commit order; the channel was not live during that work.
 | task-ni-references | 3ed03f8610bf24fcc368cf171ccf9d710f20177c | docs/overview.svg | 2026-11-15T00:28:08Z |
 | task-ni-references | 3ed03f8610bf24fcc368cf171ccf9d710f20177c | docs/overview_dark_preview.png | 2026-11-15T00:28:08Z |
 | task-ni-references | 3ed03f8610bf24fcc368cf171ccf9d710f20177c | docs/overview_light_preview.png | 2026-11-15T00:28:08Z |
+| task-ni-impact-analysis | 2e76727b83b44b867f82d4d08aa642b19c26fa43 | docs/design/source-addressing.md | 2026-11-15T00:32:12Z |
