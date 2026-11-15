@@ -671,3 +671,5 @@ commit order; the channel was not live during that work.
 | task-view-wrap-long-paths | 63a185ab88b18b4892de4978f95c4917ec091452 | ROADMAP.md | 2026-11-15T17:26:50Z |
 | task-view-wrap-long-paths | 23110c3f2562cc8941acfde5a99f52b1498aa51d | ROADMAP.md | 2026-11-15T17:28:27Z |
 | task-ni-walkthrough-recapture | 9429a61 | ROADMAP.md | 2026-11-15T18:00:01Z |
+| task-ni-walkthrough-recapture | 7a42a91 | docs/visuals/how-to/ui_provenance.png | 2026-11-15T18:11:29Z |
+| task-ni-walkthrough-recapture | 7a42a91 | docs/visuals/how-to/konspekt-howto-walkthrough.mp4 | 2026-11-15T18:11:29Z |

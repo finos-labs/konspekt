@@ -255,3 +255,5 @@ New rows below this backfill are recorded live.
 | task-linkedin-announce-ni-references | ni:///sha-256;DiDYqnQGl-elpjg-HEanFElNEOozWW61Qy7swf3cKpI |
 | task-ni-walkthrough-recapture | ni:///sha-256;MyuBS6YNIihhW_lq5O1VIjJkFL1_axHLBs00oXBbSpg |
 | task-ni-walkthrough-recapture | ni:///sha-256;5zvbO5lqLld54DCQmCwzsZMGA5lHLjDXcDIDzY8laOM |
+| task-ni-walkthrough-recapture | ni:///sha-256;Jau3NYodfG2tPIFQybX_qKU_ljwuoR-Ko-5EK2qUX0Q |
+| task-ni-walkthrough-recapture | ni:///sha-256;Br-S73ceCxzHebnqla6JQZiZxOUfXx40Gndyt7m9T_E |
