@@ -442,7 +442,11 @@ the file; "no change" gives the reason; "open" names what is still missing.
   changes no file).
 - Documentation and visuals: `WHITEPAPER.md`, `docs/overview.html`,
   `docs/overview.svg` and both preview PNGs (regenerated),
-  `konspekt-fleet-poster.html`, `ROADMAP.md` (regenerated).
+  `konspekt-fleet-poster.html`, `ROADMAP.md` (regenerated); the walkthrough
+  frames `provenance_source.png` and `ui_provenance.png`, re-captured from
+  the migrated cdm-collateral instance (`sources/sha-256/6d23dfc0...md`), and
+  `konspekt-howto-walkthrough.mp4` with those two slides replaced and its
+  audio unchanged.
 
 ### No change
 
@@ -492,10 +496,6 @@ the file; "no change" gives the reason; "open" names what is still missing.
   default `main`). It creates no empty `sha-256/` directories; the first
   write creates them. Without `--repo-url`, references resolve by the layout
   convention.
-- Walkthrough frames `provenance_source.png` and `ui_provenance.png` and the
-  video `konspekt-howto-walkthrough.mp4`: they show the SHA-1 path
-  `sources/c559e965...md` in cdm-collateral, which is not migrated.
-  Re-capture after cdm-collateral is migrated.
 - Graph atoms, through proposals:
   - superseded by `wp-adr-ni-sha256-references`:
     `nw-provenance-content-addressed` (two stored fields, verify by
