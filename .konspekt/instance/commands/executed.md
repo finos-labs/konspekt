@@ -239,3 +239,13 @@ New rows below this backfill are recorded live.
 | task-linkedin-announce-ni-references | ni:///sha-256;7WqzhOrbWNbgvzDxHBto80q4mIhHix1xIQkOCKqiqw0 |
 | task-linkedin-announce-ni-references | ni:///sha-256;rNddl6O6TspFdCoBaDtElcPCFMNebHukG3LJ-aE1P-k |
 | task-linkedin-announce-ni-references | ni:///sha-256;FdWMrAOzU3ODCW5tlGer2XB04E8dvvJ2vI1_kLCIP6A |
+| task-ni-references | ni:///sha-256;qEx6gC1KNcaP9KTdis0lMyjpUaOrI_mBM9-pz-px-OI |
+| task-ni-references | ni:///sha-256;-P1fe1kbW0IaKvcHotwH4SR0M9l2mr9OdepKpmzDNug |
+| task-ni-references | ni:///sha-256;ZUOCH5cPEnbhWHpzGEL6wg97UH93p9nnW2V-0JJQOq0 |
+| task-ni-references | ni:///sha-256;845YwfeQsxgVO14dP0K9C56Y-qphGVFSw9LuKaZswKk |
+| task-ni-references | ni:///sha-256;GuF9F6rRRttI9hzg01g-EAallj7U3okIKcieX5e2MP0 |
+| task-ni-references | ni:///sha-256;1E36-FCaDCK6TZLvF9_S0aWZYqkJuYLvoE9-qByw0lY |
+| task-ni-references | ni:///sha-256;F4HzHzTHhBpcJy1LrSFW5hCAbf0gJzP4eXSsW3awVJA |
+| task-ni-references | ni:///sha-256;8IPKebdVdDpjR1eCRDtydR7rxLV5KTdQ6lwx_BO1M8A |
+| task-ni-references | ni:///sha-256;9DeRjJlpaWzU8OFW3pI8vLJEaimf1Z4-uV0M9NVQNvQ |
+| task-ni-references | ni:///sha-256;R6kHWnStfZhmL2exuXmuJTBHP3xeWyzbby-CRjgoxkU |

@@ -630,3 +630,16 @@ commit order; the channel was not live during that work.
 | task-linkedin-announce-ni-references | 03d10c7a828d5713e73983cd5d868edf168941dc | docs/visuals/posters/konspekt-addressing-poster.html | 2026-11-15T15:09:55Z |
 | task-linkedin-announce-ni-references | 34b404a36a797fc19156be47808f8fe6cb723467 | ROADMAP.md | 2026-11-15T15:10:23Z |
 | task-linkedin-announce-ni-references | bb43a003e79278c6eb803b44d0fd603cefd4b9bf | docs/announcements/linkedin/post_2026-11-16/post.md | 2026-11-15T15:13:09Z |
+| task-ni-references | addc3de8f8f4835bdbfb80c1d8c309cba0001df7 | docs/design/source-addressing.md | 2026-11-15T15:24:42Z |
+| task-ni-references | addc3de8f8f4835bdbfb80c1d8c309cba0001df7 | setup/README.md | 2026-11-15T15:24:42Z |
+| task-ni-references | addc3de8f8f4835bdbfb80c1d8c309cba0001df7 | setup/init.mjs | 2026-11-15T15:24:42Z |
+| task-ni-references | addc3de8f8f4835bdbfb80c1d8c309cba0001df7 | test/migrate-ni.test.mjs | 2026-11-15T15:24:42Z |
+| task-ni-references | addc3de8f8f4835bdbfb80c1d8c309cba0001df7 | test/setup-init.test.mjs | 2026-11-15T15:24:42Z |
+| task-ni-references | addc3de8f8f4835bdbfb80c1d8c309cba0001df7 | tools/migrate-ni.mjs | 2026-11-15T15:24:42Z |
+| task-ni-references | b94af594c5415a89fdb8bd361cbe5add22fe96a7 | ROADMAP.md | 2026-11-15T15:25:14Z |
+| task-ni-references | 893a717cf59443622d6d4e7ef9eeb0b4ccea192e | docs/design/source-addressing.md | 2026-11-15T15:29:57Z |
+| task-ni-references | 893a717cf59443622d6d4e7ef9eeb0b4ccea192e | setup/README.md | 2026-11-15T15:29:57Z |
+| task-ni-references | 893a717cf59443622d6d4e7ef9eeb0b4ccea192e | setup/init.mjs | 2026-11-15T15:29:57Z |
+| task-ni-references | 893a717cf59443622d6d4e7ef9eeb0b4ccea192e | setup/templates/project.md | 2026-11-15T15:29:57Z |
+| task-ni-references | 893a717cf59443622d6d4e7ef9eeb0b4ccea192e | test/setup-init.test.mjs | 2026-11-15T15:29:57Z |
+| task-ni-references | 5156071042d4b225f732cc1d5f058179cd737383 | ROADMAP.md | 2026-11-15T15:30:15Z |

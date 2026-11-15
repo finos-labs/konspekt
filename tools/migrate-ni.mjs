@@ -202,9 +202,10 @@ function migrateProject(instanceDir, repoUrl, ref, dryRun) {
     `    entity: ${base}/{path}`,
     `    edges: ${base}/edges/edges.md`,
     `    checkpoints: ${base}/checkpoints/checkpoints.md`,
-    "locators:",
-    "  allow: []",
   ];
+  // setup/init.mjs seeds `locators.allow: []` in new instances; an existing
+  // `locators:` key is the adopter's, so it is kept and not written twice.
+  if (!/^locators:/m.test(doc.text)) block.push("locators:", "  allow: []");
   const lines = doc.text.split("\n");
   const close = lines.indexOf("```", 1);
   if (!/^```ya?ml$/.test(lines[0] || "") || close < 0) return false;

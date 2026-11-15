@@ -103,6 +103,23 @@ try {
   check("a second run reports nothing to do",
     r2.sourcesCopied === 0 && r2.deprecatedRows === 0 && r2.entities.migrated === 0 &&
     Object.values(r2.cells).every((n) => n === 0), JSON.stringify(r2));
+
+  // --repo-url writes a git store block and an empty locators.allow.
+  const count = (text, re) => (text.match(re) || []).length;
+  const pm = join(dir, "project.md");
+  migrate(dir, { now: NOW, repoUrl: "https://github.com/example/t", ref: "main" });
+  let proj = readFileSync(pm, "utf8");
+  check("--repo-url writes one store block and one locators key",
+    count(proj, /^store:/gm) === 1 && count(proj, /^locators:/gm) === 1, proj);
+  check("the store block is accepted by the checker", errorsOf().length === 0, JSON.stringify(errorsOf()));
+
+  // An instance whose project.md already has locators (setup/init.mjs seeds
+  // `locators.allow: []`) keeps its own and gains no second key.
+  writeFileSync(pm, fence(`id: project-t\ngoal: test\npersonas: [engineer]\nlocators:\n  allow: [github.com]\ncreatedAt: ${TS}\nupdatedAt: ${TS}`, "# t"));
+  migrate(dir, { now: NOW, repoUrl: "https://github.com/example/t", ref: "main" });
+  proj = readFileSync(pm, "utf8");
+  check("an existing locators key is kept and not duplicated",
+    count(proj, /^store:/gm) === 1 && count(proj, /^locators:/gm) === 1 && proj.includes("allow: [github.com]"), proj);
 } finally {
   rmSync(dir, { recursive: true, force: true });
 }

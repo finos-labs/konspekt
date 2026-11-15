@@ -3,7 +3,7 @@
      Check freshness with: node tools/roadmap.mjs --check
      This file is a pure function of .konspekt/instance/ (no timestamps baked in).
      Goals and tasks are graph nodes; the horizon is derived from node status/review.
-     contentHash: sha256:d5d03d492af53f71 -->
+     contentHash: sha256:abb80290c8291fb4 -->
 
 # konspekt roadmap
 
@@ -149,6 +149,7 @@ Keep a project's working context — its instructions, accumulated decisions, an
 - A durable store other than git
 - Decide whether instance/ directory layout should be regularized
 - Migrate references to ni:///sha-256 with store resolution
+- Re-capture the walkthrough frames after cdm-collateral migrates to ni: references
 - Consider an "outcome" node type for testable controls
 - Make notifications portable
 - Find the second implementer
@@ -170,7 +171,6 @@ Make a konspekt instance operable by a human through a visual interface, not onl
 **Next** — _accepted and planned_
 
 - Navigate from a goal to its open tasks
-- November 2026 LinkedIn post — ni:///sha-256 content addressing and store resolution
 - Work through and disposition tasks in the interface
 - Correct the UI footer text to name both write actions
 
