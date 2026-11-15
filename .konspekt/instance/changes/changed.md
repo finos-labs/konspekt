@@ -623,3 +623,8 @@ commit order; the channel was not live during that work.
 | task-ni-references | 134063216c81f82a29b3dc09b915f6f33142e275 | implementations/intellij-plugin/app/README.md | 2026-11-15T01:06:14Z |
 | task-ni-references | 134063216c81f82a29b3dc09b915f6f33142e275 | implementations/intellij-plugin/app/build.gradle.kts | 2026-11-15T01:06:14Z |
 | task-ni-references | 134063216c81f82a29b3dc09b915f6f33142e275 | implementations/intellij-plugin/app/src/test/kotlin/dev/konspekt/plugin/InstanceReaderLocatorsTest.kt | 2026-11-15T01:06:14Z |
+| task-linkedin-announce-ni-references | 03d10c7a828d5713e73983cd5d868edf168941dc | docs/announcements/linkedin/README.md | 2026-11-15T15:09:55Z |
+| task-linkedin-announce-ni-references | 03d10c7a828d5713e73983cd5d868edf168941dc | docs/announcements/linkedin/post_2026-11-16/carousel.pdf | 2026-11-15T15:09:55Z |
+| task-linkedin-announce-ni-references | 03d10c7a828d5713e73983cd5d868edf168941dc | docs/announcements/linkedin/post_2026-11-16/images/CAPTURE.md | 2026-11-15T15:09:55Z |
+| task-linkedin-announce-ni-references | 03d10c7a828d5713e73983cd5d868edf168941dc | docs/announcements/linkedin/post_2026-11-16/post.md | 2026-11-15T15:09:55Z |
+| task-linkedin-announce-ni-references | 03d10c7a828d5713e73983cd5d868edf168941dc | docs/visuals/posters/konspekt-addressing-poster.html | 2026-11-15T15:09:55Z |

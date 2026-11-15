@@ -233,3 +233,8 @@ New rows below this backfill are recorded live.
 | task-ni-references | ni:///sha-256;z-mOzd_gsVKgTUe1Pw0OrXhnX4mB04zMDslsoGyQrg0 |
 | task-ni-references | ni:///sha-256;mzvPtnax4QJwawqE8AEmo7BOAYvUc4juJx_7eodzrXc |
 | task-ni-references | ni:///sha-256;Gm19RGCwuTlUyIBDAgXc1uuSEcdivguhI70yFjlaJng |
+| task-linkedin-announce-ni-references | ni:///sha-256;DFjg5wdy4PjvuhMys4th_2s4LTdXCKaot27auc8GByo |
+| task-linkedin-announce-ni-references | ni:///sha-256;e87v6e0nFC-sceQwaw73cVu2uJraof_JvNUsn4jmWLQ |
+| task-linkedin-announce-ni-references | ni:///sha-256;uU2QI554nd7tiywPWU1DnUyd2l4qbkqxRmmGpPefzdc |
+| task-linkedin-announce-ni-references | ni:///sha-256;7WqzhOrbWNbgvzDxHBto80q4mIhHix1xIQkOCKqiqw0 |
+| task-linkedin-announce-ni-references | ni:///sha-256;rNddl6O6TspFdCoBaDtElcPCFMNebHukG3LJ-aE1P-k |
