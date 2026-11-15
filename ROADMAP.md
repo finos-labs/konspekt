@@ -3,7 +3,7 @@
      Check freshness with: node tools/roadmap.mjs --check
      This file is a pure function of .konspekt/instance/ (no timestamps baked in).
      Goals and tasks are graph nodes; the horizon is derived from node status/review.
-     contentHash: sha256:f9912b8a2f785cc5 -->
+     contentHash: sha256:85825b987749f358 -->
 
 # konspekt roadmap
 
@@ -153,6 +153,10 @@ Keep a project's working context — its instructions, accumulated decisions, an
 - Make notifications portable
 - Find the second implementer
 
+**Later** — _proposed, not yet committed_
+
+- Re-capture the walkthrough frames after cdm-collateral migrates to ni: references
+
 **Shipped** — _resolved_
 
 - Choose a license
@@ -233,4 +237,4 @@ Let several participants — people and agents — propose into and review one s
 
 ---
 
-Generated from 9 goal(s) and 100 task-listing(s) over the instance graph.
+Generated from 9 goal(s) and 101 task-listing(s) over the instance graph.
