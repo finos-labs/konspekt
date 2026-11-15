@@ -2,8 +2,10 @@
 
 Append-only log binding each LLM-executed command to the entity it was about, one
 row per execution in execution order (top to bottom is the timeline; there is no
-stored timestamp). `command` is the git blob SHA of commands/<command>.md, which
-holds the verbatim text. Written push-based at execution time.
+stored timestamp). `command` is the `ni:///sha-256;<base64url>` reference of
+`commands/sha-256/<hex>.md`, which holds the verbatim text (rows written before
+the 2026-11-14 migration were rewritten to that form; `deprecated.md` maps the
+old git blob SHAs). Written push-based at execution time.
 
 Backfill note: these rows reconstruct the IntelliJ-plugin build in first-execution
 order; the channel was not live during that work, so repeated runs are collapsed.
@@ -204,3 +206,10 @@ New rows below this backfill are recorded live.
 | task-ni-references | ni:///sha-256;6p9mQwHKxm_QAqHWMYg9AJoa7_AzGwdvsYg-5ae2G_s |
 | task-ni-references | ni:///sha-256;yWa8benqaP1yeYdjLngRWn_Z0D2AGJRAs-3cLqStDjg |
 | task-ni-references | ni:///sha-256;U4wp6MaXjeWm2Kr95HBcJby5XAjvSrxTACIb3rKjI0I |
+| task-ni-references | ni:///sha-256;Vr1GpG5KZzMVeFugttf0UswwNSOi3NBOAJ6FyWAMt2U |
+| task-ni-references | ni:///sha-256;Ws_CMfW6KDkrq3P2YMljY2iXljlYa6eFqERSLCp-nhQ |
+| task-ni-references | ni:///sha-256;QGUG2nZkwDgsnYJkjfQtMX_cqyqWHRp61mL3MiCgfs4 |
+| task-ni-references | ni:///sha-256;jc6J63SBqQrwG54_5I3-G1WWAjK-FUHV1VGa5ENbczs |
+| task-ni-references | ni:///sha-256;nVY372MWqS1nyReFRjHpvJoDvWgo_1JAF3270n1rtd8 |
+| task-ni-references | ni:///sha-256;9Qz71s1pPd4MOS3m0A0SnxBSIfi06i6EsVg-iTPu0iU |
+| task-ni-references | ni:///sha-256;yxuGzvrPlLJH0-tQmhVnDuGsZXCqktYFbLt6ips-xkc |

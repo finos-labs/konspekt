@@ -591,3 +591,13 @@ commit order; the channel was not live during that work.
 | task-ni-references | 7e122952fd5ff63052f4e282ad839e2eb1c31c18 | lib/conformance.mjs | 2026-11-15T00:12:21Z |
 | task-ni-references | 7e122952fd5ff63052f4e282ad839e2eb1c31c18 | spec/architecture/SERIALIZATION.md | 2026-11-15T00:12:21Z |
 | task-ni-references | 7e122952fd5ff63052f4e282ad839e2eb1c31c18 | test/conformance-ni-refs.test.mjs | 2026-11-15T00:12:21Z |
+| task-ni-references | a98e9f1590492bb89c48c2d5a7cfaea530c7e254 | .claude/skills/konspekt-atom-readiness/SKILL.md | 2026-11-15T00:19:10Z |
+| task-ni-references | a98e9f1590492bb89c48c2d5a7cfaea530c7e254 | .konspekt/OPERATING.md | 2026-11-15T00:19:10Z |
+| task-ni-references | a98e9f1590492bb89c48c2d5a7cfaea530c7e254 | setup/WEBMOBILE_SEED.md | 2026-11-15T00:19:10Z |
+| task-ni-references | a98e9f1590492bb89c48c2d5a7cfaea530c7e254 | setup/templates/commands-executed.md | 2026-11-15T00:19:10Z |
+| task-ni-references | a98e9f1590492bb89c48c2d5a7cfaea530c7e254 | setup/templates/sources-README.md | 2026-11-15T00:19:10Z |
+| task-ni-references | d42c833481f16c2af2a68a45bf58a345d9c3b738 | WHITEPAPER.md | 2026-11-15T00:21:11Z |
+| task-ni-references | d42c833481f16c2af2a68a45bf58a345d9c3b738 | docs/overview.html | 2026-11-15T00:21:11Z |
+| task-ni-references | d42c833481f16c2af2a68a45bf58a345d9c3b738 | docs/overview.svg | 2026-11-15T00:21:11Z |
+| task-ni-references | d42c833481f16c2af2a68a45bf58a345d9c3b738 | docs/visuals/posters/konspekt-fleet-poster.html | 2026-11-15T00:21:11Z |
+| task-ni-references | d42c833481f16c2af2a68a45bf58a345d9c3b738 | spec/architecture/SCHEMA-RECONCILIATION.md | 2026-11-15T00:21:11Z |
