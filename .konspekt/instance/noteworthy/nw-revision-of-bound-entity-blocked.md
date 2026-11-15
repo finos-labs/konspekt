@@ -1,14 +1,14 @@
 ```yaml
 id: nw-revision-of-bound-entity-blocked
 kind: constraint
-review: proposed
+review: accepted
 provenance:
   sourceRef: ni:///sha-256;FX4SXiM6wNIk5uPqPhMtzllRqAkKbqbuIKYUdddzW-Y
   conversationId: linkedin-ni-references
   timestamp: 2026-11-15T16:57:46Z
   confidence: 0.6
 createdAt: 2026-11-15T16:57:46Z
-updatedAt: 2026-11-15T16:57:46Z
+updatedAt: 2026-11-15T17:00:55Z
 ```
 # Noteworthy: Under basis: accepted, a wording revision of an entity with bound commits cannot be proposed
 

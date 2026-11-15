@@ -1376,3 +1376,5 @@ proposing agent was not recorded.
 | node:task-linkedin-announce-ni-references | status | open | resolved | 2026-11-15T16:57:46Z | ni:///sha-256;FX4SXiM6wNIk5uPqPhMtzllRqAkKbqbuIKYUdddzW-Y | denisurusov |
 | noteworthy:nw-revision-of-bound-entity-blocked | review |  | proposed | 2026-11-15T16:57:46Z |  | claude |
 | edge:e-not-acceptbeforework-revisionblocked | review |  | proposed | 2026-11-15T16:57:46Z |  | claude |
+| noteworthy:nw-revision-of-bound-entity-blocked | review | proposed | accepted | 2026-11-15T17:00:55Z | ni:///sha-256;daaKhmvMC5qP1Gv-GlE2HA4BntmV4E6jKpnHqQXT_0A | denisurusov |
+| edge:e-not-acceptbeforework-revisionblocked | review | proposed | accepted | 2026-11-15T17:00:55Z | ni:///sha-256;daaKhmvMC5qP1Gv-GlE2HA4BntmV4E6jKpnHqQXT_0A | denisurusov |
