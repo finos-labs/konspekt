@@ -3,14 +3,14 @@ id: task-view-wrap-long-paths
 type: task
 title: Wrap long source and command paths in the shared view
 status: open
-review: proposed
+review: accepted
 provenance:
   sourceRef: ni:///sha-256;rvHkVkDkRlciuOxg0motWmMvFeidffnoTBsnKStigy0
   conversationId: linkedin-ni-references
   timestamp: 2026-11-15T17:24:22Z
   confidence: 0.8
 createdAt: 2026-11-15T17:24:22Z
-updatedAt: 2026-11-15T17:24:22Z
+updatedAt: 2026-11-15T17:25:32Z
 ```
 # Task: Wrap long source and command paths in the shared view
 
