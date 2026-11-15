@@ -8,7 +8,7 @@ The konspekt standard: the entity set, the single edge table, and the derived vi
 
 1. **Single source of truth.** Concepts, noteworthy items, and artifacts are first-class entities, stored once. "This node's concepts" and "the project's concepts" are *queries over edges*, not stored lists — dedup is structural, the project aggregate is free, cross-linking is automatic.
 2. **One graph, not two.** Goal decomposition (hierarchical) and cross-links (associative) share one `Edge` table, distinguished by `kind`. The goal tree is `edges where kind = "decomposes"`; everything else is a filtered view.
-3. **Auditable by construction.** Every entity carries `provenance` — a *content-addressed* pointer to its source text (`sourceRef` + a construction-time `contentHash`), a source `timestamp`, and optional confidence — and a `review` state (`proposed → accepted / rejected`), because an LLM maintainer *proposes* graph updates that a human accepts. Provenance anchors on the **text**, not on a host-supplied conversation/message id the maintainer cannot read; an entity verifies iff re-hashing its `sourceRef` reproduces its `contentHash`. Completeness follows: every proposed atom must resolve to an entity binding, or to a recorded non-binding — a persisted conversation is never silent (`../architecture/BINDING.md`).
+3. **Auditable by construction.** Every entity carries `provenance` — a *content-addressed* pointer to its source text (`sourceRef`, an RFC 6920 `ni:///sha-256` reference over the excerpt's bytes, from which `contentHash` is derived), a source `timestamp`, and optional confidence — and a `review` state (`proposed → accepted / rejected`), because an LLM maintainer *proposes* graph updates that a human accepts. Provenance anchors on the **text**, not on a host-supplied conversation/message id the maintainer cannot read; an entity verifies iff SHA-256 of the stored excerpt equals the digest in its `sourceRef` (`../architecture/SERIALIZATION.md` § Content references). Atoms never hold store locations; how a reference is resolved is declared once per instance (`../architecture/STORAGE.md`). Completeness follows: every proposed atom must resolve to an entity binding, or to a recorded non-binding — a persisted conversation is never silent (`../architecture/BINDING.md`).
 4. **Summaries compose, humans win.** Each node owns its `summary`; the project summary composes the node summaries; a `pinned`, human-origin summary is never overwritten by the maintainer.
 
 ## Entities
@@ -88,7 +88,7 @@ honestly empty until real instances of it occur, rather than padded to look used
 
 ## Edges
 
-One typed table; `from` / `to` are `EntityRef`s — or, for a persona layer that defines one, a content-addressed provenance ref such as `command:<hash>` (see `../personas/`); `weight` is meaningful only for `relates` and `links`.
+One typed table; `from` / `to` are `EntityRef`s — or, for a persona layer that defines one, a content-addressed provenance ref such as `command:ni:///sha-256;<digest>` (see `../personas/`); `weight` is meaningful only for `relates` and `links`.
 
 - `decomposes` — node → node (goal tree)
 - `mentions` — node → concept
@@ -131,7 +131,7 @@ reference implementation is `lib/views.mjs`; the CLI is `tools/views.mjs`.
   ancestry: walk `supersedes` from the entity (`from` = new, `to` = old) to
   recover older versions, newest first. It is a DAG, since a merge may supersede
   several. Each hop reports its content-addressed source and verifies iff
-  re-hashing `sourceRef` reproduces `contentHash` (§ Principles 3); a legacy
+  SHA-256 of the stored excerpt equals the `sourceRef` digest (§ Principles 3); a legacy
   entity carrying only a `conversationId` is reported unverifiable rather than
   failed. Under an active persona layer the chain extends along that layer's
   provenance edges — for `engineer`, the `executed` commands bound to the entity
@@ -172,7 +172,7 @@ Concept-to-concept edges exist but are **untyped** (kind `relates`), carrying an
 The core above is **persona-agnostic**: it names no working role and its enums (`NodeType`, `WaypointKind`, `EdgeKind`, …) are closed. A **persona layer** extends the model through three generic hooks, so a layer adds vocabulary without the core carrying any layer-specific value:
 
 - **`subtype`** — an optional discriminator on any entity. The core recognizes the field; a layer defines its values (the engineer layer's `asr` on a Concept, `adr` on a `decision` Waypoint).
-- **Provenance-ref edge endpoints** — an edge `from`/`to` may address a content-addressed provenance file (`<channel>:<contentHash>`) instead of an entity, resolved the way `sources/` is and never entified. A layer defines the channel (e.g. `command`).
+- **Provenance-ref edge endpoints** — an edge `from`/`to` may address a content-addressed provenance file (`<channel>:<content reference>`) instead of an entity, resolved the way `sources/` is and never entified. A layer defines the channel (e.g. `command`).
 - **`personas` activation** — a `Project` lists the layers an instance turns on (`personas: [engineer]`). Absent the list, the core is unchanged and every existing instance stays conformant.
 
 Layer vocabularies live in `../personas/<layer>/`, declared in a registry the conformance checker merges only when the instance activates the layer. The first is `engineer/`, adding ASR, ADR, executed-command provenance, and the `drives` and `executed` edge kinds.

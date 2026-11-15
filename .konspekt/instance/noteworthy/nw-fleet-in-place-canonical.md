@@ -3,11 +3,14 @@ id: nw-fleet-in-place-canonical
 kind: decision
 review: accepted
 provenance:
-  sourceRef: e20f035d350f11acbad9c6e02511b56b80ef8ca6
-  contentHash: e20f035d350f11acbad9c6e02511b56b80ef8ca6
+  sourceRef: ni:///sha-256;wLhrK_z_P6IY9TElouqeG-QC-qKXBV55owE6p1XaFBI
   conversationId: fleet-uat-committer-2026-10-22
   timestamp: 2026-10-22T12:44:01.258Z
   confidence: 0.85
+  deprecated:
+    migratedAt: 2026-11-14T19:37:32Z
+    sourceRef: e20f035d350f11acbad9c6e02511b56b80ef8ca6
+    contentHash: e20f035d350f11acbad9c6e02511b56b80ef8ca6
 createdAt: 2026-10-22T12:44:01.258Z
 updatedAt: 2026-10-22T12:44:01.258Z
 ```

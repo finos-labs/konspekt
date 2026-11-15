@@ -4,10 +4,13 @@ kind: constraint
 status: active
 review: accepted
 provenance:
-  sourceRef: 251cd946ae4ba674a64d19978484c5ef49120d93
-  contentHash: 251cd946ae4ba674a64d19978484c5ef49120d93
+  sourceRef: ni:///sha-256;EUsFT_5h2q75KlTXIphLPT5u7Vf9uQuMvivq_u3d_40
   timestamp: 2026-07-20T15:00:00Z
   confidence: 0.8
+  deprecated:
+    migratedAt: 2026-11-14T19:37:32Z
+    sourceRef: 251cd946ae4ba674a64d19978484c5ef49120d93
+    contentHash: 251cd946ae4ba674a64d19978484c5ef49120d93
 createdAt: 2026-07-20T15:00:00Z
 updatedAt: 2026-07-20T15:00:00Z
 ```

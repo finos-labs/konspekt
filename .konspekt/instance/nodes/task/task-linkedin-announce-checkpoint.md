@@ -5,11 +5,14 @@ title: November 2026 LinkedIn post — checkpoint and resume
 status: resolved
 review: accepted
 provenance:
-  sourceRef: 0ffaee955ab91d66fa27e637b787858c3cf5d8b5
-  contentHash: 0ffaee955ab91d66fa27e637b787858c3cf5d8b5
+  sourceRef: ni:///sha-256;jYKKUd3-aY7e7SL8WnL-bu98ShgEeMhbC1rh8mfFdzk
   conversationId: session-checkpoint
   timestamp: 2026-11-07T18:18:01Z
   confidence: 0.8
+  deprecated:
+    migratedAt: 2026-11-14T19:37:32Z
+    sourceRef: 0ffaee955ab91d66fa27e637b787858c3cf5d8b5
+    contentHash: 0ffaee955ab91d66fa27e637b787858c3cf5d8b5
 createdAt: 2026-11-07T18:18:01Z
 updatedAt: 2026-11-07T18:20:57Z
 ```

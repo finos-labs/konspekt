@@ -3,11 +3,14 @@ id: nw-fleet-config-is-setup-driver
 kind: decision
 review: accepted
 provenance:
-  sourceRef: e92a5547f7f331a55e37302a4b792acc1273a078
-  contentHash: e92a5547f7f331a55e37302a4b792acc1273a078
+  sourceRef: ni:///sha-256;RE-isz9m3Pi34cccuJv7UxcLp23JhISTtQPCy_Yw8_I
   conversationId: fleet-uat-config
   timestamp: 2026-10-13T01:50:34Z
   confidence: 0.8
+  deprecated:
+    migratedAt: 2026-11-14T19:37:32Z
+    sourceRef: e92a5547f7f331a55e37302a4b792acc1273a078
+    contentHash: e92a5547f7f331a55e37302a4b792acc1273a078
 createdAt: 2026-10-13T01:50:34Z
 updatedAt: 2026-10-13T01:50:34Z
 ```

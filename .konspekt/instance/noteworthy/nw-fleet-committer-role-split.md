@@ -3,11 +3,14 @@ id: nw-fleet-committer-role-split
 kind: decision
 review: accepted
 provenance:
-  sourceRef: 5f34d6cb478b39588f700dc7cd3d731d9c6efe2e
-  contentHash: 5f34d6cb478b39588f700dc7cd3d731d9c6efe2e
+  sourceRef: ni:///sha-256;9a-2bwqAaDR9W-1XIh9bWxEF9kI6ylpFNMOWxYTI9IM
   conversationId: fleet-implementation
   timestamp: 2026-09-28T23:07:00Z
   confidence: 0.95
+  deprecated:
+    migratedAt: 2026-11-14T19:37:32Z
+    sourceRef: 5f34d6cb478b39588f700dc7cd3d731d9c6efe2e
+    contentHash: 5f34d6cb478b39588f700dc7cd3d731d9c6efe2e
 createdAt: 2026-09-28T23:07:00Z
 updatedAt: 2026-09-28T23:07:00Z
 ```

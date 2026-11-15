@@ -39,8 +39,7 @@ The committer is two roles kept apart:
   verified proposal onto canonical as `review: proposed`, indexing it on a
   durable `proposed` ref; on human approval it blesses the admitted atom in place
   (flips `review` to `accepted` and appends the accept record) under the push
-  discipline (hash-object verify, atomic append, DCO trailer, post-write SHA
-  recheck).
+  discipline (source-hash verify, atomic append, DCO trailer).
 - An **LLM review assistant** (no write authority to canonical): reads the
   queue, clusters and summarizes, surfaces dependency and near-duplicate hints,
   and relays the human's per-proposal selection to the writer.
@@ -104,8 +103,8 @@ provenance:
   confidence: <0..1>       # self-reported; mandatory — the REVIEW.md review-sort key
 binding: <node-id | none:<recorded-reason>>   # a resolved entity binding, or a recorded decision not to bind (BINDING.md)
 source:
-  hash: <git blob SHA of source.md>   # git hash-object, matching SERIALIZATION.md's verify probe
-  path: sources/<hash>.md  # canonical filename the committer writes on accept
+  hash: <ni:///sha-256;<base64url> of source.md>   # SHA-256 over the raw bytes
+  path: sources/sha-256/<hex>.md  # canonical filename the committer writes on accept
 claim:                     # present only when kind: claim
   region: <roadmap item or node id the agent is working>
 created: <iso8601>
@@ -130,13 +129,13 @@ Two integrity properties come from the layout:
   spoofed commit off canonical is the sandbox and hooks' job (out of konspekt's
   scope), so no reader treats the committer as a security control.
 
-Source addressing for the v1 fleet binding is the **git blob SHA of the verbatim
-excerpt** (`git hash-object`), carried in the payload and mapped to
-`sources/<hash>.md` on accept. This matches `SERIALIZATION.md`'s verify probe and
-the addressing the rest of the store already uses, so the fleet path adds no
-second content-address to v1. The SHA-256-over-excerpt migration
-(`task-sources-sha256-migration`) proceeds on its own track and flips the fleet
-path when it lands store-wide.
+Source addressing for the fleet binding is the **RFC 6920 `ni:///sha-256`
+reference over the raw bytes of the verbatim excerpt**, carried in the atom as
+`provenance.sourceRef` and mapped to `sources/sha-256/<hex>.md` on fold. The hex
+file name and the base64url reference encode the same digest
+(`docs/design/source-addressing.md`). Existing atoms on canonical that still carry
+a git blob SHA are migrated in place by `task-ni-references`; the conformance
+checker reads both forms.
 
 ## Committer protocol
 
@@ -177,7 +176,7 @@ A deterministic loop over the N outbox branches, one pass in flight at a time.
    already-folded atom: flip `review` from `proposed` to `accepted` on the entity
    frontmatter and the atom's `edges.md` rows, and append an accept record tying
    `proposal_id` to acceptor, timestamp, and inspection-or-batch. Pre-write
-   `hash-object` verify, post-write SHA recheck, DCO trailer. The source excerpt
+   source-hash verify, DCO trailer. The source excerpt
    and entity already landed at fold, so bless re-copies no source and re-authors
    no prose — it changes the `review` field and appends the accept record. The
    atom was wired whole at fold, so canonical never lands partially wired.

@@ -3,10 +3,13 @@ id: nw-derive-not-copy
 kind: decision
 review: accepted
 provenance:
-  sourceRef: 0d635e027c43a6da1a590c6735cbe40f14a47448
-  contentHash: 0d635e027c43a6da1a590c6735cbe40f14a47448
+  sourceRef: ni:///sha-256;QKEExITgMtLUH1cRcfF8CbGjG28RQ2ZPIQ4UcYFKLgY
   timestamp: 2026-06-23T19:00:00Z
   conversationId: setup-and-operating-loop
+  deprecated:
+    migratedAt: 2026-11-14T19:37:32Z
+    sourceRef: 0d635e027c43a6da1a590c6735cbe40f14a47448
+    contentHash: 0d635e027c43a6da1a590c6735cbe40f14a47448
 createdAt: 2026-06-23T19:00:00Z
 updatedAt: 2026-06-23T19:00:00Z
 ```

@@ -5,11 +5,14 @@ kind: skill
 location: .claude/skills/fleet-presentation-writer/SKILL.md
 review: accepted
 provenance:
-  sourceRef: 2e71f7aea23196d6864679f00d30d6522c20b73c
-  contentHash: 2e71f7aea23196d6864679f00d30d6522c20b73c
+  sourceRef: ni:///sha-256;sOP69-gxmqnQ4vBkO4LA-B_NHV752IqASg9BJZ2FXA0
   conversationId: fleet-uat-committer-2026-10-21
   timestamp: 2026-10-22T02:16:59.291Z
   confidence: 0.7
+  deprecated:
+    migratedAt: 2026-11-14T19:37:32Z
+    sourceRef: 2e71f7aea23196d6864679f00d30d6522c20b73c
+    contentHash: 2e71f7aea23196d6864679f00d30d6522c20b73c
 createdAt: 2026-10-22T02:16:59.291Z
 updatedAt: 2026-10-22T02:16:59.291Z
 ```

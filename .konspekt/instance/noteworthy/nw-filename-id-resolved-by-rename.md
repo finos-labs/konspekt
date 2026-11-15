@@ -3,9 +3,12 @@ id: nw-filename-id-resolved-by-rename
 kind: decision
 review: accepted
 provenance:
-  sourceRef: 08ea702eb99991e21726573b73dc5fcf284e60b8
-  contentHash: 08ea702eb99991e21726573b73dc5fcf284e60b8
+  sourceRef: ni:///sha-256;bDogKu_Wwlz6kW-Wc-CIBK1eHaw56iPTKh7d17gDQ8U
   timestamp: 2026-07-19T19:45:00Z
+  deprecated:
+    migratedAt: 2026-11-14T19:37:32Z
+    sourceRef: 08ea702eb99991e21726573b73dc5fcf284e60b8
+    contentHash: 08ea702eb99991e21726573b73dc5fcf284e60b8
 createdAt: 2026-07-19T19:45:00Z
 updatedAt: 2026-07-19T19:45:00Z
 ```

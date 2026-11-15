@@ -45,6 +45,7 @@ The build fails with a clear message if it is unset. (The install whose
 ```
 ./gradlew buildPlugin     # -> implementations/intellij-plugin/app/build/distributions/konspekt-intellij-0.0.12.zip
 ./gradlew runIde          # launches a sandbox IDE; open the "konspekt" tool window (right edge)
+./gradlew test            # JVM unit tests over InstanceReader (src/test/kotlin); no IDE launched
 ```
 
 Install the built zip into your own IDE: Settings → Plugins → ⚙ →

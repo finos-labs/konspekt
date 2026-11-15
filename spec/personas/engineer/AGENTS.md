@@ -52,9 +52,10 @@ from a requirement stated before the decision.
 Record **every bash command you execute** as content-addressed provenance,
 mirroring `sources/`:
 
-- Store the command text alone (no output) at `commands/<contentHash>.md`, where
-  the filename is the git blob SHA of the file; the channel is append-only.
-- Append one row `| <entity-id> | <hash> |` to the executed log
+- Store the command text alone (no output) at `commands/sha-256/<hex>.md`, where
+  the filename is the hex SHA-256 of the file's bytes, and reference it as
+  `ni:///sha-256;<base64url>`; the channel is append-only.
+- Append one row `| <entity-id> | <reference> |` to the executed log
   `commands/executed.md` per execution. The entity is the ADR when the command
   carried out that decision, otherwise the active task node; any entity type is
   allowed. A command run twice is one file and two rows.

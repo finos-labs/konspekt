@@ -5,11 +5,14 @@ kind: code
 location: tools/roadmap-poster.mjs
 review: proposed
 provenance:
-  sourceRef: ce665542d3f05c4a2793f17e7915553065b12d7a
-  contentHash: ce665542d3f05c4a2793f17e7915553065b12d7a
+  sourceRef: ni:///sha-256;uZUUKlWbkMaSvX7uwzGEADRI8IvO_lH5fc0eWOMUHHI
   conversationId: roadmap-plan
   timestamp: 2026-09-11T18:00:00Z
   confidence: 0.8
+  deprecated:
+    migratedAt: 2026-11-14T19:37:32Z
+    sourceRef: ce665542d3f05c4a2793f17e7915553065b12d7a
+    contentHash: ce665542d3f05c4a2793f17e7915553065b12d7a
 createdAt: 2026-09-11T18:00:00Z
 updatedAt: 2026-09-11T18:00:00Z
 ```

@@ -3,11 +3,14 @@ id: nw-fleet-committer-bless-queue-status-line
 kind: decision
 review: proposed
 provenance:
-  sourceRef: 22ad8247c37c705af7655fe84293621798294898
-  contentHash: 22ad8247c37c705af7655fe84293621798294898
+  sourceRef: ni:///sha-256;9HquJoXzs_Jz7LVfbJnZ3duzD3QfsvVly3zr3Gpop8w
   conversationId: fleet-resolve-and-adjustments-2026-10-25
   timestamp: 2026-10-25T17:30:00Z
   confidence: 0.8
+  deprecated:
+    migratedAt: 2026-11-14T19:37:32Z
+    sourceRef: 22ad8247c37c705af7655fe84293621798294898
+    contentHash: 22ad8247c37c705af7655fe84293621798294898
 createdAt: 2026-10-25T17:30:00Z
 updatedAt: 2026-10-25T17:30:00Z
 ```

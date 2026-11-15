@@ -70,16 +70,17 @@ or mid-session.
 
 The guarantee rests on **content-addressed provenance**. Ingestion is
 *push-based*: at extraction time the maintainer writes the source excerpt into
-the store as a content-addressed blob and stamps each atom's provenance with
-that `sourceRef` and its `contentHash`. A source's identity *is* its content
-hash. In the GitHub binding the blob SHA is that hash, so the store dedups
-byte-identical excerpts for free and the hash invariant holds structurally.
+the store as a content-addressed file and stamps each atom's provenance with
+its `sourceRef`, the `ni:///sha-256` reference over the excerpt's raw bytes
+(`SERIALIZATION.md` § Content references). A source's identity *is* its content
+hash, so the store holds byte-identical excerpts once, under one file name, in
+every binding.
 
 Idempotence lives at two levels; **match-level is primary** (the inversion from
 an earlier watermark-first design).
 
 - **Match-level (content-addressed dedup).** Re-extracting a consumed exchange
-  reproduces the same source excerpt → the same `contentHash` → the store
+  reproduces the same source excerpt → the same `sourceRef` → the store
   already holds that blob and the atoms resolve to existing entities. Nothing
   changes. This is robust *because the source text is near-deterministic even
   when atom extraction is not*: copying bytes reproduces them; interpreting them
@@ -94,7 +95,7 @@ an earlier watermark-first design).
   and match-level still makes the pass a no-op.
 
 **Edited / branched messages need no special case.** Changed text hashes to a
-different `contentHash`, so it is simply a *different source*; its atoms are new
+different `sourceRef`, so it is simply a *different source*; its atoms are new
 extractions, reconciled normally against the graph. Identity-by-content absorbs
 the edit — the old "same id, changed hash" branch is retired.
 
@@ -102,21 +103,25 @@ the edit — the old "same id, changed hash" branch is retired.
 content hash, and `conversationId` is optional grouping metadata, not a
 correctness key.
 
-**Verify probe.** An entity's provenance verifies **iff** hashing the text at
-its `sourceRef` reproduces its stored `contentHash`. In the GitHub binding this
-is structural — the blob SHA *is* the hash — so it can fail only on a dangling
-pointer or a corrupt store. In a future deep-link binding, where the addressed
-text can drift (an edited message, a rotted link), this probe is the actual
-integrity gate; that is why address (`sourceRef`) and digest (`contentHash`) are
-two fields, even where the git binding lets them coincide.
+**Verify probe.** An entity's provenance verifies **iff** SHA-256 over the raw
+bytes the store returns for its `sourceRef` (`STORAGE.md` `getSource`) equals
+the reference's digest. The reference carries its own digest, so `contentHash`
+is derived from `sourceRef` by parsing and is not stored. In every binding the
+probe can fail only on missing content or on bytes that differ from the ones
+referenced — a corrupt store, an edited file, or a store that returned other
+content. A locator (`SERIALIZATION.md` § Sources) is never verified this way:
+it records where the excerpt was taken from, and the text at a locator may
+drift without affecting the stored excerpt. Legacy git-blob-SHA-1 provenance
+verifies by `git hash-object` of `sources/<sha1>.md` equalling its stored
+`contentHash`.
 
 Consequence: once re-runs are no-ops, the pass is safe to trigger **any way** —
 end-of-session, scheduled, manual, post-crash — instead of requiring fragile
 exactly-once delivery. This is what frees the trigger + transport stream.
 
 > Provenance support: idempotence relies on `provenance.sourceRef` (the
-> content-addressed source the store dedups on) and `provenance.contentHash`
-> (its digest, and the verify probe); the skip-level optimization orders by
+> content-addressed source the store dedups on, whose digest the verify probe
+> checks); the skip-level optimization orders by
 > `provenance.timestamp`. All are defined on `Provenance` in
 > `../data-model/schema.ts`.
 

@@ -9,11 +9,14 @@ summary:
   updatedAt: 2026-10-24T15:02:59Z
 review: accepted
 provenance:
-  sourceRef: d0519caaa02e29bb560735c0b56daae55b856a62
-  contentHash: d0519caaa02e29bb560735c0b56daae55b856a62
+  sourceRef: ni:///sha-256;ZtagsmxeJsmotvb12EHvAgs7XYJX4X4a6sd7yP7Pczs
   conversationId: fleet-skill-root-flag-2026-10-24
   timestamp: 2026-10-24T15:02:59Z
   confidence: 0.8
+  deprecated:
+    migratedAt: 2026-11-14T19:37:32Z
+    sourceRef: d0519caaa02e29bb560735c0b56daae55b856a62
+    contentHash: d0519caaa02e29bb560735c0b56daae55b856a62
 createdAt: 2026-10-24T15:02:59Z
 updatedAt: 2026-10-24T15:02:59Z
 ```

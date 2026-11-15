@@ -75,14 +75,15 @@ export type BindingPolicy = "required" | "optional";
 // host-supplied conversation/message id the maintainer cannot read from inside
 // a chat. See ../architecture/RECONCILIATION.md.
 export interface Provenance {
-  sourceRef: string;   // content-pinned address of the source excerpt
-                       // (e.g. a git blob SHA or `path@commit`)
-  contentHash: string; // digest of that source text, captured at construction
-                       // time. Verifies iff re-hashing sourceRef reproduces it.
-                       // In the GitHub binding the blob SHA IS this hash, so the
-                       // invariant holds structurally. Identity is the hash:
-                       // edited text -> new hash -> a new source, so edits need
-                       // no special-casing.
+  sourceRef: ContentRef; // RFC 6920 `ni:///sha-256;<base64url>` over the raw
+                       // bytes of the source excerpt (sources/sha-256/<hex>.md;
+                       // ../architecture/SERIALIZATION.md § Content references).
+                       // Verifies iff SHA-256 of the stored bytes equals the
+                       // digest. Identity is the hash: edited text -> new hash
+                       // -> a new source, so edits need no special-casing.
+  contentHash?: string; // LEGACY form only: the git blob SHA-1, equal to a
+                       // legacy sourceRef. With an `ni:` sourceRef it is
+                       // derived by parsing and NOT stored.
   timestamp: string;   // ISO 8601 — when the source exchange HAPPENED (source
                        // time, not persist time). Binding-independent: never
                        // read from transport metadata (e.g. git commit time).
@@ -90,6 +91,30 @@ export interface Provenance {
   confidence?: number; // 0..1, from the maintainer LLM
   conversationId?: string; // optional grouping metadata when a host exposes it;
                        // host-injected, never minted by the maintainer.
+  locators?: Locator[]; // where the excerpt was taken from; never part of its
+                       // identity (../architecture/SERIALIZATION.md § Sources)
+  deprecated?: DeprecatedProvenance; // the pre-migration reference, kept by the
+                       // in-place migration (SERIALIZATION.md § Migration)
+}
+
+// A content reference: `ni:///sha-256;<base64url>` (43 unpadded base64url
+// characters), or in the legacy form a 40-hex git blob SHA-1. A persona-layer
+// channel prefixes its name (`command:ni:///sha-256;...`).
+export type ContentRef = string;
+
+export type LocatorKind = "git-permalink" | "conversation" | "chat" | "web";
+export interface Locator {
+  uri: string;         // its host must be listed in Project.locators.allow
+  kind: LocatorKind;
+  retrievedAt: string; // ISO 8601
+}
+
+// The provenance values an entity carried before migration to `ni:`. History:
+// not verified.
+export interface DeprecatedProvenance {
+  migratedAt: string;  // ISO 8601 — when the migration wrote the new reference
+  sourceRef: string;   // the legacy git blob SHA-1
+  contentHash?: string;
 }
 
 // Everything the maintainer extracts is PROPOSED, then an acceptor accepts or
@@ -133,6 +158,9 @@ export interface Project {
                        // work). Absent = "proposed".
   grantorAccepts?: GrantorAccepts; // whether a grantor may also hold an accept
                        // grant (../architecture/AUTHORITY.md). Absent = "allowed".
+  store?: StoreDecl;   // where this instance's content is reached
+                       // (../architecture/STORAGE.md). Absent = layout convention.
+  locators?: { allow: string[] }; // hosts a provenance locator may name
 }
 
 export type Basis = "proposed" | "accepted";
@@ -177,16 +205,30 @@ export interface EntityRef {
   id: string;
 }
 
+// How an instance's content is reached (../architecture/STORAGE.md). Each
+// resolve template substitutes {hex}, {b64}, {path}, {id} and {ref}.
+export interface StoreDecl {
+  kind: string;        // "git", or another binding
+  ref?: string;        // the revision or branch the templates read ({ref})
+  resolve: {
+    source: string;
+    command?: string;
+    entity: string;
+    edges: string;
+    checkpoints?: string;
+  };
+}
+
 // An edge end may address a content-addressed provenance file (e.g. an executed
-// command) instead of an entity. It is resolved the way sources/ is — filename
-// == git blob SHA == id — and is never entified, so it never enters the graph's
+// command) instead of an entity. It is resolved the way sources/ is — the `ni:`
+// reference names <channel-dir>/sha-256/<hex>.md — and is never entified, so it never enters the graph's
 // entity set or its orphan/inventory queries. The channel name namespaces the
 // ref; specific channels (e.g. the engineer layer's "command") are defined by
 // persona layers, not core.
 export type ProvenanceRefType = string;
 export interface ProvenanceRef {
   type: ProvenanceRefType;  // channel, e.g. "command"
-  id: string;               // contentHash of <channel>/<id>.md (git blob SHA)
+  id: ContentRef;           // content reference of the channel file
 }
 export type EdgeEndpoint = EntityRef | ProvenanceRef;
 
@@ -213,8 +255,8 @@ export interface Transition {
   from: string | null;     // previous value; null on the birth row
   to: string;              // value written
   timestamp: string;       // ISO 8601 — when the value was WRITTEN
-  source?: string;         // contentHash of the sources/ excerpt holding the
-                           // human acceptance or authority verb, if any
+  source?: ContentRef;     // content reference of the sources/ excerpt
+                           // holding the human acceptance or authority verb
   by?: string;             // id of the Principal that wrote the value: the
                            // proposer on "proposed", the acceptor on "accepted"
 }
@@ -242,8 +284,8 @@ export interface Grant {
   grantor: string;         // id of a human Principal with the grantor role
   timestamp: string;       // ISO 8601 — when the row was written; the grant is
                            // in force from this time
-  source?: string;         // contentHash of the sources/ excerpt holding the
-                           // grantor's statement, if any
+  source?: ContentRef;     // content reference of the sources/ excerpt
+                           // holding the grantor's statement, if any
 }
 
 // ---------- Derived views (never stored) ----------

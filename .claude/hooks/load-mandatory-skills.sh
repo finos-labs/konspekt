@@ -114,7 +114,16 @@ if [[ -f "$checkpoints_md" ]]; then
     cp_venue="$(trim "$cp_venue")"; cp_model="$(trim "$cp_model")"
     resume_entity="$cp_entity"
     context+=$'\n\nRESUME — last checkpoint (OPERATING.md § Checkpoint and resume): '"$cp_ts"$', bound to `'"$cp_entity"$'`, venue '"${cp_venue:-unknown}"$', model '"${cp_model:-unknown}"$'.\nIn the binding ask, offer `'"$cp_entity"$'` as the default; the human still answers. Once bound, list the open items and pending proposals from the excerpt below with the current review and status of each id they name.\n'
-    excerpt="${CLAUDE_PROJECT_DIR:-.}/.konspekt/instance/sources/${cp_source}.md"
+    # An ni:///sha-256;<base64url> source names sources/sha-256/<hex>.md; a legacy
+    # git blob SHA names sources/<sha>.md.
+    cp_rel="${cp_source}.md"
+    ni_re='^ni:///sha-256;([A-Za-z0-9_-]{43})$'
+    if [[ "$cp_source" =~ $ni_re ]]; then
+      b64="${BASH_REMATCH[1]}"; b64="${b64//-/+}"; b64="${b64//_//}="
+      cp_hex="$(printf '%s' "$b64" | base64 -d 2>/dev/null | od -An -v -tx1 | tr -d ' \n')"
+      cp_rel="sha-256/${cp_hex}.md"
+    fi
+    excerpt="${CLAUDE_PROJECT_DIR:-.}/.konspekt/instance/sources/${cp_rel}"
     if [[ -n "$cp_source" && -f "$excerpt" ]]; then
       context+=$'\n===== BEGIN CHECKPOINT EXCERPT: '"$excerpt"$' =====\n\n'
       context+="$(cat "$excerpt")"

@@ -95,7 +95,8 @@ This section is how this instance uses them.
   conversation, each proposal discussed and not persisted, and the open-items
   list as last presented; one row in
   `.konspekt/instance/checkpoints/checkpoints.md` naming the active entity, the
-  excerpt's `contentHash`, the venue (`claude.ai-web`, `claude-mobile`,
+  excerpt's `ni:///sha-256;<base64url>` reference (the excerpt is stored at
+  `sources/sha-256/<hex>.md`), the venue (`claude.ai-web`, `claude-mobile`,
   `claude-code-cli`, `intellij`, …), the model id, and `by: denisurusov`. It then
   shows the row and the excerpt path. A checkpoint touches only
   `.konspekt/instance/**`, so it is bookkeeping and needs no changed-code row.

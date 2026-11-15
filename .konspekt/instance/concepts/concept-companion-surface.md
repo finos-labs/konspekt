@@ -4,11 +4,14 @@ label: Companion surface, not a chat client
 aliases: [companion app, alongside the agent, konspekt UI is a companion]
 review: proposed
 provenance:
-  sourceRef: b9a463107d5168222a3d2acd8d75ad4b66976864
-  contentHash: b9a463107d5168222a3d2acd8d75ad4b66976864
+  sourceRef: ni:///sha-256;5ZP6EMbu315z1W-q2K8KWxHcurJbCgHuFBPWf1QJSGo
   conversationId: app-design-101
   timestamp: 2026-09-14T16:00:00Z
   confidence: 0.75
+  deprecated:
+    migratedAt: 2026-11-14T19:37:32Z
+    sourceRef: b9a463107d5168222a3d2acd8d75ad4b66976864
+    contentHash: b9a463107d5168222a3d2acd8d75ad4b66976864
 createdAt: 2026-09-14T16:00:00Z
 updatedAt: 2026-09-14T16:00:00Z
 ```

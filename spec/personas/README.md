@@ -9,7 +9,7 @@ A **persona layer** is an extension that adds vocabulary on top of that core —
 Core exposes exactly three generic hooks, and a layer contributes values into them:
 
 1. **`subtype`** — an optional discriminator field on any entity. Core recognizes the field and leaves its values to layers. The engineer layer defines `asr` (on a Concept) and `adr` (on a Waypoint).
-2. **Provenance-ref edge endpoints** — an edge `from`/`to` may address a content-addressed provenance file (`<channel>:<contentHash>`) rather than an entity, resolved the same way `sources/` is. The engineer layer adds the `command` channel.
+2. **Provenance-ref edge endpoints** — an edge `from`/`to` may address a content-addressed provenance file (`<channel>:<content reference>`, e.g. `command:ni:///sha-256;<digest>`) rather than an entity, resolved the same way `sources/` is. The engineer layer adds the `command` channel.
 3. **Layer-defined edge kinds** — additional `EdgeKind`s with their own domain/range, merged by the checker before validation. The engineer layer adds `drives` and `executed`.
 
 Core enums (`WaypointKind`, `EdgeKind`, …) are **not** grown with layer values. `adr` is not a new waypoint kind; it is a `subtype` on a `decision` waypoint. This is what keeps a non-engineer instance free of any engineer vocabulary.

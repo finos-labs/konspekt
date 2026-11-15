@@ -65,8 +65,9 @@ payload-format fix fed a proposer `body_file` and a `worktree/app` path
    - `AUTHORING/prose.md` — the markdown body after the fence (`# <Type>: <name>`
      then a paragraph). No edges block here.
 4. **Author the source excerpt** (`AUTHORING/source.md`): a short verbatim
-   excerpt that justifies the atom. It is content-addressed; the committer writes
-   it to `sources/<sha>.md`.
+   excerpt that justifies the atom. It is content-addressed by the
+   `ni:///sha-256` reference over its raw bytes; the committer writes it to
+   `sources/sha-256/<hex>.md`.
 5. **Author the spec** (`AUTHORING/spec.json`):
    ```json
    {

@@ -3,11 +3,14 @@ id: nw-adopter-tooling-zero-config
 kind: decision
 review: proposed
 provenance:
-  sourceRef: f8a5f0f62d7fe578010d0dcf3e6e268dba82f174
-  contentHash: f8a5f0f62d7fe578010d0dcf3e6e268dba82f174
+  sourceRef: ni:///sha-256;1V5WItQBlZghoMXXPc1afSLb5z1WwkkywDpMIByqnyU
   conversationId: adopter-kit-binding-parity
   timestamp: 2026-10-15T01:09:37Z
   confidence: 0.8
+  deprecated:
+    migratedAt: 2026-11-14T19:37:32Z
+    sourceRef: f8a5f0f62d7fe578010d0dcf3e6e268dba82f174
+    contentHash: f8a5f0f62d7fe578010d0dcf3e6e268dba82f174
 createdAt: 2026-10-15T01:09:37Z
 updatedAt: 2026-10-15T01:09:37Z
 ```

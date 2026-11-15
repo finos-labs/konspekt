@@ -3,11 +3,14 @@ id: nw-plugin-zip-prebuilt-release
 kind: decision
 review: accepted
 provenance:
-  sourceRef: d880e928f6971045863a1798a8a6585adfb011b9
-  contentHash: d880e928f6971045863a1798a8a6585adfb011b9
+  sourceRef: ni:///sha-256;TXtMbIydoOILVYIUZv9xakts2SihYtfrdR_aVzyziHY
   conversationId: konspekt-deck
   timestamp: 2026-09-23T13:10:00Z
   confidence: 0.85
+  deprecated:
+    migratedAt: 2026-11-14T19:37:32Z
+    sourceRef: d880e928f6971045863a1798a8a6585adfb011b9
+    contentHash: d880e928f6971045863a1798a8a6585adfb011b9
 createdAt: 2026-09-23T13:10:00Z
 updatedAt: 2026-09-23T13:10:00Z
 ```

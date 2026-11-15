@@ -5,11 +5,14 @@ title: LinkedIn announcement — the agent fleet
 status: resolved
 review: accepted
 provenance:
-  sourceRef: 21166f62a7f6132ae86eec5030cea52adae3bf01
-  contentHash: 21166f62a7f6132ae86eec5030cea52adae3bf01
+  sourceRef: ni:///sha-256;hy0xJJaH0_dpAehDvLjAXBKPGttMjeaPLUoem3D_nOM
   conversationId: fleet-adopter-authority-preflight
   timestamp: 2026-10-23T19:12:41Z
   confidence: 0.8
+  deprecated:
+    migratedAt: 2026-11-14T19:37:32Z
+    sourceRef: 21166f62a7f6132ae86eec5030cea52adae3bf01
+    contentHash: 21166f62a7f6132ae86eec5030cea52adae3bf01
 createdAt: 2026-10-23T19:12:41Z
 updatedAt: 2026-10-23T19:12:41Z
 ```

@@ -3,10 +3,13 @@ id: nw-poll-is-the-floor-push-is-optional
 kind: decision
 review: accepted
 provenance:
-  sourceRef: fabe5755d9192324d0f0eea6a61cb13c66d65105
-  contentHash: fabe5755d9192324d0f0eea6a61cb13c66d65105
+  sourceRef: ni:///sha-256;n4qcmHND9Mt_8sn95vMl2Xnp9yy1pHYqMiiKQVlUJOM
   timestamp: 2026-09-14T18:15:00Z
   conversationId: app-design-101
+  deprecated:
+    migratedAt: 2026-11-14T19:37:32Z
+    sourceRef: fabe5755d9192324d0f0eea6a61cb13c66d65105
+    contentHash: fabe5755d9192324d0f0eea6a61cb13c66d65105
 createdAt: 2026-09-14T18:15:00Z
 updatedAt: 2026-09-14T18:15:00Z
 ```

@@ -7,11 +7,14 @@ createdAt: 2026-10-21T00:00:00Z
 updatedAt: 2026-11-13T01:20:22Z
 review: accepted
 provenance:
-  sourceRef: 3b2d2e9ad4faba2bdc8997dc5399f2c356f280df
-  contentHash: 3b2d2e9ad4faba2bdc8997dc5399f2c356f280df
+  sourceRef: ni:///sha-256;0tOik1j7N70hL9Pj3uzViSgWsSE14xGgS4-vg9-dBME
   conversationId: fleet-uat-spec-writer
   timestamp: 2026-10-22T01:47:58.161Z
   confidence: 0.6
+  deprecated:
+    migratedAt: 2026-11-14T19:37:32Z
+    sourceRef: 3b2d2e9ad4faba2bdc8997dc5399f2c356f280df
+    contentHash: 3b2d2e9ad4faba2bdc8997dc5399f2c356f280df
 ```
 # Artifact: fleet committer recovery and proposed-index durability note
 

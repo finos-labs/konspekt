@@ -9,11 +9,14 @@ summary:
   updatedAt: 2026-10-29T02:30:00Z
 review: accepted
 provenance:
-  sourceRef: 63f1250644ed1210ca5f3b625eb0b1b9f8864e4b
-  contentHash: 63f1250644ed1210ca5f3b625eb0b1b9f8864e4b
+  sourceRef: ni:///sha-256;J1zh1HGR0DgkqBZKqhotNaehZM4X6OGZmJvm2MWi41E
   conversationId: walkthrough-video
   timestamp: 2026-10-29T02:30:00Z
   confidence: 0.9
+  deprecated:
+    migratedAt: 2026-11-14T19:37:32Z
+    sourceRef: 63f1250644ed1210ca5f3b625eb0b1b9f8864e4b
+    contentHash: 63f1250644ed1210ca5f3b625eb0b1b9f8864e4b
 createdAt: 2026-10-29T02:30:00Z
 updatedAt: 2026-10-29T02:30:00Z
 ```

@@ -9,11 +9,14 @@ summary:
   updatedAt: 2026-10-10T16:25:00Z
 review: accepted
 provenance:
-  sourceRef: 61cb82df38f6e65ac716680e9d38c3fa5738e56d
-  contentHash: 61cb82df38f6e65ac716680e9d38c3fa5738e56d
+  sourceRef: ni:///sha-256;ygbcHrBoqwQY4Sbk2KMKKrYugn6kMKhuNPYab-8Al3E
   conversationId: vendor-neutral-interop
   timestamp: 2026-10-10T16:25:00Z
   confidence: 0.7
+  deprecated:
+    migratedAt: 2026-11-14T19:37:32Z
+    sourceRef: 61cb82df38f6e65ac716680e9d38c3fa5738e56d
+    contentHash: 61cb82df38f6e65ac716680e9d38c3fa5738e56d
 createdAt: 2026-10-10T16:25:00Z
 updatedAt: 2026-10-22T19:00:00.000Z
 ```

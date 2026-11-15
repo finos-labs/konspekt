@@ -31,8 +31,10 @@ export const edges = {
 };
 
 // Content-addressed provenance channels this layer adds, parallel to sources/.
-// A `command:<hash>` reference resolves to `<dir>/<hash><ext>` and verifies by
-// git-blob-SHA the same way sources/ does.
+// A `command:ni:///sha-256;<base64url>` reference resolves to
+// `<dir>/sha-256/<hex><ext>` and verifies by SHA-256 over the raw bytes; a legacy
+// `command:<git-blob-sha>` reference resolves to `<dir>/<sha><ext>` and verifies
+// by git blob SHA. Both are read the same way as sources/.
 export const provenanceRefs = {
   command: { dir: "commands", ext: ".md" },
 };
@@ -40,8 +42,9 @@ export const provenanceRefs = {
 // Executed-command log (not edges). commands/executed.md is an append-only table
 // `| entity | command |` binding each LLM-executed command to the entity it was
 // about — any entity type — one row per execution, in execution order (row order
-// IS the timeline; no stored timestamp). `command` is a content hash resolved via
-// the `ref` provenance channel above (command:<hash> -> commands/<hash>.md).
+// IS the timeline; no stored timestamp). `command` is a content reference
+// resolved via the `ref` provenance channel above (`ni:///sha-256;<base64url>`
+// -> commands/sha-256/<hex>.md; a legacy git blob SHA -> commands/<sha>.md).
 export const commandLog = {
   file: "commands/executed.md",
   ref: "command",

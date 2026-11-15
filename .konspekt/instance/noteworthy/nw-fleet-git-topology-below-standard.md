@@ -3,11 +3,14 @@ id: nw-fleet-git-topology-below-standard
 kind: decision
 review: accepted
 provenance:
-  sourceRef: 80787b91bd3624bfe393482af57912892aa26b6c
-  contentHash: 80787b91bd3624bfe393482af57912892aa26b6c
+  sourceRef: ni:///sha-256;7VQ1RXvQR__SB7SWyfj9JYBduq1sJBfeSedLOc_zlew
   conversationId: fleet-as-protocol
   timestamp: 2026-10-11T15:02:58Z
   confidence: 0.8
+  deprecated:
+    migratedAt: 2026-11-14T19:37:32Z
+    sourceRef: 80787b91bd3624bfe393482af57912892aa26b6c
+    contentHash: 80787b91bd3624bfe393482af57912892aa26b6c
 createdAt: 2026-10-11T15:02:58Z
 updatedAt: 2026-10-11T15:02:58Z
 ```

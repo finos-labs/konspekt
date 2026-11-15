@@ -237,9 +237,9 @@ const htmlBody = `<!DOCTYPE html>
       <!-- stage 2: content hash -->
       <circle cx="305" cy="120" r="30" fill="#111e35" stroke="#2d436a"/>
       <text x="305" y="116" text-anchor="middle" class="anno" fill="#c2cfe6">#</text>
-      <text x="305" y="132" text-anchor="middle" class="stage-s">sha</text>
+      <text x="305" y="132" text-anchor="middle" class="stage-s">sha-256</text>
       <text x="305" y="172" text-anchor="middle" class="stage-t">Content hash</text>
-      <text x="305" y="188" text-anchor="middle" class="stage-s">sources/&lt;sha&gt;</text>
+      <text x="305" y="188" text-anchor="middle" class="stage-s">sha-256/&lt;hex&gt;</text>
 
       <!-- stage 3: proposed atom -->
       <circle cx="515" cy="120" r="26" fill="#0b1424" stroke="#f2b45c" stroke-width="1.7" stroke-dasharray="3 4"/>

@@ -3,11 +3,14 @@ id: nw-accept-scope-open-predicate
 kind: decision
 review: accepted
 provenance:
-  sourceRef: 7a4c18fa5e2285df902a347033daed7611423d67
-  contentHash: 7a4c18fa5e2285df902a347033daed7611423d67
+  sourceRef: ni:///sha-256;RSBEuCUbmFN4wryZCy89BFovl2lmN-AGgvKyxtZjM1E
   conversationId: fleet-authority
   timestamp: 2026-09-21T00:53:00Z
   confidence: 0.95
+  deprecated:
+    migratedAt: 2026-11-14T19:37:32Z
+    sourceRef: 7a4c18fa5e2285df902a347033daed7611423d67
+    contentHash: 7a4c18fa5e2285df902a347033daed7611423d67
 createdAt: 2026-09-21T00:53:00Z
 updatedAt: 2026-09-21T00:53:00Z
 ```

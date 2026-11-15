@@ -7,7 +7,7 @@ import {
   verifyEntityId,
   verifySourceHash,
 } from "../payload.mjs";
-import { gitBlobSha } from "../../../../lib/conformance.mjs";
+import { sha256Hex, niRef, parseNiRef } from "../../../../lib/conformance.mjs";
 
 const SOURCE = `konspekt source excerpt — conversation: demo
 (a verbatim excerpt)
@@ -27,7 +27,6 @@ updatedAt: 2026-10-10T16:00:00Z
 review: proposed
 provenance:
   sourceRef: ${sourceHash}
-  contentHash: ${sourceHash}
   timestamp: 2026-10-10T16:00:00Z
   confidence: 0.8
 \`\`\`
@@ -51,9 +50,10 @@ test("canonicalizeEntity normalizes line endings and trailing newlines", () => {
   assert.ok(!padded.endsWith("\n\n"));
 });
 
-test("the proposal id is the git blob SHA of the canonical entity bytes", () => {
+test("the proposal id is the hex SHA-256 of the canonical entity bytes", () => {
   const e = entity({ sourceHash });
-  assert.equal(computeEntityId(e), gitBlobSha(canonicalizeEntity(e)));
+  assert.equal(computeEntityId(e), sha256Hex(canonicalizeEntity(e)));
+  assert.match(computeEntityId(e), /^[0-9a-f]{64}$/);
 });
 
 test("the proposal id is independent of line endings", () => {
@@ -72,9 +72,10 @@ test("verifyEntityId accepts the matching id and rejects a tampered atom", () =>
   assert.notEqual(v.claimed, v.expected);
 });
 
-test("source hash matches git blob SHA and verifies against the atom's contentHash", () => {
+test("source ref is the ni: SHA-256 of the excerpt and verifies against the atom's sourceRef", () => {
   const e = entity({ sourceHash });
-  assert.equal(sourceHash, gitBlobSha(Buffer.from(SOURCE, "utf8")));
+  assert.equal(sourceHash, niRef(Buffer.from(SOURCE, "utf8")));
+  assert.equal(parseNiRef(sourceHash).hex, sha256Hex(Buffer.from(SOURCE, "utf8")));
   const v = verifySourceHash(e, Buffer.from(SOURCE, "utf8"));
   assert.equal(v.ok, true);
   assert.equal(v.claimed, sourceHash);

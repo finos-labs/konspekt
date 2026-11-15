@@ -9,6 +9,8 @@ summary:
 {{PERSONAS}}
 binding: required
 basis: proposed
+locators:
+  allow: []
 createdAt: {{TS}}
 updatedAt: {{TS}}
 ```

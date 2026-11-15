@@ -24,7 +24,7 @@ An ADR is a recorded decision with its context and consequences. It is a **Waypo
 
 Commands the maintainer runs while building are captured as content-addressed provenance, parallel to `sources/`:
 
-- `commands/<contentHash>.md` holds one command's **verbatim text**, no front-matter, no `id`. The filename is the git blob SHA of the file, so the verify probe is `git hash-object` of that file equalling the referenced hash — the identical probe `sources/` uses.
+- `commands/sha-256/<hex>.md` holds one command's **verbatim text**, no front-matter, no `id`. The filename is the hex SHA-256 of the file's bytes and the file is referenced as `command:ni:///sha-256;<base64url>`, so the verify probe is the one `sources/` uses (`../../architecture/SERIALIZATION.md` § Content references). Legacy `commands/<sha1>.md` files are kept after migration.
 - The directory is **append-only**. Identical command text hashes to one file; two runs of it are one file.
 - Only the command text is stored. Output (stdout/stderr/exit) is deliberately excluded — the record answers *what was run*, and capturing results would balloon the channel past its purpose.
 
@@ -36,7 +36,7 @@ Capture is **all bash commands** the maintainer executes in service of building,
 
 Executions are recorded in an append-only log, **not** as edges:
 
-- `commands/executed.md` is a table `| entity | command |`. Each row is one execution: `entity` is the id of the entity the command was about — **any entity type** — and `command` is the content hash resolving to `commands/<command>.md`.
+- `commands/executed.md` is a table `| entity | command |`. Each row is one execution: `entity` is the id of the entity the command was about — **any entity type** — and `command` is the content reference resolving to `commands/sha-256/<hex>.md`.
 - The relationship is one-to-many (an entity has many commands), and **row order is execution order** — top to bottom is the timeline. There is no stored timestamp: natural execution order is append order, which a git-diffable append-only file preserves.
 - The execution timeline is the log's row order; "the commands for entity X" is a filter over the `entity` column — a query, no stored list.
 
@@ -66,6 +66,6 @@ When `engineer` is active, the checker (via `registry.mjs`) additionally:
 - accepts `subtype: asr` on a concept and `subtype: adr` on a waypoint, and warns on an ADR whose `kind` is not `decision`;
 - accepts `drives` as an edge kind with the domain/range above (an out-of-range end is a warning, matching core edge domain/range);
 - reports an ADR that no ASR drives, since with no inbound `drives` edge the ADR has no recorded context: an error (`subtype-missing-inbound-proposed`) when the ADR is `proposed`, because a proposal lands wired, and a warning (`subtype-missing-inbound`) when it is `accepted`. A rejected ADR and an ADR that is the `to` of a `supersedes` edge are exempt;
-- resolves a `command:<hash>` reference against `commands/<hash>.md` — missing file is `dangling-provenance-ref` (error), and a hash that does not match the file is `provenance-ref-hash-mismatch` (warning);
+- resolves a `command:<reference>` against `commands/sha-256/<hex>.md` (or, for a legacy SHA-1, `commands/<sha1>.md`) — missing file is `dangling-provenance-ref` (error), and a hash that does not match the file is `provenance-ref-hash-mismatch` (warning);
 - validates `commands/executed.md`: each row's `entity` must resolve to an entity file (`dangling-executed` error) and be an allowed subject type, and its `command` hash must resolve and verify like any provenance-ref;
 - leaves every core rule untouched, so an instance without `engineer` sees none of the above.

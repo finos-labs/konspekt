@@ -5,6 +5,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { foldProposal, foldProposals, parseEdgeRows } from "../fold.mjs";
 import { assembleProposal, proposeToOutbox } from "../outbox.mjs";
+import { parseNiRef } from "../../../../lib/conformance.mjs";
 import { setupFleet } from "../worktrees.mjs";
 import { foldPass } from "../committer.mjs";
 import { commitAll } from "../git.mjs";
@@ -53,7 +54,7 @@ test("a folded concept yields a tree that passes lib/validate.mjs", () => {
   assert.equal(r.entityId, "concept-foo");
   assert.equal(r.file, "concepts/concept-foo.md");
   assert.ok(existsSync(join(dir, "concepts/concept-foo.md")));
-  assert.ok(existsSync(join(dir, "sources", `${r.sourceRef}.md`)));
+  assert.ok(existsSync(join(dir, "sources", "sha-256", `${parseNiRef(r.sourceRef).hex}.md`)));
 
   const errs = errorsOf(dir);
   assert.equal(errs.length, 0, JSON.stringify(errs, null, 2));
@@ -68,8 +69,9 @@ test("the folded entity is the proposer's atom verbatim and addresses back to th
   assert.equal(text, p.entityMd);
   assert.equal((text.match(/review:/g) || []).length, 1);
   assert.match(text, /review: proposed/);
-  assert.match(text, new RegExp(`sourceRef: ${r.sourceRef}`));
-  assert.match(text, new RegExp(`contentHash: ${r.sourceRef}`));
+  assert.ok(text.includes(`sourceRef: ${r.sourceRef}`));
+  // contentHash is derived from the ni: sourceRef, not stored.
+  assert.doesNotMatch(text, /contentHash:/);
   assert.match(text, /confidence: 0.8/);
 });
 

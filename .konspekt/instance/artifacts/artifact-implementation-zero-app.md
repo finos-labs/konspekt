@@ -5,11 +5,14 @@ kind: code
 location: implementations/implementation-zero/app/
 review: accepted
 provenance:
-  sourceRef: b5733acdd267476135f45abcd27108111f13ca8c
-  contentHash: b5733acdd267476135f45abcd27108111f13ca8c
+  sourceRef: ni:///sha-256;YJAK4oeNzBz7KRC7iH_f3xAQJL1JJKF3am9UW8mk6QM
   timestamp: 2026-09-19T15:00:00Z
   conversationId: app-design-101
   confidence: 0.85
+  deprecated:
+    migratedAt: 2026-11-14T19:37:32Z
+    sourceRef: b5733acdd267476135f45abcd27108111f13ca8c
+    contentHash: b5733acdd267476135f45abcd27108111f13ca8c
 createdAt: 2026-09-19T15:00:00Z
 updatedAt: 2026-09-19T15:00:00Z
 ```

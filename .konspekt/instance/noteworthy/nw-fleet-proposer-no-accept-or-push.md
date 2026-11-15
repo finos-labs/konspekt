@@ -3,11 +3,14 @@ id: nw-fleet-proposer-no-accept-or-push
 kind: constraint
 review: accepted
 provenance:
-  sourceRef: 4dca7f84eee42618e6bbf9400bd69d00bade7da0
-  contentHash: 4dca7f84eee42618e6bbf9400bd69d00bade7da0
+  sourceRef: ni:///sha-256;qOZmY8QAaPvfpQrFFe7MEc_XCFAFbCfhHb5R1S3eh-I
   conversationId: fleet-resolve-and-adjustments-2026-10-25
   timestamp: 2026-10-25T14:20:00Z
   confidence: 0.9
+  deprecated:
+    migratedAt: 2026-11-14T19:37:32Z
+    sourceRef: 4dca7f84eee42618e6bbf9400bd69d00bade7da0
+    contentHash: 4dca7f84eee42618e6bbf9400bd69d00bade7da0
 createdAt: 2026-10-25T14:20:00Z
 updatedAt: 2026-10-25T14:20:00Z
 ```

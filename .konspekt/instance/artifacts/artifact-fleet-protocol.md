@@ -5,11 +5,14 @@ kind: doc
 location: implementations/fleet/design/fleet-protocol.md
 review: accepted
 provenance:
-  sourceRef: a5ab6d58fdcc0a8944e90ae083077b5a8332bf2a
-  contentHash: a5ab6d58fdcc0a8944e90ae083077b5a8332bf2a
+  sourceRef: ni:///sha-256;-qut6_qdA7ldeTg6TLbXOeLEcJ9xpAVStjkn5J5saSY
   timestamp: 2026-10-11T14:29:55Z
   conversationId: fleet-as-protocol
   confidence: 0.7
+  deprecated:
+    migratedAt: 2026-11-14T19:37:32Z
+    sourceRef: a5ab6d58fdcc0a8944e90ae083077b5a8332bf2a
+    contentHash: a5ab6d58fdcc0a8944e90ae083077b5a8332bf2a
 createdAt: 2026-10-11T14:29:55Z
 updatedAt: 2026-11-13T01:20:22Z
 ```

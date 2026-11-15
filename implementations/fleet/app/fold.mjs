@@ -21,7 +21,7 @@ import { join, dirname } from "node:path";
 import { mkdirSync, writeFileSync, readFileSync, existsSync } from "node:fs";
 import { canonicalizeEntity, computeFileHash, normalizeFileTarget } from "./payload.mjs";
 import { appendFoldRecord } from "./proposed-ref.mjs";
-import { splitEntityFile } from "../../../lib/conformance.mjs";
+import { splitEntityFile, resolveContentRef } from "../../../lib/conformance.mjs";
 
 // Where each entity type's file lives, and the id prefix the store expects.
 const ENTITY_DIR = {
@@ -112,15 +112,19 @@ export function foldProposal(instanceDir, { entityMd, sourceMd, edgesMd, meta = 
   }
 
   const prov = front.provenance || {};
-  const sourceHash = prov.contentHash || prov.sourceRef;
-  if (!sourceHash) throw new Error(`proposal for "${id}" has no provenance.contentHash`);
+  const sourceHash = prov.sourceRef;
+  if (!sourceHash) throw new Error(`proposal for "${id}" has no provenance.sourceRef`);
+  const sourceTarget = resolveContentRef(join(instanceDir, "sources"), sourceHash);
+  if (!sourceTarget || sourceTarget.form !== "ni") {
+    throw new Error(`proposal for "${id}" has sourceRef "${sourceHash}", which is not an ni:///sha-256 reference`);
+  }
   const timestamp = prov.timestamp || front.createdAt || now || new Date().toISOString();
   const by = meta.origin && meta.origin.agent;
 
   // ----- idempotent fold (task-fleet-fold-idempotent-impl; contract in
   // artifact-fleet-outbox-lifecycle / design/fleet-outbox-lifecycle.md) -----
   // Decide "already folded" from canonical alone: if the target entity file
-  // exists and its provenance contentHash equals this proposal's source hash,
+  // exists and its provenance sourceRef equals this proposal's sourceRef,
   // the atom is already on canonical. Skip it — write nothing, touch no edge or
   // transition rows, append no fold record — so a re-run over an un-consumed
   // outbox cannot clobber a blessed or rejected review back to proposed
@@ -131,7 +135,7 @@ export function foldProposal(instanceDir, { entityMd, sourceMd, edgesMd, meta = 
   if (existsSync(absFile)) {
     const existingFront = splitEntityFile(readFileSync(absFile, "utf8")).front;
     const existingHash = (existingFront.provenance &&
-      (existingFront.provenance.contentHash || existingFront.provenance.sourceRef)) || null;
+      existingFront.provenance.sourceRef) || null;
     if (existingHash === sourceHash) {
       return {
         proposalId,
@@ -143,13 +147,12 @@ export function foldProposal(instanceDir, { entityMd, sourceMd, edgesMd, meta = 
         status: "already-folded",
       };
     }
-    throw new Error(`id collision: "${id}" exists on canonical with a different contentHash`);
+    throw new Error(`id collision: "${id}" exists on canonical with a different sourceRef`);
   }
 
   // ----- source excerpt -----
-  const sourcesDir = join(instanceDir, "sources");
-  mkdirSync(sourcesDir, { recursive: true });
-  writeFileSync(join(sourcesDir, `${sourceHash}.md`), String(sourceMd), "utf8");
+  mkdirSync(dirname(sourceTarget.path), { recursive: true });
+  writeFileSync(sourceTarget.path, String(sourceMd), "utf8");
 
   // ----- entity file (verbatim: the bytes the proposer authored and signed) -----
   const absDir = join(instanceDir, relDir);

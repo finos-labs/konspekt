@@ -51,25 +51,73 @@ object InstanceReader {
 
   private val KV = Regex("^([A-Za-z0-9_\$.-]+):\\s*(.*)$")
 
-  // Parse the fenced ```yaml front-matter into a flat map, nesting one level as
-  // "parent.key" (summary.updatedAt, provenance.timestamp, ...). Enough for the
-  // fields the view needs; folded/literal block scalars are skipped.
-  private fun parseFront(text: String): Map<String, String> {
+  // Parse the fenced ```yaml front-matter into a flat map keyed by the full
+  // dotted path of each scalar ("summary.updatedAt", "provenance.sourceRef",
+  // "provenance.deprecated.sourceRef", ...), at any nesting depth, so a nested
+  // key never overwrites a shallower one with the same name. Enough for the
+  // fields the view needs: sequence items ("- ...") and folded/literal block
+  // scalars are skipped. The authoritative parser is lib/conformance.mjs.
+  internal fun parseFront(text: String): Map<String, String> {
     val t = text.replace("\r\n", "\n").trimStart()
     val fence = Regex("(?s)^```ya?ml\\n(.*?)\\n```").find(t) ?: return emptyMap()
     val out = HashMap<String, String>()
-    var parent: String? = null
+    val path = ArrayDeque<Pair<Int, String>>() // (indent, key) of each open map
+    var skipDeeperThan = -1                     // inside a block scalar or a sequence
     for (raw in fence.groupValues[1].split("\n")) {
       if (raw.isBlank() || raw.trim().startsWith("#")) continue
       val indent = raw.length - raw.trimStart().length
-      val m = KV.find(raw.trim()) ?: continue
-      val key = m.groupValues[1]; val rest = m.groupValues[2]
-      if (indent == 0) {
-        if (rest.isEmpty() || rest == ">" || rest == ">-" || rest == "|" || rest == "|-") parent = key
-        else { out[key] = stripQuotes(rest); parent = null }
-      } else if (parent != null && rest.isNotEmpty()) {
-        out["$parent.$key"] = stripQuotes(rest)
+      if (skipDeeperThan >= 0) {
+        if (indent > skipDeeperThan) continue
+        skipDeeperThan = -1
       }
+      val trimmed = raw.trim()
+      while (path.isNotEmpty() && path.last().first >= indent) path.removeLast()
+      if (trimmed.startsWith("- ") || trimmed == "-") {
+        // A sequence item: skip it and anything nested under it.
+        skipDeeperThan = indent
+        continue
+      }
+      val m = KV.find(trimmed) ?: continue
+      val key = m.groupValues[1]; val rest = m.groupValues[2].trim()
+      val full = (path.map { it.second } + key).joinToString(".")
+      when {
+        rest == ">" || rest == ">-" || rest == "|" || rest == "|-" -> skipDeeperThan = indent
+        rest.isEmpty() -> path.addLast(indent to key)
+        else -> out[full] = stripQuotes(rest)
+      }
+    }
+    return out
+  }
+
+  // Origin locators (SERIALIZATION.md § Sources): the `provenance.locators`
+  // sequence of maps, which parseFront skips. Each item becomes a flat map of
+  // its scalar fields (uri, kind, retrievedAt, ...). Only a `locators` key that
+  // is a direct child of the top-level `provenance` map counts, so a nested
+  // block such as `provenance.deprecated` cannot contribute one.
+  internal fun parseLocators(text: String): List<Map<String, String>> {
+    val t = text.replace("\r\n", "\n").trimStart()
+    val fence = Regex("(?s)^```ya?ml\\n(.*?)\\n```").find(t) ?: return emptyList()
+    val out = ArrayList<MutableMap<String, String>>()
+    var inProv = false; var provChild = -1; var inLoc = false; var locIndent = -1
+    for (raw in fence.groupValues[1].split("\n")) {
+      if (raw.isBlank() || raw.trim().startsWith("#")) continue
+      val indent = raw.length - raw.trimStart().length
+      val trimmed = raw.trim()
+      if (indent == 0) { inProv = trimmed == "provenance:"; provChild = -1; inLoc = false; continue }
+      if (!inProv) continue
+      val item = trimmed.startsWith("- ") || trimmed == "-"
+      // YAML allows the sequence at the key's own indent ("locators:\n  - uri: ...").
+      if (inLoc && (indent > locIndent || item)) {
+        val body = if (item) trimmed.removePrefix("-").trim() else trimmed
+        if (item) out.add(LinkedHashMap())
+        val m = KV.find(body) ?: continue
+        if (out.isNotEmpty()) out.last()[m.groupValues[1]] = stripQuotes(m.groupValues[2])
+        continue
+      }
+      if (provChild < 0) provChild = indent
+      if (indent != provChild) continue
+      inLoc = trimmed == "locators:"
+      locIndent = indent
     }
     return out
   }
@@ -244,7 +292,11 @@ object InstanceReader {
     val f = File(instanceDir, e.file)
     if (!f.isFile) return "{\"error\":\"file missing\"}"
     val acceptedBy = acceptedByOf(instanceDir, "${e.entityType}:${e.id}")
-    return "{\"id\":${q(e.id)},\"file\":${q(e.file)},\"markdown\":${q(f.readText())},\"review\":${q(e.review)},\"status\":${q(e.status)},\"entityType\":${q(e.entityType)},\"sourceRef\":${q(e.sourceRef)},\"contentHash\":${q(e.contentHash)},\"acceptedBy\":${q(acceptedBy)}}"
+    val text = f.readText()
+    val locators = parseLocators(text).joinToString(",") { l ->
+      "{" + l.entries.joinToString(",") { (k, v) -> "${q(k)}:${q(v)}" } + "}"
+    }
+    return "{\"id\":${q(e.id)},\"file\":${q(e.file)},\"markdown\":${q(text)},\"review\":${q(e.review)},\"status\":${q(e.status)},\"entityType\":${q(e.entityType)},\"sourceRef\":${q(e.sourceRef)},\"contentHash\":${q(e.contentHash)},\"acceptedBy\":${q(acceptedBy)},\"locators\":[$locators]}"
   }
 
   // One transition-log row to append: an assignment of `field` on `ref`.
@@ -409,11 +461,35 @@ object InstanceReader {
     return "{\"entity\":${q(id)},\"resolved\":true,\"accepted\":$accepted,\"edges\":${flippedEdges.size}}"
   }
 
+  // The hex digest of an RFC 6920 `ni:///sha-256;<base64url>` reference, or null
+  // when `ref` is not one. The digest must be 43 base64url characters that decode
+  // to 32 bytes (lib/conformance.mjs parseNiRef applies the same rule).
+  fun niHex(ref: String): String? {
+    val prefix = "ni:///sha-256;"
+    if (!ref.startsWith(prefix)) return null
+    val b64 = ref.substring(prefix.length)
+    if (!Regex("^[A-Za-z0-9_-]{43}$").matches(b64)) return null
+    val bytes = try { java.util.Base64.getUrlDecoder().decode(b64) } catch (e: IllegalArgumentException) { return null }
+    if (bytes.size != 32) return null
+    if (java.util.Base64.getUrlEncoder().withoutPadding().encodeToString(bytes) != b64) return null
+    return bytes.joinToString("") { "%02x".format(it) }
+  }
+
+  // The instance-relative path of a content-addressed file in `dir` (sources or
+  // commands): an `ni:` reference maps to `<dir>/sha-256/<hex>.md`, a legacy hex
+  // git blob SHA to `<dir>/<sha>.md`, anything else to null.
+  fun contentRel(dir: String, ref: String): String? {
+    val hex = niHex(ref)
+    if (hex != null) return "$dir/sha-256/$hex.md"
+    if (Regex("^[0-9a-f]{7,64}$").matches(ref)) return "$dir/$ref.md"
+    return null
+  }
+
   fun sourceJson(instanceDir: File, ref: String): String {
-    if (!Regex("^[0-9a-f]{7,64}$").matches(ref)) return "{\"error\":\"bad ref\"}"
-    val f = File(File(instanceDir, "sources"), "$ref.md")
+    val rel = contentRel("sources", ref) ?: return "{\"error\":\"bad ref\"}"
+    val f = File(instanceDir, rel)
     if (!f.isFile) return "{\"error\":\"no such source\"}"
-    return "{\"ref\":${q(ref)},\"markdown\":${q(f.readText())}}"
+    return "{\"ref\":${q(ref)},\"path\":${q(rel)},\"markdown\":${q(f.readText())}}"
   }
 
   // Related commands for an entity: the commands/executed.md rows whose entity is
@@ -428,9 +504,11 @@ object InstanceReader {
         val cells = t.trim('|').split("|").map { it.trim() }
         if (cells.size < 2 || cells[0] == "entity" || cells[0].startsWith("---") || cells[0] != entity) continue
         val hash = cells[1]
-        val cf = File(File(instanceDir, "commands"), "$hash.md")
-        val md = if (cf.isFile) cf.readText() else "(command text missing)"
-        rows.add("{\"command\":${q(hash)},\"markdown\":${q(md)}}")
+        val rel = contentRel("commands", hash)
+        val cf = rel?.let { File(instanceDir, it) }
+        val md = if (cf != null && cf.isFile) cf.readText() else "(command text missing)"
+        val pathJson = if (rel != null) q(rel) else "null"
+        rows.add("{\"command\":${q(hash)},\"path\":$pathJson,\"markdown\":${q(md)}}")
       }
     }
     return "{\"entity\":${q(entity)},\"commands\":[${rows.joinToString(",")}]}"

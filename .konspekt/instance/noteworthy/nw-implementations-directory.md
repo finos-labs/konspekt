@@ -3,11 +3,14 @@ id: nw-implementations-directory
 kind: decision
 review: accepted
 provenance:
-  sourceRef: db06867ee38876760cf3b6f2ab565ebb688a3cfd
-  contentHash: db06867ee38876760cf3b6f2ab565ebb688a3cfd
+  sourceRef: ni:///sha-256;_buRW-o9SfAor0TAC3LRVpiLDOysXzAGR-R06aDvXNU
   timestamp: 2026-09-19T13:00:00Z
   conversationId: app-design-101
   confidence: 0.8
+  deprecated:
+    migratedAt: 2026-11-14T19:37:32Z
+    sourceRef: db06867ee38876760cf3b6f2ab565ebb688a3cfd
+    contentHash: db06867ee38876760cf3b6f2ab565ebb688a3cfd
 createdAt: 2026-09-19T13:00:00Z
 updatedAt: 2026-09-19T13:00:00Z
 ```

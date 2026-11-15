@@ -79,8 +79,10 @@ Authoritative guidance:
 
 ## Related surfaces (outside `tools/`)
 
-- **Conformance check** — `node lib/validate.mjs [instanceDir] [--json] [--slug-ok] [--no-sources]`
-  validates an instance (exit 0 clean, 1 on errors, 2 on bad usage). See
-  `setup/README.md`.
+- **Conformance check** — `node lib/validate.mjs [instanceDir] [--json] [--slug-ok] [--no-sources] [--no-check-locators]`
+  validates an instance (exit 0 clean, 1 on errors, 2 on bad usage). It
+  requests each provenance locator on a host in `project.md` `locators.allow`
+  and warns when one is unreachable; `--no-check-locators` skips those
+  requests. See `setup/README.md`.
 - **Visual explorer** — the read-only context explorer under `visual/`; see
   `visual/README.md` for its build and serve steps.

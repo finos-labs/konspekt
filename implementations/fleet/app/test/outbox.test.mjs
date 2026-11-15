@@ -11,7 +11,7 @@ import {
 } from "../outbox.mjs";
 import { computeFileHash } from "../payload.mjs";
 import { computeEntityId, verifySourceHash } from "../payload.mjs";
-import { splitEntityFile } from "../../../../lib/conformance.mjs";
+import { splitEntityFile, parseNiRef } from "../../../../lib/conformance.mjs";
 import { setupFleet } from "../worktrees.mjs";
 
 const IDENTITY = { name: "Test Committer", email: "test@konspekt.local" };
@@ -49,8 +49,9 @@ test("an assembled proposal is a stored-form atom addressed by its own content",
   assert.equal(front.id, "concept-demo");
   assert.equal(front.review, "proposed");
   assert.equal(front.provenance.confidence, 0.8);
-  assert.equal(front.provenance.sourceRef, front.provenance.contentHash);
-  // contentHash addresses the source excerpt.
+  assert.ok(parseNiRef(front.provenance.sourceRef), `sourceRef ${front.provenance.sourceRef} is not an ni: SHA-256 reference`);
+  assert.equal(front.provenance.contentHash, undefined);
+  // sourceRef addresses the source excerpt.
   assert.equal(verifySourceHash(a.entityMd, Buffer.from(a.sourceMd, "utf8")).ok, true);
   // The fleet envelope carries origin, binding, entity_type — not the atom.
   assert.equal(a.meta.origin.agent, "agent-a");

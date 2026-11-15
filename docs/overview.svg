@@ -82,10 +82,10 @@
 <text x="78" y="440" class="primary m" font-size="15.5">Provenance — citations</text>
 <text x="450.0" y="440" text-anchor="end" class="muted mono" font-size="12">03</text>
 <text x="60" y="464" class="secondary" font-size="13">Every atom cites its source and binds to an entity.</text>
-<text x="60" y="483" class="secondary" font-size="13">Verbatim, both sides, content-addressed by git blob</text>
-<text x="60" y="502" class="secondary" font-size="13">SHA. Completeness is an invariant — none goes silent.</text>
+<text x="60" y="483" class="secondary" font-size="13">Verbatim, both sides, content-addressed by SHA-256.</text>
+<text x="60" y="502" class="secondary" font-size="13">Completeness is an invariant — none goes silent.</text>
 <rect x="60.0" y="532.0" width="95.2" height="21" rx="5" fill="var(--tag-bg)" stroke="var(--border)" stroke-width="1"/>
-<text x="107.6" y="547.0" text-anchor="middle" class="secondary mono" font-size="12">contentHash</text>
+<text x="107.6" y="547.0" text-anchor="middle" class="secondary mono" font-size="12">sha-256</text>
 <rect x="162.2" y="532.0" width="80.8" height="21" rx="5" fill="var(--tag-bg)" stroke="var(--border)" stroke-width="1"/>
 <text x="202.6" y="547.0" text-anchor="middle" class="secondary mono" font-size="12">sourceRef</text>
 <rect x="250.0" y="532.0" width="116.8" height="21" rx="5" fill="var(--tag-bg)" stroke="var(--border)" stroke-width="1"/>
@@ -97,7 +97,7 @@
 <text x="528.0" y="440" class="primary m" font-size="15.5">GitHub — backend</text>
 <text x="900.0" y="440" text-anchor="end" class="muted mono" font-size="12">04</text>
 <text x="510.0" y="464" class="secondary" font-size="13">The store is the repo. Atomic multi-file commits,</text>
-<text x="510.0" y="483" class="secondary" font-size="13">blob SHA as content hash, human-readable files.</text>
+<text x="510.0" y="483" class="secondary" font-size="13">SHA-256-named excerpts, human-readable files.</text>
 <text x="510.0" y="502" class="secondary" font-size="13">Distribution is a projection of root, never a copy.</text>
 <rect x="510.0" y="557.0" width="59.2" height="21" rx="5" fill="var(--tag-bg)" stroke="var(--border)" stroke-width="1"/>
 <text x="539.6" y="572.0" text-anchor="middle" class="secondary mono" font-size="12">nodes/</text>
@@ -138,7 +138,7 @@
 <text x="341.1" y="675.0" text-anchor="middle" class="accent" font-size="13.5">verbatim source</text>
 <path d="M415.8 666.0 l6 6 l-6 6" fill="none" stroke="var(--muted)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
 <rect x="431.8" y="655.0" width="83.2" height="30" rx="15" fill="var(--accent-bg)" stroke="var(--accent-border)" stroke-width="1"/>
-<text x="473.4" y="675.0" text-anchor="middle" class="accent" font-size="13.5">blob SHA</text>
+<text x="473.4" y="675.0" text-anchor="middle" class="accent" font-size="13.5">SHA-256</text>
 <path d="M523.0 666.0 l6 6 l-6 6" fill="none" stroke="var(--muted)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
 <rect x="539.0" y="655.0" width="126.2" height="30" rx="15" fill="var(--accent-bg)" stroke="var(--accent-border)" stroke-width="1"/>
 <text x="602.1" y="675.0" text-anchor="middle" class="accent" font-size="13.5">commit history</text>

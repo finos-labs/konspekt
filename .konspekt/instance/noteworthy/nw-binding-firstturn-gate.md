@@ -3,11 +3,14 @@ id: nw-binding-firstturn-gate
 kind: decision
 review: accepted
 provenance:
-  sourceRef: 08dc52839b0496f8241157407ff63c672b00615d
-  contentHash: 08dc52839b0496f8241157407ff63c672b00615d
+  sourceRef: ni:///sha-256;Fwm4IZJAuaOHlzvSEhq-v3nwJF6_xVkbSf8qKjaKYJw
   conversationId: binding-firstturn-gate
   timestamp: 2026-09-29T00:00:00Z
   confidence: 0.7
+  deprecated:
+    migratedAt: 2026-11-14T19:37:32Z
+    sourceRef: 08dc52839b0496f8241157407ff63c672b00615d
+    contentHash: 08dc52839b0496f8241157407ff63c672b00615d
 createdAt: 2026-09-29T00:00:00Z
 updatedAt: 2026-09-29T00:00:00Z
 ```

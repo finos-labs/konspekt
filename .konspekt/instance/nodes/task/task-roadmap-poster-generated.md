@@ -9,11 +9,14 @@ summary:
   updatedAt: 2026-09-10T22:30:00Z
 review: accepted
 provenance:
-  sourceRef: 1adaaa49660f2708f0467c8caf0b971677a5144b
-  contentHash: 1adaaa49660f2708f0467c8caf0b971677a5144b
+  sourceRef: ni:///sha-256;z35P0usov0CJqzl6OmGm_JfwKPkjyDTRyawzDc3rrZc
   conversationId: roadmap-plan
   timestamp: 2026-09-10T22:30:00Z
   confidence: 0.8
+  deprecated:
+    migratedAt: 2026-11-14T19:37:32Z
+    sourceRef: 1adaaa49660f2708f0467c8caf0b971677a5144b
+    contentHash: 1adaaa49660f2708f0467c8caf0b971677a5144b
 createdAt: 2026-09-10T22:30:00Z
 updatedAt: 2026-09-11T18:00:00Z
 ```

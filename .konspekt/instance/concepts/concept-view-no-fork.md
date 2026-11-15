@@ -5,11 +5,14 @@ label: One view across all surfaces
 aliases: [shared view no fork, one HTML view behind a transport adapter, disposition must not drift]
 review: accepted
 provenance:
-  sourceRef: f02d18ef587d9270ee87345d74834b74c21236f7
-  contentHash: f02d18ef587d9270ee87345d74834b74c21236f7
+  sourceRef: ni:///sha-256;dbM8oS693YmaUCcboeAp1o28i_jiNy7bcGpehD0eFCA
   timestamp: 2026-09-20T12:00:00Z
   conversationId: intellij-plugin
   confidence: 0.8
+  deprecated:
+    migratedAt: 2026-11-14T19:37:32Z
+    sourceRef: f02d18ef587d9270ee87345d74834b74c21236f7
+    contentHash: f02d18ef587d9270ee87345d74834b74c21236f7
 createdAt: 2026-09-20T12:00:00Z
 updatedAt: 2026-09-20T12:00:00Z
 ```

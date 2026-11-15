@@ -9,11 +9,14 @@ summary:
   updatedAt: 2026-10-25T14:10:00Z
 review: accepted
 provenance:
-  sourceRef: d61ec0b88a72ed3c0401e5c552e6ef0e4afaedce
-  contentHash: d61ec0b88a72ed3c0401e5c552e6ef0e4afaedce
+  sourceRef: ni:///sha-256;jGF55EdU4e3s83kMAXvGxzFwhE1-VuZGpud3cl9wmLQ
   conversationId: fleet-resolve-and-adjustments-2026-10-25
   timestamp: 2026-10-25T14:10:00Z
   confidence: 0.9
+  deprecated:
+    migratedAt: 2026-11-14T19:37:32Z
+    sourceRef: d61ec0b88a72ed3c0401e5c552e6ef0e4afaedce
+    contentHash: d61ec0b88a72ed3c0401e5c552e6ef0e4afaedce
 createdAt: 2026-10-25T14:10:00Z
 updatedAt: 2026-10-25T14:10:00Z
 ```

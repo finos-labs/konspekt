@@ -5,11 +5,14 @@ title: Show and check ADRs that no ASR drives
 status: resolved
 review: accepted
 provenance:
-  sourceRef: 0953f7c00879df50b76efe55dc3ad8bdd95ed118
-  contentHash: 0953f7c00879df50b76efe55dc3ad8bdd95ed118
+  sourceRef: ni:///sha-256;7lWDIRzFyeeJi6mcm5khvtUW2UxifbrTDm62qm18zPM
   conversationId: adr-asr-traceability
   timestamp: 2026-11-06T21:45:07Z
   confidence: 0.8
+  deprecated:
+    migratedAt: 2026-11-14T19:37:32Z
+    sourceRef: 0953f7c00879df50b76efe55dc3ad8bdd95ed118
+    contentHash: 0953f7c00879df50b76efe55dc3ad8bdd95ed118
 createdAt: 2026-11-06T21:45:07Z
 updatedAt: 2026-11-06T22:39:42Z
 ```

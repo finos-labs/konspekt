@@ -1,6 +1,6 @@
-# konspekt instance markdown is content-addressed by a git blob SHA computed
-# over LF bytes; the conformance checker (lib/conformance.mjs) hashes the raw
-# bytes on disk. Pin these files to LF in the working tree so the hash matches
+# konspekt instance markdown is content-addressed by a SHA-256 over its LF
+# bytes (an ni:///sha-256 reference; legacy files by a git blob SHA-1); the
+# conformance checker (lib/conformance.mjs) hashes the raw bytes on disk. Pin these files to LF in the working tree so the hash matches
 # on every platform and core.autocrlf cannot introduce false content-hash
 # mismatches on a Windows checkout. See nw-checker-hashes-raw-disk-bytes.
 .konspekt/instance/**/*.md text eol=lf
@@ -24,3 +24,16 @@
 /tools/roadmap.mjs text eol=lf
 /tools/roadmap-poster.mjs text eol=lf
 /tools/state-poster.mjs text eol=lf
+
+# setup/ is the adopter kit. setup/init.mjs copies its templates and component
+# files byte for byte into an adopter's .konspekt/instance/, .konspekt/ and
+# .github/workflows/, and distribution/latest/ is rebuilt from it. Pin the whole
+# directory to LF so a scaffold or a distribution build run from a Windows
+# checkout writes LF files, matching the instance rule above, and so the
+# policy-field check in test/setup-init.test.mjs reads the seeded project.md the
+# same way on every platform.
+/setup/** text eol=lf
+
+# Workflows installed from setup/components/ are compared byte for byte with
+# their templates by node setup/init.mjs --check; pin them to LF like setup/.
+/.github/workflows/** text eol=lf

@@ -4,10 +4,13 @@ kind: constraint
 status: active
 review: accepted
 provenance:
-  sourceRef: 20fbf57db9ded22a7e797036ceb18d25ace56717
-  contentHash: 20fbf57db9ded22a7e797036ceb18d25ace56717
+  sourceRef: ni:///sha-256;3VERO-bLRZ9cBCQ4hUssZOagGi337QBkLuPNmZ9XqxI
   timestamp: 2026-06-23T19:30:00Z
   conversationId: skills-adoption-review
+  deprecated:
+    migratedAt: 2026-11-14T19:37:32Z
+    sourceRef: 20fbf57db9ded22a7e797036ceb18d25ace56717
+    contentHash: 20fbf57db9ded22a7e797036ceb18d25ace56717
 createdAt: 2026-06-23T19:30:00Z
 updatedAt: 2026-06-23T19:30:00Z
 ```

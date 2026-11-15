@@ -9,9 +9,12 @@ summary:
   updatedAt: 2026-09-10T09:00:00Z
 review: accepted
 provenance:
-  sourceRef: 10000dc6cf43580546027c0144107f81cd402bb9
-  contentHash: 10000dc6cf43580546027c0144107f81cd402bb9
+  sourceRef: ni:///sha-256;JnZK3v_Q_UOztgP5uPcOgEdTEkOtoDKd9AULcuW4asQ
   timestamp: 2026-09-10T09:00:00Z
+  deprecated:
+    migratedAt: 2026-11-14T19:37:32Z
+    sourceRef: 10000dc6cf43580546027c0144107f81cd402bb9
+    contentHash: 10000dc6cf43580546027c0144107f81cd402bb9
 createdAt: 2026-09-08T11:45:54Z
 updatedAt: 2026-09-10T09:00:00Z
 ```

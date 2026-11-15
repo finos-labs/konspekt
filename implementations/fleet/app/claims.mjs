@@ -12,12 +12,12 @@
 // no illegal pending row) and is applied in one transition only on accept.
 //
 // A claim request is one outbox directory `proposals/<id>/claim.json`; the id is
-// the content address of the claim JSON. It carries no entity.md, so the entity
+// the hex SHA-256 of the claim JSON. It carries no entity.md, so the entity
 // read path (committer.readOutbox) skips it and this module reads it instead.
 
 import { join } from "node:path";
 import { mkdirSync, writeFileSync, readFileSync, existsSync, readdirSync } from "node:fs";
-import { computeSourceHash } from "./payload.mjs";
+import { sha256Hex } from "../../../lib/conformance.mjs";
 import { commitAll } from "./git.mjs";
 import { splitEntityFile } from "../../../lib/conformance.mjs";
 
@@ -38,7 +38,7 @@ export function assembleClaim({ kind = "claim", node, to, agent, created } = {})
     throw new Error(`release --to must be "resolved" or "abandoned", got "${target ?? "(none)"}"`);
   }
   const claim = { kind, node, from: CLAIM_FROM[kind], to: target, agent, created: created ?? new Date().toISOString() };
-  const claimId = computeSourceHash(Buffer.from(JSON.stringify(claim), "utf8"));
+  const claimId = sha256Hex(Buffer.from(JSON.stringify(claim), "utf8"));
   return { claimId, claim };
 }
 

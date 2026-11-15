@@ -33,9 +33,13 @@ dependencies {
     // JCEF (JBCefBrowser / JBCefApp) is a bundled plugin in 2026.2, not core.
     bundledPlugin("com.intellij.modules.jcef")
   }
+  // Plain JVM unit tests over InstanceReader (no IDE instance): kotlin.test on JUnit 5.
+  testImplementation(kotlin("test"))
 }
 
 kotlin { jvmToolchain(21) }
+
+tasks.test { useJUnitPlatform() }
 
 intellijPlatform {
   // No Settings/configurable UI, so skip the searchable-options indexing pass

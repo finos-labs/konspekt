@@ -5,10 +5,13 @@ kind: doc
 location: spec/architecture/UI-ARCHITECTURE.md
 review: proposed
 provenance:
-  sourceRef: c952f0ebdf6fdb037a918d071b415188071a9a1c
-  contentHash: c952f0ebdf6fdb037a918d071b415188071a9a1c
+  sourceRef: ni:///sha-256;VK3i6aEOSxoi5GzbTRVEtQM9LaE9nMW_qSvrMrNjIj8
   timestamp: 2026-09-14T19:00:00Z
   conversationId: app-design-101
+  deprecated:
+    migratedAt: 2026-11-14T19:37:32Z
+    sourceRef: c952f0ebdf6fdb037a918d071b415188071a9a1c
+    contentHash: c952f0ebdf6fdb037a918d071b415188071a9a1c
 createdAt: 2026-09-14T19:00:00Z
 updatedAt: 2026-09-14T19:00:00Z
 ```

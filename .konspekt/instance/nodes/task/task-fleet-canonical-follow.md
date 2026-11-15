@@ -5,11 +5,14 @@ title: "Fleet follows a canonical branch switch: fold pending proposals, re-base
 status: resolved
 review: accepted
 provenance:
-  sourceRef: 6ab9fc3a8f7eeb80f752d2fb04b1e709d0ecfb89
-  contentHash: 6ab9fc3a8f7eeb80f752d2fb04b1e709d0ecfb89
+  sourceRef: ni:///sha-256;bF7R1Enwd-N-cUN5exYbsvoy2hwejMx023F3bfx_BN8
   conversationId: fleet-canonical-follow
   timestamp: 2026-11-11T17:59:09Z
   confidence: 0.7
+  deprecated:
+    migratedAt: 2026-11-14T19:37:32Z
+    sourceRef: 6ab9fc3a8f7eeb80f752d2fb04b1e709d0ecfb89
+    contentHash: 6ab9fc3a8f7eeb80f752d2fb04b1e709d0ecfb89
 createdAt: 2026-11-11T17:59:09Z
 updatedAt: 2026-11-11T18:19:12Z
 ```

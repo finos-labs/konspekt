@@ -3,7 +3,7 @@
      Check freshness with: node tools/roadmap.mjs --check
      This file is a pure function of .konspekt/instance/ (no timestamps baked in).
      Goals and tasks are graph nodes; the horizon is derived from node status/review.
-     contentHash: sha256:6175f5e57c742d8e -->
+     contentHash: sha256:f9912b8a2f785cc5 -->
 
 # konspekt roadmap
 
@@ -48,6 +48,7 @@ Bring technical adopters from first contact to a running instance in their own r
 
 - init.mjs does not scaffold instance/authority/ tables
 - Make notifications portable
+- Make setup/init.mjs --check report missing binding and basis fields
 
 **Shipped** — _resolved_
 
@@ -145,18 +146,18 @@ Keep a project's working context — its instructions, accumulated decisions, an
 **Next** — _accepted and planned_
 
 - init.mjs does not scaffold instance/authority/ tables
+- A durable store other than git
 - Decide whether instance/ directory layout should be regularized
+- Migrate references to ni:///sha-256 with store resolution
 - Consider an "outcome" node type for testable controls
 - Make notifications portable
 - Find the second implementer
 
-**Later** — _proposed, not yet committed_
-
-- A durable store other than git
-
 **Shipped** — _resolved_
 
 - Choose a license
+- Verify the impact of ni: source addressing, file by file
+- Test the ni: migration on the task-ni-references branch
 - Re-serialize the instance to the reconciled spec
 - Reconcile canonical schema into spec/
 - Lock the serialization format
@@ -207,6 +208,7 @@ Let several participants — people and agents — propose into and review one s
 **Now** — _in progress_
 
 - Fleet adjustments (ongoing)
+- Place the fleet design docs with the fleet implementation
 
 **Next** — _accepted and planned_
 
@@ -216,7 +218,6 @@ Let several participants — people and agents — propose into and review one s
 
 - Per-atom compare-and-swap and a store cursor
 - Support multiple human authors on one instance
-- Re-address existing sources from git blob SHA to SHA-256
 
 **Shipped** — _resolved_
 
@@ -232,4 +233,4 @@ Let several participants — people and agents — propose into and review one s
 
 ---
 
-Generated from 9 goal(s) and 96 task-listing(s) over the instance graph.
+Generated from 9 goal(s) and 100 task-listing(s) over the instance graph.

@@ -3,11 +3,14 @@ id: nw-webmobile-seed-binds-at-open
 kind: decision
 review: proposed
 provenance:
-  sourceRef: 2ed0cd0d761d9adb44ef8d67b597dc72cd09b823
-  contentHash: 2ed0cd0d761d9adb44ef8d67b597dc72cd09b823
+  sourceRef: ni:///sha-256;xCLc4jYsIUWzhp_DdgiHFkOvEYgyykbxnfS-Af1gZKM
   conversationId: webmobile-seed-binding-step
   timestamp: 2026-09-27T15:30:00Z
   confidence: 0.7
+  deprecated:
+    migratedAt: 2026-11-14T19:37:32Z
+    sourceRef: 2ed0cd0d761d9adb44ef8d67b597dc72cd09b823
+    contentHash: 2ed0cd0d761d9adb44ef8d67b597dc72cd09b823
 createdAt: 2026-09-27T15:30:00Z
 updatedAt: 2026-09-27T15:30:00Z
 ```

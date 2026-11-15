@@ -3,11 +3,14 @@ id: nw-plugin-binary-release-only
 kind: decision
 review: accepted
 provenance:
-  sourceRef: 43e6b92f9ae97a2e0aca9e3c889bd21b3f991009
-  contentHash: 43e6b92f9ae97a2e0aca9e3c889bd21b3f991009
+  sourceRef: ni:///sha-256;W9JEKc--47LTByDUDUzU2z1arSojN9QJTUXu0uS5Pd4
   conversationId: konspekt-deck
   timestamp: 2026-09-23T13:40:00Z
   confidence: 0.85
+  deprecated:
+    migratedAt: 2026-11-14T19:37:32Z
+    sourceRef: 43e6b92f9ae97a2e0aca9e3c889bd21b3f991009
+    contentHash: 43e6b92f9ae97a2e0aca9e3c889bd21b3f991009
 createdAt: 2026-09-23T13:40:00Z
 updatedAt: 2026-09-23T13:40:00Z
 ```

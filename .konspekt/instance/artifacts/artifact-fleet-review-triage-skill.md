@@ -7,11 +7,14 @@ createdAt: 2026-10-21T00:00:00.000Z
 updatedAt: 2026-10-21T00:00:00.000Z
 review: accepted
 provenance:
-  sourceRef: 4a291face333a8f1be7714f4b924b8fe478e8e4e
-  contentHash: 4a291face333a8f1be7714f4b924b8fe478e8e4e
+  sourceRef: ni:///sha-256;fqIV8nlbfZalEADaNjtCFfspuiplyeB0E6X16fRRXAY
   conversationId: fleet-uat-skill-builder
   timestamp: 2026-10-22T02:19:07.648Z
   confidence: 0.68
+  deprecated:
+    migratedAt: 2026-11-14T19:37:32Z
+    sourceRef: 4a291face333a8f1be7714f4b924b8fe478e8e4e
+    contentHash: 4a291face333a8f1be7714f4b924b8fe478e8e4e
 ```
 # Artifact: fleet review triage skill
 

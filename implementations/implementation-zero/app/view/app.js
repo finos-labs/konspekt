@@ -356,16 +356,33 @@ function renderDrawer(d, source, cmds, chgs) {
     { label: "Provenance", build: () => {
       const w = document.createElement("div");
       if (d.sourceRef) {
-        const lbl = document.createElement("div"); lbl.className = "src-label"; lbl.textContent = "sources/" + d.sourceRef + ".md";
+        const lbl = document.createElement("div"); lbl.className = "src-label"; lbl.textContent = (source && source.path) ? source.path + "  (" + d.sourceRef + ")" : "sources/" + d.sourceRef + ".md";
         w.appendChild(lbl); w.appendChild(pre(source && !source.error ? source.markdown : (source && source.error ? "error: " + source.error : "(source unavailable)")));
       } else { const p = document.createElement("p"); p.className = "muted"; p.textContent = "No content-addressed provenance for this entity."; w.appendChild(p); }
+      // Origin locators (SERIALIZATION.md § Sources): where the excerpt was
+      // taken from. Only an http(s) URI becomes a link; anything else is text.
+      const locs = Array.isArray(d.locators) ? d.locators : [];
+      if (locs.length) {
+        const h = document.createElement("div"); h.className = "src-label"; h.textContent = "Origin locators"; w.appendChild(h);
+        const ul = document.createElement("ul"); ul.className = "loc-list";
+        for (const l of locs) {
+          const li = document.createElement("li");
+          let href = null; try { const u = new URL(String(l.uri)); if (u.protocol === "http:" || u.protocol === "https:") href = u.href; } catch { /* not a URL */ }
+          const name = document.createElement(href ? "a" : "span"); name.textContent = String(l.uri || "");
+          if (href) { name.href = href; name.target = "_blank"; name.rel = "noopener noreferrer"; }
+          li.appendChild(name);
+          const meta = document.createElement("span"); meta.className = "muted"; meta.textContent = "  " + [l.kind, l.retrievedAt].filter(Boolean).join(" · ");
+          li.appendChild(meta); ul.appendChild(li);
+        }
+        w.appendChild(ul);
+      }
       return w;
     } },
   ];
   if (cmds.length) tabs.push({ label: "Commands (" + cmds.length + ")", build: () => {
     const w = document.createElement("div"); w.className = "cmd-list";
     cmds.forEach((c, i) => {
-      const lbl = document.createElement("div"); lbl.className = "src-label"; lbl.textContent = (i + 1) + " · commands/" + c.command.slice(0, 10) + "…";
+      const lbl = document.createElement("div"); lbl.className = "src-label"; lbl.textContent = (i + 1) + " · " + (c.path || "commands/" + c.command.slice(0, 10) + "…");
       w.appendChild(lbl); w.appendChild(pre(c.markdown));
     });
     return w;

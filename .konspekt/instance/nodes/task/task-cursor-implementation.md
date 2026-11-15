@@ -9,11 +9,14 @@ summary:
   updatedAt: 2026-10-03T14:00:00Z
 review: accepted
 provenance:
-  sourceRef: afe1a5babb2999e9f74e89140952271b7653e505
-  contentHash: afe1a5babb2999e9f74e89140952271b7653e505
+  sourceRef: ni:///sha-256;gaiL2MM4PrUwAqfpTujGB6Vo6JzU_BqsiYyGdOK-GV4
   conversationId: fleet-cursor-impl
   timestamp: 2026-10-03T14:00:00Z
   confidence: 0.8
+  deprecated:
+    migratedAt: 2026-11-14T19:37:32Z
+    sourceRef: afe1a5babb2999e9f74e89140952271b7653e505
+    contentHash: afe1a5babb2999e9f74e89140952271b7653e505
 createdAt: 2026-10-03T14:00:00Z
 updatedAt: 2026-10-25T14:10:00Z
 ```

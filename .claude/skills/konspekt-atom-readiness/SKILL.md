@@ -167,11 +167,18 @@ One venture can carry several proposals; present them together.
   print its text and request acceptance. An instruction to start work is not an
   acceptance (`spec/architecture/REVIEW.md` § Acceptance before work).
 - Give every atom you persist — proposed or accepted — content-addressed
-  provenance: a verbatim both-sides source excerpt in
-  `.konspekt/instance/sources/`, its git blob SHA as `contentHash`, cited from
-  the entity (see `spec/architecture/SERIALIZATION.md`). Lighter provenance
-  (conversation id + timestamp) is for entities that predate the mechanism, not
-  new ones.
+  provenance: a verbatim both-sides source excerpt stored at
+  `.konspekt/instance/sources/sha-256/<hex>.md`, where `<hex>` is the SHA-256
+  of the file's raw bytes, cited from the entity as
+  `sourceRef: ni:///sha-256;<base64url>` (the same digest, base64url without
+  padding). Do not store `contentHash` beside an `ni:` `sourceRef`; it is
+  derived from the reference. Table cells that cite an excerpt (transition,
+  checkpoint and grant `source`) take the same `ni:` reference (see
+  `spec/architecture/SERIALIZATION.md` § Content references). In an instance
+  not yet migrated, which has no `sources/deprecated.md`, the legacy form is a
+  git blob SHA stored as both `sourceRef` and `contentHash`, naming
+  `sources/<sha>.md`. Lighter provenance (conversation id + timestamp) is for
+  entities that predate the mechanism, not new ones.
 
 ## Anti-patterns
 

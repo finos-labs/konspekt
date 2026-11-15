@@ -3,11 +3,14 @@ id: nw-fleet-remove-fold-translation
 kind: decision
 review: accepted
 provenance:
-  sourceRef: 9697c181f76581137f4d92c6629b203cabaeeac3
-  contentHash: 9697c181f76581137f4d92c6629b203cabaeeac3
+  sourceRef: ni:///sha-256;uOepuv-IHn2JnMo6APmuYbNZVfB8n521jLsTf2fAgqw
   conversationId: fleet-as-protocol
   timestamp: 2026-10-11T15:28:59Z
   confidence: 0.85
+  deprecated:
+    migratedAt: 2026-11-14T19:37:32Z
+    sourceRef: 9697c181f76581137f4d92c6629b203cabaeeac3
+    contentHash: 9697c181f76581137f4d92c6629b203cabaeeac3
 createdAt: 2026-10-11T15:28:59Z
 updatedAt: 2026-10-11T15:28:59Z
 ```

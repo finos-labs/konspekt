@@ -570,5 +570,18 @@ proposal.
 | e-not-adjustments-canonicalfollowdecision | notes | node:task-fleet-adjustments | noteworthy:nw-fleet-canonical-follow-drain-then-move |  | accepted |
 | e-dec-agentfleet-designdocsplacement | decomposes | node:task-agent-fleet | node:task-fleet-design-docs-placement |  | accepted |
 | e-dec-enterprise-sourceuris | decomposes | node:task-enterprise-persistence | node:investigation-source-uris |  |  |
-| e-dec-enterprise-nirefs | decomposes | node:task-enterprise-persistence | node:task-ni-references |  | proposed |
-| e-link-nirefs-sourcesmigration | links | node:task-ni-references | node:task-sources-sha256-migration | 0.8 | proposed |
+| e-dec-enterprise-nirefs | decomposes | node:task-enterprise-persistence | node:task-ni-references |  | accepted |
+| e-link-nirefs-sourcesmigration | links | node:task-ni-references | node:task-sources-sha256-migration | 0.8 | accepted |
+| e-dec-nirefs-impact | decomposes | node:task-ni-references | node:task-ni-impact-analysis |  | accepted |
+| e-dec-nirefs-testmigration | decomposes | node:task-ni-references | node:task-ni-test-migration |  | accepted |
+| e-dec-adoption-setupinitcheck | decomposes | node:goal-adoption | node:task-setup-init-check-policy-fields |  | proposed |
+| e-drv-hashident-adrniref | drives | concept:concept-asr-hash-independent-identity | waypoint:wp-adr-ni-sha256-references |  | accepted |
+| e-drv-storeagnostic-adrniref | drives | concept:concept-asr-store-agnostic-references | waypoint:wp-adr-ni-sha256-references |  | accepted |
+| e-mark-adrniref-sourceuris | marks | waypoint:wp-adr-ni-sha256-references | node:investigation-source-uris |  | accepted |
+| e-drv-storeagnostic-adrresolve | drives | concept:concept-asr-store-agnostic-references | waypoint:wp-adr-store-resolve-rule |  | accepted |
+| e-mark-adrresolve-sourceuris | marks | waypoint:wp-adr-store-resolve-rule | node:investigation-source-uris |  | accepted |
+| e-drv-losslessmig-adrinplace | drives | concept:concept-asr-lossless-provenance-migration | waypoint:wp-adr-in-place-ni-migration |  | accepted |
+| e-mark-adrinplace-sourceuris | marks | waypoint:wp-adr-in-place-ni-migration | node:investigation-source-uris |  | accepted |
+| e-not-nirefs-setupcrlf | notes | node:task-ni-references | noteworthy:nw-setup-templates-crlf-on-windows |  | accepted |
+| e-sup-adrni-provcontent | supersedes | waypoint:wp-adr-ni-sha256-references | noteworthy:nw-provenance-content-addressed |  | accepted |
+| e-sup-nirefs-sha256mig | supersedes | node:task-ni-references | node:task-sources-sha256-migration |  | accepted |

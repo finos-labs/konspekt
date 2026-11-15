@@ -3,9 +3,12 @@ id: nw-konspekt-conforms-code-tracer-drifts
 kind: fact
 review: accepted
 provenance:
-  sourceRef: 38e0d13103a54d228fc8645be097c86bd3cf6320
-  contentHash: 38e0d13103a54d228fc8645be097c86bd3cf6320
+  sourceRef: ni:///sha-256;fXoV3y-dWcBv4coEKfGPpNJW-Vht7riUYVa6t1hZprA
   timestamp: 2026-07-19T18:00:00Z
+  deprecated:
+    migratedAt: 2026-11-14T19:37:32Z
+    sourceRef: 38e0d13103a54d228fc8645be097c86bd3cf6320
+    contentHash: 38e0d13103a54d228fc8645be097c86bd3cf6320
 createdAt: 2026-07-19T18:00:00Z
 updatedAt: 2026-07-19T18:00:00Z
 ```

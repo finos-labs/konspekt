@@ -8,6 +8,17 @@
 > should be implemented.** Kept because entities refer to it by name.
 > `spec/data-model/schema.ts` and `spec/architecture/SERIALIZATION.md` remain
 > the spec, unchanged and now mechanically verified.
+>
+> **Addressing note, 2026-11-14.** This report predates the move to
+> `ni:///sha-256` references (`task-ni-references`). Its paths and counts use
+> the git blob SHA-1 form of the time: `sources/<sha1>.md`, and provenance
+> verified by comparing an excerpt's git blob SHA with its stored
+> `contentHash`. The instance was migrated in place on 2026-11-14. The SHA-1
+> files it cites are kept, and `.konspekt/instance/sources/deprecated.md` maps
+> each to its current reference. The excerpt cited below is now
+> `ni:///sha-256;jP89OKyOY1aDWLN50poVvAREdWHc6ccXM4sWOn5tup0`, stored at
+> `.konspekt/instance/sources/sha-256/8cff3d38ac8e63568358b379d29a15bc04447561dce9c717338b163a7e6dba9d.md`. The report text is otherwise
+> unchanged.
 
 **Not to be confused with `RECONCILIATION.md`**, which is normative and covers a
 different subject: how an incoming *atom* is classified against the existing
