@@ -647,3 +647,7 @@ commit order; the channel was not live during that work.
 | task-ni-references | afaf1d84558c66b9e7cc34395fa4cad17a9a5c26 | setup/README.md | 2026-11-15T16:08:52Z |
 | task-ni-references | afaf1d84558c66b9e7cc34395fa4cad17a9a5c26 | test/migrate-ni.test.mjs | 2026-11-15T16:08:52Z |
 | task-ni-references | afaf1d84558c66b9e7cc34395fa4cad17a9a5c26 | tools/migrate-ni.mjs | 2026-11-15T16:08:52Z |
+| task-linkedin-announce-ni-references | b36393628e041da41dd52d396f4973faf32be621 | docs/announcements/linkedin/README.md | 2026-11-15T16:24:16Z |
+| task-linkedin-announce-ni-references | b36393628e041da41dd52d396f4973faf32be621 | docs/announcements/linkedin/post_2026-11-16/carousel.pdf | 2026-11-15T16:24:16Z |
+| task-linkedin-announce-ni-references | b36393628e041da41dd52d396f4973faf32be621 | docs/announcements/linkedin/post_2026-11-16/post.md | 2026-11-15T16:24:16Z |
+| task-linkedin-announce-ni-references | b36393628e041da41dd52d396f4973faf32be621 | docs/visuals/posters/konspekt-addressing-poster.html | 2026-11-15T16:24:16Z |
