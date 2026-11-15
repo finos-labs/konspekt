@@ -1373,3 +1373,6 @@ proposing agent was not recorded.
 | edge:e-not-nirefs-migrateblankline | review |  | proposed | 2026-11-15T16:09:54Z |  | claude |
 | noteworthy:nw-migrate-ni-table-blank-line | review | proposed | accepted | 2026-11-15T16:11:33Z | ni:///sha-256;NM152tReVwEg1nLedVtjVYMEY6OnCGPtnavjGTu3dLE | denisurusov |
 | edge:e-not-nirefs-migrateblankline | review | proposed | accepted | 2026-11-15T16:11:33Z | ni:///sha-256;NM152tReVwEg1nLedVtjVYMEY6OnCGPtnavjGTu3dLE | denisurusov |
+| node:task-linkedin-announce-ni-references | status | open | resolved | 2026-11-15T16:57:46Z | ni:///sha-256;FX4SXiM6wNIk5uPqPhMtzllRqAkKbqbuIKYUdddzW-Y | denisurusov |
+| noteworthy:nw-revision-of-bound-entity-blocked | review |  | proposed | 2026-11-15T16:57:46Z |  | claude |
+| edge:e-not-acceptbeforework-revisionblocked | review |  | proposed | 2026-11-15T16:57:46Z |  | claude |
