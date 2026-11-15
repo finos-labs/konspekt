@@ -1,14 +1,14 @@
 ```yaml
 id: nw-legacy-ref-error-in-ni-instances
 kind: decision
-review: proposed
+review: accepted
 provenance:
   sourceRef: ni:///sha-256;7Dz8GrBSolw4mMdLdi-VNkdnvueCG-iQgsidfNDqEVo
   conversationId: howto-video-0.0.15
   timestamp: 2026-11-15T19:10:23Z
   confidence: 0.85
 createdAt: 2026-11-15T19:10:23Z
-updatedAt: 2026-11-15T19:10:23Z
+updatedAt: 2026-11-15T19:21:34Z
 ```
 # Noteworthy: a SHA-1 reference in an ni:-form instance is an error
 
