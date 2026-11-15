@@ -1362,3 +1362,5 @@ proposing agent was not recorded.
 | edge:e-mark-initstore-nirefs | review | proposed | accepted | 2026-11-15T15:55:49Z | ni:///sha-256;VybP-MOxzfvsDebYQKizy1CmRbyFZUEpDuNWQAcwBJM | denisurusov |
 | noteworthy:nw-migrate-ni-table-blank-line | review |  | proposed | 2026-11-15T16:09:54Z |  | claude |
 | edge:e-not-nirefs-migrateblankline | review |  | proposed | 2026-11-15T16:09:54Z |  | claude |
+| noteworthy:nw-migrate-ni-table-blank-line | review | proposed | accepted | 2026-11-15T16:11:33Z | ni:///sha-256;NM152tReVwEg1nLedVtjVYMEY6OnCGPtnavjGTu3dLE | denisurusov |
+| edge:e-not-nirefs-migrateblankline | review | proposed | accepted | 2026-11-15T16:11:33Z | ni:///sha-256;NM152tReVwEg1nLedVtjVYMEY6OnCGPtnavjGTu3dLE | denisurusov |

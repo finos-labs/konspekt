@@ -1,14 +1,14 @@
 ```yaml
 id: nw-migrate-ni-table-blank-line
 kind: fact
-review: proposed
+review: accepted
 provenance:
   sourceRef: ni:///sha-256;9PMWmzpZRU090yyr9HWTm1gGRMIW1VICJ6merPYAsVs
   conversationId: linkedin-ni-references
   timestamp: 2026-11-15T16:09:54Z
   confidence: 0.7
 createdAt: 2026-11-15T16:09:54Z
-updatedAt: 2026-11-15T16:09:54Z
+updatedAt: 2026-11-15T16:11:33Z
 ```
 # Noteworthy: migrate-ni ended a table at a blank line that the checker reads past
 

@@ -587,4 +587,4 @@ proposal.
 | e-sup-nirefs-sha256mig | supersedes | node:task-ni-references | node:task-sources-sha256-migration |  | accepted |
 | e-dec-nirefs-walkthrough | decomposes | node:task-ni-references | node:task-ni-walkthrough-recapture |  | accepted |
 | e-mark-initstore-nirefs | marks | waypoint:wp-init-store-block-opt-in | node:task-ni-references |  | accepted |
-| e-not-nirefs-migrateblankline | notes | node:task-ni-references | noteworthy:nw-migrate-ni-table-blank-line |  | proposed |
+| e-not-nirefs-migrateblankline | notes | node:task-ni-references | noteworthy:nw-migrate-ni-table-blank-line |  | accepted |
