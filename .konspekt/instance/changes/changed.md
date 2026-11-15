@@ -606,3 +606,15 @@ commit order; the channel was not live during that work.
 | task-ni-references | 3ed03f8610bf24fcc368cf171ccf9d710f20177c | docs/overview_light_preview.png | 2026-11-15T00:28:08Z |
 | task-ni-impact-analysis | 2e76727b83b44b867f82d4d08aa642b19c26fa43 | docs/design/source-addressing.md | 2026-11-15T00:32:12Z |
 | task-ni-impact-analysis | 9bbe2df3730f5fb0ab09822af3cc326308ccbbcb | ROADMAP.md | 2026-11-15T00:38:19Z |
+| task-ni-references | 83b282cb664a99501327a7b610ba76051b54492d | .gitattributes | 2026-11-15T00:39:59Z |
+| task-ni-references | 83b282cb664a99501327a7b610ba76051b54492d | README.md | 2026-11-15T00:39:59Z |
+| task-ni-references | 83b282cb664a99501327a7b610ba76051b54492d | docs/visuals/posters/konspekt-checkpoint-poster.html | 2026-11-15T00:39:59Z |
+| task-ni-references | 83b282cb664a99501327a7b610ba76051b54492d | docs/visuals/posters/konspekt-current-state-poster.html | 2026-11-15T00:39:59Z |
+| task-ni-references | 83b282cb664a99501327a7b610ba76051b54492d | docs/visuals/posters/konspekt-how-it-works-poster.html | 2026-11-15T00:39:59Z |
+| task-ni-references | 83b282cb664a99501327a7b610ba76051b54492d | implementations/implementation-zero/app/server.mjs | 2026-11-15T00:39:59Z |
+| task-ni-references | 83b282cb664a99501327a7b610ba76051b54492d | implementations/implementation-zero/app/test/server.test.mjs | 2026-11-15T00:39:59Z |
+| task-ni-references | 83b282cb664a99501327a7b610ba76051b54492d | implementations/implementation-zero/app/view/app.css | 2026-11-15T00:39:59Z |
+| task-ni-references | 83b282cb664a99501327a7b610ba76051b54492d | implementations/implementation-zero/app/view/app.js | 2026-11-15T00:39:59Z |
+| task-ni-references | 83b282cb664a99501327a7b610ba76051b54492d | spec/personas/engineer/registry.mjs | 2026-11-15T00:39:59Z |
+| task-ni-references | 83b282cb664a99501327a7b610ba76051b54492d | tools/state-poster.mjs | 2026-11-15T00:39:59Z |
+| task-ni-references | d1f511b432ad89928d69c3896ed3a3530f4dd070 | setup/templates/project.md | 2026-11-15T00:39:59Z |

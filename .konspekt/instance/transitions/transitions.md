@@ -1338,3 +1338,7 @@ proposing agent was not recorded.
 | noteworthy:nw-setup-templates-crlf-on-windows | review |  | proposed | 2026-11-14T20:17:03Z |  | claude |
 | edge:e-not-nirefs-setupcrlf | review |  | proposed | 2026-11-14T20:17:03Z |  | claude |
 | node:task-ni-impact-analysis | status | open | resolved | 2026-11-15T00:38:05Z | ni:///sha-256;onP_gTnoiJppOVk-ocQCXUWHAkV-nCatdx3y7OqaZkY | denisurusov |
+| concept:concept-two-pillars | review | accepted | proposed | 2026-11-15T00:41:12Z |  | claude |
+| concept:concept-write-integrity-by-verification | review | accepted | proposed | 2026-11-15T00:41:12Z |  | claude |
+| edge:e-sup-adrni-provcontent | review |  | proposed | 2026-11-15T00:41:12Z |  | claude |
+| edge:e-sup-nirefs-sha256mig | review |  | proposed | 2026-11-15T00:41:12Z |  | claude |

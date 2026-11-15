@@ -2,7 +2,7 @@
 id: concept-two-pillars
 label: Two pillars of the standard
 aliases: [model plus verbs, standard is model and verbs, binding constraint vs vocabulary]
-review: accepted
+review: proposed
 provenance:
   sourceRef: ni:///sha-256;jvdREM-JHaheN2YbR9-RcBJ9vCCyssWcRI5rnoMBIpM
   timestamp: 2026-06-27T13:42:26Z
@@ -12,7 +12,7 @@ provenance:
     sourceRef: 37f457f9f4cd3a186c5547f32e0046867a91d2e9
     contentHash: 37f457f9f4cd3a186c5547f32e0046867a91d2e9
 createdAt: 2026-06-27T13:42:26Z
-updatedAt: 2026-06-27T13:42:26Z
+updatedAt: 2026-11-15T00:41:12Z
 ```
 # Concept: Two pillars of the standard
 
@@ -28,7 +28,8 @@ Everything else is an *implementation constraint* on a conformant binding, not
 vocabulary: serialization, transport, reconciliation, and the content-addressing
 scheme. The model still *requires* auditability — every entity carries
 provenance and a `proposed → accepted` review state (SPEC Principle 3) — but
-*how* a binding makes provenance verifiable (this repo: git blob SHAs over the
-verbatim source) is the binding's concern, in `spec/architecture/`. So
+*how* a binding makes provenance verifiable (this repo: SHA-256 over the
+verbatim source, cited as an `ni:///sha-256` reference) is the binding's
+concern, in `spec/architecture/`. So
 "provenance is an implementation constraint" is true of the mechanism, not of
 the requirement.

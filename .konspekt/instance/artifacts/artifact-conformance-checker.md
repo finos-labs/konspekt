@@ -13,7 +13,7 @@ provenance:
     sourceRef: 5ed08b5539e0bb86e59aa8a79ec1c903f0c569b2
     contentHash: 5ed08b5539e0bb86e59aa8a79ec1c903f0c569b2
 createdAt: 2026-07-20T18:00:00Z
-updatedAt: 2026-07-20T18:00:00Z
+updatedAt: 2026-11-15T00:41:12Z
 ```
 # Artifact: Conformance checker
 
@@ -32,7 +32,10 @@ as projections.
 Checks beyond the visualizer's original subset: edge kind and domain/range,
 entity enums and the noteworthy status vocabularies, required fields, fields the
 schema does not define, duplicate edge ids, weight outside `relates`, and the
-provenance verify probe — `sources/<sourceRef>.md` must exist and its git blob
-SHA must equal `contentHash`. The blob SHA is recomputed arithmetically rather
-than shelled out, so verification works on a directory that is not a repository,
+provenance verify probe — an `ni:///sha-256` `sourceRef` must resolve to
+`sources/sha-256/<hex>.md` and the SHA-256 of that file's bytes must equal the
+digest; a legacy git-blob-SHA-1 reference resolves to `sources/<sha1>.md` and
+its blob SHA must equal `contentHash`. Both hashes are computed in-process
+rather than shelled out, so verification works on a directory that is not a
+repository,
 which is the condition the manual re-upload probe exercises.

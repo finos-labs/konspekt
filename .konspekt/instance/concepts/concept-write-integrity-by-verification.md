@@ -3,7 +3,7 @@ id: concept-write-integrity-by-verification
 subtype: asr
 label: Write-path integrity rests on record-level verification and human-authorized acceptance, not on excluding a model from the write
 aliases: [verification not a model boundary, any writer plus deterministic verification, enforcement over gating on the write path]
-review: accepted
+review: proposed
 provenance:
   sourceRef: ni:///sha-256;k8Gt6m70zplg3m_pvCTXyDvmjCAZpI3QDDivvvo0RPc
   timestamp: 2026-10-11T13:39:32Z
@@ -14,7 +14,7 @@ provenance:
     sourceRef: 66ce1472f226767b199556329bedbb9d60ca96f6
     contentHash: 66ce1472f226767b199556329bedbb9d60ca96f6
 createdAt: 2026-10-11T13:39:32Z
-updatedAt: 2026-10-11T13:39:32Z
+updatedAt: 2026-11-15T00:41:12Z
 ```
 # Concept: Write-path integrity rests on record-level verification and human-authorized acceptance, not on excluding a model from the write
 
@@ -23,7 +23,8 @@ properties, not by the identity of the process that performs the write. First,
 every write is a deterministic, byte-exact operation — content hashing, the
 `review`-field flip, and an `edges.md` row append — checked after the fact
 against the record by `lib/conformance.mjs`, `tools/binding-audit.mjs`, the
-`git hash-object` content-address probe, and the `transitions/transitions.md`
+SHA-256 content-address probe over each excerpt's raw bytes, and the
+`transitions/transitions.md`
 log. Second, acceptance is authorized by a human principal and carried in the
 conversation. Because correctness is verified against the record and acceptance
 is human-authorized, whether the executor is a deterministic script or an agent
