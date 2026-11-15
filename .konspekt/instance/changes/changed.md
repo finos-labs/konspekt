@@ -620,3 +620,6 @@ commit order; the channel was not live during that work.
 | task-ni-references | d1f511b432ad89928d69c3896ed3a3530f4dd070 | setup/templates/project.md | 2026-11-15T00:39:59Z |
 | task-ni-references | 41aeebc7880cf112e54f8c645fbb04ec245e0eb1 | ROADMAP.md | 2026-11-15T00:52:10Z |
 | task-ni-references | 3222f4a0763e139414a0a196d12537eb73e534a1 | implementations/intellij-plugin/app/src/main/kotlin/dev/konspekt/plugin/InstanceReader.kt | 2026-11-15T01:02:21Z |
+| task-ni-references | 134063216c81f82a29b3dc09b915f6f33142e275 | implementations/intellij-plugin/app/README.md | 2026-11-15T01:06:14Z |
+| task-ni-references | 134063216c81f82a29b3dc09b915f6f33142e275 | implementations/intellij-plugin/app/build.gradle.kts | 2026-11-15T01:06:14Z |
+| task-ni-references | 134063216c81f82a29b3dc09b915f6f33142e275 | implementations/intellij-plugin/app/src/test/kotlin/dev/konspekt/plugin/InstanceReaderLocatorsTest.kt | 2026-11-15T01:06:14Z |
