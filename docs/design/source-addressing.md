@@ -194,15 +194,20 @@ did not cover. Their current state:
    folded `ni:` atoms and unmigrated ones. The fleet's README, DESIGN,
    ADOPTING, spec, protocol and outbox-lifecycle documents and the
    `fleet-proposer-common` skill describe the `ni:` form.
-4. **Line endings.** Hashing raw bytes keeps the existing dependency on
+4. **Line endings (done).** Hashing raw bytes keeps the existing dependency on
    working-tree bytes matching the committed bytes. The `.gitattributes`
-   `eol=lf` pin must stay; its `.konspekt/instance/**/*.md` pattern already
-   covers the new `sha-256/` directories.
+   `eol=lf` pin stays; its `.konspekt/instance/**/*.md` pattern covers the
+   new `sha-256/` directories. `setup/**` and `.github/workflows/**` are now
+   pinned as well, because `setup/init.mjs` copied CRLF templates into adopter
+   instances from a Windows checkout (`nw-setup-templates-crlf-on-windows`).
 
 The migration is first run as a test on the `task-ni-references` branch,
 tracked by `task-ni-test-migration`.
 
 ## Change list
+
+The list below is the plan as first drawn up. The per-file result, checked
+against the branch on 2026-11-14, is in § Result of the file-by-file check.
 
 Every file found by sweeping the repository for `sourceRef`, `contentHash`,
 `git hash-object`, blob SHA, `sources/`, `commands/` and `command:`. Files
@@ -391,3 +396,119 @@ listed only where they also draw or describe source addressing.
   `denisurusov/konspekt`).
 - cdm-collateral and code_tracer: run the migration script later.
 - Any custom GPT or Gemini Gem that carries a copy of the seed.
+
+## Result of the file-by-file check
+
+Checked on 2026-11-14 against the `task-ni-references` branch
+(`task-ni-impact-analysis`). Each file in the change list was opened and its
+remaining addressing text read; a SHA-1 mention that describes the legacy form
+or migrated history counts as correct. "Done" means the listed change is in
+the file; "no change" gives the reason; "open" names what is still missing.
+
+### Done
+
+- Spec: `SERIALIZATION.md`, `STORAGE.md`, `RECONCILIATION.md`, `TRANSPORT.md`,
+  `spec/architecture/README.md`, `schema.ts`, `spec/data-model/SPEC.md`,
+  `spec/personas/README.md`, engineer `SPEC.md` and `AGENTS.md`.
+  `SCHEMA-RECONCILIATION.md` keeps its 2026-07-20 text and gains a dated
+  addressing note.
+- Instance data: `project.md` (store and locators blocks), every addressed
+  entity (`ni:` reference and `deprecated:` block), `sources/` and
+  `commands/` (`sha-256/` copies, `deprecated.md`), the reference cells of
+  transitions, grants, checkpoints and `executed.md`, `sources/README.md`.
+- Core library and tools: `lib/conformance.mjs` (also
+  `legacy-ref-after-migration`), `lib/validate.mjs` (locator reachability,
+  on by default, `--no-check-locators`), `lib/views.mjs`,
+  `tools/migrate-ni.mjs`, `tools/README.md`.
+- Implementations: implementation-zero `server.mjs` (`ni:` source lookup and
+  `/.well-known/ni/sha-256/<digest>`) and `server.test.mjs`; the IntelliJ
+  plugin's `InstanceReader.kt` (0.0.14); the fleet's `payload.mjs`,
+  `outbox.mjs`, `fold.mjs`, `verify.mjs`, their tests, and its README,
+  DESIGN, ADOPTING, spec, protocol and outbox-lifecycle documents.
+- Setup kit: `sources-README.md`, `commands-executed.md`, `WEBMOBILE_SEED.md`,
+  `components/notify/konspekt-notify.mjs`.
+- Agent surfaces: `fleet-proposer-common` (neutral source and mirror),
+  `konspekt-atom-readiness`, `.claude/hooks/load-mandatory-skills.sh`,
+  `.konspekt/OPERATING.md`, `.konspekt/lib/konspekt-notify.mjs`.
+- Tests: `conformance-ni-refs.test.mjs` (parsing, round trip, derived
+  `contentHash`, `deprecated:`, `deprecated.md`, `locators.allow`, mixed
+  instances, `legacy-ref-after-migration`), `locator-reach.test.mjs`
+  (unreachable locators), `migrate-ni.test.mjs` (idempotence: a second run
+  changes no file).
+- Documentation and visuals: `WHITEPAPER.md`, `docs/overview.html`,
+  `docs/overview.svg` and both preview PNGs (regenerated),
+  `konspekt-fleet-poster.html`, `ROADMAP.md` (regenerated).
+
+### No change
+
+- `lib/authority.mjs`: it reads no reference; grant `source` cells are
+  resolved by `lib/conformance.mjs`.
+- `tools/binding-audit.mjs`: it reads commits and `changes/changed.md`, never
+  sources.
+- `tools/roadmap.mjs`, `tools/roadmap-poster.mjs`, `tools/views.mjs`,
+  `visual/build/snapshot.mjs`, `visual/README.md`: their `contentHash` is a
+  SHA-256 of their own output, unrelated to source references.
+- `implementations/fleet/app/git.mjs`: it computes no hashes.
+- `implementations/intellij-plugin/docs/DESIGN.md`: it does not describe
+  provenance addressing.
+- `setup/templates/checkpoints.md`, `transitions.md`, `OPERATING.md`,
+  `AGENTS-stanza.md`, `setup/README.md`, `setup/components/notify/notify.yml`,
+  `.konspekt/notify.yml`, `.konspekt/instance/README.md`, `AGENTS.md`,
+  `CLAUDE.md`: they name `sources/` or `sourceRef` without describing a hash
+  form.
+- `test/conformance-checkpoints.test.mjs`, `conformance-transitions.test.mjs`,
+  `conformance-authority.test.mjs`: their `sources/<SHA>.md` fixtures exercise
+  the legacy form, which readers must still accept.
+- `docs/index.html`, `docs/visuals/konspekt-graph-example.svg` and its PNG:
+  no hash form is shown.
+- The walkthrough script `how-to.demo.flow.md`, the captions
+  `konspekt-howto-walkthrough.srt` and the frame `git_checkers.png`: they say
+  "hashed, verbatim transcript" or show no addressing.
+- `distribution/build/distribute.mjs`: unchanged; `distribution/latest/` is
+  rebuilt at release.
+
+### Open
+
+- `spec/personas/engineer/registry.mjs`: the `commandLog` comment still says
+  `command:<hash> -> commands/<hash>.md`.
+- `README.md` line 23: "this repo hashes the verbatim source text with git
+  blob SHAs".
+- `.gitattributes`: the header comment of the instance rule still says the
+  instance is content-addressed by a git blob SHA.
+- `tools/state-poster.mjs` (and its output
+  `konspekt-current-state-poster.html`), `konspekt-how-it-works-poster.html`,
+  `konspekt-checkpoint-poster.html`: the labels `sources/<sha>`,
+  `sources/<blob-sha>.md` and "named by its git blob hash".
+- `implementations/implementation-zero/app/view/app.js`: the provenance pane
+  shows the stored path and the `ni:` reference but not the locators.
+- `setup/init.mjs` and `test/setup-init.test.mjs`: the planned default
+  `store` block, empty `locators.allow` and `sha-256/` directories are not
+  written. A new instance starts in the `ni:` form without them, since the
+  layout convention resolves references when `store` is absent and the
+  directories are created by the first write; whether to seed them is
+  undecided.
+- Walkthrough frames `provenance_source.png` and `ui_provenance.png` and the
+  video `konspekt-howto-walkthrough.mp4`: they show the SHA-1 path
+  `sources/c559e965...md` in cdm-collateral, which is not migrated.
+  Re-capture after cdm-collateral is migrated.
+- Graph atoms, through proposals:
+  - superseded by `wp-adr-ni-sha256-references`:
+    `nw-provenance-content-addressed` (two stored fields, verify by
+    re-hashing to `contentHash`);
+  - to supersede with `task-ni-references` and abandon:
+    `task-sources-sha256-migration` (rename plan);
+  - body text to revise: `concept-two-pillars` ("git blob SHAs"),
+    `concept-write-integrity-by-verification` (`git hash-object` probe),
+    `artifact-conformance-checker` (verify by git blob SHA),
+    `artifact-fleet-worktree-design` (`proposal_id` as a git blob SHA),
+    `nw-fleet-remove-fold-translation` (`git hash-object` source probe);
+  - no change: `concept-content-addressed-provenance` (no hash form named),
+    `nw-checker-hashes-raw-disk-bytes` (still true for SHA-256 over raw
+    bytes), `nw-fleet-sha256-source-addressing` (the decision it records
+    holds), `nw-multifile-push-clobbers-silently` (GitHub's file blob SHA,
+    not provenance), `task-provenance-model` (resolved history),
+    `task-enterprise-persistence` (success criterion agreed earlier).
+- Outside the repository: the seed in the claude.ai Konspekt Project's
+  instructions and any GPT or Gem copy of it (not reachable from here; replace
+  it with `setup/WEBMOBILE_SEED.md`); cdm-collateral and code_tracer (run
+  `tools/migrate-ni.mjs`).
