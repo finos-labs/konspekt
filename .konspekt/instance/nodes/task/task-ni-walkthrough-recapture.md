@@ -2,7 +2,7 @@
 id: task-ni-walkthrough-recapture
 type: task
 title: Re-capture the walkthrough frames after cdm-collateral migrates to ni: references
-status: open
+status: resolved
 review: accepted
 provenance:
   sourceRef: ni:///sha-256;6HDClW0nHGtvOv8V-O5LVRe948OwTDD38W9LCp_Yhwc
@@ -10,7 +10,7 @@ provenance:
   timestamp: 2026-11-15T15:25:03Z
   confidence: 0.7
 createdAt: 2026-11-15T15:25:03Z
-updatedAt: 2026-11-15T15:28:12Z
+updatedAt: 2026-11-15T17:24:22Z
 ```
 # Task: Re-capture the walkthrough frames after cdm-collateral migrates to ni: references
 

@@ -1378,3 +1378,7 @@ proposing agent was not recorded.
 | edge:e-not-acceptbeforework-revisionblocked | review |  | proposed | 2026-11-15T16:57:46Z |  | claude |
 | noteworthy:nw-revision-of-bound-entity-blocked | review | proposed | accepted | 2026-11-15T17:00:55Z | ni:///sha-256;daaKhmvMC5qP1Gv-GlE2HA4BntmV4E6jKpnHqQXT_0A | denisurusov |
 | edge:e-not-acceptbeforework-revisionblocked | review | proposed | accepted | 2026-11-15T17:00:55Z | ni:///sha-256;daaKhmvMC5qP1Gv-GlE2HA4BntmV4E6jKpnHqQXT_0A | denisurusov |
+| node:task-ni-walkthrough-recapture | status | open | resolved | 2026-11-15T17:24:22Z | ni:///sha-256;rvHkVkDkRlciuOxg0motWmMvFeidffnoTBsnKStigy0 | denisurusov |
+| node:task-view-wrap-long-paths | review |  | proposed | 2026-11-15T17:24:22Z |  | claude |
+| node:task-view-wrap-long-paths | status |  | open | 2026-11-15T17:24:22Z |  | claude |
+| edge:e-dec-nirefs-wrappaths | review |  | proposed | 2026-11-15T17:24:22Z |  | claude |

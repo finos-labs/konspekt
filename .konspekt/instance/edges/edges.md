@@ -591,3 +591,4 @@ proposal.
 | e-mark-initstore-nirefs | marks | waypoint:wp-init-store-block-opt-in | node:task-ni-references |  | accepted |
 | e-not-nirefs-migrateblankline | notes | node:task-ni-references | noteworthy:nw-migrate-ni-table-blank-line |  | accepted |
 | e-not-acceptbeforework-revisionblocked | notes | node:task-acceptance-before-work | noteworthy:nw-revision-of-bound-entity-blocked |  | accepted |
+| e-dec-nirefs-wrappaths | decomposes | node:task-ni-references | node:task-view-wrap-long-paths |  | proposed |
