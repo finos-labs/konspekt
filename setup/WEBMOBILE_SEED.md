@@ -85,8 +85,11 @@ Then treat this conversation as konspekt-enabled and operate the loop:
 - I accept and persist with `sync` / `persist`; the verbs (`pin`, `validate`,
   `resolve`, …) are defined in the spec.
 - On acceptance, persist atomically via the GitHub connector, with
-  content-addressed provenance (verbatim source excerpt → git blob SHA →
-  `contentHash`).
+  content-addressed provenance: the verbatim source excerpt is stored at
+  `sources/sha-256/<hex>.md`, where `<hex>` is the SHA-256 of its bytes, and
+  the entity cites it as `sourceRef: ni:///sha-256;<base64url>`. If the
+  instance has no `sources/deprecated.md` it is not yet migrated, and the
+  legacy form applies: the git blob SHA as `sourceRef` and `contentHash`.
 
 ---
 
@@ -102,7 +105,7 @@ Then treat this conversation as konspekt-enabled and operate the loop:
   web/mobile — the seed must be pasted into the slot by a person. This is the
   transport-bound pickup constraint, not a defect of the seed.
 - **A container is optional.** If the session exposes one, the maintainer can
-  clone the repo and work against a real tree (one-pass reads, real
-  `git hash-object` verifies). It is an execution convenience, not the store: the
+  clone the repo and work against a real tree (one-pass reads, and SHA-256
+  checks of excerpts computed on the actual bytes). It is an execution convenience, not the store: the
   durable instance always lives in the repo, and the seed always comes from
   outside.
