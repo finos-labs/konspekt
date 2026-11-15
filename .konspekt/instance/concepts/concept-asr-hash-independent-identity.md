@@ -3,7 +3,7 @@ id: concept-asr-hash-independent-identity
 subtype: asr
 label: Content identity must not depend on git's object format or on SHA-1
 aliases: [git-independent content identity, algorithm-named content address]
-review: accepted
+review: proposed
 provenance:
   sourceRef: ni:///sha-256;idqFoT14UBvBzfEOpS8AD5WPfA1E5Q2PaYK3Vo7RxO4
   conversationId: source-uris
@@ -14,15 +14,18 @@ provenance:
     sourceRef: 79351f57f62b5883e4590949d7c1a1061dde8bd8
     contentHash: 79351f57f62b5883e4590949d7c1a1061dde8bd8
 createdAt: 2026-11-14T19:30:00Z
-updatedAt: 2026-11-14T19:43:57Z
+updatedAt: 2026-11-15T15:31:00Z
 ```
 # Concept: Content identity must not depend on git's object format or on SHA-1
 
 The identity of a stored excerpt, command or other content-addressed object
 must be computable from its bytes alone, by any tool, without git and without
 a fixed hash algorithm. A git blob SHA-1 fails both: it hashes a git-specific
-`blob <length>\0` header together with the bytes, and it uses an algorithm that
-git itself is replacing. An identity that names its algorithm lets a later
+`blob <length>\0` header together with the bytes, and it uses an algorithm for
+which git has chosen SHA-256 as the successor: git's hash-function-transition
+document records the choice, and its BreakingChanges document plans SHA-256 as
+the default for new repositories in Git 3.0 while keeping the sha1 object format
+supported (both read 2026-11-15 at git-scm.com/docs). An identity that names its algorithm lets a later
 algorithm be added without invalidating existing references.
 
 This is architecturally significant because every provenance reference, every

@@ -1358,3 +1358,4 @@ proposing agent was not recorded.
 | node:task-linkedin-announce-ni-references | review | proposed | accepted | 2026-11-15T15:05:34Z | ni:///sha-256;zwVHI3F1kKUfHKD92WaLOyPHoPTQEiDO0u4reGp8jAk | denisurusov |
 | edge:e-dec-usability-linkedinniref | review | proposed | accepted | 2026-11-15T15:05:34Z | ni:///sha-256;zwVHI3F1kKUfHKD92WaLOyPHoPTQEiDO0u4reGp8jAk | denisurusov |
 | edge:e-lnk-linkedinniref-nirefs | review | proposed | accepted | 2026-11-15T15:05:34Z | ni:///sha-256;zwVHI3F1kKUfHKD92WaLOyPHoPTQEiDO0u4reGp8jAk | denisurusov |
+| concept:concept-asr-hash-independent-identity | review | accepted | proposed | 2026-11-15T15:31:00Z |  | claude |
