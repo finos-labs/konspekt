@@ -1337,3 +1337,4 @@ proposing agent was not recorded.
 | node:task-ni-test-migration | status | active | resolved | 2026-11-14T19:43:57Z | ni:///sha-256;Z6nxkuUt-AFAiYwlhX4b27TfwfzHcOZZIW8pkiWBxB0 | denisurusov |
 | noteworthy:nw-setup-templates-crlf-on-windows | review |  | proposed | 2026-11-14T20:17:03Z |  | claude |
 | edge:e-not-nirefs-setupcrlf | review |  | proposed | 2026-11-14T20:17:03Z |  | claude |
+| node:task-ni-impact-analysis | status | open | resolved | 2026-11-15T00:38:05Z | ni:///sha-256;onP_gTnoiJppOVk-ocQCXUWHAkV-nCatdx3y7OqaZkY | denisurusov |

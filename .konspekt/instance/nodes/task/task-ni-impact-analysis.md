@@ -2,7 +2,7 @@
 id: task-ni-impact-analysis
 type: task
 title: Verify the impact of ni: source addressing, file by file
-status: open
+status: resolved
 summary:
   origin: machine
   pinned: false
@@ -18,7 +18,7 @@ provenance:
     sourceRef: 68ef8f82d0b05369b631b6715a607008f414cec7
     contentHash: 68ef8f82d0b05369b631b6715a607008f414cec7
 createdAt: 2026-11-14T14:31:52Z
-updatedAt: 2026-11-14T18:35:40Z
+updatedAt: 2026-11-15T00:38:05Z
 ```
 # Task: Verify the impact of ni: source addressing, file by file
 
