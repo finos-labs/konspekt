@@ -1,4 +1,4 @@
-# Assets for the 2026-11-16 post
+# Assets for the 2026-11-15 post
 
 The post carries no PNG. `../carousel.pdf` is the full poster at
 `docs/visuals/posters/konspekt-addressing-poster.html`, printed to PDF. The
@@ -15,7 +15,7 @@ IBM Plex fonts load from Google Fonts:
 ```
 msedge --headless=new --disable-gpu --no-pdf-header-footer \
   --virtual-time-budget=6000 \
-  --print-to-pdf=<repo>/docs/announcements/linkedin/post_2026-11-16/carousel.pdf \
+  --print-to-pdf=<repo>/docs/announcements/linkedin/post_2026-11-15/carousel.pdf \
   file:///<repo>/docs/visuals/posters/konspekt-addressing-poster.html
 ```
 

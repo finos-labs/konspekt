@@ -1,7 +1,7 @@
 ---
 platform: linkedin
 format: feed
-date: 2026-11-16
+date: 2026-11-15
 url: https://www.linkedin.com/feed/update/urn:li:activity:7527776124450398208/
 announces: "content addressing upgraded from git blob SHA-1 to SHA-256 and RFC 6920 ni: references, for graph-item excerpts, checkpoints and recorded commands, so content can move between stores"
 carousel: carousel.pdf      # 6-page PDF uploaded to LinkedIn as a document; printed from the poster below
