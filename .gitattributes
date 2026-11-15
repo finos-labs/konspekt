@@ -1,6 +1,6 @@
-# konspekt instance markdown is content-addressed by a git blob SHA computed
-# over LF bytes; the conformance checker (lib/conformance.mjs) hashes the raw
-# bytes on disk. Pin these files to LF in the working tree so the hash matches
+# konspekt instance markdown is content-addressed by a SHA-256 over its LF
+# bytes (an ni:///sha-256 reference; legacy files by a git blob SHA-1); the
+# conformance checker (lib/conformance.mjs) hashes the raw bytes on disk. Pin these files to LF in the working tree so the hash matches
 # on every platform and core.autocrlf cannot introduce false content-hash
 # mismatches on a Windows checkout. See nw-checker-hashes-raw-disk-bytes.
 .konspekt/instance/**/*.md text eol=lf

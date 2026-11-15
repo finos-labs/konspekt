@@ -113,6 +113,7 @@ test("GET /api/entity returns the file markdown and its source pointer", async (
   assert.ok(d.markdown.includes("task-implementation-zero"), "returns the entity's own file");
   assert.ok(/^[0-9a-f]{40}$/.test(d.sourceRef) || parseNiRef(d.sourceRef),
     "a content-addressed entity carries a sourceRef (git blob SHA or ni:///sha-256)");
+  assert.ok(Array.isArray(d.locators), "the entity endpoint returns provenance locators as a list");
 });
 
 test("GET /api/source returns the excerpt for a valid ref", async () => {

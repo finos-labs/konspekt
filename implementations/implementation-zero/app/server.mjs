@@ -354,6 +354,7 @@ const server = createServer((req, res) => {
     return sendJson(res, { id: e.id, file: e._file, markdown: readFileSync(abs, "utf8"),
       review: e.review || null, status: e.status || null, entityType: e.entityType || null,
       sourceRef: p.sourceRef || null, contentHash: p.contentHash || null,
+      locators: Array.isArray(p.locators) ? p.locators : [],
       acceptedBy: acceptedByOf(`${e.entityType}:${e.id}`) });
   }
   // One provenance source excerpt by its reference: an `ni:///sha-256` URI
