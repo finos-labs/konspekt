@@ -635,3 +635,4 @@ commit order; the channel was not live during that work.
 | task-ni-references | 893a717cf59443622d6d4e7ef9eeb0b4ccea192e | setup/init.mjs | 2026-11-15T15:29:57Z |
 | task-ni-references | 893a717cf59443622d6d4e7ef9eeb0b4ccea192e | setup/templates/project.md | 2026-11-15T15:29:57Z |
 | task-ni-references | 893a717cf59443622d6d4e7ef9eeb0b4ccea192e | test/setup-init.test.mjs | 2026-11-15T15:29:57Z |
+| task-ni-references | 5156071042d4b225f732cc1d5f058179cd737383 | ROADMAP.md | 2026-11-15T15:30:15Z |
