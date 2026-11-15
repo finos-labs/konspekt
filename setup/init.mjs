@@ -5,8 +5,10 @@
  *
  * Run from the root of the repo you want to adopt konspekt (Node 18+):
  *
- *   node setup/init.mjs [--name "Project Name"] [--goal "one-line goal"] [--push]
+ *   node setup/init.mjs [--name "Project Name"] [--goal "one-line goal"]
+ *                       [--repo-url <https://host/owner/repo> [--ref <branch>]] [--push]
  *       Scaffold a new instance. Refuses to clobber an existing one.
+ *       --repo-url writes a git `store` block into project.md.
  *
  *   node setup/init.mjs --list
  *       List available components.
@@ -73,7 +75,8 @@ if (has("--help") || has("-h")) {
     [
       "konspekt setup",
       "",
-      "  node setup/init.mjs [--name NAME] [--goal GOAL] [--persona LAYER] [--tool T] [--full] [--push]",
+      "  node setup/init.mjs [--name NAME] [--goal GOAL] [--persona LAYER] [--tool T]",
+      "                      [--repo-url URL [--ref BRANCH]] [--full] [--push]",
       "      Scaffold a new .konspekt/ instance into the current repo.",
       "      --full also installs every component in the same run, producing",
       "      the fully adopted repo pictured in setup/README.md.",
@@ -84,6 +87,10 @@ if (has("--help") || has("-h")) {
       "      --tool writes an explicit per-tool pointer file (repeatable):",
       "      cursor, copilot, windsurf. AGENTS.md + CLAUDE.md + GEMINI.md",
       "      are always written; most agents read AGENTS.md natively.",
+      "      --repo-url https://host/owner/repo writes a git `store` block into",
+      "      project.md whose templates point at that repository; --ref names",
+      "      the branch (default main). Without --repo-url, references resolve",
+      "      by the instance's directory layout.",
       "",
       "  node setup/init.mjs --list",
       "      List available components.",
@@ -635,6 +642,43 @@ const tools = args.flatMap((a, i) =>
 );
 const ts = new Date().toISOString().replace(/\.\d{3}Z$/, "Z");
 
+// --repo-url / --ref write a git `store` block into project.md, with the same
+// meaning as in tools/migrate-ni.mjs (wp-init-store-block-opt-in). Without
+// --repo-url no block is written and readers resolve references by the layout
+// convention (spec/architecture/STORAGE.md). The URL is never read from the git
+// remote: a remote can name an SSH or internal host the adopter did not choose
+// to publish.
+const repoUrl = opt("--repo-url", null);
+const storeRef = opt("--ref", "main");
+if (has("--repo-url") && !repoUrl) {
+  console.error("--repo-url needs a value, e.g. --repo-url https://github.com/<owner>/<repo>");
+  process.exit(1);
+}
+function storeBlock() {
+  if (!repoUrl) return "";
+  // The instance path is relative to the repository root, which is the git
+  // top level when root is inside a checkout.
+  let instPath = INSTANCE;
+  try {
+    const top = execSync("git rev-parse --show-toplevel", { cwd: root, encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] }).trim();
+    instPath = relative(top, join(root, INSTANCE)).split("\\").join("/");
+  } catch { /* not a git checkout: keep the default path */ }
+  const base = `${repoUrl.replace(/\/+$/, "")}/blob/{ref}/${instPath}`;
+  return [
+    "store:",
+    "  kind: git",
+    `  ref: ${storeRef}`,
+    "  resolve:",
+    `    source: ${base}/sources/sha-256/{hex}.md`,
+    `    command: ${base}/commands/sha-256/{hex}.md`,
+    `    entity: ${base}/{path}`,
+    `    edges: ${base}/edges/edges.md`,
+    `    checkpoints: ${base}/checkpoints/checkpoints.md`,
+    "",
+  ].join("\n");
+}
+const store = storeBlock();
+
 if (existsSync(join(root, INSTANCE))) {
   console.error(`Refusing to overwrite existing ${INSTANCE}/. Remove it or edit by hand.`);
   console.error("To add an optional component to it instead:  node setup/init.mjs --list");
@@ -642,7 +686,7 @@ if (existsSync(join(root, INSTANCE))) {
 }
 
 const fill = (s) =>
-  s.replaceAll("{{NAME}}", name).replaceAll("{{SLUG}}", slug).replaceAll("{{GOAL}}", goal).replaceAll("{{TS}}", ts).replaceAll("{{PERSONAS}}", personasLine);
+  s.replaceAll("{{NAME}}", name).replaceAll("{{SLUG}}", slug).replaceAll("{{GOAL}}", goal).replaceAll("{{TS}}", ts).replaceAll("{{PERSONAS}}", personasLine).replaceAll("{{STORE}}", store);
 const tpl = (f) => fill(readFileSync(join(TPL, f), "utf8"));
 const put = (rel, content) => {
   const p = join(root, rel);

@@ -44,6 +44,7 @@ const tmp = mkdtempSync(join(tmpdir(), "konspekt-setup-"));
 const tmp2 = mkdtempSync(join(tmpdir(), "konspekt-persona-"));
 const tmp3 = mkdtempSync(join(tmpdir(), "konspekt-audit-"));
 const tmp4 = mkdtempSync(join(tmpdir(), "konspekt-missing-"));
+const tmp5 = mkdtempSync(join(tmpdir(), "konspekt-store-"));
 
 try {
   // First scaffold must succeed (exit 0).
@@ -77,6 +78,9 @@ try {
   const projectMd = readFileSync(join(tmp, ".konspekt", "instance", "project.md"), "utf8");
   if (!/^binding: required$/m.test(projectMd)) failures.push("project.md seed lacks `binding: required`");
   if (!/^basis: proposed$/m.test(projectMd)) failures.push("project.md seed lacks `basis: proposed`");
+  // Without --repo-url there is no store block (wp-init-store-block-opt-in).
+  if (/^store:/m.test(projectMd)) failures.push("project.md seed has a store block without --repo-url");
+  if ((projectMd.match(/^locators:/gm) || []).length !== 1) failures.push("project.md seed lacks one `locators:` key");
   const operatingMd = readFileSync(join(tmp, ".konspekt", "OPERATING.md"), "utf8");
   if (!operatingMd.includes("## Conversation binding")) failures.push("OPERATING.md seed lacks § Conversation binding");
   // No persona layer, no persona logs.
@@ -249,11 +253,32 @@ try {
   } catch (e) {
     failures.push(`missing-file block threw: ${e.message}\n${e.stderr || e.stdout || ""}`);
   }
+
+  // --repo-url / --ref write one git store block whose templates point at the
+  // repository and branch given, and the checker accepts it.
+  try {
+    execFileSync("git", ["init", "-q"], { cwd: tmp5, stdio: "pipe" });
+    execFileSync("node", [INIT, "--name", "Store", "--goal", "g", "--repo-url", "https://github.com/example/t/", "--ref", "dev"],
+      { cwd: tmp5, stdio: "pipe" });
+    const pm = readFileSync(join(tmp5, ".konspekt", "instance", "project.md"), "utf8");
+    const base = "https://github.com/example/t/blob/{ref}/.konspekt/instance";
+    if ((pm.match(/^store:/gm) || []).length !== 1) failures.push(`--repo-url did not write one store block:\n${pm}`);
+    if (!/^  ref: dev$/m.test(pm)) failures.push("--ref did not set store.ref");
+    if (!pm.includes(`    source: ${base}/sources/sha-256/{hex}.md`)) failures.push(`store.resolve.source is not ${base}/sources/sha-256/{hex}.md:\n${pm}`);
+    if (!pm.includes(`    entity: ${base}/{path}`)) failures.push("store.resolve.entity does not use {path}");
+    if ((pm.match(/^locators:/gm) || []).length !== 1) failures.push("--repo-url scaffold does not have one `locators:` key");
+    if (existsSync(join(tmp5, ".konspekt", "instance", "sources", "sha-256"))) failures.push("scaffold created an empty sources/sha-256/");
+    const errs = loadInstance(join(tmp5, ".konspekt", "instance"), {}).problems.filter((p) => p.severity === "error");
+    if (errs.length) failures.push(`--repo-url scaffold not conformant: ${errs.map((p) => p.code).join(", ")}`);
+  } catch (e) {
+    failures.push(`store-block block threw: ${e.message}\n${e.stderr || e.stdout || ""}`);
+  }
 } finally {
   rmSync(tmp, { recursive: true, force: true });
   rmSync(tmp2, { recursive: true, force: true });
   rmSync(tmp3, { recursive: true, force: true });
   rmSync(tmp4, { recursive: true, force: true });
+  rmSync(tmp5, { recursive: true, force: true });
 }
 
 if (failures.length) {
@@ -261,4 +286,4 @@ if (failures.length) {
   for (const f of failures) console.error("  - " + f);
   process.exit(1);
 }
-console.log(`ok setup/init.mjs — scaffolds ${EXPECTED.length} files in place, refuses to clobber, vendors persona layers, reports missing policy fields, ships a working binding audit, and reports files missing from an installed component`);
+console.log(`ok setup/init.mjs — scaffolds ${EXPECTED.length} files in place, refuses to clobber, vendors persona layers, reports missing policy fields, ships a working binding audit, reports files missing from an installed component, and writes a store block only for --repo-url`);

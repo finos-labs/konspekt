@@ -182,6 +182,16 @@ Code SessionStart hook injects the layer's operating brief from
 (`--vendor-persona`) if you use Claude Code; without it the hook warns that the
 brief is missing.
 
+Add `--repo-url https://github.com/<owner>/<repo>` to write a git `store` block
+into `project.md`. Its `resolve` templates point at
+`<repo-url>/blob/{ref}/<instance path>/…`, so a reader that has only a
+`ni:///sha-256` reference can fetch the stored file
+(`spec/architecture/STORAGE.md`). `--ref <branch>` names the branch, and
+defaults to `main`. Without `--repo-url`, no `store` block is written, and
+references resolve by the instance's directory layout. The URL is never read
+from your git remote. `sources/sha-256/` and `commands/sha-256/` are created by
+the first write to each.
+
 `project.md` is seeded with `binding: required` (every conversation binds to an
 entity; `optional` permits a recorded decline) and `basis: proposed` (work may
 bind to a proposed entity; `accepted` requires acceptance first). The shipped
