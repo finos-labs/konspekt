@@ -585,3 +585,4 @@ proposal.
 | e-not-nirefs-setupcrlf | notes | node:task-ni-references | noteworthy:nw-setup-templates-crlf-on-windows |  | accepted |
 | e-sup-adrni-provcontent | supersedes | waypoint:wp-adr-ni-sha256-references | noteworthy:nw-provenance-content-addressed |  | accepted |
 | e-sup-nirefs-sha256mig | supersedes | node:task-ni-references | node:task-sources-sha256-migration |  | accepted |
+| e-dec-nirefs-walkthrough | decomposes | node:task-ni-references | node:task-ni-walkthrough-recapture |  | proposed |

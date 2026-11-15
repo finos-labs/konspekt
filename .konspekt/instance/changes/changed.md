@@ -623,3 +623,9 @@ commit order; the channel was not live during that work.
 | task-ni-references | 134063216c81f82a29b3dc09b915f6f33142e275 | implementations/intellij-plugin/app/README.md | 2026-11-15T01:06:14Z |
 | task-ni-references | 134063216c81f82a29b3dc09b915f6f33142e275 | implementations/intellij-plugin/app/build.gradle.kts | 2026-11-15T01:06:14Z |
 | task-ni-references | 134063216c81f82a29b3dc09b915f6f33142e275 | implementations/intellij-plugin/app/src/test/kotlin/dev/konspekt/plugin/InstanceReaderLocatorsTest.kt | 2026-11-15T01:06:14Z |
+| task-ni-references | addc3de8f8f4835bdbfb80c1d8c309cba0001df7 | docs/design/source-addressing.md | 2026-11-15T15:24:42Z |
+| task-ni-references | addc3de8f8f4835bdbfb80c1d8c309cba0001df7 | setup/README.md | 2026-11-15T15:24:42Z |
+| task-ni-references | addc3de8f8f4835bdbfb80c1d8c309cba0001df7 | setup/init.mjs | 2026-11-15T15:24:42Z |
+| task-ni-references | addc3de8f8f4835bdbfb80c1d8c309cba0001df7 | test/migrate-ni.test.mjs | 2026-11-15T15:24:42Z |
+| task-ni-references | addc3de8f8f4835bdbfb80c1d8c309cba0001df7 | test/setup-init.test.mjs | 2026-11-15T15:24:42Z |
+| task-ni-references | addc3de8f8f4835bdbfb80c1d8c309cba0001df7 | tools/migrate-ni.mjs | 2026-11-15T15:24:42Z |

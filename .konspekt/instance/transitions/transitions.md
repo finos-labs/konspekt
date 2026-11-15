@@ -1351,3 +1351,6 @@ proposing agent was not recorded.
 | edge:e-sup-nirefs-sha256mig | review | proposed | accepted | 2026-11-15T00:50:13Z | ni:///sha-256;YVRw29PATAwNb9bIm5tykn5E1cSA-oYjeJ_aCwoxp4o | denisurusov |
 | edge:e-not-nirefs-setupcrlf | review | proposed | accepted | 2026-11-15T00:50:13Z | ni:///sha-256;YVRw29PATAwNb9bIm5tykn5E1cSA-oYjeJ_aCwoxp4o | denisurusov |
 | node:task-sources-sha256-migration | status | open | abandoned | 2026-11-15T00:50:13Z | ni:///sha-256;YVRw29PATAwNb9bIm5tykn5E1cSA-oYjeJ_aCwoxp4o | denisurusov |
+| node:task-ni-walkthrough-recapture | review |  | proposed | 2026-11-15T15:25:03Z |  | claude |
+| node:task-ni-walkthrough-recapture | status |  | open | 2026-11-15T15:25:03Z |  | claude |
+| edge:e-dec-nirefs-walkthrough | review |  | proposed | 2026-11-15T15:25:03Z |  | claude |
