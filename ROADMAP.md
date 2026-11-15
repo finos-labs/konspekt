@@ -3,7 +3,7 @@
      Check freshness with: node tools/roadmap.mjs --check
      This file is a pure function of .konspekt/instance/ (no timestamps baked in).
      Goals and tasks are graph nodes; the horizon is derived from node status/review.
-     contentHash: sha256:0502bec78aad149c -->
+     contentHash: sha256:0e4de81b48c75a3e -->
 
 # konspekt roadmap
 
@@ -149,16 +149,20 @@ Keep a project's working context — its instructions, accumulated decisions, an
 - A durable store other than git
 - Decide whether instance/ directory layout should be regularized
 - Migrate references to ni:///sha-256 with store resolution
-- Re-capture the walkthrough frames after cdm-collateral migrates to ni: references
 - Consider an "outcome" node type for testable controls
 - Make notifications portable
 - Find the second implementer
+
+**Later** — _proposed, not yet committed_
+
+- Wrap long source and command paths in the shared view
 
 **Shipped** — _resolved_
 
 - Choose a license
 - Verify the impact of ni: source addressing, file by file
 - Test the ni: migration on the task-ni-references branch
+- Re-capture the walkthrough frames after cdm-collateral migrates to ni: references
 - Re-serialize the instance to the reconciled spec
 - Reconcile canonical schema into spec/
 - Lock the serialization format
@@ -235,4 +239,4 @@ Let several participants — people and agents — propose into and review one s
 
 ---
 
-Generated from 9 goal(s) and 102 task-listing(s) over the instance graph.
+Generated from 9 goal(s) and 103 task-listing(s) over the instance graph.
