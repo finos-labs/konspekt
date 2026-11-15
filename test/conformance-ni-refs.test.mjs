@@ -201,18 +201,19 @@ for (const [name, opts, want] of LOG_CASES) {
   check(name, JSON.stringify(codes) === JSON.stringify(want.slice().sort()), `wanted [${want}] got [${codes}]`);
 }
 
-// ----- legacy references after migration -----
+// ----- legacy references in an ni:-form instance -----
 //
-// SERIALIZATION.md § Migration: once an instance is migrated (a deprecated.md
-// exists), every new reference is in the ni: form. A SHA-1 reference written
-// after that is still readable, so it is a warning, legacy-ref-after-migration,
-// reported at each place a reference is read. The deprecated: block of a
-// migrated atom is history and is not reported.
+// SERIALIZATION.md § Content references: an instance is in the ni: form when
+// project.md sets `references: ni` or a deprecated.md exists, and every new
+// reference it receives is in the ni: form. A SHA-1 reference in such an
+// instance is an error, legacy-ref-in-ni-instance, reported at each place a
+// reference is read. The deprecated: block of a migrated atom is history and
+// is not reported.
 
 const DEPRECATED_MD = "# Deprecated references\n\n| deprecated | current | migratedAt |\n|------------|---------|------------|\n";
 const legacyRefWarnings = (dir) =>
   loadInstance(dir, { personas: engineer ? [engineer] : [] }).problems
-    .filter((p) => p.code === "legacy-ref-after-migration")
+    .filter((p) => p.code === "legacy-ref-in-ni-instance")
     .map((p) => `${p.severity}:${p.ref}`).sort();
 
 {
@@ -222,7 +223,7 @@ const legacyRefWarnings = (dir) =>
   };
   const before = buildLogs(LEGACY_EVERYWHERE);
   try {
-    check("an unmigrated instance with SHA-1 refs raises no legacy-ref-after-migration",
+    check("an instance not in the ni: form with SHA-1 refs raises no legacy-ref-in-ni-instance",
       legacyRefWarnings(before).length === 0, JSON.stringify(legacyRefWarnings(before)));
   } finally {
     rmSync(before, { recursive: true, force: true });
@@ -234,9 +235,9 @@ const legacyRefWarnings = (dir) =>
     const got = legacyRefWarnings(after);
     // Two transition rows and the executed row (task-a), the checkpoint row
     // (task-a), the grant row (scope *), and the command: edge endpoint (e-cmd).
-    const want = ["warning:*", "warning:e-cmd", "warning:node:task-a", "warning:node:task-a",
-      "warning:task-a", "warning:task-a"].sort();
-    check("in a migrated instance each SHA-1 ref in a log or edge endpoint is a warning",
+    const want = ["error:*", "error:e-cmd", "error:node:task-a", "error:node:task-a",
+      "error:task-a", "error:task-a"].sort();
+    check("in a migrated instance each SHA-1 ref in a log or edge endpoint is an error",
       JSON.stringify(got) === JSON.stringify(want), `wanted ${JSON.stringify(want)} got ${JSON.stringify(got)}`);
   } finally {
     rmSync(after, { recursive: true, force: true });
@@ -248,8 +249,8 @@ const legacyRefWarnings = (dir) =>
   try {
     writeFileSync(join(dir, "sources/deprecated.md"), DEPRECATED_MD);
     const got = legacyRefWarnings(dir);
-    check("in a migrated instance a SHA-1 entity sourceRef is a warning; a deprecated: block is not",
-      JSON.stringify(got) === JSON.stringify(["warning:task-b"]), JSON.stringify(got));
+    check("in a migrated instance a SHA-1 entity sourceRef is an error; a deprecated: block is not",
+      JSON.stringify(got) === JSON.stringify(["error:task-b"]), JSON.stringify(got));
   } finally {
     rmSync(dir, { recursive: true, force: true });
   }
@@ -261,7 +262,51 @@ const legacyRefWarnings = (dir) =>
     mkdirSync(join(dir, "commands"));
     writeFileSync(join(dir, "commands/deprecated.md"), DEPRECATED_MD);
     check("commands/deprecated.md alone also marks the instance migrated",
-      JSON.stringify(legacyRefWarnings(dir)) === JSON.stringify(["warning:task-b"]));
+      JSON.stringify(legacyRefWarnings(dir)) === JSON.stringify(["error:task-b"]));
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+}
+
+// A new instance carries `references: ni` from setup/init.mjs and has no
+// deprecated.md; the field alone puts it in the ni: form.
+const withReferences = (dir, value) => writeFileSync(join(dir, "project.md"),
+  entity(`id: project-t
+goal: test
+references: ${value}
+createdAt: ${TS}
+updatedAt: ${TS}`, "# t"));
+{
+  const dir = build({ "task-a": migratedProv, "task-b": legacyProv }, [newFile, oldFile]);
+  try {
+    withReferences(dir, "ni");
+    const got = legacyRefWarnings(dir);
+    check("references: ni without deprecated.md makes a SHA-1 entity sourceRef an error",
+      JSON.stringify(got) === JSON.stringify(["error:task-b"]), JSON.stringify(got));
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+}
+{
+  const logs = buildLogs({ transitionSource: oldSha, checkpointSource: oldSha, grantSource: oldSha,
+    command: gitBlobSha(CMD), edgeTo: `command:${gitBlobSha(CMD)}` });
+  try {
+    withReferences(logs, "ni");
+    check("references: ni makes each SHA-1 ref in a log or edge endpoint an error",
+      legacyRefWarnings(logs).length === 6 && legacyRefWarnings(logs).every((w) => w.startsWith("error:")),
+      JSON.stringify(legacyRefWarnings(logs)));
+  } finally {
+    rmSync(logs, { recursive: true, force: true });
+  }
+}
+{
+  const dir = build({ "task-b": legacyProv }, [oldFile]);
+  try {
+    withReferences(dir, "sha1");
+    const codes = loadInstance(dir, {}).problems.map((p) => `${p.severity}:${p.code}`);
+    check("an unknown references value is reported and does not put the instance in the ni: form",
+      codes.includes("warning:unknown-enum") && !codes.some((c) => c.endsWith("legacy-ref-in-ni-instance")),
+      JSON.stringify(codes));
   } finally {
     rmSync(dir, { recursive: true, force: true });
   }

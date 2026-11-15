@@ -446,7 +446,17 @@ the file; "no change" gives the reason; "open" names what is still missing.
   frames `provenance_source.png` and `ui_provenance.png`, re-captured from
   the migrated cdm-collateral instance (`sources/sha-256/6d23dfc0...md`), and
   `konspekt-howto-walkthrough.mp4` with those two slides replaced and its
-  audio unchanged.
+  audio unchanged. `ui_provenance.png` was captured again from plugin 0.0.15,
+  which wraps the full path.
+- New-form-only rule (`nw-legacy-ref-error-in-ni-instances`): `project.md`
+  may declare `references: ni`. `setup/init.mjs` writes it into a new
+  instance and `tools/migrate-ni.mjs` into a migrated one. In an instance
+  that declares it, or that has a `deprecated.md`, the checker reports a
+  SHA-1 reference as an error, `legacy-ref-in-ni-instance`. It replaces the
+  warning `legacy-ref-after-migration` named above. Changed:
+  `SERIALIZATION.md`, `schema.ts`, `lib/conformance.mjs`,
+  `tools/migrate-ni.mjs`, `setup/templates/project.md`, `setup/README.md`,
+  and the three tests.
 
 ### No change
 

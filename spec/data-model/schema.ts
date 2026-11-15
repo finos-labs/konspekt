@@ -158,6 +158,10 @@ export interface Project {
                        // work). Absent = "proposed".
   grantorAccepts?: GrantorAccepts; // whether a grantor may also hold an accept
                        // grant (../architecture/AUTHORITY.md). Absent = "allowed".
+  references?: ReferenceForm; // the content-reference form the instance is
+                       // written in (../architecture/SERIALIZATION.md § Content
+                       // references). "ni" = every new reference is an
+                       // ni:///sha-256 reference. Absent = undeclared.
   store?: StoreDecl;   // where this instance's content is reached
                        // (../architecture/STORAGE.md). Absent = layout convention.
   locators?: { allow: string[] }; // hosts a provenance locator may name
@@ -165,6 +169,7 @@ export interface Project {
 
 export type Basis = "proposed" | "accepted";
 export type GrantorAccepts = "allowed" | "forbidden";
+export type ReferenceForm = "ni";
 
 export interface GraphNode extends Base {
   type: NodeType;

@@ -68,6 +68,15 @@ migrated, references content by its 40-hex git blob SHA-1, naming
 MUST accept both forms, so one instance may mix migrated and unmigrated atoms
 during a migration (§ Migration).
 
+**The `ni:` form.** An instance is in the `ni:` form when `project.md` sets
+`references: ni`, or when `sources/deprecated.md` or `commands/deprecated.md`
+exists (an instance migrated before the field existed). A new instance is
+created with `references: ni`, and a migration writes it (§ Migration). Every
+reference an instance in the `ni:` form receives is an `ni:` reference. A
+validator reports a git blob SHA-1 reference in such an instance, outside
+`provenance.deprecated` and `deprecated.md`, as an **error**. An instance not in
+the `ni:` form may hold SHA-1 references, and a validator does not report them.
+
 ## File format
 
 Each entity is one file: a fenced `yaml` front-matter block holding the structured fields, followed by a Markdown body holding the entity's primary prose field.
@@ -89,6 +98,7 @@ Rules:
 - An entity may carry an optional `subtype` — a persona-layer discriminator whose values are defined by the active layer (see `../personas/`), not by core.
 - `project.md` may declare `personas: [<layer>, …]` to activate persona layers (see `../personas/`); absent means core-only, and every existing instance stays conformant with no migration.
 - `project.md` may declare a `store` block and a `locators` block (§ Store and locators).
+- `project.md` may declare `references: ni`, which puts the instance in the `ni:` form (§ Content references). `ni` is the only value.
 - A file may declare a file-level `provenance` / `review` default when every entry shares it (used by the edge table).
 
 ## Edges
@@ -253,16 +263,14 @@ by adding and never removing:
   checkpoints and grants, the executed log's `command` cells, and
   `command:` edge endpoints — take the new reference. The old value is
   recoverable from `deprecated.md`.
+- `project.md` gains `references: ni` when it does not already declare it.
 
 A migration is idempotent: running it on a migrated instance changes nothing.
-The deprecated values are history and are not verified. Once an instance is
-migrated, every new reference it receives is in the `ni:` form. An instance
-counts as migrated when `sources/deprecated.md` or `commands/deprecated.md`
-exists. A validator reports a git blob SHA-1 reference in a migrated instance,
-outside `provenance.deprecated` and `deprecated.md`, as a warning, never an
-error, because a reader still accepts the legacy form. The reference
-implementation is `tools/migrate-ni.mjs`.
+The deprecated values are history and are not verified. A migrated instance is
+in the `ni:` form (§ Content references), so a SHA-1 reference it receives
+afterwards is reported as an error. The reference implementation is
+`tools/migrate-ni.mjs`.
 
 ## Versioning
 
-The serialization version is **v1**. Breaking changes to layout or field encoding bump it to v2; additive, backward-compatible changes do not. The `ni:` content references, the `sha-256/` subdirectories, `deprecated.md`, `locators` and the `store` block are additive: a reader that accepts both reference forms reads every v1 instance, migrated or not.
+The serialization version is **v1**. Breaking changes to layout or field encoding bump it to v2; additive, backward-compatible changes do not. The `ni:` content references, the `sha-256/` subdirectories, `deprecated.md`, `references`, `locators` and the `store` block are additive: a reader that accepts both reference forms reads every v1 instance, migrated or not.

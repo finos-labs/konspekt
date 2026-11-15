@@ -78,6 +78,7 @@ try {
   const projectMd = readFileSync(join(tmp, ".konspekt", "instance", "project.md"), "utf8");
   if (!/^binding: required$/m.test(projectMd)) failures.push("project.md seed lacks `binding: required`");
   if (!/^basis: proposed$/m.test(projectMd)) failures.push("project.md seed lacks `basis: proposed`");
+  if (!/^references: ni$/m.test(projectMd)) failures.push("project.md seed lacks `references: ni`");
   // Without --repo-url there is no store block (wp-init-store-block-opt-in).
   if (/^store:/m.test(projectMd)) failures.push("project.md seed has a store block without --repo-url");
   if ((projectMd.match(/^locators:/gm) || []).length !== 1) failures.push("project.md seed lacks one `locators:` key");

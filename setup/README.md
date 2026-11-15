@@ -404,7 +404,11 @@ The script exits 1 in four cases:
 - an entity's `sourceRef` names no stored file;
 - the checker reports an error after the migration;
 - the checker still finds a SHA-1 reference after the migration
-  (`legacy-ref-after-migration`), which means the migration missed it.
+  (`legacy-ref-in-ni-instance`), which means the migration missed it.
+
+The migration also adds `references: ni` to `project.md`. From then on the
+checker reports any SHA-1 reference added to the instance as an error. A new
+instance from `setup/init.mjs` carries the same field.
 
 It changes no file in a dry run. A blank line inside a table does not end the
 table: the rows below it are migrated too.

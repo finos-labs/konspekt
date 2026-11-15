@@ -12,12 +12,14 @@
 // migratedAt timestamp; updatedAt is unchanged. Table cells that hold a migrated
 // SHA-1 (the `source` cells of transitions, checkpoints and grants, the
 // executed-log command cells, and `command:` edge endpoints) take the new
-// reference. With --repo-url, project.md gains a git `store` block and an empty
-// `locators.allow`.
+// reference. project.md gains `references: ni`, which tells the checker that
+// every new reference must be in the ni: form. With --repo-url, project.md also
+// gains a git `store` block and an empty `locators.allow`.
 //
 // The script is idempotent: a second run over a migrated instance changes no
 // file. It runs the conformance checker at the end and exits 1 on any error,
-// or when the checker still finds a SHA-1 reference (legacy-ref-after-migration).
+// including a SHA-1 reference the migration did not rewrite
+// (legacy-ref-in-ni-instance).
 //
 // Usage:
 //   node tools/migrate-ni.mjs [instanceDir] [--repo-url <https://host/owner/repo>]
@@ -191,41 +193,49 @@ function migrateTable(path, columns, rewrite, dryRun) {
 
 // ---------- project.md ----------
 
+// Writes `references: ni` when absent, and with --repo-url a git `store` block
+// when absent. Returns the list of keys written, empty when none.
 function migrateProject(instanceDir, repoUrl, ref, dryRun) {
   const path = join(instanceDir, "project.md");
-  if (!repoUrl || !existsSync(path)) return false;
+  if (!existsSync(path)) return [];
   const doc = readText(path);
-  if (/^store:/m.test(doc.text)) return false;
-  let instPath = ".konspekt/instance";
-  try {
-    const top = execFileSync("git", ["rev-parse", "--show-toplevel"], { cwd: instanceDir, encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] }).trim();
-    instPath = relative(top, resolve(instanceDir)).split("\\").join("/");
-  } catch { /* not a git checkout: keep the default path */ }
-  const base = `${repoUrl.replace(/\/+$/, "")}/blob/{ref}/${instPath}`;
-  const block = [
-    "store:",
-    "  kind: git",
-    `  ref: ${ref}`,
-    "  resolve:",
-    `    source: ${base}/sources/sha-256/{hex}.md`,
-    `    command: ${base}/commands/sha-256/{hex}.md`,
-    `    entity: ${base}/{path}`,
-    `    edges: ${base}/edges/edges.md`,
-    `    checkpoints: ${base}/checkpoints/checkpoints.md`,
-  ];
-  // setup/init.mjs seeds `locators.allow: []` in new instances; an existing
-  // `locators:` key is the adopter's, so it is kept and not written twice.
-  if (!/^locators:/m.test(doc.text)) block.push("locators:", "  allow: []");
+  const block = [];
+  const written = [];
+  if (!/^references:/m.test(doc.text)) { block.push("references: ni"); written.push("references"); }
+  if (repoUrl && !/^store:/m.test(doc.text)) {
+    let instPath = ".konspekt/instance";
+    try {
+      const top = execFileSync("git", ["rev-parse", "--show-toplevel"], { cwd: instanceDir, encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] }).trim();
+      instPath = relative(top, resolve(instanceDir)).split("\\").join("/");
+    } catch { /* not a git checkout: keep the default path */ }
+    const base = `${repoUrl.replace(/\/+$/, "")}/blob/{ref}/${instPath}`;
+    block.push(
+      "store:",
+      "  kind: git",
+      `  ref: ${ref}`,
+      "  resolve:",
+      `    source: ${base}/sources/sha-256/{hex}.md`,
+      `    command: ${base}/commands/sha-256/{hex}.md`,
+      `    entity: ${base}/{path}`,
+      `    edges: ${base}/edges/edges.md`,
+      `    checkpoints: ${base}/checkpoints/checkpoints.md`,
+    );
+    written.push("store");
+    // setup/init.mjs seeds `locators.allow: []` in new instances; an existing
+    // `locators:` key is the adopter's, so it is kept and not written twice.
+    if (!/^locators:/m.test(doc.text)) block.push("locators:", "  allow: []");
+  }
+  if (!block.length) return [];
   const lines = doc.text.split("\n");
   const close = lines.indexOf("```", 1);
-  if (!/^```ya?ml$/.test(lines[0] || "") || close < 0) return false;
+  if (!/^```ya?ml$/.test(lines[0] || "") || close < 0) return [];
   // Insert before createdAt so the timestamps stay last in the fence.
   let at = lines.findIndex((l, i) => i > 0 && i < close && /^createdAt:/.test(l));
   if (at < 0) at = close;
   lines.splice(at, 0, ...block);
   doc.text = lines.join("\n");
   writeText(path, doc, dryRun);
-  return true;
+  return written;
 }
 
 // ---------- main ----------
@@ -236,7 +246,7 @@ export function migrate(instanceDir, { repoUrl = null, ref = "main", dryRun = fa
   const report = {
     sourcesCopied: sources.copied, commandsCopied: commands.copied,
     mismatched: [...sources.mismatched.map((f) => `sources/${f}`), ...commands.mismatched.map((f) => `commands/${f}`)],
-    deprecatedRows: 0, entities: { migrated: 0, already: 0, none: 0, unmapped: [] }, cells: {}, project: false,
+    deprecatedRows: 0, entities: { migrated: 0, already: 0, none: 0, unmapped: [] }, cells: {}, project: [],
   };
   report.deprecatedRows += writeDeprecatedMap(join(instanceDir, "sources"), sources.map, now, dryRun);
   report.deprecatedRows += writeDeprecatedMap(join(instanceDir, "commands"), commands.map, now, dryRun);
@@ -286,7 +296,7 @@ if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1]
   console.log(`  deprecated.md rows: ${report.deprecatedRows}`);
   console.log(`  entities: ${report.entities.migrated} migrated, ${report.entities.already} already ni:, ${report.entities.none} without a SHA-1 sourceRef`);
   console.log(`  cells: transitions ${report.cells.transitions}, checkpoints ${report.cells.checkpoints}, grants ${report.cells.grants}, executed ${report.cells.executed}, edges ${report.cells.edges}`);
-  console.log(`  project.md store block: ${report.project ? "written" : "unchanged"}`);
+  console.log(`  project.md: ${report.project.length ? `wrote ${report.project.join(", ")}` : "unchanged"}`);
   let failed = false;
   for (const f of report.mismatched) { console.log(`  NOT MIGRATED (bytes do not hash to the name): ${f}`); failed = true; }
   for (const f of report.entities.unmapped) { console.log(`  NOT MIGRATED (sourceRef names no source file): ${f}`); failed = true; }
@@ -299,9 +309,9 @@ if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1]
     for (const e of errors.slice(0, 20)) console.log(`    ${e.code}: ${e.message}`);
     if (errors.length) failed = true;
     // A SHA-1 reference the checker still finds after the migration is one the
-    // script did not rewrite. For a reader it is only a warning, but here it
-    // means the migration is incomplete, so it fails the run.
-    const left = r.problems.filter((p) => p.code === "legacy-ref-after-migration");
+    // script did not rewrite. It is already counted among the errors above;
+    // naming it separately says the migration is incomplete.
+    const left = r.problems.filter((p) => p.code === "legacy-ref-in-ni-instance");
     if (left.length) {
       console.log(`  NOT MIGRATED: ${left.length} SHA-1 reference(s) remain`);
       for (const w of left.slice(0, 20)) console.log(`    ${w.message}`);

@@ -9,6 +9,7 @@ summary:
 {{PERSONAS}}
 binding: required
 basis: proposed
+references: ni
 {{STORE}}locators:
   allow: []
 createdAt: {{TS}}

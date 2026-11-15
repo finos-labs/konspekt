@@ -98,6 +98,7 @@ try {
   check("the edge endpoint is a command:ni: reference",
     readFileSync(join(dir, "edges/edges.md"), "utf8").includes(`| e-cmd | relates | command:${cref} | node:task-a |`));
   check("the migrated instance is conformant", errorsOf().length === 0, JSON.stringify(errorsOf()));
+  check("project.md gains references: ni", /^references: ni$/m.test(readFileSync(join(dir, "project.md"), "utf8")));
 
   const before = snapshot();
   const r2 = migrate(dir, { now: "2026-03-01T00:00:00Z" });
@@ -122,6 +123,9 @@ try {
   proj = readFileSync(pm, "utf8");
   check("an existing locators key is kept and not duplicated",
     count(proj, /^store:/gm) === 1 && count(proj, /^locators:/gm) === 1 && proj.includes("allow: [github.com]"), proj);
+  check("a run adds references: ni once", count(proj, /^references: ni$/gm) === 1, proj);
+  migrate(dir, { now: NOW });
+  check("a second run adds no second references key", count(readFileSync(pm, "utf8"), /^references:/gm) === 1);
 } finally {
   rmSync(dir, { recursive: true, force: true });
 }
