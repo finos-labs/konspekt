@@ -1354,3 +1354,7 @@ proposing agent was not recorded.
 | node:task-ni-walkthrough-recapture | review |  | proposed | 2026-11-15T15:25:03Z |  | claude |
 | node:task-ni-walkthrough-recapture | status |  | open | 2026-11-15T15:25:03Z |  | claude |
 | edge:e-dec-nirefs-walkthrough | review |  | proposed | 2026-11-15T15:25:03Z |  | claude |
+| node:task-ni-walkthrough-recapture | review | proposed | accepted | 2026-11-15T15:28:12Z | ni:///sha-256;L2HVhz6saqj_do5eknTfWpzya1T2C4gfq3DJAOkVamY | denisurusov |
+| edge:e-dec-nirefs-walkthrough | review | proposed | accepted | 2026-11-15T15:28:12Z | ni:///sha-256;L2HVhz6saqj_do5eknTfWpzya1T2C4gfq3DJAOkVamY | denisurusov |
+| waypoint:wp-init-store-block-opt-in | review |  | proposed | 2026-11-15T15:28:12Z |  | claude |
+| edge:e-mark-initstore-nirefs | review |  | proposed | 2026-11-15T15:28:12Z |  | claude |
