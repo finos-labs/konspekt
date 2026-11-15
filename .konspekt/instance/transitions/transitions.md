@@ -1351,3 +1351,10 @@ proposing agent was not recorded.
 | edge:e-sup-nirefs-sha256mig | review | proposed | accepted | 2026-11-15T00:50:13Z | ni:///sha-256;YVRw29PATAwNb9bIm5tykn5E1cSA-oYjeJ_aCwoxp4o | denisurusov |
 | edge:e-not-nirefs-setupcrlf | review | proposed | accepted | 2026-11-15T00:50:13Z | ni:///sha-256;YVRw29PATAwNb9bIm5tykn5E1cSA-oYjeJ_aCwoxp4o | denisurusov |
 | node:task-sources-sha256-migration | status | open | abandoned | 2026-11-15T00:50:13Z | ni:///sha-256;YVRw29PATAwNb9bIm5tykn5E1cSA-oYjeJ_aCwoxp4o | denisurusov |
+| node:task-linkedin-announce-ni-references | review |  | proposed | 2026-11-15T15:01:50Z |  | claude |
+| node:task-linkedin-announce-ni-references | status |  | open | 2026-11-15T15:01:50Z |  | claude |
+| edge:e-dec-usability-linkedinniref | review |  | proposed | 2026-11-15T15:01:50Z |  | claude |
+| edge:e-lnk-linkedinniref-nirefs | review |  | proposed | 2026-11-15T15:01:50Z |  | claude |
+| node:task-linkedin-announce-ni-references | review | proposed | accepted | 2026-11-15T15:05:34Z | ni:///sha-256;zwVHI3F1kKUfHKD92WaLOyPHoPTQEiDO0u4reGp8jAk | denisurusov |
+| edge:e-dec-usability-linkedinniref | review | proposed | accepted | 2026-11-15T15:05:34Z | ni:///sha-256;zwVHI3F1kKUfHKD92WaLOyPHoPTQEiDO0u4reGp8jAk | denisurusov |
+| edge:e-lnk-linkedinniref-nirefs | review | proposed | accepted | 2026-11-15T15:05:34Z | ni:///sha-256;zwVHI3F1kKUfHKD92WaLOyPHoPTQEiDO0u4reGp8jAk | denisurusov |

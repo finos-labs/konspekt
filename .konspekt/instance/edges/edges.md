@@ -585,3 +585,5 @@ proposal.
 | e-not-nirefs-setupcrlf | notes | node:task-ni-references | noteworthy:nw-setup-templates-crlf-on-windows |  | accepted |
 | e-sup-adrni-provcontent | supersedes | waypoint:wp-adr-ni-sha256-references | noteworthy:nw-provenance-content-addressed |  | accepted |
 | e-sup-nirefs-sha256mig | supersedes | node:task-ni-references | node:task-sources-sha256-migration |  | accepted |
+| e-dec-usability-linkedinniref | decomposes | node:goal-usability | node:task-linkedin-announce-ni-references |  | accepted |
+| e-lnk-linkedinniref-nirefs | links | node:task-linkedin-announce-ni-references | node:task-ni-references |  | accepted |
