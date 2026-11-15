@@ -660,3 +660,4 @@ commit order; the channel was not live during that work.
 | task-linkedin-announce-ni-references | a9cf2a77a7d14fcf56c2d2b2ea0afc8fdcb26554 | docs/announcements/linkedin/post_2026-11-16/carousel.pdf | 2026-11-15T16:57:34Z |
 | task-linkedin-announce-ni-references | a9cf2a77a7d14fcf56c2d2b2ea0afc8fdcb26554 | docs/announcements/linkedin/post_2026-11-16/images/CAPTURE.md | 2026-11-15T16:57:34Z |
 | task-linkedin-announce-ni-references | a9cf2a77a7d14fcf56c2d2b2ea0afc8fdcb26554 | docs/announcements/linkedin/post_2026-11-16/post.md | 2026-11-15T16:57:34Z |
+| task-linkedin-announce-ni-references | f4daa28b90dbbc8b8f13664f4bd39f3d3a551705 | ROADMAP.md | 2026-11-15T16:58:10Z |
