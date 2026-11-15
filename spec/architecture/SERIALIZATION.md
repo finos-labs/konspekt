@@ -256,7 +256,11 @@ by adding and never removing:
 
 A migration is idempotent: running it on a migrated instance changes nothing.
 The deprecated values are history and are not verified. Once an instance is
-migrated, every new reference it receives is in the `ni:` form. The reference
+migrated, every new reference it receives is in the `ni:` form. An instance
+counts as migrated when `sources/deprecated.md` or `commands/deprecated.md`
+exists. A validator reports a git blob SHA-1 reference in a migrated instance,
+outside `provenance.deprecated` and `deprecated.md`, as a warning, never an
+error, because a reader still accepts the legacy form. The reference
 implementation is `tools/migrate-ni.mjs`.
 
 ## Versioning

@@ -201,6 +201,72 @@ for (const [name, opts, want] of LOG_CASES) {
   check(name, JSON.stringify(codes) === JSON.stringify(want.slice().sort()), `wanted [${want}] got [${codes}]`);
 }
 
+// ----- legacy references after migration -----
+//
+// SERIALIZATION.md § Migration: once an instance is migrated (a deprecated.md
+// exists), every new reference is in the ni: form. A SHA-1 reference written
+// after that is still readable, so it is a warning, legacy-ref-after-migration,
+// reported at each place a reference is read. The deprecated: block of a
+// migrated atom is history and is not reported.
+
+const DEPRECATED_MD = "# Deprecated references\n\n| deprecated | current | migratedAt |\n|------------|---------|------------|\n";
+const legacyRefWarnings = (dir) =>
+  loadInstance(dir, { personas: engineer ? [engineer] : [] }).problems
+    .filter((p) => p.code === "legacy-ref-after-migration")
+    .map((p) => `${p.severity}:${p.ref}`).sort();
+
+{
+  const LEGACY_EVERYWHERE = {
+    transitionSource: oldSha, checkpointSource: oldSha, grantSource: oldSha,
+    command: gitBlobSha(CMD), edgeTo: `command:${gitBlobSha(CMD)}`,
+  };
+  const before = buildLogs(LEGACY_EVERYWHERE);
+  try {
+    check("an unmigrated instance with SHA-1 refs raises no legacy-ref-after-migration",
+      legacyRefWarnings(before).length === 0, JSON.stringify(legacyRefWarnings(before)));
+  } finally {
+    rmSync(before, { recursive: true, force: true });
+  }
+
+  const after = buildLogs(LEGACY_EVERYWHERE);
+  try {
+    writeFileSync(join(after, "sources/deprecated.md"), DEPRECATED_MD);
+    const got = legacyRefWarnings(after);
+    // Two transition rows and the executed row (task-a), the checkpoint row
+    // (task-a), the grant row (scope *), and the command: edge endpoint (e-cmd).
+    const want = ["warning:*", "warning:e-cmd", "warning:node:task-a", "warning:node:task-a",
+      "warning:task-a", "warning:task-a"].sort();
+    check("in a migrated instance each SHA-1 ref in a log or edge endpoint is a warning",
+      JSON.stringify(got) === JSON.stringify(want), `wanted ${JSON.stringify(want)} got ${JSON.stringify(got)}`);
+  } finally {
+    rmSync(after, { recursive: true, force: true });
+  }
+}
+
+{
+  const dir = build({ "task-a": migratedProv, "task-b": legacyProv }, [newFile, oldFile]);
+  try {
+    writeFileSync(join(dir, "sources/deprecated.md"), DEPRECATED_MD);
+    const got = legacyRefWarnings(dir);
+    check("in a migrated instance a SHA-1 entity sourceRef is a warning; a deprecated: block is not",
+      JSON.stringify(got) === JSON.stringify(["warning:task-b"]), JSON.stringify(got));
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+}
+
+{
+  const dir = build({ "task-b": legacyProv }, [oldFile]);
+  try {
+    mkdirSync(join(dir, "commands"));
+    writeFileSync(join(dir, "commands/deprecated.md"), DEPRECATED_MD);
+    check("commands/deprecated.md alone also marks the instance migrated",
+      JSON.stringify(legacyRefWarnings(dir)) === JSON.stringify(["warning:task-b"]));
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+}
+
 // ----- store and locators -----
 
 const STORE = "store:\n  kind: git\n  ref: main\n  resolve:\n    source: https://h/{hex}\n    entity: https://h/{path}\n    edges: https://h/edges.md";
