@@ -15,8 +15,9 @@
  *       Install a component into an existing instance.
  *
  *   node setup/init.mjs --check [<component>]
- *       Report drift between installed files and their component templates.
- *       Writes nothing. Exit 1 if anything has drifted.
+ *       Report drift between installed files and their component templates,
+ *       and files an installed component lists but lacks. Writes nothing.
+ *       Exit 1 if anything has drifted or is missing.
  *
  * Scaffolding creates a `.konspekt/` umbrella — a minimal konspekt instance
  * plus an operating envelope — and writes agent instruction files: the konspekt
@@ -95,7 +96,8 @@ if (has("--help") || has("-h")) {
       "      instance's .konspekt/spec/personas/<layer>/ (repeatable / comma list).",
       "",
       "  node setup/init.mjs --check [<component>]",
-      "      Report drift between installed files and component templates.",
+      "      Report drift between installed files and component templates,",
+      "      and files an installed component lists but lacks.",
       "",
       "  Targets resolve relative to the current directory, so run this from",
       "  the root of the repo you are installing into.",
@@ -432,15 +434,32 @@ if (has("--check")) {
   // the adopter template — skip it to avoid a false drift.
   const isSelf = resolve(join(HERE, "..")) === resolve(root);
   let drifted = 0;
+  let missing = 0;
   let checked = 0;
   for (const id of ids) {
     const m = loadComponent(id);
-    for (const f of m.files) {
+    // The projected files of this component: those --check compares
+    // byte-for-byte with their templates.
+    const projected = m.files.filter((f) =>
+      !f.seed &&                             // config, expected to differ
+      !f.merge &&                            // merged into the adopter's file, expected to differ
+      !(isSelf && f.sourceRepoKeepsOwn));    // konspekt's own source, not a projection
+    // A component counts as installed when any of its projected files exists.
+    // Then a projected file that is absent is reported: a manifest that gained
+    // a file after the adopter installed (lib/locator-reach.mjs, imported by
+    // validate.mjs) otherwise goes unnoticed until the checker fails on import.
+    // A component with none of its files present is simply not installed.
+    const installed = projected.some((f) => existsSync(join(root, f.to)));
+    for (const f of projected) {
       const target = join(root, f.to);
-      if (!existsSync(target)) continue; // not installed — not drift
-      if (f.seed) continue;              // config, expected to differ
-      if (f.merge) continue;             // merged into the adopter's file, expected to differ
-      if (isSelf && f.sourceRepoKeepsOwn) continue; // konspekt's own source, not a projection
+      if (!existsSync(target)) {
+        if (installed) {
+          console.log(`MISSING ${f.to}`);
+          console.log(`       listed by component "${id}"; install with --add ${id}`);
+          missing++;
+        }
+        continue;
+      }
       checked++;
       const want = readFileSync(join(m.dir, f.from), "utf8");
       const got = readFileSync(target, "utf8");
@@ -491,18 +510,26 @@ if (has("--check")) {
     console.log(`       ${g}`);
   }
 
-  if (!checked) {
+  if (!checked && !missing) {
     console.log("Nothing installed to check.");
     process.exit(gaps.length ? 1 : 0);
   }
-  if (gaps.length && !drifted) {
+  if (gaps.length && !drifted && !missing) {
     console.log(`\n${gaps.length} policy field(s) missing from ${INSTANCE}/project.md.`);
     process.exit(1);
   }
-  if (drifted) {
-    console.log(`\n${drifted} of ${checked} installed file(s) drifted.`);
-    console.log("Regenerate with:  node setup/init.mjs --add <component> --force");
-    console.log("    (persona file:  node setup/init.mjs --vendor-persona <layer>)");
+  if (drifted || missing) {
+    console.log("");
+    if (missing) {
+      console.log(`${missing} file(s) missing from installed components.`);
+      console.log("Install them with:  node setup/init.mjs --add <component>");
+      console.log("    (without --force this adds missing files and leaves existing ones as they are)");
+    }
+    if (drifted) {
+      console.log(`${drifted} of ${checked} installed file(s) drifted.`);
+      console.log("Regenerate with:  node setup/init.mjs --add <component> --force");
+      console.log("    (persona file:  node setup/init.mjs --vendor-persona <layer>)");
+    }
     process.exit(1);
   }
   console.log(`${checked} installed file(s) match their component templates.`);

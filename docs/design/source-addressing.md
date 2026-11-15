@@ -118,7 +118,11 @@ conformance at the end.
 Once a repository is migrated, conformance checks only the new form. The
 deprecated values are history and are not verified.
 
-The adopter repositories, cdm-collateral and code_tracer, are migrated later.
+The adopter repositories, cdm-collateral and code_tracer, are migrated later,
+by the procedure in `setup/README.md` § Migrating an adopter instance to `ni:`
+references: refresh the installed kit, keep deliberate customizations, check
+the kit, migrate with `--repo-url` and `--ref`, then verify that a second run
+changes nothing and that conformance and the binding audit are clean.
 
 ## Worked example
 
@@ -394,7 +398,8 @@ listed only where they also draw or describe source addressing.
 - The seed pasted into the claude.ai Konspekt Project's instructions (it
   describes "git blob SHA, `contentHash`" and still names
   `denisurusov/konspekt`).
-- cdm-collateral and code_tracer: run the migration script later.
+- cdm-collateral and code_tracer: run the migration script later, following
+  `setup/README.md` § Migrating an adopter instance to `ni:` references.
 - Any custom GPT or Gemini Gem that carries a copy of the seed.
 
 ## Result of the file-by-file check
@@ -511,4 +516,5 @@ the file; "no change" gives the reason; "open" names what is still missing.
 - Outside the repository: the seed in the claude.ai Konspekt Project's
   instructions and any GPT or Gem copy of it (not reachable from here; replace
   it with `setup/WEBMOBILE_SEED.md`); cdm-collateral and code_tracer (run
-  `tools/migrate-ni.mjs`).
+  `tools/migrate-ni.mjs` by the procedure in `setup/README.md` § Migrating an
+  adopter instance to `ni:` references).

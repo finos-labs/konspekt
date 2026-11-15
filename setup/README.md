@@ -272,14 +272,16 @@ installing into another project looks like:
   hand a month later into something a commit cannot land without.
 
   It ships the checker with it: the full import closure — `conformance.mjs`,
-  `validate.mjs`, `load-personas.mjs`, and `authority.mjs` — is installed under
-  `.konspekt/lib/` as projections of konspekt's own copies, so a second repo
-  needs nothing pre-vendored and `--check` catches it if a vendored copy is
-  edited. The closure is all four because `validate.mjs` imports
-  `load-personas.mjs` and `conformance.mjs` imports `authority.mjs`; shipping
-  fewer makes the installed checker crash on its first import with
-  `ERR_MODULE_NOT_FOUND` before it reads a thing. Same `workflows` scope caveat
-  as above.
+  `validate.mjs`, `load-personas.mjs`, `locator-reach.mjs`, and `authority.mjs`
+  — is installed under `.konspekt/lib/` as projections of konspekt's own copies,
+  so a second repo needs nothing pre-vendored and `--check` catches it if a
+  vendored copy is edited. The closure is all five because `validate.mjs`
+  imports `load-personas.mjs` and `locator-reach.mjs`, and `conformance.mjs`
+  imports `authority.mjs`; shipping fewer makes the installed checker crash on
+  its first import with `ERR_MODULE_NOT_FOUND` before it reads a thing. When the
+  manifest gains a file after you installed, `--check` reports it as `MISSING`,
+  and `--add conformance` (without `--force`) installs it. Same `workflows`
+  scope caveat as above.
 
   It also ships the **binding audit** (`.konspekt/lib/binding-audit.mjs` and
   `konspekt-binding-audit.yml`): every commit after the one that added
@@ -321,6 +323,88 @@ instance — no install, no files added to the target repo:
 
 Add `--json` for machine-readable output, `--slug-ok` for an instance that
 predates the 2026-07-19 filename migration, `--quiet` for counts only.
+
+## Migrating an adopter instance to `ni:` references
+
+An instance created before 2026-11-14 cites its source excerpts and executed
+commands by git blob SHA-1. `tools/migrate-ni.mjs` moves it to
+`ni:///sha-256;<base64url>` references in place. It copies each file to
+`sha-256/<hex>.md` and keeps the SHA-1 file. It keeps every old reference,
+under `provenance.deprecated` or in a `deprecated.md` map. It also rewrites the
+table cells that cite a stored file (`spec/architecture/SERIALIZATION.md`
+§ Migration). Run the steps below from the root of the adopter repo, with a
+konspekt checkout on current `main` at `/path/to/konspekt`.
+
+**1. Refresh the installed kit first.** The adopter's CI and local checks run
+the copies installed under `.konspekt/lib/`, not konspekt's. A checker installed
+before the `ni:` change reads SHA-1 references only. Refresh the kit before you
+migrate, and push the refresh with the migration or before it.
+`migrate-ni.mjs` runs the checker from the konspekt checkout, so its own final
+check applies the current rules either way. Refresh every component you have
+installed, and every persona layer under `.konspekt/spec/personas/`:
+
+    node /path/to/konspekt/setup/init.mjs --add conformance --force
+    node /path/to/konspekt/setup/init.mjs --add notify --force
+    node /path/to/konspekt/setup/init.mjs --add claude-code --force
+    node /path/to/konspekt/setup/init.mjs --vendor-persona engineer
+
+Each of these changed for `ni:` references:
+- `conformance`: the checker, which now includes `locator-reach.mjs`.
+- `notify`: the notifier.
+- `claude-code`: the resume hook and the atom-readiness skill.
+- The engineer layer: its brief and registry.
+
+**2. Keep deliberate customizations.** `--force` overwrites every file a
+component lists. If you changed an installed file on purpose (for example, a
+workflow that does not run on the push to `main`), review the refresh with
+`git diff`. Then restore that file before committing:
+
+    git restore .github/workflows/konspekt-conformance.yml
+
+Port any change the refresh made to that file by hand if you want it.
+`--check` keeps reporting a restored file as `DRIFT`, which is expected for a
+deliberate customization. `--add <component>` without `--force` installs
+only missing files and leaves existing ones unchanged. It is enough when a
+component only gained a file, but it does not update files you already have.
+
+**3. Check the kit.**
+
+    node /path/to/konspekt/setup/init.mjs --check
+
+Expect no `MISSING` lines, and `DRIFT` only for the files restored in step 2.
+
+**4. Dry run, then migrate.**
+
+    node /path/to/konspekt/tools/migrate-ni.mjs .konspekt/instance --dry-run
+    node /path/to/konspekt/tools/migrate-ni.mjs .konspekt/instance \
+        --repo-url https://github.com/<owner>/<repo> --ref <branch>
+
+- `--repo-url` is the web address of the repository that holds the instance.
+  With it, `project.md` gains a git `store` block whose `resolve` templates
+  point at `<repo-url>/blob/{ref}/<instance path>/…`, plus an empty
+  `locators.allow`. Without it, `project.md` is unchanged, and readers resolve
+  references by the directory layout. A `project.md` that already has a
+  `store:` line is left unchanged.
+- `--ref` is the branch the `store` block names, which readers fetch content
+  from. Pass the branch that holds the canonical instance. It defaults to
+  `main`.
+
+The script exits 1 in three cases: a file's bytes do not hash to its name, an
+entity's `sourceRef` names no stored file, or the checker reports an error
+after the migration. It changes no file in a dry run.
+
+**5. Verify.**
+
+    git add -A .konspekt/instance
+    node /path/to/konspekt/tools/migrate-ni.mjs .konspekt/instance \
+        --repo-url https://github.com/<owner>/<repo> --ref <branch>
+    git status --short .konspekt/instance      # expect nothing unstaged
+    node .konspekt/lib/validate.mjs .konspekt/instance   # expect 0 errors
+    node .konspekt/lib/binding-audit.mjs                 # expect clean
+
+The second run must change no file. Then commit. A commit that touches only
+`.konspekt/` and the files the kit installs counts as bookkeeping for the
+binding audit and needs no changed-code row.
 
 ## Web & mobile
 
