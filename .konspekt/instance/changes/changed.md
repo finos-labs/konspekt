@@ -636,3 +636,6 @@ commit order; the channel was not live during that work.
 | task-ni-references | 893a717cf59443622d6d4e7ef9eeb0b4ccea192e | setup/templates/project.md | 2026-11-15T15:29:57Z |
 | task-ni-references | 893a717cf59443622d6d4e7ef9eeb0b4ccea192e | test/setup-init.test.mjs | 2026-11-15T15:29:57Z |
 | task-ni-references | 5156071042d4b225f732cc1d5f058179cd737383 | ROADMAP.md | 2026-11-15T15:30:15Z |
+| task-ni-references | afaf1d84558c66b9e7cc34395fa4cad17a9a5c26 | setup/README.md | 2026-11-15T16:08:52Z |
+| task-ni-references | afaf1d84558c66b9e7cc34395fa4cad17a9a5c26 | test/migrate-ni.test.mjs | 2026-11-15T16:08:52Z |
+| task-ni-references | afaf1d84558c66b9e7cc34395fa4cad17a9a5c26 | tools/migrate-ni.mjs | 2026-11-15T16:08:52Z |
