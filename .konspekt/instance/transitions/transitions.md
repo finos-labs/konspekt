@@ -1384,3 +1384,4 @@ proposing agent was not recorded.
 | edge:e-dec-nirefs-wrappaths | review |  | proposed | 2026-11-15T17:24:22Z |  | claude |
 | node:task-view-wrap-long-paths | review | proposed | accepted | 2026-11-15T17:25:32Z | ni:///sha-256;jh-ooBg5x2rf3k2MZ5oruirbe__ITnzQiQ-NKmqFytI | denisurusov |
 | edge:e-dec-nirefs-wrappaths | review | proposed | accepted | 2026-11-15T17:25:32Z | ni:///sha-256;jh-ooBg5x2rf3k2MZ5oruirbe__ITnzQiQ-NKmqFytI | denisurusov |
+| node:task-view-wrap-long-paths | status | open | resolved | 2026-11-15T17:28:26Z | ni:///sha-256;5p2Pnx9o4UZtNFNR-um9loOlwNyZeSI-n1mmkohmwAg | denisurusov |
