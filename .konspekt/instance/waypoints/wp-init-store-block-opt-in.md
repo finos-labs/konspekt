@@ -2,14 +2,14 @@
 id: wp-init-store-block-opt-in
 kind: decision
 timestamp: 2026-11-15T15:28:12Z
-review: proposed
+review: accepted
 provenance:
   sourceRef: ni:///sha-256;L2HVhz6saqj_do5eknTfWpzya1T2C4gfq3DJAOkVamY
   conversationId: linkedin-ni-references
   timestamp: 2026-11-15T15:28:12Z
   confidence: 0.9
 createdAt: 2026-11-15T15:28:12Z
-updatedAt: 2026-11-15T15:28:12Z
+updatedAt: 2026-11-15T15:55:49Z
 ```
 # Waypoint: setup/init.mjs writes a store block only when given --repo-url, and seeds no sha-256 directories
 

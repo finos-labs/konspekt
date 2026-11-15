@@ -1358,3 +1358,5 @@ proposing agent was not recorded.
 | edge:e-dec-nirefs-walkthrough | review | proposed | accepted | 2026-11-15T15:28:12Z | ni:///sha-256;L2HVhz6saqj_do5eknTfWpzya1T2C4gfq3DJAOkVamY | denisurusov |
 | waypoint:wp-init-store-block-opt-in | review |  | proposed | 2026-11-15T15:28:12Z |  | claude |
 | edge:e-mark-initstore-nirefs | review |  | proposed | 2026-11-15T15:28:12Z |  | claude |
+| waypoint:wp-init-store-block-opt-in | review | proposed | accepted | 2026-11-15T15:55:49Z | ni:///sha-256;VybP-MOxzfvsDebYQKizy1CmRbyFZUEpDuNWQAcwBJM | denisurusov |
+| edge:e-mark-initstore-nirefs | review | proposed | accepted | 2026-11-15T15:55:49Z | ni:///sha-256;VybP-MOxzfvsDebYQKizy1CmRbyFZUEpDuNWQAcwBJM | denisurusov |
