@@ -623,6 +623,13 @@ commit order; the channel was not live during that work.
 | task-ni-references | 134063216c81f82a29b3dc09b915f6f33142e275 | implementations/intellij-plugin/app/README.md | 2026-11-15T01:06:14Z |
 | task-ni-references | 134063216c81f82a29b3dc09b915f6f33142e275 | implementations/intellij-plugin/app/build.gradle.kts | 2026-11-15T01:06:14Z |
 | task-ni-references | 134063216c81f82a29b3dc09b915f6f33142e275 | implementations/intellij-plugin/app/src/test/kotlin/dev/konspekt/plugin/InstanceReaderLocatorsTest.kt | 2026-11-15T01:06:14Z |
+| task-linkedin-announce-ni-references | 03d10c7a828d5713e73983cd5d868edf168941dc | docs/announcements/linkedin/README.md | 2026-11-15T15:09:55Z |
+| task-linkedin-announce-ni-references | 03d10c7a828d5713e73983cd5d868edf168941dc | docs/announcements/linkedin/post_2026-11-16/carousel.pdf | 2026-11-15T15:09:55Z |
+| task-linkedin-announce-ni-references | 03d10c7a828d5713e73983cd5d868edf168941dc | docs/announcements/linkedin/post_2026-11-16/images/CAPTURE.md | 2026-11-15T15:09:55Z |
+| task-linkedin-announce-ni-references | 03d10c7a828d5713e73983cd5d868edf168941dc | docs/announcements/linkedin/post_2026-11-16/post.md | 2026-11-15T15:09:55Z |
+| task-linkedin-announce-ni-references | 03d10c7a828d5713e73983cd5d868edf168941dc | docs/visuals/posters/konspekt-addressing-poster.html | 2026-11-15T15:09:55Z |
+| task-linkedin-announce-ni-references | 34b404a36a797fc19156be47808f8fe6cb723467 | ROADMAP.md | 2026-11-15T15:10:23Z |
+| task-linkedin-announce-ni-references | bb43a003e79278c6eb803b44d0fd603cefd4b9bf | docs/announcements/linkedin/post_2026-11-16/post.md | 2026-11-15T15:13:09Z |
 | task-ni-references | addc3de8f8f4835bdbfb80c1d8c309cba0001df7 | docs/design/source-addressing.md | 2026-11-15T15:24:42Z |
 | task-ni-references | addc3de8f8f4835bdbfb80c1d8c309cba0001df7 | setup/README.md | 2026-11-15T15:24:42Z |
 | task-ni-references | addc3de8f8f4835bdbfb80c1d8c309cba0001df7 | setup/init.mjs | 2026-11-15T15:24:42Z |
@@ -636,6 +643,11 @@ commit order; the channel was not live during that work.
 | task-ni-references | 893a717cf59443622d6d4e7ef9eeb0b4ccea192e | setup/templates/project.md | 2026-11-15T15:29:57Z |
 | task-ni-references | 893a717cf59443622d6d4e7ef9eeb0b4ccea192e | test/setup-init.test.mjs | 2026-11-15T15:29:57Z |
 | task-ni-references | 5156071042d4b225f732cc1d5f058179cd737383 | ROADMAP.md | 2026-11-15T15:30:15Z |
+| task-linkedin-announce-ni-references | 986c4bf170b13fcbab167d9f7713c0b28d64b2c3 | ROADMAP.md | 2026-11-15T16:01:55Z |
 | task-ni-references | afaf1d84558c66b9e7cc34395fa4cad17a9a5c26 | setup/README.md | 2026-11-15T16:08:52Z |
 | task-ni-references | afaf1d84558c66b9e7cc34395fa4cad17a9a5c26 | test/migrate-ni.test.mjs | 2026-11-15T16:08:52Z |
 | task-ni-references | afaf1d84558c66b9e7cc34395fa4cad17a9a5c26 | tools/migrate-ni.mjs | 2026-11-15T16:08:52Z |
+| task-linkedin-announce-ni-references | b36393628e041da41dd52d396f4973faf32be621 | docs/announcements/linkedin/README.md | 2026-11-15T16:24:16Z |
+| task-linkedin-announce-ni-references | b36393628e041da41dd52d396f4973faf32be621 | docs/announcements/linkedin/post_2026-11-16/carousel.pdf | 2026-11-15T16:24:16Z |
+| task-linkedin-announce-ni-references | b36393628e041da41dd52d396f4973faf32be621 | docs/announcements/linkedin/post_2026-11-16/post.md | 2026-11-15T16:24:16Z |
+| task-linkedin-announce-ni-references | b36393628e041da41dd52d396f4973faf32be621 | docs/visuals/posters/konspekt-addressing-poster.html | 2026-11-15T16:24:16Z |
