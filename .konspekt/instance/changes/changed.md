@@ -661,3 +661,7 @@ commit order; the channel was not live during that work.
 | task-linkedin-announce-ni-references | a9cf2a77a7d14fcf56c2d2b2ea0afc8fdcb26554 | docs/announcements/linkedin/post_2026-11-16/images/CAPTURE.md | 2026-11-15T16:57:34Z |
 | task-linkedin-announce-ni-references | a9cf2a77a7d14fcf56c2d2b2ea0afc8fdcb26554 | docs/announcements/linkedin/post_2026-11-16/post.md | 2026-11-15T16:57:34Z |
 | task-linkedin-announce-ni-references | f4daa28b90dbbc8b8f13664f4bd39f3d3a551705 | ROADMAP.md | 2026-11-15T16:58:10Z |
+| task-ni-walkthrough-recapture | 1cccfea8b8ff915c12ce4b92fc12503d64f0066f | docs/design/source-addressing.md | 2026-11-15T17:22:37Z |
+| task-ni-walkthrough-recapture | 1cccfea8b8ff915c12ce4b92fc12503d64f0066f | docs/visuals/how-to/konspekt-howto-walkthrough.mp4 | 2026-11-15T17:22:37Z |
+| task-ni-walkthrough-recapture | 1cccfea8b8ff915c12ce4b92fc12503d64f0066f | docs/visuals/how-to/provenance_source.png | 2026-11-15T17:22:37Z |
+| task-ni-walkthrough-recapture | 1cccfea8b8ff915c12ce4b92fc12503d64f0066f | docs/visuals/how-to/ui_provenance.png | 2026-11-15T17:22:37Z |
