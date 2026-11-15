@@ -22,7 +22,7 @@ ni:///sha-256;jYKKUd3-aY7e7SL8WnL-bu98ShgEeMhbC1rh8mfFdzk
 
 Why we changed it:
 
-1. Identity from the bytes alone. A git blob SHA-1 hashes a git-specific header together with the file, and git itself is replacing SHA-1. SHA-256 over the raw bytes can be computed by any tool without git. The reference also names its algorithm, so a later hash can be added without breaking existing references.
+1. Identity from the bytes alone. A git blob SHA-1 hashes a git-specific header together with the file, and git has picked SHA-256 as SHA-1's successor, planned as the default for new repositories in Git 3.0. SHA-256 over the raw bytes can be computed by any tool without git. The reference also names its algorithm, so a later hash can be added without breaking existing references.
 
 2. No locations in the graph. A reference names no host, URL or database. Where the content lives is declared once, in project.md, as one template per kind of content. Moving an instance from git to a document store or a relational database changes that block and rewrites no item, and no internal hostname ends up in a repository that may be public.
 
