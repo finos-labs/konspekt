@@ -589,3 +589,4 @@ proposal.
 | e-lnk-linkedinniref-nirefs | links | node:task-linkedin-announce-ni-references | node:task-ni-references |  | accepted |
 | e-dec-nirefs-walkthrough | decomposes | node:task-ni-references | node:task-ni-walkthrough-recapture |  | accepted |
 | e-mark-initstore-nirefs | marks | waypoint:wp-init-store-block-opt-in | node:task-ni-references |  | accepted |
+| e-not-nirefs-migrateblankline | notes | node:task-ni-references | noteworthy:nw-migrate-ni-table-blank-line |  | accepted |
