@@ -3,7 +3,7 @@ id: artifact-conformance-checker
 name: Conformance checker
 kind: code
 location: lib/conformance.mjs
-review: proposed
+review: accepted
 provenance:
   sourceRef: ni:///sha-256;GL64s0C3knxFD_YrBEJa7nnb0vqfOhjp7ZJ7FKX54yY
   timestamp: 2026-07-20T18:00:00Z
@@ -13,7 +13,7 @@ provenance:
     sourceRef: 5ed08b5539e0bb86e59aa8a79ec1c903f0c569b2
     contentHash: 5ed08b5539e0bb86e59aa8a79ec1c903f0c569b2
 createdAt: 2026-07-20T18:00:00Z
-updatedAt: 2026-11-15T00:41:12Z
+updatedAt: 2026-11-15T00:50:13Z
 ```
 # Artifact: Conformance checker
 

@@ -2,7 +2,7 @@
 id: concept-two-pillars
 label: Two pillars of the standard
 aliases: [model plus verbs, standard is model and verbs, binding constraint vs vocabulary]
-review: proposed
+review: accepted
 provenance:
   sourceRef: ni:///sha-256;jvdREM-JHaheN2YbR9-RcBJ9vCCyssWcRI5rnoMBIpM
   timestamp: 2026-06-27T13:42:26Z
@@ -12,7 +12,7 @@ provenance:
     sourceRef: 37f457f9f4cd3a186c5547f32e0046867a91d2e9
     contentHash: 37f457f9f4cd3a186c5547f32e0046867a91d2e9
 createdAt: 2026-06-27T13:42:26Z
-updatedAt: 2026-11-15T00:41:12Z
+updatedAt: 2026-11-15T00:50:13Z
 ```
 # Concept: Two pillars of the standard
 

@@ -618,3 +618,4 @@ commit order; the channel was not live during that work.
 | task-ni-references | 83b282cb664a99501327a7b610ba76051b54492d | spec/personas/engineer/registry.mjs | 2026-11-15T00:39:59Z |
 | task-ni-references | 83b282cb664a99501327a7b610ba76051b54492d | tools/state-poster.mjs | 2026-11-15T00:39:59Z |
 | task-ni-references | d1f511b432ad89928d69c3896ed3a3530f4dd070 | setup/templates/project.md | 2026-11-15T00:39:59Z |
+| task-ni-references | 41aeebc7880cf112e54f8c645fbb04ec245e0eb1 | ROADMAP.md | 2026-11-15T00:52:10Z |

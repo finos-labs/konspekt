@@ -2,7 +2,7 @@
 id: task-sources-sha256-migration
 type: task
 title: Re-address existing sources from git blob SHA to SHA-256
-status: open
+status: abandoned
 summary:
   origin: machine
   pinned: false
@@ -18,7 +18,7 @@ provenance:
     sourceRef: 5f34d6cb478b39588f700dc7cd3d731d9c6efe2e
     contentHash: 5f34d6cb478b39588f700dc7cd3d731d9c6efe2e
 createdAt: 2026-09-28T23:07:00Z
-updatedAt: 2026-11-14T18:50:36Z
+updatedAt: 2026-11-15T00:50:13Z
 ```
 # Task: Re-address existing sources from git blob SHA to SHA-256
 

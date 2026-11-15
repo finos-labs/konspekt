@@ -1342,3 +1342,12 @@ proposing agent was not recorded.
 | concept:concept-write-integrity-by-verification | review | accepted | proposed | 2026-11-15T00:41:12Z |  | claude |
 | edge:e-sup-adrni-provcontent | review |  | proposed | 2026-11-15T00:41:12Z |  | claude |
 | edge:e-sup-nirefs-sha256mig | review |  | proposed | 2026-11-15T00:41:12Z |  | claude |
+| concept:concept-two-pillars | review | proposed | accepted | 2026-11-15T00:50:13Z | ni:///sha-256;YVRw29PATAwNb9bIm5tykn5E1cSA-oYjeJ_aCwoxp4o | denisurusov |
+| concept:concept-write-integrity-by-verification | review | proposed | accepted | 2026-11-15T00:50:13Z | ni:///sha-256;YVRw29PATAwNb9bIm5tykn5E1cSA-oYjeJ_aCwoxp4o | denisurusov |
+| artifact:artifact-conformance-checker | review | proposed | accepted | 2026-11-15T00:50:13Z | ni:///sha-256;YVRw29PATAwNb9bIm5tykn5E1cSA-oYjeJ_aCwoxp4o | denisurusov |
+| artifact:artifact-fleet-worktree-design | review | proposed | accepted | 2026-11-15T00:50:13Z | ni:///sha-256;YVRw29PATAwNb9bIm5tykn5E1cSA-oYjeJ_aCwoxp4o | denisurusov |
+| noteworthy:nw-setup-templates-crlf-on-windows | review | proposed | accepted | 2026-11-15T00:50:13Z | ni:///sha-256;YVRw29PATAwNb9bIm5tykn5E1cSA-oYjeJ_aCwoxp4o | denisurusov |
+| edge:e-sup-adrni-provcontent | review | proposed | accepted | 2026-11-15T00:50:13Z | ni:///sha-256;YVRw29PATAwNb9bIm5tykn5E1cSA-oYjeJ_aCwoxp4o | denisurusov |
+| edge:e-sup-nirefs-sha256mig | review | proposed | accepted | 2026-11-15T00:50:13Z | ni:///sha-256;YVRw29PATAwNb9bIm5tykn5E1cSA-oYjeJ_aCwoxp4o | denisurusov |
+| edge:e-not-nirefs-setupcrlf | review | proposed | accepted | 2026-11-15T00:50:13Z | ni:///sha-256;YVRw29PATAwNb9bIm5tykn5E1cSA-oYjeJ_aCwoxp4o | denisurusov |
+| node:task-sources-sha256-migration | status | open | abandoned | 2026-11-15T00:50:13Z | ni:///sha-256;YVRw29PATAwNb9bIm5tykn5E1cSA-oYjeJ_aCwoxp4o | denisurusov |

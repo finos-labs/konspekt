@@ -582,6 +582,6 @@ proposal.
 | e-mark-adrresolve-sourceuris | marks | waypoint:wp-adr-store-resolve-rule | node:investigation-source-uris |  | accepted |
 | e-drv-losslessmig-adrinplace | drives | concept:concept-asr-lossless-provenance-migration | waypoint:wp-adr-in-place-ni-migration |  | accepted |
 | e-mark-adrinplace-sourceuris | marks | waypoint:wp-adr-in-place-ni-migration | node:investigation-source-uris |  | accepted |
-| e-not-nirefs-setupcrlf | notes | node:task-ni-references | noteworthy:nw-setup-templates-crlf-on-windows |  | proposed |
-| e-sup-adrni-provcontent | supersedes | waypoint:wp-adr-ni-sha256-references | noteworthy:nw-provenance-content-addressed |  | proposed |
-| e-sup-nirefs-sha256mig | supersedes | node:task-ni-references | node:task-sources-sha256-migration |  | proposed |
+| e-not-nirefs-setupcrlf | notes | node:task-ni-references | noteworthy:nw-setup-templates-crlf-on-windows |  | accepted |
+| e-sup-adrni-provcontent | supersedes | waypoint:wp-adr-ni-sha256-references | noteworthy:nw-provenance-content-addressed |  | accepted |
+| e-sup-nirefs-sha256mig | supersedes | node:task-ni-references | node:task-sources-sha256-migration |  | accepted |
