@@ -3,7 +3,7 @@
      Check freshness with: node tools/roadmap.mjs --check
      This file is a pure function of .konspekt/instance/ (no timestamps baked in).
      Goals and tasks are graph nodes; the horizon is derived from node status/review.
-     contentHash: sha256:310b75e1847b5305 -->
+     contentHash: sha256:047a18fba3b5a882 -->
 
 # konspekt roadmap
 
@@ -142,6 +142,7 @@ Keep a project's working context — its instructions, accumulated decisions, an
 **Now** — _in progress_
 
 - Build the adoption path
+- Re-capture the walkthrough frames after cdm-collateral migrates to ni: references
 
 **Next** — _accepted and planned_
 
@@ -158,7 +159,6 @@ Keep a project's working context — its instructions, accumulated decisions, an
 - Choose a license
 - Verify the impact of ni: source addressing, file by file
 - Test the ni: migration on the task-ni-references branch
-- Re-capture the walkthrough frames after cdm-collateral migrates to ni: references
 - Re-serialize the instance to the reconciled spec
 - Reconcile canonical schema into spec/
 - Lock the serialization format
