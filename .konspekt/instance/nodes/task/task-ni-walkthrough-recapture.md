@@ -2,7 +2,7 @@
 id: task-ni-walkthrough-recapture
 type: task
 title: Re-capture the walkthrough frames after cdm-collateral migrates to ni: references
-status: active
+status: resolved
 review: accepted
 provenance:
   sourceRef: ni:///sha-256;6HDClW0nHGtvOv8V-O5LVRe948OwTDD38W9LCp_Yhwc
@@ -10,7 +10,7 @@ provenance:
   timestamp: 2026-11-15T15:25:03Z
   confidence: 0.7
 createdAt: 2026-11-15T15:25:03Z
-updatedAt: 2026-11-15T17:59:42Z
+updatedAt: 2026-11-15T18:13:17Z
 ```
 # Task: Re-capture the walkthrough frames after cdm-collateral migrates to ni: references
 
@@ -31,3 +31,5 @@ Reopened 2026-11-15: the `ui_provenance.png` frame committed in 1cccfea was
 captured from plugin 0.0.14 and cuts the path off at `…DCFE8BC`. Plugin 0.0.15
 ([[task-view-wrap-long-paths]]) wraps the path; the frame is re-captured from
 0.0.15 and spliced into `konspekt-howto-walkthrough.mp4` over 79.9 s to 90.7 s.
+
+Resolved again 2026-11-15: the 0.0.15 frame and the re-spliced video landed in 7a42a91.
