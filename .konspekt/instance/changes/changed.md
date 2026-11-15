@@ -674,3 +674,13 @@ commit order; the channel was not live during that work.
 | task-ni-walkthrough-recapture | 7a42a91 | docs/visuals/how-to/ui_provenance.png | 2026-11-15T18:11:29Z |
 | task-ni-walkthrough-recapture | 7a42a91 | docs/visuals/how-to/konspekt-howto-walkthrough.mp4 | 2026-11-15T18:11:29Z |
 | task-ni-walkthrough-recapture | 4339330 | ROADMAP.md | 2026-11-15T18:13:18Z |
+| task-ni-references | c954da1 | docs/design/source-addressing.md | 2026-11-15T19:14:25Z |
+| task-ni-references | c954da1 | lib/conformance.mjs | 2026-11-15T19:14:25Z |
+| task-ni-references | c954da1 | setup/README.md | 2026-11-15T19:14:25Z |
+| task-ni-references | c954da1 | setup/templates/project.md | 2026-11-15T19:14:25Z |
+| task-ni-references | c954da1 | spec/architecture/SERIALIZATION.md | 2026-11-15T19:14:25Z |
+| task-ni-references | c954da1 | spec/data-model/schema.ts | 2026-11-15T19:14:25Z |
+| task-ni-references | c954da1 | test/conformance-ni-refs.test.mjs | 2026-11-15T19:14:25Z |
+| task-ni-references | c954da1 | test/migrate-ni.test.mjs | 2026-11-15T19:14:25Z |
+| task-ni-references | c954da1 | test/setup-init.test.mjs | 2026-11-15T19:14:25Z |
+| task-ni-references | c954da1 | tools/migrate-ni.mjs | 2026-11-15T19:14:25Z |
