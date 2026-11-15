@@ -16,7 +16,8 @@
 // `locators.allow`.
 //
 // The script is idempotent: a second run over a migrated instance changes no
-// file. It runs the conformance checker at the end and exits 1 on any error.
+// file. It runs the conformance checker at the end and exits 1 on any error,
+// or when the checker still finds a SHA-1 reference (legacy-ref-after-migration).
 //
 // Usage:
 //   node tools/migrate-ni.mjs [instanceDir] [--repo-url <https://host/owner/repo>]
@@ -154,15 +155,24 @@ function* entityFiles(instanceDir) {
 function migrateTable(path, columns, rewrite, dryRun) {
   if (!existsSync(path)) return 0;
   const doc = readText(path);
+  // A header is the row directly above a separator row (`|---|---|`). It holds
+  // until the next header, across blank and other non-table lines: the checker
+  // reads every `|` line of these files as a row, so a stray blank line inside
+  // a table must not end it here either. Resetting at a blank line made the
+  // next data row a "header" and skipped every row below it.
+  const lines = doc.text.split("\n");
+  const cellsOf = (line) => line.split("|").slice(1, -1).map((c) => c.trim());
+  const isRow = (line) => (line || "").trim().startsWith("|");
+  const isSeparator = (line) => isRow(line) && cellsOf(line).every((c) => /^:?-+:?$/.test(c));
   let header = null;
   let changed = 0;
-  const out = doc.text.split("\n").map((line) => {
-    const t = line.trim();
-    if (!t.startsWith("|")) { header = null; return line; }
+  const out = lines.map((line, i) => {
+    if (!isRow(line)) return line;
+    if (isSeparator(line)) return line;
     const segs = line.split("|");
     const cells = segs.slice(1, -1).map((c) => c.trim());
-    if (!header) { header = cells; return line; }
-    if (cells.every((c) => /^-+$/.test(c))) return line;
+    if (isSeparator(lines[i + 1])) { header = cells; return line; }
+    if (!header) return line;
     let touched = false;
     for (const col of columns) {
       const ix = header.indexOf(col);
@@ -288,6 +298,15 @@ if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1]
     console.log(`  conformance: ${errors.length} error(s), ${r.problems.filter((p) => p.severity === "warning").length} warning(s)`);
     for (const e of errors.slice(0, 20)) console.log(`    ${e.code}: ${e.message}`);
     if (errors.length) failed = true;
+    // A SHA-1 reference the checker still finds after the migration is one the
+    // script did not rewrite. For a reader it is only a warning, but here it
+    // means the migration is incomplete, so it fails the run.
+    const left = r.problems.filter((p) => p.code === "legacy-ref-after-migration");
+    if (left.length) {
+      console.log(`  NOT MIGRATED: ${left.length} SHA-1 reference(s) remain`);
+      for (const w of left.slice(0, 20)) console.log(`    ${w.message}`);
+      failed = true;
+    }
   }
   process.exit(failed ? 1 : 0);
 }

@@ -54,7 +54,9 @@ writeFileSync(join(dir, `commands/${csha}.md`), CMD);
 writeFileSync(join(dir, "commands/executed.md"), `# Executed\n\n| entity | command |\n|--------|---------|\n| task-a | ${csha} |\n`);
 writeFileSync(join(dir, "transitions/transitions.md"),
   "# Transitions\n\n| ref | field | from | to | timestamp | source | by |\n|-----|-------|------|----|-----------|--------|----|\n" +
-  `| node:task-a | review |  | proposed | ${TS} | ${sha} |  |\n| node:task-a | status |  | open | ${TS} | ${sha} |  |\n` +
+  // The blank line inside the table reproduces a stray blank line in an
+  // adopter's transitions.md: the rows below it must still be migrated.
+  `| node:task-a | review |  | proposed | ${TS} | ${sha} |  |\n\n| node:task-a | status |  | open | ${TS} | ${sha} |  |\n` +
   `| node:task-b | review |  | proposed | ${TS} |  |  |\n| node:task-b | status |  | open | ${TS} |  |  |\n` +
   `| edge:e-ab | review |  | proposed | ${TS} |  |  |\n| edge:e-cmd | review |  | proposed | ${TS} |  |  |\n`);
 writeFileSync(join(dir, "checkpoints/checkpoints.md"),

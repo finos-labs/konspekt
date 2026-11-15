@@ -399,9 +399,15 @@ Expect no `MISSING` lines, and `DRIFT` only for the files restored in step 2.
   from. Pass the branch that holds the canonical instance. It defaults to
   `main`.
 
-The script exits 1 in three cases: a file's bytes do not hash to its name, an
-entity's `sourceRef` names no stored file, or the checker reports an error
-after the migration. It changes no file in a dry run.
+The script exits 1 in four cases:
+- a file's bytes do not hash to its name;
+- an entity's `sourceRef` names no stored file;
+- the checker reports an error after the migration;
+- the checker still finds a SHA-1 reference after the migration
+  (`legacy-ref-after-migration`), which means the migration missed it.
+
+It changes no file in a dry run. A blank line inside a table does not end the
+table: the rows below it are migrated too.
 
 **5. Verify.**
 
