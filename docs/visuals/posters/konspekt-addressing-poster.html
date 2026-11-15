@@ -64,15 +64,15 @@
 <!-- 1. Cover -->
 <section class="slide">
   <p class="eyebrow">konspekt · content addressing</p>
-  <h1>Provenance references are now RFC 6920 content addresses</h1>
-  <p class="lede">Every atom in a konspekt graph cites the verbatim text it was extracted from. That citation was a git blob SHA-1. It is now SHA-256 over the file's raw bytes, written as an <code>ni:</code> URI that names no host and no store.</p>
+  <h1>Content addressing moves from git SHA-1 to SHA-256 and ni: references</h1>
+  <p class="lede">Everything konspekt names by hash (the excerpts behind graph items, the excerpts checkpoints save, recorded commands, and the log cells that cite them) is now SHA-256 over the raw bytes, cited as an RFC 6920 <code>ni:</code> reference. The reference names no host and no store, so content can move between stores.</p>
   <div class="ref">ni:///sha-256;jYKKUd3-aY7e7SL8WnL-bu98ShgEeMhbC1rh8mfFdzk</div>
   <ol class="toc">
     <li>Directory structure, before and after</li>
     <li>An entity's provenance, before and after</li>
     <li>Table cells and the old-to-new map</li>
     <li>Discovery: from a reference to the bytes</li>
-    <li>Changing stores rewrites no atom</li>
+    <li>Changing stores rewrites no reference</li>
   </ol>
   <div class="foot"><span>github.com/finos-labs/konspekt</span><span>1 / 6</span></div>
 </section>
@@ -85,13 +85,13 @@
     <p class="label old">Before</p>
 <pre>.konspekt/instance/
   project.md
-  sources/
+  sources/                     <span class="m"># graph-item and checkpoint excerpts</span>
     0ffaee955ab91d66…d8b5.md   <span class="m"># git blob SHA-1</span>
     <span class="m">… 140 excerpts</span>
   commands/
     7cc585df88f66191…d6c0.md
     <span class="m">… 106 commands</span>
-    executed.md</pre>
+    executed.md                <span class="m"># executed-command log</span></pre>
   </div>
   <div class="card new">
     <p class="label new">After</p>
@@ -201,8 +201,8 @@
 <!-- 6. Store-agnostic -->
 <section class="slide">
   <p class="eyebrow">5 · changing stores</p>
-  <h2>Atoms hold identities; project.md holds locations</h2>
-  <p>An atom never contains a store URL, hostname, collection name or credential. Moving an instance to another store changes one block in <code>project.md</code> and rewrites no atom.</p>
+  <h2>References hold identities; project.md holds locations</h2>
+  <p>No atom or log cell contains a store URL, hostname, collection name or credential. Moving an instance to another store changes one block in <code>project.md</code> and rewrites no reference.</p>
   <div class="card new">
     <p class="label new">git (implemented)</p>
 <pre>store:
