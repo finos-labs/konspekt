@@ -82,8 +82,8 @@
 <text x="78" y="440" class="primary m" font-size="15.5">Provenance — citations</text>
 <text x="450.0" y="440" text-anchor="end" class="muted mono" font-size="12">03</text>
 <text x="60" y="464" class="secondary" font-size="13">Every atom cites its source and binds to an entity.</text>
-<text x="60" y="483" class="secondary" font-size="13">Verbatim, both sides, content-addressed by</text>
-<text x="60" y="502" class="secondary" font-size="13">SHA-256. Completeness is an invariant — none goes silent.</text>
+<text x="60" y="483" class="secondary" font-size="13">Verbatim, both sides, content-addressed by SHA-256.</text>
+<text x="60" y="502" class="secondary" font-size="13">Completeness is an invariant — none goes silent.</text>
 <rect x="60.0" y="532.0" width="95.2" height="21" rx="5" fill="var(--tag-bg)" stroke="var(--border)" stroke-width="1"/>
 <text x="107.6" y="547.0" text-anchor="middle" class="secondary mono" font-size="12">sha-256</text>
 <rect x="162.2" y="532.0" width="80.8" height="21" rx="5" fill="var(--tag-bg)" stroke="var(--border)" stroke-width="1"/>
