@@ -1387,3 +1387,5 @@ proposing agent was not recorded.
 | node:task-view-wrap-long-paths | status | open | resolved | 2026-11-15T17:28:26Z | ni:///sha-256;5p2Pnx9o4UZtNFNR-um9loOlwNyZeSI-n1mmkohmwAg | denisurusov |
 | node:task-ni-walkthrough-recapture | status | resolved | active | 2026-11-15T17:59:42Z | ni:///sha-256;DjO_mdwFlMab2azpNrScwkryX4HaKuDYH4185ZOaH6w | denisurusov |
 | node:task-ni-walkthrough-recapture | status | active | resolved | 2026-11-15T18:13:17Z | ni:///sha-256;_soaew88VzPU0L8cMUZH8h8gqGFMdrsiEYHl3TaZLdg | denisurusov |
+| noteworthy:nw-legacy-ref-error-in-ni-instances | review |  | proposed | 2026-11-15T19:10:23Z |  | claude |
+| edge:e-not-nirefs-legacyreferror | review |  | proposed | 2026-11-15T19:10:23Z |  | claude |
