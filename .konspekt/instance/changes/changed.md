@@ -665,3 +665,4 @@ commit order; the channel was not live during that work.
 | task-ni-walkthrough-recapture | 1cccfea8b8ff915c12ce4b92fc12503d64f0066f | docs/visuals/how-to/konspekt-howto-walkthrough.mp4 | 2026-11-15T17:22:37Z |
 | task-ni-walkthrough-recapture | 1cccfea8b8ff915c12ce4b92fc12503d64f0066f | docs/visuals/how-to/provenance_source.png | 2026-11-15T17:22:37Z |
 | task-ni-walkthrough-recapture | 1cccfea8b8ff915c12ce4b92fc12503d64f0066f | docs/visuals/how-to/ui_provenance.png | 2026-11-15T17:22:37Z |
+| task-ni-walkthrough-recapture | 30cdbcf1c0713591aa27218412a846422ade65da | ROADMAP.md | 2026-11-15T17:24:41Z |
