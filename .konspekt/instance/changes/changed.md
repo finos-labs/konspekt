@@ -629,3 +629,4 @@ commit order; the channel was not live during that work.
 | task-linkedin-announce-ni-references | 03d10c7a828d5713e73983cd5d868edf168941dc | docs/announcements/linkedin/post_2026-11-16/post.md | 2026-11-15T15:09:55Z |
 | task-linkedin-announce-ni-references | 03d10c7a828d5713e73983cd5d868edf168941dc | docs/visuals/posters/konspekt-addressing-poster.html | 2026-11-15T15:09:55Z |
 | task-linkedin-announce-ni-references | 34b404a36a797fc19156be47808f8fe6cb723467 | ROADMAP.md | 2026-11-15T15:10:23Z |
+| task-linkedin-announce-ni-references | bb43a003e79278c6eb803b44d0fd603cefd4b9bf | docs/announcements/linkedin/post_2026-11-16/post.md | 2026-11-15T15:13:09Z |
