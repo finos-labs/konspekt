@@ -1391,3 +1391,8 @@ proposing agent was not recorded.
 | edge:e-not-nirefs-legacyreferror | review |  | proposed | 2026-11-15T19:10:23Z |  | claude |
 | noteworthy:nw-legacy-ref-error-in-ni-instances | review | proposed | accepted | 2026-11-15T19:21:34Z | ni:///sha-256;KBfvoecQOAhWecsyleGRH6Ut0lELczIOFC-8wLXeZfc | denisurusov |
 | edge:e-not-nirefs-legacyreferror | review | proposed | accepted | 2026-11-15T19:21:34Z | ni:///sha-256;KBfvoecQOAhWecsyleGRH6Ut0lELczIOFC-8wLXeZfc | denisurusov |
+| node:task-ui-clickable-source-refs | review |  | proposed | 2026-11-21T02:25:00Z |  | claude |
+| node:task-ui-clickable-source-refs | status |  | open | 2026-11-21T02:25:00Z |  | claude |
+| edge:e-dec-usability-clickrefs | review |  | proposed | 2026-11-21T02:25:00Z |  | claude |
+| node:task-ui-clickable-source-refs | review | proposed | accepted | 2026-11-21T02:31:00Z | ni:///sha-256;cImnk8NHWfIwRNG4Y2bOXs2_IniSWe_7gUFmUjjAnvQ | denisurusov |
+| edge:e-dec-usability-clickrefs | review | proposed | accepted | 2026-11-21T02:31:00Z | ni:///sha-256;cImnk8NHWfIwRNG4Y2bOXs2_IniSWe_7gUFmUjjAnvQ | denisurusov |

@@ -593,3 +593,4 @@ proposal.
 | e-not-acceptbeforework-revisionblocked | notes | node:task-acceptance-before-work | noteworthy:nw-revision-of-bound-entity-blocked |  | accepted |
 | e-dec-nirefs-wrappaths | decomposes | node:task-ni-references | node:task-view-wrap-long-paths |  | accepted |
 | e-not-nirefs-legacyreferror | notes | node:task-ni-references | noteworthy:nw-legacy-ref-error-in-ni-instances |  | accepted |
+| e-dec-usability-clickrefs | decomposes | node:goal-usability | node:task-ui-clickable-source-refs |  | accepted |
