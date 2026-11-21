@@ -711,3 +711,5 @@ commit order; the channel was not live during that work.
 | task-ui-atom-neighborhood-graph | 3353cfbb1ceb31915be7d4466ebdd843bb378a96 | implementations/implementation-zero/app/view/app.css | 2026-11-21T15:16:15Z |
 | task-ui-atom-neighborhood-graph | 3353cfbb1ceb31915be7d4466ebdd843bb378a96 | implementations/implementation-zero/app/view/app.js | 2026-11-21T15:16:15Z |
 | task-ui-atom-neighborhood-graph | e0fba46273f8e9c78ddac305916d891210507aa3 | ROADMAP.md | 2026-11-21T15:24:53Z |
+| task-ui-clickable-source-refs | 4241d7f31bc4b20eda6f46c902cbb1d157e1ebea | implementations/intellij-plugin/app/gradle.properties | 2026-11-21T16:11:22Z |
+| task-ui-clickable-source-refs | 4241d7f31bc4b20eda6f46c902cbb1d157e1ebea | implementations/intellij-plugin/app/src/main/kotlin/dev/konspekt/plugin/KonspektToolWindowFactory.kt | 2026-11-21T16:11:22Z |
