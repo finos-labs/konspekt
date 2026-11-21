@@ -2,7 +2,7 @@
 id: wp-plugin-release-0-0-18
 kind: milestone
 timestamp: 2026-11-21T16:12:30Z
-review: proposed
+review: accepted
 provenance:
   sourceRef: ni:///sha-256;377XHpk_0QHVEwOBnLByxeLv32mQDtIcIhWaDOLP4gk
   conversationId: release-0-0-18

@@ -1427,3 +1427,10 @@ proposing agent was not recorded.
 | edge:e-mark-neighborhood-release017 | review |  | proposed | 2026-11-21T15:31:48Z | ni:///sha-256;b8Iqn0qeuG3VJz0d_l3wYDMyV_2_vdBHv8voR7glEfU | claude |
 | waypoint:wp-plugin-release-0-0-18 | review |  | proposed | 2026-11-21T16:14:28Z | ni:///sha-256;377XHpk_0QHVEwOBnLByxeLv32mQDtIcIhWaDOLP4gk | claude |
 | edge:e-mark-clickrefs-release018 | review |  | proposed | 2026-11-21T16:14:28Z | ni:///sha-256;377XHpk_0QHVEwOBnLByxeLv32mQDtIcIhWaDOLP4gk | claude |
+| waypoint:wp-plugin-release-0-0-18 | review | proposed | accepted | 2026-11-21T16:15:48Z |  | denisurusov |
+| edge:e-mark-clickrefs-release018 | review | proposed | accepted | 2026-11-21T16:15:48Z |  | denisurusov |
+| node:task-linkedin-announce-graph-view | review |  | proposed | 2026-11-21T16:31:48Z | ni:///sha-256;C1iTk57l0M2WmhFXAhVJvWdnu7zgiuxYlWgB1YdXP44 | claude |
+| node:task-linkedin-announce-graph-view | status |  | open | 2026-11-21T16:31:48Z | ni:///sha-256;C1iTk57l0M2WmhFXAhVJvWdnu7zgiuxYlWgB1YdXP44 | claude |
+| edge:e-dec-usability-linkedingraphview | review |  | proposed | 2026-11-21T16:31:48Z | ni:///sha-256;C1iTk57l0M2WmhFXAhVJvWdnu7zgiuxYlWgB1YdXP44 | claude |
+| edge:e-lnk-linkedingraphview-clickrefs | review |  | proposed | 2026-11-21T16:31:48Z | ni:///sha-256;C1iTk57l0M2WmhFXAhVJvWdnu7zgiuxYlWgB1YdXP44 | claude |
+| edge:e-lnk-linkedingraphview-neighborhood | review |  | proposed | 2026-11-21T16:31:48Z | ni:///sha-256;C1iTk57l0M2WmhFXAhVJvWdnu7zgiuxYlWgB1YdXP44 | claude |
