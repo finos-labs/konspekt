@@ -603,3 +603,4 @@ proposal.
 | e-notes-neighborhood-popoutlayout | notes | node:task-ui-atom-neighborhood-graph | noteworthy:nw-popout-overlay-browser-layout |  | accepted |
 | e-mark-clickrefs-release017 | marks | waypoint:wp-plugin-release-0-0-17 | node:task-ui-clickable-source-refs |  | proposed |
 | e-mark-neighborhood-release017 | marks | waypoint:wp-plugin-release-0-0-17 | node:task-ui-atom-neighborhood-graph |  | proposed |
+| e-mark-clickrefs-release018 | marks | waypoint:wp-plugin-release-0-0-18 | node:task-ui-clickable-source-refs |  | proposed |

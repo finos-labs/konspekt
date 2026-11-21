@@ -1425,3 +1425,5 @@ proposing agent was not recorded.
 | waypoint:wp-plugin-release-0-0-17 | review |  | proposed | 2026-11-21T15:31:48Z | ni:///sha-256;b8Iqn0qeuG3VJz0d_l3wYDMyV_2_vdBHv8voR7glEfU | claude |
 | edge:e-mark-clickrefs-release017 | review |  | proposed | 2026-11-21T15:31:48Z | ni:///sha-256;b8Iqn0qeuG3VJz0d_l3wYDMyV_2_vdBHv8voR7glEfU | claude |
 | edge:e-mark-neighborhood-release017 | review |  | proposed | 2026-11-21T15:31:48Z | ni:///sha-256;b8Iqn0qeuG3VJz0d_l3wYDMyV_2_vdBHv8voR7glEfU | claude |
+| waypoint:wp-plugin-release-0-0-18 | review |  | proposed | 2026-11-21T16:14:28Z | ni:///sha-256;377XHpk_0QHVEwOBnLByxeLv32mQDtIcIhWaDOLP4gk | claude |
+| edge:e-mark-clickrefs-release018 | review |  | proposed | 2026-11-21T16:14:28Z | ni:///sha-256;377XHpk_0QHVEwOBnLByxeLv32mQDtIcIhWaDOLP4gk | claude |
