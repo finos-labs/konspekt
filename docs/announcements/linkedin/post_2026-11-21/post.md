@@ -1,13 +1,13 @@
 ---
 platform: linkedin
 format: feed
-date: 2026-11-22
-url:
+date: 2026-11-21
+url: https://www.linkedin.com/feed/update/urn:li:activity:7529948671493468160/
 announces: "clickable source references and a connections list with a pop-out graph in the konspekt view (IntelliJ plugin 0.0.18), shown on the konspekt repository and on finos-hack/cdm-collateral (CDM collateral workflows on Hyperledger Besu, with tokenized collateral)"
 carousel: carousel.pdf      # 7-page PDF uploaded to LinkedIn as a document; assembled from images/ by build_carousel.py
 assets:
   - file: carousel.pdf
-    source: docs/announcements/linkedin/post_2026-11-22/build_carousel.py
+    source: docs/announcements/linkedin/post_2026-11-21/build_carousel.py
     alt: Seven slides, one per screenshot below, each with a numbered caption.
   - file: images/1_details_with_links.png
     alt: The atom drawer for task-ui-clickable-source-refs, Provenance tab. The extraction and each review or status change are listed with their ni:///sha-256 references shown as links.
