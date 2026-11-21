@@ -596,3 +596,4 @@ proposal.
 | e-dec-usability-clickrefs | decomposes | node:goal-usability | node:task-ui-clickable-source-refs |  | accepted |
 | e-dec-usability-neighborhood | decomposes | node:goal-usability | node:task-ui-atom-neighborhood-graph |  | accepted |
 | e-links-neighborhood-edgetraversal | links | node:task-ui-atom-neighborhood-graph | node:task-edge-traversal-layout |  | accepted |
+| e-dec-curated-nwstatus | decomposes | node:goal-curated-context | node:task-review-noteworthy-status |  | proposed |

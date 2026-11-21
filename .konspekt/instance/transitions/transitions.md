@@ -1403,3 +1403,7 @@ proposing agent was not recorded.
 | node:task-ui-atom-neighborhood-graph | review | proposed | accepted | 2026-11-21T02:57:00Z | ni:///sha-256;a9D63AMCkBPwE8dPGvprK_zjcx2Y56o9XmcLCAlJ7wE | denisurusov |
 | edge:e-dec-usability-neighborhood | review | proposed | accepted | 2026-11-21T02:57:00Z | ni:///sha-256;a9D63AMCkBPwE8dPGvprK_zjcx2Y56o9XmcLCAlJ7wE | denisurusov |
 | edge:e-links-neighborhood-edgetraversal | review | proposed | accepted | 2026-11-21T02:57:00Z | ni:///sha-256;a9D63AMCkBPwE8dPGvprK_zjcx2Y56o9XmcLCAlJ7wE | denisurusov |
+| node:task-ui-clickable-source-refs | status | open | resolved | 2026-11-21T14:33:08Z |  | denisurusov |
+| node:task-review-noteworthy-status | review |  | proposed | 2026-11-21T14:33:27Z |  | claude |
+| node:task-review-noteworthy-status | status |  | open | 2026-11-21T14:33:27Z |  | claude |
+| edge:e-dec-curated-nwstatus | review |  | proposed | 2026-11-21T14:33:27Z |  | claude |

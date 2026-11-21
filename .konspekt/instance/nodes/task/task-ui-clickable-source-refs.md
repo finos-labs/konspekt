@@ -2,7 +2,7 @@
 id: task-ui-clickable-source-refs
 type: task
 title: Make ni references in the atom drawer open their content
-status: open
+status: resolved
 review: accepted
 provenance:
   sourceRef: ni:///sha-256;msW1a0Wxsf9T3K6lDvGGsnJZzGRvIBk3bYmwXkevvRc
