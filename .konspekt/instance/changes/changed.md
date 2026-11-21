@@ -695,3 +695,4 @@ commit order; the channel was not live during that work.
 | task-ui-clickable-source-refs | 5accb4c40c0a18e4ce52a97104a12621669450cb | implementations/intellij-plugin/app/src/main/kotlin/dev/konspekt/plugin/InstanceReader.kt | 2026-11-21T14:21:53Z |
 | task-ui-clickable-source-refs | 5accb4c40c0a18e4ce52a97104a12621669450cb | implementations/intellij-plugin/app/src/main/kotlin/dev/konspekt/plugin/ViewServer.kt | 2026-11-21T14:21:53Z |
 | task-ui-clickable-source-refs | 5accb4c40c0a18e4ce52a97104a12621669450cb | implementations/intellij-plugin/app/src/test/kotlin/dev/konspekt/plugin/InstanceReaderRefsTest.kt | 2026-11-21T14:21:53Z |
+| task-ui-clickable-source-refs | 17197b610eec5201ca117cb5628f37f2fbbac630 | implementations/intellij-plugin/app/README.md | 2026-11-21T14:26:53Z |
