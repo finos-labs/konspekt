@@ -338,3 +338,5 @@ New rows below this backfill are recorded live.
 | task-adoption-path | ni:///sha-256;xsTx00NyGU4QDgaMldjZWCTPw11mN446hNA3tjne3Zw |
 | task-adoption-path | ni:///sha-256;vOQP1iL1gYVrxStVfu3nLrWFKU-d8edZY5O-ZbiaIpw |
 | task-ui-clickable-source-refs | ni:///sha-256;idu9JREYSiuV248-Fad50hFM6PsSADUtA8PTi6Sc8ww |
+| task-ui-clickable-source-refs | ni:///sha-256;nP950NF7USgYk6iZEGiQl1yQ2Nwuf34JBXy1Wl-Vhq0 |
+| task-ui-clickable-source-refs | ni:///sha-256;LWxKwEtvx0CGIfcRuUPpamP-G7qmCKhY1m7eaz2uwec |
