@@ -17,7 +17,13 @@ import com.intellij.openapi.wm.ToolWindowFactory
 import com.intellij.openapi.wm.ex.ToolWindowManagerListener
 import com.intellij.ui.content.ContentFactory
 import com.intellij.ui.jcef.JBCefApp
+import com.intellij.ide.BrowserUtil
 import com.intellij.ui.jcef.JBCefBrowser
+import org.cef.browser.CefBrowser
+import org.cef.browser.CefFrame
+import org.cef.handler.CefLifeSpanHandlerAdapter
+import org.cef.handler.CefRequestHandlerAdapter
+import org.cef.network.CefRequest
 import java.awt.BorderLayout
 import java.awt.Dimension
 import javax.swing.JLabel
@@ -51,6 +57,7 @@ class KonspektToolWindowFactory : ToolWindowFactory {
     val server = ViewServer(project)
     val url = server.start()
     val browser = JBCefBrowser(url)
+    openExternalLinksInSystemBrowser(browser, url)
     val content = contentFactory.createContent(browser.component, "", false)
     content.setDisposer { server.stop(); browser.dispose() }
     toolWindow.contentManager.addContent(content)
@@ -93,6 +100,7 @@ class KonspektToolWindowFactory : ToolWindowFactory {
     frame?.let { toolWindow.hide(); return }
 
     val popupBrowser = JBCefBrowser(url)
+    openExternalLinksInSystemBrowser(popupBrowser, url)
 
     // Dock button turns off auto-pop and returns to the docked tool window —
     // the only way back once the docked title actions are out of reach.
@@ -121,3 +129,42 @@ class KonspektToolWindowFactory : ToolWindowFactory {
     toolWindow.hide()
   }
 }
+
+/**
+ * Send http(s) links in the shared view to the system browser.
+ *
+ * The view marks external links (a store location, an origin locator) with
+ * `target="_blank"`. JCEF handles that as a popup and, with no handler, opens
+ * it in a new bare Chromium window. The life-span handler cancels the popup and
+ * hands the URL to [BrowserUtil]. The request handler does the same for a
+ * user-initiated top-level navigation away from the view server's origin, so a
+ * link without a target does not replace the view.
+ */
+private fun openExternalLinksInSystemBrowser(browser: JBCefBrowser, viewUrl: String) {
+  val viewOrigin = originOf(viewUrl)
+  fun isExternal(target: String?): Boolean {
+    if (target == null) return false
+    val scheme = target.substringBefore(':', "").lowercase()
+    return (scheme == "http" || scheme == "https") && originOf(target) != viewOrigin
+  }
+  val client = browser.jbCefClient
+  client.addLifeSpanHandler(object : CefLifeSpanHandlerAdapter() {
+    override fun onBeforePopup(b: CefBrowser?, frame: CefFrame?, targetUrl: String?, targetFrameName: String?): Boolean {
+      if (isExternal(targetUrl)) BrowserUtil.browse(targetUrl!!)
+      return true // never open a JCEF popup window
+    }
+  }, browser.cefBrowser)
+  client.addRequestHandler(object : CefRequestHandlerAdapter() {
+    override fun onBeforeBrowse(b: CefBrowser?, frame: CefFrame?, request: CefRequest?, userGesture: Boolean, isRedirect: Boolean): Boolean {
+      val target = request?.url
+      if (userGesture && frame?.isMain == true && isExternal(target)) {
+        BrowserUtil.browse(target!!)
+        return true
+      }
+      return false
+    }
+  }, browser.cefBrowser)
+}
+
+private fun originOf(url: String): String =
+  try { java.net.URI(url).let { "${it.scheme}://${it.authority}".lowercase() } } catch (_: Exception) { "" }
