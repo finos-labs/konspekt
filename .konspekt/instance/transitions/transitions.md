@@ -1422,3 +1422,6 @@ proposing agent was not recorded.
 | edge:e-notes-neighborhood-listpopout | review | proposed | accepted | 2026-11-21T15:21:57Z |  | denisurusov |
 | edge:e-sup-listpopout-listtoggle | review | proposed | accepted | 2026-11-21T15:21:57Z |  | denisurusov |
 | node:task-ui-atom-neighborhood-graph | status | open | resolved | 2026-11-21T15:23:14Z |  | denisurusov |
+| waypoint:wp-plugin-release-0-0-17 | review |  | proposed | 2026-11-21T15:31:48Z | ni:///sha-256;b8Iqn0qeuG3VJz0d_l3wYDMyV_2_vdBHv8voR7glEfU | claude |
+| edge:e-mark-clickrefs-release017 | review |  | proposed | 2026-11-21T15:31:48Z | ni:///sha-256;b8Iqn0qeuG3VJz0d_l3wYDMyV_2_vdBHv8voR7glEfU | claude |
+| edge:e-mark-neighborhood-release017 | review |  | proposed | 2026-11-21T15:31:48Z | ni:///sha-256;b8Iqn0qeuG3VJz0d_l3wYDMyV_2_vdBHv8voR7glEfU | claude |
