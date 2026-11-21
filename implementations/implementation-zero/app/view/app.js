@@ -262,26 +262,61 @@ function renderGraph(data) {
 const drawer = $("drawer"), backdrop = $("drawerBackdrop"), drawerBody = $("drawerBody");
 let lastFocus = null;
 
+// Everything one entity view shows: the entity, its commands, code changes,
+// transition rows and the edges that touch it. The four related reads are
+// optional (an older server may not offer them) and run in parallel.
+async function loadEntity(id) {
+  const get = async (url) => (await fetch(url, { cache: "no-store" })).json();
+  const d = await get("/api/entity?id=" + encodeURIComponent(id));
+  if (d.error) return { error: d.error };
+  const opt = async (url, key) => { try { return (await get(url))[key] || []; } catch { return []; } };
+  const [cmds, chgs, trans, conns] = await Promise.all([
+    opt("/api/commands?entity=" + encodeURIComponent(id), "commands"),
+    opt("/api/changes?entity=" + encodeURIComponent(id), "changes"),
+    d.entityType ? opt("/api/transitions?ref=" + encodeURIComponent(d.entityType + ":" + d.id), "transitions") : [],
+    opt("/api/neighbors?id=" + encodeURIComponent(id), "edges"),
+  ]);
+  return { d, cmds, chgs, trans, conns };
+}
+function errorP(text) { const p = document.createElement("p"); p.className = "drawer-err"; p.textContent = text; return p; }
+
+// Replace mode: open the drawer on one entity, discarding any stacked views.
 async function openDetail(id) {
-  lastFocus = document.activeElement;
+  if (!drawer.classList.contains("open")) lastFocus = document.activeElement;
   $("drawerTitle").textContent = id;
   drawerBody.innerHTML = '<p class="drawer-loading">loading…</p>';
   backdrop.hidden = false; drawer.classList.add("open"); drawer.setAttribute("aria-hidden", "false");
   $("drawerClose").focus();
   resetStack(id);
-  try {
-    const d = await (await fetch("/api/entity?id=" + encodeURIComponent(id), { cache: "no-store" })).json();
-    if (d.error) { drawerBody.innerHTML = ""; const p = document.createElement("p"); p.className = "drawer-err"; p.textContent = d.error; drawerBody.appendChild(p); return; }
-    let cmds = [];
-    try { cmds = (await (await fetch("/api/commands?entity=" + encodeURIComponent(id), { cache: "no-store" })).json()).commands || []; } catch { /* endpoint may be absent */ }
-    let chgs = [];
-    try { chgs = (await (await fetch("/api/changes?entity=" + encodeURIComponent(id), { cache: "no-store" })).json()).changes || []; } catch { /* endpoint may be absent */ }
-    let trans = [];
-    if (d.entityType) {
-      try { trans = (await (await fetch("/api/transitions?ref=" + encodeURIComponent(d.entityType + ":" + d.id), { cache: "no-store" })).json()).transitions || []; } catch { /* endpoint may be absent */ }
-    }
-    renderDrawer(d, cmds, chgs, trans);
-  } catch { drawerBody.innerHTML = '<p class="drawer-err">server unreachable.</p>'; }
+  let r;
+  try { r = await loadEntity(id); } catch { r = { error: "server unreachable." }; }
+  if (r.error) { drawerBody.innerHTML = ""; drawerBody.appendChild(errorP(r.error)); return; }
+  renderDrawer(r.d, r.cmds, r.chgs, r.trans, r.conns);
+}
+
+// Push mode: open a neighbor's entity view on top of the current view, from a
+// Connections row, an [[id]] link, or the pop-out graph. `via` names where it
+// was opened from, for the crumb; without it the crumb names the current tab.
+async function openEntity(id, via) {
+  if (!drawer.classList.contains("open")) return openDetail(id);
+  const parent = stack[stack.length - 1];
+  parent.crumb = via && parent.base ? parent.base + "  ›  " + via : (parent.tabCrumb || parent.crumb);
+  const el = document.createElement("div");
+  pushView(el, id, id);
+  const entry = stack[stack.length - 1]; entry.base = id; entry.tabCrumb = id;
+  await fillEntry(entry, id);
+}
+// (Re)load one stacked entity view in place. Used by push mode and after a
+// disposition, so accepting a pushed entity keeps the path back.
+async function fillEntry(entry, id) {
+  const el = entry.el;
+  el.innerHTML = '<p class="drawer-loading">loading…</p>';
+  let r;
+  try { r = await loadEntity(id); } catch { r = { error: "server unreachable." }; }
+  if (!stack.includes(entry)) return; // popped while loading
+  el.innerHTML = "";
+  if (r.error) { el.appendChild(errorP(r.error)); return; }
+  fillEntityView(el, r.d, r.cmds, r.chgs, r.trans, r.conns, entry);
 }
 
 // ---------- drawer view stack (source views pushed over the entity) ----------
@@ -316,16 +351,32 @@ $("drawerBack").addEventListener("click", popView);
 // An `ni:///sha-256;<43 base64url>` reference, optionally `command:`-prefixed,
 // not followed by another base64url character; or a 40-hex SHA-1 (only those in
 // the entity's provenance.deprecated block are linked; see `legacy`).
-const REF_RE = /(command:)?ni:\/\/\/sha-256;[A-Za-z0-9_-]{43}(?![A-Za-z0-9_-])|\b[0-9a-f]{40}\b/g;
+// Also an `[[id]]` entity reference (task-ui-atom-neighborhood-graph).
+const REF_RE = /(command:)?ni:\/\/\/sha-256;[A-Za-z0-9_-]{43}(?![A-Za-z0-9_-])|\b[0-9a-f]{40}\b|\[\[[A-Za-z0-9][A-Za-z0-9._-]*\]\]/g;
+// The ids of every entity in the last /api/entities snapshot, for [[id]] links.
+function knownIds() { return new Set(rows.map((r) => r.id)); }
 // A <pre> of `text` in which each reference is a button that opens it in a
 // source view. `legacy` is the set of SHA-1 values to link; `ctx` carries the
-// entity (for origin locators) and the crumb the opened view records.
+// entity (for origin locators) and the crumb the opened view records. With
+// `ctx.wiki`, an [[id]] that names an entity is a button that pushes that
+// entity's view; an [[id]] that names no entity stays plain text.
 function refPre(text, legacy, ctx) {
   const p = document.createElement("pre"); p.className = "md";
   const s = String(text == null ? "" : text);
+  const known = ctx && ctx.wiki ? knownIds() : null;
   let last = 0;
   for (const m of s.matchAll(REF_RE)) {
     const tok = m[0];
+    if (tok.startsWith("[[")) {
+      const id = tok.slice(2, -2);
+      if (!known || !known.has(id)) continue;
+      if (m.index > last) p.appendChild(document.createTextNode(s.slice(last, m.index)));
+      const b = document.createElement("button"); b.type = "button"; b.className = "wiki"; b.textContent = tok;
+      b.title = "Open " + id;
+      b.addEventListener("click", () => openEntity(id));
+      p.appendChild(b); last = m.index + tok.length;
+      continue;
+    }
     const isSha1 = !tok.startsWith("ni:") && !tok.startsWith("command:");
     if (isSha1 && !(legacy && legacy.has(tok))) continue;
     if (m.index > last) p.appendChild(document.createTextNode(s.slice(last, m.index)));
@@ -362,6 +413,8 @@ async function openRef(ref, ctx, info) {
   const el = document.createElement("div");
   const body = document.createElement("div"); body.className = "drawer-panel"; el.appendChild(body);
   body.innerHTML = '<p class="drawer-loading">loading…</p>';
+  const parent = stack[stack.length - 1];
+  if (parent.tabCrumb) parent.crumb = parent.tabCrumb;
   pushView(el, "loading…", null);
   const entry = stack[stack.length - 1];
   let r;
@@ -393,7 +446,7 @@ async function openRef(ref, ctx, info) {
   const rv = document.createElement("span"); rv.className = "r"; rv.textContent = ref; box.appendChild(rv);
   body.appendChild(box);
 
-  if (ok) body.appendChild(refPre(r.markdown, null, ctx));
+  if (ok) body.appendChild(refPre(r.markdown, null, { ...ctx, wiki: false }));
   else { const p = document.createElement("p"); p.className = "src-missing"; p.textContent = "No such content. The reference does not resolve in this instance."; body.appendChild(p); }
 
   const acts = document.createElement("div"); acts.className = "src-actions";
@@ -435,7 +488,8 @@ function locatorList(locs) {
 // shows for a work node that is open or active (the `resolve` authority verb ->
 // status: resolved). Each action edits the working tree only; the model never does
 // this. Renders for both shells from this one view.
-function renderDisposition(d, parent) {
+// `reopen` reloads the entity's own view after a successful write.
+function renderDisposition(d, parent, reopen) {
   const acts = [];
   if (d.review === "proposed")
     acts.push({ label: "Accept", busy: "Accepting…", url: "/api/accept",
@@ -474,7 +528,7 @@ function renderDisposition(d, parent) {
       try {
         const r = await (await fetch(a.url + "?entity=" + encodeURIComponent(d.id), { method: "POST" })).json();
         if (r && r.error) { note.textContent = "Could not " + a.label.toLowerCase() + ": " + r.error; yes.disabled = false; no.disabled = false; yes.textContent = "Confirm"; return; }
-        openDetail(d.id);
+        reopen();
       } catch { note.textContent = "Server unreachable."; yes.disabled = false; no.disabled = false; yes.textContent = "Confirm"; }
     });
     actions.appendChild(yes); actions.appendChild(no);
@@ -554,11 +608,22 @@ function renderProvenance(d, trans, ctx) {
   return w;
 }
 
-function renderDrawer(d, cmds, chgs, trans) {
-  chgs = chgs || []; trans = trans || [];
+function renderDrawer(d, cmds, chgs, trans, conns) {
+  drawerBody.innerHTML = "";
+  const root = document.createElement("div"); root.className = "drawer-view";
+  drawerBody.appendChild(root);
+  stack = [{ el: root, title: d.id, crumb: d.id, base: d.id, tabCrumb: d.id }]; syncHead();
+  fillEntityView(root, d, cmds, chgs, trans, conns, stack[0]);
+}
+
+// One entity view: disposition bar, the tab strip and panel, and the
+// Connections frame below the panel. `entry` is the view's stack entry; its
+// crumb names the tab shown, so a view pushed from it records where it came from.
+function fillEntityView(root, d, cmds, chgs, trans, conns, entry) {
+  cmds = cmds || []; chgs = chgs || []; trans = trans || []; conns = conns || [];
   const dep = d.deprecated || {};
   const legacy = new Set([dep.sourceRef, dep.contentHash].filter(Boolean));
-  const ctx = { entity: d };
+  const ctx = { entity: d, wiki: true };
   const pg = provenanceGroups(d, trans);
   const pvCount = pg.extraction.length + pg.transitions.length;
   const tabs = [
@@ -588,11 +653,7 @@ function renderDrawer(d, cmds, chgs, trans) {
     return w;
   } });
 
-  drawerBody.innerHTML = "";
-  const root = document.createElement("div"); root.className = "drawer-view";
-  drawerBody.appendChild(root);
-  stack = [{ el: root, title: d.id, crumb: d.id }]; syncHead();
-  renderDisposition(d, root);
+  renderDisposition(d, root, () => (entry === stack[0] ? openDetail(d.id) : fillEntry(entry, d.id)));
   renderAcceptance(d, root);
   const strip = document.createElement("div"); strip.className = "drawer-tabs"; strip.setAttribute("role", "tablist");
   const panel = document.createElement("div"); panel.className = "drawer-panel";
@@ -600,7 +661,7 @@ function renderDrawer(d, cmds, chgs, trans) {
   const show = (t, btn) => {
     strip.querySelectorAll(".dtab").forEach((x) => x.setAttribute("aria-selected", "false")); btn.setAttribute("aria-selected", "true");
     panel.innerHTML = ""; panel.appendChild(t.build());
-    stack[0].crumb = t.label === tabs[0].label ? d.id : d.id + "  ›  " + t.label.replace(/ \(\d+\)$/, "");
+    entry.crumb = entry.tabCrumb = t.label === tabs[0].label ? d.id : d.id + "  ›  " + t.label.replace(/ \(\d+\)$/, "");
   };
   tabs.forEach((t, i) => {
     const b = document.createElement("button"); b.className = "dtab"; b.type = "button"; b.textContent = t.label; b.setAttribute("role", "tab"); b.setAttribute("aria-selected", i === 0 ? "true" : "false");
@@ -609,6 +670,430 @@ function renderDrawer(d, cmds, chgs, trans) {
   });
   root.appendChild(strip); root.appendChild(panel);
   panel.appendChild(tabs[0].build());
+  root.appendChild(renderConnections(d, conns));
+}
+
+// ---------- Connections frame (task-ui-atom-neighborhood-graph) ----------
+// Below the tab panel of every entity view: each edge that touches the entity,
+// from /api/neighbors. The List view (mockup E) groups the edges by kind; the
+// Graph view (mockup F) draws the same edges as an ego graph. Every view opens
+// in List; the choice is not remembered (nw-connections-list-default-graph-toggle).
+// A dashed border or line marks an edge whose own review is proposed.
+const KIND_COLOR = { decomposes: "#4a4fb0", links: "#0f7b8a", notes: "#b45309", produces: "#1f8a5b",
+  mentions: "#8b5cf6", marks: "#be185d", supersedes: "#b91c1c", relates: "#0369a1", drives: "#a16207" };
+const kindColor = (k) => KIND_COLOR[k] || "#8b93a1";
+const el = (tag, cls, text) => { const x = document.createElement(tag); if (cls) x.className = cls; if (text != null) x.textContent = text; return x; };
+const svgEl = (tag, attrs) => { const x = document.createElementNS(SVGNS, tag); for (const k in attrs || {}) x.setAttribute(k, attrs[k]); return x; };
+const clip = (s, n) => (s.length > n ? s.slice(0, n - 1) + "…" : s);
+const edgeText = (center, c) => (c.dir === "out" ? center + " " + c.kind + " " + c.neighbor.id : c.neighbor.id + " " + c.kind + " " + center);
+
+function renderConnections(d, conns) {
+  const st = { expanded: true, mode: "list", off: new Set(), sel: null };
+  const sec = el("section", "conn"); sec.setAttribute("aria-label", "Connections");
+  const head = el("div", "conn-head");
+  const caret = el("button", "conn-caret"); caret.type = "button";
+  const seg = el("span", "conn-seg"); seg.setAttribute("role", "group"); seg.setAttribute("aria-label", "Connections view");
+  const bList = el("button", "seg-btn", "List"); bList.type = "button";
+  const bGraph = el("button", "seg-btn", "Graph"); bGraph.type = "button";
+  seg.append(bList, bGraph);
+  const propN = conns.filter((c) => c.review === "proposed").length;
+  const note = el("span", "conn-note", propN ? propN + " edge" + (propN === 1 ? "" : "s") + " proposed (dashed)" : "");
+  const pop = el("button", "conn-pop"); pop.type = "button";
+  pop.innerHTML = '<svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M7 1h4v4M11 1 6 6M5 2H1v9h9V7"></path></svg>';
+  pop.appendChild(document.createTextNode("Pop out graph"));
+  pop.addEventListener("click", () => openGraphPop(d.id));
+  head.append(caret, seg, el("span", "conn-fill"), note, pop);
+  const body = el("div", "conn-body");
+  sec.append(head, body);
+
+  const render = () => {
+    caret.textContent = (st.expanded ? "▾" : "▸") + " Connections · " + conns.length;
+    caret.setAttribute("aria-expanded", String(st.expanded));
+    bList.setAttribute("aria-pressed", String(st.mode === "list"));
+    bGraph.setAttribute("aria-pressed", String(st.mode === "graph"));
+    body.innerHTML = ""; body.hidden = !st.expanded;
+    if (!st.expanded) return;
+    if (!conns.length) { body.appendChild(el("p", "muted conn-empty", "No edges touch this entity.")); return; }
+    body.appendChild(st.mode === "list" ? connList(d.id, conns) : connGraph(d.id, conns, st, render));
+  };
+  caret.addEventListener("click", () => { st.expanded = !st.expanded; render(); });
+  bList.addEventListener("click", () => { st.mode = "list"; st.expanded = true; render(); });
+  bGraph.addEventListener("click", () => { st.mode = "graph"; st.expanded = true; st.sel = null; render(); });
+  render();
+  return sec;
+}
+
+// A neighbor row's second line: its title, then what is still proposed.
+function connSub(c) {
+  const n = c.neighbor;
+  if (n.missing) return "no entity with this id";
+  return [n.title, c.review === "proposed" && "edge proposed", n.review === "proposed" && "entity proposed"].filter(Boolean).join(" · ") || "—";
+}
+
+function connList(center, conns) {
+  const w = el("div", "conn-list");
+  const kinds = [...new Set(conns.map((c) => c.kind))];
+  for (const k of kinds) {
+    const rowsOf = conns.filter((c) => c.kind === k);
+    const g = el("div", "conn-group");
+    g.appendChild(el("div", "conn-kind", k + " · " + rowsOf.length));
+    for (const c of rowsOf) {
+      const n = c.neighbor;
+      const r = el(n.missing ? "div" : "button", "crow" + (c.review === "proposed" ? " prop" : "") + (n.missing ? " missing" : ""));
+      if (!n.missing) {
+        r.type = "button";
+        r.setAttribute("aria-label", "Open " + n.id + " (" + c.kind + ", " + (c.dir === "out" ? "outgoing" : "incoming") + ")");
+        r.addEventListener("click", () => openEntity(n.id, "Connections"));
+      }
+      const dir = el("span", "crow-dir", c.dir === "out" ? "out →" : "← in"); dir.title = edgeText(center, c);
+      const mid = el("span", "crow-mid");
+      mid.append(el("span", "crow-id", n.id), el("span", "crow-sub", connSub(c)));
+      const meta = el("span", "crow-meta");
+      if (n.kind) meta.appendChild(el("span", "kind", n.kind));
+      if (n.status) {
+        const s = el("span", "status"); const dot = el("span", "dot"); dot.style.background = stDot[n.status] || "var(--ink-3)";
+        s.append(dot, document.createTextNode(n.status)); meta.appendChild(s);
+      }
+      r.append(dir, mid, meta);
+      g.appendChild(r);
+    }
+    w.appendChild(g);
+  }
+  return w;
+}
+
+// The ego graph: the entity in the middle, one point per edge on an ellipse
+// around it, lines colored by kind and dashed when the edge is proposed.
+// Selecting a point shows the edge below; "Open drawer" pushes the neighbor.
+function connGraph(center, conns, st, rerender) {
+  const w = el("div", "conn-graph");
+  const kinds = [...new Set(conns.map((c) => c.kind))].sort();
+  const chips = el("div", "conn-chips");
+  for (const k of kinds) {
+    const on = !st.off.has(k);
+    const b = el("button", "chip", k + " · " + conns.filter((c) => c.kind === k).length); b.type = "button";
+    b.setAttribute("aria-pressed", String(on));
+    const sw = el("span", "dot"); sw.style.background = kindColor(k); b.prepend(sw);
+    b.addEventListener("click", () => { if (on) st.off.add(k); else st.off.delete(k); st.sel = null; rerender(); });
+    chips.appendChild(b);
+  }
+  w.appendChild(chips);
+
+  const vis = conns.filter((c) => !st.off.has(c.kind));
+  const W = 412, H = 236, cx = W / 2, cy = H / 2, rx = 152, ry = 86;
+  const svg = svgEl("svg", { class: "ego", viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": "Connections of " + center });
+  const pts = vis.map((c, i) => {
+    const a = -Math.PI / 2 + (i * 2 * Math.PI) / Math.max(1, vis.length);
+    return { c, x: cx + rx * Math.cos(a), y: cy + ry * Math.sin(a) };
+  });
+  for (const p of pts) {
+    const line = svgEl("line", { x1: cx, y1: cy, x2: p.x, y2: p.y, stroke: kindColor(p.c.kind), "stroke-width": 1.5 });
+    if (p.c.review === "proposed") line.setAttribute("stroke-dasharray", "4 3");
+    line.appendChild(svgEl("title")).textContent = edgeText(center, p.c) + (p.c.review === "proposed" ? " (edge proposed)" : "");
+    svg.appendChild(line);
+    if (vis.length <= 12) {
+      const t = svgEl("text", { x: (cx + p.x) / 2, y: (cy + p.y) / 2 + 3, class: "ego-kind", "text-anchor": "middle" });
+      t.textContent = p.c.kind + (p.c.dir === "out" ? " →" : " ←"); svg.appendChild(t);
+    }
+  }
+  const box = (x, y, label, opts) => {
+    const wd = Math.min(150, label.length * 6.3 + 14), ht = 22;
+    const g = svgEl("g", { class: "ego-node" + (opts.sel ? " sel" : "") + (opts.center ? " center" : ""), transform: `translate(${x - wd / 2},${y - ht / 2})` });
+    const rect = svgEl("rect", { width: wd, height: ht, rx: 6, style: "stroke:" + (stColor[opts.status] || (opts.center ? "var(--accent)" : "var(--ink-3)")) });
+    if (opts.review === "proposed") rect.setAttribute("stroke-dasharray", "4 3");
+    const t = svgEl("text", { x: wd / 2, y: ht / 2 + 4, "text-anchor": "middle" }); t.textContent = label;
+    g.append(rect, t);
+    g.appendChild(svgEl("title")).textContent = opts.tip;
+    if (opts.pick) {
+      g.setAttribute("tabindex", "0"); g.setAttribute("role", "button"); g.setAttribute("aria-label", opts.tip);
+      g.addEventListener("click", opts.pick);
+      g.addEventListener("keydown", (ev) => { if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); opts.pick(); } });
+    }
+    svg.appendChild(g);
+  };
+  for (const p of pts) {
+    const n = p.c.neighbor;
+    box(p.x, p.y, clip(n.id, 20), { status: n.status, review: n.review, sel: st.sel === p.c,
+      tip: n.id + (n.kind ? " (" + n.kind + ")" : ""), pick: () => { st.sel = p.c; rerender(); } });
+  }
+  box(cx, cy, clip(center, 22), { center: true, tip: center });
+  w.appendChild(svg);
+
+  const bar = el("div", "conn-selbar");
+  const s = st.sel;
+  if (s && vis.includes(s)) {
+    const n = s.neighbor;
+    const txt = el("span", "conn-seltxt");
+    const meta = [(s.dir === "out" ? "this " + s.kind + " → it" : "it " + s.kind + " → this"), n.kind, n.status, n.review,
+      s.review === "proposed" && "edge proposed"].filter(Boolean).join(" · ");
+    txt.append(el("span", "crow-id", n.id), el("span", "crow-sub", n.missing ? "no entity with this id" : meta));
+    bar.appendChild(txt);
+    if (!n.missing) {
+      const open = el("button", "src-btn conn-open", "Open drawer"); open.type = "button";
+      open.addEventListener("click", () => openEntity(n.id, "Connections"));
+      bar.appendChild(open);
+    }
+  } else bar.appendChild(el("span", "muted", "Select a neighbor to see the edge and open its drawer."));
+  w.appendChild(bar);
+  return w;
+}
+
+// ---------- pop-out graph (task-ui-atom-neighborhood-graph, mockup G) ----------
+// The whole graph from /api/fullgraph in an overlay with zoom and pan, laid out
+// around one center entity: a radial tree over a breadth-first walk of all
+// edges (either direction), so hop h sits on ring h and each subtree keeps an
+// angular sector sized by its leaf count. Entities more than two hops out are
+// drawn as dots; entities with no path to the center sit on the outermost ring.
+// The layout runs in the browser, so both shells (server and plugin) share it.
+const gp = { root: null, svg: null, g: null, data: null, center: null, depth: 2, off: new Set(), sel: null,
+  pos: new Map(), hop: new Map(), radii: [], s: 1, tx: 0, ty: 0, drag: null, lastFocus: null };
+
+function gpBuild() {
+  const root = el("div", "gp"); root.hidden = true;
+  root.setAttribute("role", "dialog"); root.setAttribute("aria-modal", "true"); root.setAttribute("aria-label", "konspekt graph");
+  root.innerHTML = `
+    <header class="gp-head">
+      <span class="gp-title">konspekt graph</span>
+      <span class="gp-sum" id="gpSum"></span>
+      <span class="conn-fill"></span>
+      <label class="gp-find">Find<input id="gpFind" type="search" placeholder="entity id" list="gpIds" autocomplete="off"></label>
+      <datalist id="gpIds"></datalist>
+      <span class="gp-lbl">Depth</span>
+      <span class="gp-depths" id="gpDepths"></span>
+      <button type="button" class="gp-btn" id="gpOut" aria-label="Zoom out">−</button>
+      <span class="gp-pct" id="gpPct"></span>
+      <button type="button" class="gp-btn" id="gpIn" aria-label="Zoom in">+</button>
+      <button type="button" class="gp-btn" id="gpFit">Center</button>
+      <button type="button" class="gp-btn" id="gpClose" aria-label="Close the graph and return to the drawer">✕ Close</button>
+    </header>
+    <div class="gp-kinds"><span class="gp-lbl">Edge kinds</span><span id="gpChips" class="gp-chips"></span><span class="conn-fill"></span>
+      <span class="gp-lbl">Drag to pan · wheel or +/− to zoom · dashed = proposed</span></div>
+    <div class="gp-main">
+      <div class="gp-canvas" id="gpCanvas">
+        <div class="gp-legend">
+          <span><i style="border-color:var(--st-open)"></i>open</span><span><i style="border-color:var(--st-active)"></i>active</span>
+          <span><i style="border-color:var(--st-resolved)"></i>resolved</span><span><i style="border-color:var(--ink-3);border-style:dashed"></i>proposed entity</span>
+          <span><b></b>beyond depth 2</span>
+        </div>
+      </div>
+      <aside class="gp-side" aria-label="Selected entity" id="gpSide"></aside>
+    </div>`;
+  document.body.appendChild(root);
+  gp.root = root;
+  gp.svg = svgEl("svg", { class: "gp-svg" });
+  gp.g = svgEl("g"); gp.svg.appendChild(gp.g);
+  $("gpCanvas").prepend(gp.svg);
+  $("gpClose").addEventListener("click", closeGraphPop);
+  $("gpIn").addEventListener("click", () => gpZoomAt(gp.s * 1.25));
+  $("gpOut").addEventListener("click", () => gpZoomAt(gp.s / 1.25));
+  $("gpFit").addEventListener("click", gpFit);
+  const find = $("gpFind");
+  const go = () => { const id = find.value.trim(); if (gp.data && gp.data.byId.has(id)) gpFocus(id); };
+  find.addEventListener("change", go);
+  find.addEventListener("keydown", (ev) => { if (ev.key === "Enter") go(); });
+  // Pan by dragging the background; a node's own pointerdown does not start a drag.
+  gp.svg.addEventListener("pointerdown", (ev) => {
+    gp.drag = { x: ev.clientX, y: ev.clientY, tx: gp.tx, ty: gp.ty }; gp.svg.setPointerCapture(ev.pointerId); gp.svg.classList.add("dragging");
+  });
+  gp.svg.addEventListener("pointermove", (ev) => { if (!gp.drag) return; gp.tx = gp.drag.tx + ev.clientX - gp.drag.x; gp.ty = gp.drag.ty + ev.clientY - gp.drag.y; gpTransform(); });
+  const end = () => { gp.drag = null; gp.svg.classList.remove("dragging"); };
+  gp.svg.addEventListener("pointerup", end); gp.svg.addEventListener("pointercancel", end);
+  gp.svg.addEventListener("wheel", (ev) => {
+    ev.preventDefault(); const r = gp.svg.getBoundingClientRect();
+    gpZoomAt(gp.s * (ev.deltaY < 0 ? 1.12 : 1 / 1.12), ev.clientX - r.left, ev.clientY - r.top);
+  }, { passive: false });
+}
+
+async function openGraphPop(centerId) {
+  if (!gp.root) gpBuild();
+  gp.lastFocus = document.activeElement;
+  gp.root.hidden = false; $("gpClose").focus();
+  $("gpSum").textContent = "loading…";
+  let data;
+  try { data = await (await fetch("/api/fullgraph", { cache: "no-store" })).json(); } catch { data = { error: "server unreachable" }; }
+  if (data.error) { $("gpSum").textContent = data.error; return; }
+  const byId = new Map(data.nodes.map((n) => [n.id, n]));
+  const adj = new Map(data.nodes.map((n) => [n.id, []]));
+  for (const e of data.edges) { adj.get(e.from).push(e.to); if (e.from !== e.to) adj.get(e.to).push(e.from); }
+  for (const list of adj.values()) list.sort();
+  gp.data = { ...data, byId, adj };
+  $("gpIds").innerHTML = ""; for (const n of data.nodes) { const o = document.createElement("option"); o.value = n.id; $("gpIds").appendChild(o); }
+  gp.depth = 2; gp.off = new Set();
+  gpRecenter(byId.has(centerId) ? centerId : data.nodes[0] && data.nodes[0].id);
+}
+function closeGraphPop() {
+  if (!gp.root || gp.root.hidden) return;
+  gp.root.hidden = true;
+  if (gp.lastFocus && gp.lastFocus.focus) gp.lastFocus.focus();
+}
+
+// Radial tree layout around `center` (see the section comment). Ring radii grow
+// with the ring's population so labels on a crowded ring keep some spacing.
+function gpLayout(center) {
+  const { adj, nodes } = gp.data;
+  const hop = new Map([[center, 0]]), parent = new Map(), kids = new Map([[center, []]]);
+  const queue = [center];
+  for (let i = 0; i < queue.length; i++) {
+    const v = queue[i];
+    for (const w of adj.get(v)) if (!hop.has(w)) { hop.set(w, hop.get(v) + 1); parent.set(w, v); kids.get(v).push(w); kids.set(w, []); queue.push(w); }
+  }
+  const leaves = new Map();
+  for (let i = queue.length - 1; i >= 0; i--) { const v = queue[i]; leaves.set(v, Math.max(1, kids.get(v).reduce((s, k) => s + leaves.get(k), 0))); }
+  const maxHop = queue.length ? hop.get(queue[queue.length - 1]) : 0;
+  const perRing = []; for (const v of queue) perRing[hop.get(v)] = (perRing[hop.get(v)] || 0) + 1;
+  const unreached = nodes.map((n) => n.id).filter((id) => !hop.has(id));
+  const radii = [0];
+  for (let h = 1; h <= maxHop + 1; h++) {
+    const n = h <= maxHop ? perRing[h] : unreached.length;
+    const spacing = h <= 2 ? 60 : 12;
+    radii[h] = Math.max(radii[h - 1] + (h === 1 ? 240 : 190), (n * spacing) / (2 * Math.PI));
+  }
+  const pos = new Map([[center, [0, 0]]]);
+  const place = (v, a0, a1) => {
+    let a = a0; const total = leaves.get(v);
+    kids.get(v).forEach((k, j) => {
+      const span = ((a1 - a0) * leaves.get(k)) / total, mid = a + span / 2, h = hop.get(k);
+      const r = radii[h] + (h >= 2 ? (j % 3) * 26 : 0);
+      pos.set(k, [r * Math.cos(mid) * 1.35, r * Math.sin(mid)]);
+      place(k, a, a + span); a += span;
+    });
+  };
+  place(center, -Math.PI / 2, (3 * Math.PI) / 2);
+  // The two labeled rings are re-spaced evenly in the order the sectors gave,
+  // so a ring whose subtrees differ in size does not crowd its labels together.
+  for (const h of [1, 2]) {
+    const ring = queue.filter((v) => hop.get(v) === h);
+    if (ring.length < 2) continue;
+    const ang = (v) => { const [x, y] = pos.get(v); const a = Math.atan2(y, x / 1.35); return a < -Math.PI / 2 ? a + 2 * Math.PI : a; };
+    ring.sort((a, b) => ang(a) - ang(b));
+    const a0 = ang(ring[0]);
+    ring.forEach((v, i) => {
+      const a = a0 + (i * 2 * Math.PI) / ring.length, r = radii[h] + (h === 2 ? (i % 3) * 26 : 0);
+      pos.set(v, [r * Math.cos(a) * 1.35, r * Math.sin(a)]);
+    });
+  }
+  unreached.forEach((id, i) => {
+    const a = -Math.PI / 2 + (i * 2 * Math.PI) / unreached.length, r = radii[maxHop + 1];
+    pos.set(id, [r * Math.cos(a) * 1.35, r * Math.sin(a)]); hop.set(id, Infinity);
+  });
+  gp.pos = pos; gp.hop = hop; gp.radii = radii;
+}
+function gpRecenter(id) {
+  if (!id) return;
+  gp.center = id; gp.sel = id;
+  gpLayout(id); gpRender(); gpFit();
+}
+const gpShown = (id) => gp.hop.get(id) <= gp.depth;
+function gpRender() {
+  const { nodes, edges, byId } = gp.data;
+  const shownN = nodes.filter((n) => gpShown(n.id)).length;
+  $("gpSum").innerHTML = "";
+  $("gpSum").append("centered on ", el("span", "mono", gp.center), ` · ${shownN} of ${nodes.length} entities · ${edges.length} edges`);
+  const depths = $("gpDepths"); depths.innerHTML = "";
+  for (const [d, label] of [[1, "1"], [2, "2"], [Infinity, "All"]]) {
+    const b = el("button", "gp-btn", label); b.type = "button"; b.setAttribute("aria-pressed", String(gp.depth === d));
+    b.addEventListener("click", () => { gp.depth = d; gpRender(); });
+    depths.appendChild(b);
+  }
+  const chips = $("gpChips"); chips.innerHTML = "";
+  for (const k of [...new Set(edges.map((e) => e.kind))].sort()) {
+    const on = !gp.off.has(k);
+    const b = el("button", "gp-btn", k); b.type = "button"; b.setAttribute("aria-pressed", String(on));
+    const sw = el("span", "gp-sw"); sw.style.borderTopColor = kindColor(k); b.prepend(sw);
+    b.addEventListener("click", () => { if (on) gp.off.add(k); else gp.off.delete(k); gpRender(); });
+    chips.appendChild(b);
+  }
+  const g = gp.g; g.innerHTML = "";
+  const touch = (e) => e.from === gp.sel || e.to === gp.sel;
+  const drawn = edges.filter((e) => !gp.off.has(e.kind) && gpShown(e.from) && gpShown(e.to));
+  for (const e of drawn) {
+    const [x1, y1] = gp.pos.get(e.from), [x2, y2] = gp.pos.get(e.to);
+    const line = svgEl("line", { x1, y1, x2, y2, stroke: kindColor(e.kind), "stroke-width": touch(e) ? 2.5 : 1.2, opacity: touch(e) ? 1 : 0.4 });
+    if (e.review === "proposed") line.setAttribute("stroke-dasharray", "5 4");
+    line.appendChild(svgEl("title")).textContent = e.from + " " + e.kind + " " + e.to + (e.review === "proposed" ? " (proposed)" : "");
+    g.appendChild(line);
+  }
+  for (const n of nodes) {
+    if (!gpShown(n.id)) continue;
+    const [x, y] = gp.pos.get(n.id), h = gp.hop.get(n.id), sel = n.id === gp.sel;
+    const tip = [n.id, n.kind, n.status, n.review].filter(Boolean).join(" · ");
+    const grp = svgEl("g", { class: "gp-node" + (sel ? " sel" : "") + (h === 0 ? " center" : ""), transform: `translate(${x},${y})`, tabindex: "0", role: "button", "aria-label": tip });
+    if (h <= 2 || sel) {
+      const fs = h === 0 ? 14 : h === 1 ? 12 : 10.5, label = h <= 1 || sel ? n.id : clip(n.id, 26);
+      const wd = label.length * fs * 0.6 + (h === 0 ? 24 : 14), ht = fs + (h === 0 ? 16 : 10);
+      const rect = svgEl("rect", { x: -wd / 2, y: -ht / 2, width: wd, height: ht, rx: 7,
+        style: "stroke:" + (stColor[n.status] || (h === 0 ? "var(--accent)" : "var(--ink-3)")) });
+      if (n.review === "proposed") rect.setAttribute("stroke-dasharray", "4 3");
+      const t = svgEl("text", { y: fs * 0.36, "text-anchor": "middle", style: "font-size:" + fs + "px" }); t.textContent = label;
+      grp.append(rect, t);
+    } else grp.appendChild(svgEl("circle", { r: 4.5, class: "gp-dot" }));
+    grp.appendChild(svgEl("title")).textContent = tip;
+    grp.addEventListener("pointerdown", (ev) => ev.stopPropagation());
+    grp.addEventListener("click", () => { gp.sel = n.id; gpRender(); });
+    grp.addEventListener("keydown", (ev) => { if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); gp.sel = n.id; gpRender(); } });
+    g.appendChild(grp);
+  }
+  gpSide(byId, drawn);
+  gpTransform();
+}
+function gpSide(byId, drawn) {
+  const side = $("gpSide"); side.innerHTML = "";
+  const n = byId.get(gp.sel); if (!n) return;
+  const h = gp.hop.get(n.id);
+  side.append(el("span", "conn-kind", "Selected"), el("span", "gp-selid mono", n.id));
+  if (n.title) side.appendChild(el("span", "gp-seltitle", n.title));
+  side.appendChild(el("span", "muted", [n.kind, n.status, n.review, h === 0 ? "center" : h === Infinity ? "no path to the center" : "hop " + h].filter(Boolean).join(" · ")));
+  const mine = drawn.filter((e) => e.from === n.id || e.to === n.id);
+  side.appendChild(el("span", "conn-kind gp-edgesh", "Edges in view · " + mine.length));
+  const list = el("div", "gp-edges");
+  for (const e of mine) {
+    const other = e.from === n.id ? e.to : e.from;
+    const b = el("button", "gp-edge mono", (e.from === n.id ? "→ " : "← ") + e.kind + " " + other + (e.review === "proposed" ? " (proposed)" : ""));
+    b.type = "button"; b.title = "Select " + other;
+    b.addEventListener("click", () => { gp.sel = other; gpRender(); });
+    list.appendChild(b);
+  }
+  side.appendChild(list);
+  side.appendChild(el("span", "conn-fill"));
+  if (n.id !== gp.center) {
+    const c = el("button", "gp-btn", "Center on this entity"); c.type = "button";
+    c.addEventListener("click", () => gpRecenter(n.id)); side.appendChild(c);
+  }
+  const o = el("button", "gp-btn", "Open its drawer"); o.type = "button";
+  o.addEventListener("click", () => {
+    closeGraphPop();
+    const top = stack[stack.length - 1];
+    if (drawer.classList.contains("open") && top && top.base === n.id) return;
+    openEntity(n.id, "Graph");
+  });
+  side.appendChild(o);
+}
+function gpTransform() {
+  gp.g.setAttribute("transform", `translate(${gp.tx},${gp.ty}) scale(${gp.s})`);
+  $("gpPct").textContent = Math.round(gp.s * 100) + "%";
+}
+function gpZoomAt(ns, px, py) {
+  const r = gp.svg.getBoundingClientRect();
+  if (px === undefined) { px = r.width / 2; py = r.height / 2; }
+  ns = Math.max(0.1, Math.min(3, ns));
+  gp.tx = px - ((px - gp.tx) * ns) / gp.s; gp.ty = py - ((py - gp.ty) * ns) / gp.s; gp.s = ns;
+  gpTransform();
+}
+// Center the view on the center entity, scaled so rings up to depth 2 fit.
+function gpFit() {
+  const r = gp.svg.getBoundingClientRect();
+  // Ring 2 plus its radius offsets (up to 52) and half a label on each side.
+  const ring = (gp.radii[Math.min(2, gp.radii.length - 1)] || 240) + 52;
+  gp.s = Math.max(0.1, Math.min(1.2, Math.min(r.width / (2 * ring * 1.35 + 360), r.height / (2 * ring + 80))));
+  gp.tx = r.width / 2; gp.ty = r.height / 2;
+  gpTransform();
+}
+// Select an entity found by id and pan to it, showing every depth if needed.
+function gpFocus(id) {
+  if (!gpShown(id)) gp.depth = Infinity;
+  gp.sel = id; gpRender();
+  const r = gp.svg.getBoundingClientRect(), [x, y] = gp.pos.get(id);
+  gp.tx = r.width / 2 - x * gp.s; gp.ty = r.height / 2 - y * gp.s; gpTransform();
 }
 
 function closeDetail() {
@@ -617,7 +1102,11 @@ function closeDetail() {
 }
 $("drawerClose").addEventListener("click", closeDetail);
 backdrop.addEventListener("click", closeDetail);
-document.addEventListener("keydown", (e) => { if (e.key === "Escape" && drawer.classList.contains("open")) closeDetail(); });
+document.addEventListener("keydown", (e) => {
+  if (e.key !== "Escape") return;
+  if (gp.root && !gp.root.hidden) closeGraphPop();
+  else if (drawer.classList.contains("open")) closeDetail();
+});
 
 // ---------- Decisions (ASR/ADR) ----------
 const UNDRIVEN = "__undriven__"; // group id for ADRs with no drives edge from an ASR

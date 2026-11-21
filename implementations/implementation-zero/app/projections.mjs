@@ -62,6 +62,50 @@ export function statsFrom(g, now = Date.now()) {
   };
 }
 
+// The display fields of one entity, as a graph node or an edge's neighbor.
+// `missing` marks an edge endpoint that names no entity in the graph.
+function nodeOf(g, id) {
+  const e = g.byId.get(id);
+  if (!e || e.entityType === "project") return { id, kind: null, status: null, review: null, title: null, missing: true };
+  const kind = e.entityType === "node" ? (e.type || "node") : e.entityType;
+  return { id, kind, status: e.status ?? null, review: e.review ?? null, title: e.title || e.label || null, missing: false };
+}
+
+// Every edge that touches `id`, in both directions and across all edge kinds
+// (task-ui-atom-neighborhood-graph). `dir` is "out" when `id` is the edge's
+// `from` and "in" when it is the edge's `to`; a self-loop is listed once, as
+// "out". Sorted by kind, then direction (out first), then neighbor id. Returns
+// null when `id` names no entity.
+export function neighborsFrom(g, id) {
+  if (!g.byId.has(id) || g.byId.get(id).entityType === "project") return null;
+  const out = [];
+  for (const e of g.edges) {
+    const dir = e.from.id === id ? "out" : e.to.id === id ? "in" : null;
+    if (!dir) continue;
+    const nid = dir === "out" ? e.to.id : e.from.id;
+    out.push({ edge: e.id, kind: e.kind, dir, review: e.review ?? null, neighbor: nodeOf(g, nid) });
+  }
+  out.sort((a, b) => (a.kind < b.kind ? -1 : a.kind > b.kind ? 1 : 0) ||
+    (a.dir === b.dir ? 0 : a.dir === "out" ? -1 : 1) || (a.neighbor.id < b.neighbor.id ? -1 : 1));
+  return { id, entity: nodeOf(g, id), edges: out };
+}
+
+// The whole graph for the pop-out view: every entity as a node and every edge
+// whose two endpoints name entities. An edge with a dangling endpoint is
+// counted in `dangling` and left out, so every edge the view draws has two
+// nodes to attach to.
+export function fullGraphFrom(g) {
+  const nodes = [];
+  eachEntity(g, (e) => nodes.push(nodeOf(g, e.id)));
+  const known = new Set(nodes.map((n) => n.id));
+  const edges = []; let dangling = 0;
+  for (const e of g.edges) {
+    if (!known.has(e.from.id) || !known.has(e.to.id)) { dangling++; continue; }
+    edges.push({ id: e.id, kind: e.kind, from: e.from.id, to: e.to.id, review: e.review ?? null });
+  }
+  return { nodes, edges, dangling };
+}
+
 // The goals list with a decomposes roll-up per goal (reuses goalState).
 export function goalsFrom(g) {
   const rank = (r) => (r.review === "accepted" ? 0 : 1);

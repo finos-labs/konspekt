@@ -74,6 +74,8 @@ class ViewServer(private val project: Project) {
         path.startsWith("/api/transitions") -> InstanceReader.transitionsJson(dir, param(ex, "ref") ?: "")
         path.startsWith("/api/changes")  -> InstanceReader.changesJson(dir, param(ex, "entity") ?: "")
         path.startsWith("/api/asradr")   -> InstanceReader.asradrJson(g)
+        path.startsWith("/api/neighbors") -> InstanceReader.neighborsJson(g, param(ex, "id") ?: "")
+        path.startsWith("/api/fullgraph") -> InstanceReader.fullGraphJson(g)
         else -> "{\"error\":\"not found\"}"
       }
       sendJson(ex, json)

@@ -37,7 +37,7 @@ import { fileURLToPath } from "node:url";
 import { loadInstance, parseNiRef } from "../../../lib/conformance.mjs";
 import { loadActivePersonas } from "../../../lib/load-personas.mjs";
 import { goalState } from "../../../lib/views.mjs";
-import { rowsFrom, statsFrom, goalsFrom } from "./projections.mjs";
+import { rowsFrom, statsFrom, goalsFrom, neighborsFrom, fullGraphFrom } from "./projections.mjs";
 
 // The instance-relative path of a content-addressed file in `dir` (sources or
 // commands) for a reference: an `ni:///sha-256` URI maps to `<dir>/sha-256/<hex>.md`,
@@ -364,6 +364,18 @@ const server = createServer((req, res) => {
     if (!graph) return sendJson(res, { error: snapshot.error || "not loaded" }, 503);
     try { return sendJson(res, goalState(graph, url.searchParams.get("goal") || "")); }
     catch (e) { return sendJson(res, { error: String(e.message || e) }, 404); }
+  }
+  // Every edge touching one entity, both directions and all kinds, with each
+  // neighbor's display fields (task-ui-atom-neighborhood-graph).
+  if (path === "/api/neighbors") {
+    if (!graph) return sendJson(res, { error: snapshot.error || "not loaded" }, 503);
+    const n = neighborsFrom(graph, url.searchParams.get("id") || "");
+    return n ? sendJson(res, n) : sendJson(res, { error: "no such entity" }, 404);
+  }
+  // The whole graph (all entities, all edges between them) for the pop-out view.
+  if (path === "/api/fullgraph") {
+    if (!graph) return sendJson(res, { error: snapshot.error || "not loaded" }, 503);
+    return sendJson(res, fullGraphFrom(graph));
   }
   // One entity's raw markdown file, plus its provenance source pointer (null when
   // the entity predates content-addressed provenance). The path comes from the

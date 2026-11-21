@@ -617,4 +617,47 @@ object InstanceReader {
     return "{\"count\":${asrs.size + allAdrs.size},\"adrCount\":${allAdrs.size}," +
       "\"asrs\":[${asrs.joinToString(",")}],\"undriven\":[$undriven]}"
   }
+
+  // ---------- neighbors and the full graph (task-ui-atom-neighborhood-graph) ----------
+  // Mirror implementation-zero's projections.mjs neighborsFrom / fullGraphFrom.
+
+  // The display fields of one entity, as a graph node or an edge's neighbor.
+  // `missing` marks an edge endpoint that names no entity in the graph.
+  private fun nodeJson(g: Graph, id: String): String {
+    val e = g.byId[id]
+      ?: return "{\"id\":${q(id)},\"kind\":null,\"status\":null,\"review\":null,\"title\":null,\"missing\":true}"
+    return "{\"id\":${q(id)},\"kind\":${q(e.displayKind())},\"status\":${q(e.status)},\"review\":${q(e.review)},\"title\":${q(e.title)},\"missing\":false}"
+  }
+  private fun edgeReview(e: Edge): String? = e.review?.ifBlank { null }
+
+  // Every edge that touches `id`, both directions, all kinds. `dir` is "out"
+  // when `id` is the edge's `from`, "in" when it is the `to`; a self-loop is
+  // listed once, as "out". Sorted by kind, then direction (out first), then
+  // neighbor id.
+  fun neighborsJson(g: Graph, id: String): String {
+    if (g.byId[id] == null) return "{\"error\":\"no such entity\"}"
+    data class Conn(val e: Edge, val dir: String, val nid: String)
+    val conns = g.edges.mapNotNull { e ->
+      val from = stripType(e.from); val to = stripType(e.to)
+      when (id) { from -> Conn(e, "out", to); to -> Conn(e, "in", from); else -> null }
+    }.sortedWith(compareBy<Conn>({ it.e.kind }, { if (it.dir == "out") 0 else 1 }, { it.nid }))
+    val arr = conns.joinToString(",") { c ->
+      "{\"edge\":${q(c.e.id)},\"kind\":${q(c.e.kind)},\"dir\":${q(c.dir)},\"review\":${q(edgeReview(c.e))},\"neighbor\":${nodeJson(g, c.nid)}}"
+    }
+    return "{\"id\":${q(id)},\"entity\":${nodeJson(g, id)},\"edges\":[$arr]}"
+  }
+
+  // The whole graph for the pop-out view: every entity, and every edge whose two
+  // endpoints name entities. An edge with a dangling endpoint is counted in
+  // `dangling` and left out.
+  fun fullGraphJson(g: Graph): String {
+    val nodes = g.entities.joinToString(",") { nodeJson(g, it.id) }
+    var dangling = 0
+    val edges = g.edges.mapNotNull { e ->
+      val from = stripType(e.from); val to = stripType(e.to)
+      if (g.byId[from] == null || g.byId[to] == null) { dangling++; null }
+      else "{\"id\":${q(e.id)},\"kind\":${q(e.kind)},\"from\":${q(from)},\"to\":${q(to)},\"review\":${q(edgeReview(e))}}"
+    }
+    return "{\"nodes\":[$nodes],\"edges\":[${edges.joinToString(",")}],\"dangling\":$dangling}"
+  }
 }

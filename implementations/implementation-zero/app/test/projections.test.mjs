@@ -3,7 +3,7 @@
 
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { rowsFrom, statsFrom, goalsFrom } from "../projections.mjs";
+import { rowsFrom, statsFrom, goalsFrom, neighborsFrom, fullGraphFrom } from "../projections.mjs";
 
 function makeGraph() {
   const nodes = [
@@ -54,4 +54,38 @@ test("goalsFrom: one goal with its decomposes roll-up", () => {
   assert.equal(goals[0].rollup.total, 2); // task-1 and task-2 reachable
   assert.deepEqual(goals[0].rollup.byStatus, { open: 1, resolved: 1 });
   assert.equal(goals[0].rollup.proposed, 1);
+});
+
+// task-ui-atom-neighborhood-graph: the neighbor list and the full graph.
+function makeEdgeGraph() {
+  const g = makeGraph();
+  g.edges = [
+    { id: "e1", kind: "decomposes", from: { type: "node", id: "goal-a" }, to: { type: "node", id: "task-1" }, review: "accepted" },
+    { id: "e2", kind: "notes", from: { type: "node", id: "task-1" }, to: { type: "noteworthy", id: "nw-x" }, review: "proposed" },
+    { id: "e3", kind: "links", from: { type: "node", id: "task-2" }, to: { type: "node", id: "task-1" }, review: "accepted" },
+    { id: "e4", kind: "notes", from: { type: "node", id: "task-1" }, to: { type: "noteworthy", id: "nw-gone" }, review: "accepted" },
+  ];
+  return g;
+}
+
+test("neighborsFrom: both directions, all kinds, sorted by kind then direction", () => {
+  const n = neighborsFrom(makeEdgeGraph(), "task-1");
+  assert.equal(n.id, "task-1");
+  assert.deepEqual(n.edges.map((e) => [e.kind, e.dir, e.neighbor.id]), [
+    ["decomposes", "in", "goal-a"], ["links", "in", "task-2"], ["notes", "out", "nw-gone"], ["notes", "out", "nw-x"],
+  ]);
+  const nw = n.edges.find((e) => e.neighbor.id === "nw-x");
+  assert.equal(nw.review, "proposed", "the edge's own review is carried");
+  assert.deepEqual({ kind: nw.neighbor.kind, missing: nw.neighbor.missing }, { kind: "noteworthy", missing: false });
+  assert.equal(n.edges.find((e) => e.neighbor.id === "nw-gone").neighbor.missing, true, "a dangling endpoint is marked missing");
+  assert.equal(n.edges.find((e) => e.neighbor.id === "goal-a").neighbor.title, "Goal A");
+  assert.equal(neighborsFrom(makeEdgeGraph(), "nope"), null);
+});
+
+test("fullGraphFrom: every entity, and only edges between entities", () => {
+  const f = fullGraphFrom(makeEdgeGraph());
+  assert.equal(f.nodes.length, 4);
+  assert.deepEqual(f.edges.map((e) => e.id), ["e1", "e2", "e3"]);
+  assert.equal(f.dangling, 1);
+  assert.deepEqual(f.edges[1], { id: "e2", kind: "notes", from: "task-1", to: "nw-x", review: "proposed" });
 });

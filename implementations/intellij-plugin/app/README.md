@@ -81,8 +81,12 @@ content's location in the store, expanded from `store.resolve` in `project.md`,
 with the layout path `.konspekt/instance/...` as the fallback. `/api/entity` also
 returns `provenance.deprecated` and the provenance timestamp, conversation and
 confidence. With these, the drawer links every reference it shows, opens it in a
-source view, and lists the entity's references on the Provenance tab. Each
-endpoint mirrors the implementation-zero server's endpoint of the same name.
+source view, and lists the entity's references on the Provenance tab. For
+`task-ui-atom-neighborhood-graph` (0.0.17), `/api/neighbors` (every edge touching
+one entity, both directions, with each neighbor's kind, status, review and title)
+backs the drawer's Connections frame, and `/api/fullgraph` (every entity and every
+edge between entities) backs the pop-out graph view. Each endpoint mirrors the
+implementation-zero server's endpoint of the same name.
 
 **Writes (human dispositions, working-tree only):** `POST /api/accept`
 (`task-ui-simple-actions`) and `POST /api/resolve` (`task-ui-resolve-action`, the

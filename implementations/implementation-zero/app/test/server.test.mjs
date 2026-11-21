@@ -229,6 +229,30 @@ test("GET /api/entity exposes status and entityType", async () => {
   assert.ok(["open", "active", "resolved", "abandoned"].includes(d.status), "a node carries a status");
 });
 
+// task-ui-atom-neighborhood-graph: the neighbor list and the full graph.
+
+test("GET /api/neighbors lists every edge touching an entity, both directions", async () => {
+  const n = await (await get("/api/neighbors?id=task-ui-atom-neighborhood-graph")).json();
+  assert.equal(n.id, "task-ui-atom-neighborhood-graph");
+  assert.equal(n.entity.kind, "task");
+  const has = (kind, dir, id) => n.edges.some((e) => e.kind === kind && e.dir === dir && e.neighbor.id === id);
+  assert.ok(has("decomposes", "in", "goal-usability"), "the parent goal is an incoming decomposes edge");
+  assert.ok(has("notes", "out", "nw-connections-list-default-graph-toggle"), "the attached decision is an outgoing notes edge");
+  for (const e of n.edges) assert.ok(e.edge && e.kind && (e.dir === "in" || e.dir === "out") && "review" in e && "missing" in e.neighbor);
+  const r = await get("/api/neighbors?id=nope-nope");
+  assert.equal(r.status, 404);
+  assert.ok((await r.json()).error);
+});
+
+test("GET /api/fullgraph returns every entity and the edges between them", async () => {
+  const f = await (await get("/api/fullgraph")).json();
+  const s = await (await get("/api/stats")).json();
+  assert.equal(f.nodes.length, s.total, "one node per entity");
+  assert.equal(f.edges.length + f.dangling, s.edges, "every edge is drawn or counted as dangling");
+  const ids = new Set(f.nodes.map((x) => x.id));
+  for (const e of f.edges) assert.ok(ids.has(e.from) && ids.has(e.to), "both endpoints of a drawn edge are nodes");
+});
+
 // Writes run against the throwaway copy (BASE2), never the repo instance.
 
 test("POST /api/resolve flips an open/active node to resolved, and is idempotent", async () => {
