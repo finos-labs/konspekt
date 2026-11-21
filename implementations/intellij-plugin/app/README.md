@@ -43,14 +43,17 @@ The build fails with a clear message if it is unset. (The install whose
 ## Build and run
 
 ```
-./gradlew buildPlugin     # -> implementations/intellij-plugin/app/build/distributions/konspekt-intellij-0.0.12.zip
+./gradlew buildPlugin     # -> build/distributions/konspekt-intellij-<version>.zip
 ./gradlew runIde          # launches a sandbox IDE; open the "konspekt" tool window (right edge)
 ./gradlew test            # JVM unit tests over InstanceReader (src/test/kotlin); no IDE launched
 ```
 
-Install the built zip into your own IDE: Settings → Plugins → ⚙ →
-*Install Plugin from Disk…* →
-`implementations/intellij-plugin/app/build/distributions/konspekt-intellij-0.0.12.zip`.
+`<version>` is `pluginVersion` in `gradle.properties`. Install the built zip into
+your own IDE: Settings → Plugins → ⚙ → *Install Plugin from Disk…* →
+`implementations/intellij-plugin/app/build/distributions/konspekt-intellij-<version>.zip`,
+then restart the IDE. The view is copied in at build time (see One-view
+guarantee), so a change to `implementation-zero/app/view` reaches the plugin only
+through a rebuild, and a release bumps `pluginVersion`.
 
 ## Status
 
@@ -68,6 +71,18 @@ milestone) and backs `/api/entities`, `/api/stats`, `/api/goals`, `/api/graph`,
 each instance change, so Changes / Stats / Goals and the entity detail drawer
 populate and refresh live. It reads the instance of whichever project is open in
 the IDE. Confirmed rendering and live refresh from the installed-from-disk zip.
+
+**Later read endpoints:** `/api/commands` and `/api/changes` (the entity's
+recorded commands and changed-code rows), `/api/asradr` (the Decisions tab),
+and, for `task-ui-clickable-source-refs` (0.0.16), `/api/command` (one recorded
+command by its `command:ni:` reference) and `/api/transitions` (one entity's
+transition-log rows). `/api/source` and `/api/command` also return the
+content's location in the store, expanded from `store.resolve` in `project.md`,
+with the layout path `.konspekt/instance/...` as the fallback. `/api/entity` also
+returns `provenance.deprecated` and the provenance timestamp, conversation and
+confidence. With these, the drawer links every reference it shows, opens it in a
+source view, and lists the entity's references on the Provenance tab. Each
+endpoint mirrors the implementation-zero server's endpoint of the same name.
 
 **Writes (human dispositions, working-tree only):** `POST /api/accept`
 (`task-ui-simple-actions`) and `POST /api/resolve` (`task-ui-resolve-action`, the
