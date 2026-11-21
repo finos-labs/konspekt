@@ -1407,3 +1407,5 @@ proposing agent was not recorded.
 | node:task-review-noteworthy-status | review |  | proposed | 2026-11-21T14:33:27Z |  | claude |
 | node:task-review-noteworthy-status | status |  | open | 2026-11-21T14:33:27Z |  | claude |
 | edge:e-dec-curated-nwstatus | review |  | proposed | 2026-11-21T14:33:27Z |  | claude |
+| noteworthy:nw-connections-list-default-graph-toggle | review |  | proposed | 2026-11-21T14:46:38Z |  | claude |
+| edge:e-notes-neighborhood-listtoggle | review |  | proposed | 2026-11-21T14:46:38Z |  | claude |
