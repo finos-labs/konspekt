@@ -3,7 +3,7 @@
      Check freshness with: node tools/roadmap.mjs --check
      This file is a pure function of .konspekt/instance/ (no timestamps baked in).
      Goals and tasks are graph nodes; the horizon is derived from node status/review.
-     contentHash: sha256:28806243831f5d4d -->
+     contentHash: sha256:cb4f7fc8e170a76d -->
 
 # konspekt roadmap
 
@@ -80,6 +80,7 @@ Make konspekt's record a high-quality *input* to the model, not only a human-rea
 
 - Add the provenance-completeness invariant to the spec
 - Bind every conversation to a graph entity
+- Review the specification re noteworthy status
 
 **Shipped** — _resolved_
 
@@ -174,7 +175,6 @@ Make a konspekt instance operable by a human through a visual interface, not onl
 - Navigate from a goal to its open tasks
 - Work through and disposition tasks in the interface
 - Show an atom's immediate connections in the drawer, with a pop-out full-graph view
-- Make ni references in the atom drawer open their content
 - Correct the UI footer text to name both write actions
 
 **Later** — _proposed, not yet committed_
@@ -201,6 +201,7 @@ Make a konspekt instance operable by a human through a visual interface, not onl
 - Related-commands tab in the entity detail panel
 - Checkpoint and resume conversation context across sessions, LLMs and venues
 - State in the spec that acceptance is prose
+- Make ni references in the atom drawer open their content
 - Resolve a work node from the UI (POST /api/resolve)
 - Take simple actions from the UI (accept a proposed entity)
 - Show and check ADRs that no ASR drives
@@ -238,4 +239,4 @@ Let several participants — people and agents — propose into and review one s
 
 ---
 
-Generated from 9 goal(s) and 105 task-listing(s) over the instance graph.
+Generated from 9 goal(s) and 106 task-listing(s) over the instance graph.
