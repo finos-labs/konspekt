@@ -254,9 +254,6 @@ button.pv-item:hover{border-color:var(--accent)}
 .conn-head{display:flex;align-items:center;gap:8px;padding:8px 14px;flex-wrap:wrap}
 .conn-caret{appearance:none;border:0;background:none;cursor:pointer;font:inherit;padding:4px 2px;font-weight:600;font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-2)}
 .conn-caret:hover{color:var(--ink)}
-.conn-seg{display:inline-flex;border:1px solid var(--line);border-radius:6px;overflow:hidden}
-.seg-btn{appearance:none;border:0;background:var(--surface);color:var(--ink-2);font:inherit;font-size:11.5px;padding:4px 10px;cursor:pointer;min-height:26px}
-.seg-btn[aria-pressed="true"]{background:var(--accent-soft);color:var(--accent);font-weight:600}
 .conn-fill{flex:1}
 .conn-note{font-size:11px;color:var(--ink-3)}
 .conn-pop{appearance:none;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;font-size:12px;padding:5px 10px;border-radius:6px;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
@@ -276,23 +273,15 @@ button.pv-item:hover{border-color:var(--accent)}
 .crow-sub{font-size:11px;color:var(--ink-2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .crow-meta{flex:0 0 auto;display:flex;align-items:center;gap:6px;font-size:11px}
 .crow-meta .status{font-size:11px}
-.crow:focus-visible,.conn-caret:focus-visible,.seg-btn:focus-visible,.conn-pop:focus-visible{outline:2px solid var(--focus);outline-offset:1px}
-.conn-graph{display:flex;flex-direction:column;gap:8px}
-.conn-chips{display:flex;gap:6px;flex-wrap:wrap}
-.conn-chips .chip{font-size:11px;padding:3px 9px}
-.ego{width:100%;height:auto;border:1px solid var(--line);border-radius:8px;background:var(--surface)}
-.ego-kind{font-size:9.5px;fill:var(--ink-2);paint-order:stroke;stroke:var(--surface);stroke-width:3px}
-.ego-node rect,.gp-node rect{fill:var(--surface);stroke-width:1.5}
-.ego-node text,.gp-node text{font-family:"IBM Plex Mono",monospace;font-size:10.5px;fill:var(--ink)}
-.ego-node[role="button"],.gp-node{cursor:pointer}
-.ego-node.center rect,.gp-node.center rect{fill:var(--accent-soft)}
-.ego-node.center text,.gp-node.center text,.ego-node.sel text,.gp-node.sel text{font-weight:600}
-.ego-node.sel rect,.gp-node.sel rect{fill:var(--accent-soft);stroke-width:2.5}
-.ego-node:focus-visible rect,.gp-node:focus-visible rect{stroke:var(--focus);stroke-width:2.5}
-.ego-node:focus,.gp-node:focus{outline:none}
-.conn-selbar{min-height:44px;display:flex;align-items:center;gap:10px;padding:6px 10px;border:1px solid var(--line);border-radius:8px;background:var(--surface);font-size:12px}
-.conn-seltxt{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
-.conn-open{align-self:center}
+.crow:focus-visible,.conn-caret:focus-visible,.conn-pop:focus-visible{outline:2px solid var(--focus);outline-offset:1px}
+.gp-node rect{fill:var(--surface);stroke-width:1.5}
+.gp-node text{font-family:"IBM Plex Mono",monospace;font-size:10.5px;fill:var(--ink)}
+.gp-node{cursor:pointer}
+.gp-node.center rect{fill:var(--accent-soft)}
+.gp-node.center text,.gp-node.sel text{font-weight:600}
+.gp-node.sel rect{fill:var(--accent-soft);stroke-width:2.5}
+.gp-node:focus-visible rect{stroke:var(--focus);stroke-width:2.5}
+.gp-node:focus{outline:none}
 .gp{position:fixed;inset:0;z-index:60;background:var(--surface);display:flex;flex-direction:column;color:var(--ink)}
 .gp[hidden]{display:none}
 .gp-head{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:10px 16px;border-bottom:1px solid var(--line);background:var(--surface-2)}
@@ -314,6 +303,7 @@ button.pv-item:hover{border-color:var(--accent)}
 .gp-canvas{flex:1;position:relative;overflow:hidden;background:var(--ground)}
 .gp-svg{position:absolute;inset:0;width:100%;height:100%;cursor:grab;touch-action:none;user-select:none}
 .gp-svg.dragging{cursor:grabbing}
+.gp-node.dragging{cursor:grabbing}
 .gp-dot{fill:var(--ink-3);opacity:.7}
 .gp-node.sel .gp-dot{fill:var(--accent);opacity:1}
 .gp-legend{position:absolute;left:12px;bottom:12px;display:flex;flex-direction:column;gap:4px;padding:8px 10px;background:var(--surface);border:1px solid var(--line);border-radius:8px;font-size:11px;color:var(--ink-2);pointer-events:none}

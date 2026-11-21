@@ -675,10 +675,9 @@ function fillEntityView(root, d, cmds, chgs, trans, conns, entry) {
 
 // ---------- Connections frame (task-ui-atom-neighborhood-graph) ----------
 // Below the tab panel of every entity view: each edge that touches the entity,
-// from /api/neighbors. The List view (mockup E) groups the edges by kind; the
-// Graph view (mockup F) draws the same edges as an ego graph. Every view opens
-// in List; the choice is not remembered (nw-connections-list-default-graph-toggle).
-// A dashed border or line marks an edge whose own review is proposed.
+// from /api/neighbors, grouped by kind (mockup E). The graph form of the same
+// connections is the pop-out view, not an in-drawer graph. A dashed border
+// marks an edge whose own review is proposed.
 const KIND_COLOR = { decomposes: "#4a4fb0", links: "#0f7b8a", notes: "#b45309", produces: "#1f8a5b",
   mentions: "#8b5cf6", marks: "#be185d", supersedes: "#b91c1c", relates: "#0369a1", drives: "#a16207" };
 const kindColor = (k) => KIND_COLOR[k] || "#8b93a1";
@@ -688,37 +687,29 @@ const clip = (s, n) => (s.length > n ? s.slice(0, n - 1) + "…" : s);
 const edgeText = (center, c) => (c.dir === "out" ? center + " " + c.kind + " " + c.neighbor.id : c.neighbor.id + " " + c.kind + " " + center);
 
 function renderConnections(d, conns) {
-  const st = { expanded: true, mode: "list", off: new Set(), sel: null };
+  const st = { expanded: true };
   const sec = el("section", "conn"); sec.setAttribute("aria-label", "Connections");
   const head = el("div", "conn-head");
   const caret = el("button", "conn-caret"); caret.type = "button";
-  const seg = el("span", "conn-seg"); seg.setAttribute("role", "group"); seg.setAttribute("aria-label", "Connections view");
-  const bList = el("button", "seg-btn", "List"); bList.type = "button";
-  const bGraph = el("button", "seg-btn", "Graph"); bGraph.type = "button";
-  seg.append(bList, bGraph);
   const propN = conns.filter((c) => c.review === "proposed").length;
   const note = el("span", "conn-note", propN ? propN + " edge" + (propN === 1 ? "" : "s") + " proposed (dashed)" : "");
   const pop = el("button", "conn-pop"); pop.type = "button";
   pop.innerHTML = '<svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M7 1h4v4M11 1 6 6M5 2H1v9h9V7"></path></svg>';
   pop.appendChild(document.createTextNode("Pop out graph"));
   pop.addEventListener("click", () => openGraphPop(d.id));
-  head.append(caret, seg, el("span", "conn-fill"), note, pop);
+  head.append(caret, el("span", "conn-fill"), note, pop);
   const body = el("div", "conn-body");
   sec.append(head, body);
 
   const render = () => {
     caret.textContent = (st.expanded ? "▾" : "▸") + " Connections · " + conns.length;
     caret.setAttribute("aria-expanded", String(st.expanded));
-    bList.setAttribute("aria-pressed", String(st.mode === "list"));
-    bGraph.setAttribute("aria-pressed", String(st.mode === "graph"));
     body.innerHTML = ""; body.hidden = !st.expanded;
     if (!st.expanded) return;
     if (!conns.length) { body.appendChild(el("p", "muted conn-empty", "No edges touch this entity.")); return; }
-    body.appendChild(st.mode === "list" ? connList(d.id, conns) : connGraph(d.id, conns, st, render));
+    body.appendChild(connList(d.id, conns));
   };
   caret.addEventListener("click", () => { st.expanded = !st.expanded; render(); });
-  bList.addEventListener("click", () => { st.mode = "list"; st.expanded = true; render(); });
-  bGraph.addEventListener("click", () => { st.mode = "graph"; st.expanded = true; st.sel = null; render(); });
   render();
   return sec;
 }
@@ -762,82 +753,6 @@ function connList(center, conns) {
   return w;
 }
 
-// The ego graph: the entity in the middle, one point per edge on an ellipse
-// around it, lines colored by kind and dashed when the edge is proposed.
-// Selecting a point shows the edge below; "Open drawer" pushes the neighbor.
-function connGraph(center, conns, st, rerender) {
-  const w = el("div", "conn-graph");
-  const kinds = [...new Set(conns.map((c) => c.kind))].sort();
-  const chips = el("div", "conn-chips");
-  for (const k of kinds) {
-    const on = !st.off.has(k);
-    const b = el("button", "chip", k + " · " + conns.filter((c) => c.kind === k).length); b.type = "button";
-    b.setAttribute("aria-pressed", String(on));
-    const sw = el("span", "dot"); sw.style.background = kindColor(k); b.prepend(sw);
-    b.addEventListener("click", () => { if (on) st.off.add(k); else st.off.delete(k); st.sel = null; rerender(); });
-    chips.appendChild(b);
-  }
-  w.appendChild(chips);
-
-  const vis = conns.filter((c) => !st.off.has(c.kind));
-  const W = 412, H = 236, cx = W / 2, cy = H / 2, rx = 152, ry = 86;
-  const svg = svgEl("svg", { class: "ego", viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": "Connections of " + center });
-  const pts = vis.map((c, i) => {
-    const a = -Math.PI / 2 + (i * 2 * Math.PI) / Math.max(1, vis.length);
-    return { c, x: cx + rx * Math.cos(a), y: cy + ry * Math.sin(a) };
-  });
-  for (const p of pts) {
-    const line = svgEl("line", { x1: cx, y1: cy, x2: p.x, y2: p.y, stroke: kindColor(p.c.kind), "stroke-width": 1.5 });
-    if (p.c.review === "proposed") line.setAttribute("stroke-dasharray", "4 3");
-    line.appendChild(svgEl("title")).textContent = edgeText(center, p.c) + (p.c.review === "proposed" ? " (edge proposed)" : "");
-    svg.appendChild(line);
-    if (vis.length <= 12) {
-      const t = svgEl("text", { x: (cx + p.x) / 2, y: (cy + p.y) / 2 + 3, class: "ego-kind", "text-anchor": "middle" });
-      t.textContent = p.c.kind + (p.c.dir === "out" ? " →" : " ←"); svg.appendChild(t);
-    }
-  }
-  const box = (x, y, label, opts) => {
-    const wd = Math.min(150, label.length * 6.3 + 14), ht = 22;
-    const g = svgEl("g", { class: "ego-node" + (opts.sel ? " sel" : "") + (opts.center ? " center" : ""), transform: `translate(${x - wd / 2},${y - ht / 2})` });
-    const rect = svgEl("rect", { width: wd, height: ht, rx: 6, style: "stroke:" + (stColor[opts.status] || (opts.center ? "var(--accent)" : "var(--ink-3)")) });
-    if (opts.review === "proposed") rect.setAttribute("stroke-dasharray", "4 3");
-    const t = svgEl("text", { x: wd / 2, y: ht / 2 + 4, "text-anchor": "middle" }); t.textContent = label;
-    g.append(rect, t);
-    g.appendChild(svgEl("title")).textContent = opts.tip;
-    if (opts.pick) {
-      g.setAttribute("tabindex", "0"); g.setAttribute("role", "button"); g.setAttribute("aria-label", opts.tip);
-      g.addEventListener("click", opts.pick);
-      g.addEventListener("keydown", (ev) => { if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); opts.pick(); } });
-    }
-    svg.appendChild(g);
-  };
-  for (const p of pts) {
-    const n = p.c.neighbor;
-    box(p.x, p.y, clip(n.id, 20), { status: n.status, review: n.review, sel: st.sel === p.c,
-      tip: n.id + (n.kind ? " (" + n.kind + ")" : ""), pick: () => { st.sel = p.c; rerender(); } });
-  }
-  box(cx, cy, clip(center, 22), { center: true, tip: center });
-  w.appendChild(svg);
-
-  const bar = el("div", "conn-selbar");
-  const s = st.sel;
-  if (s && vis.includes(s)) {
-    const n = s.neighbor;
-    const txt = el("span", "conn-seltxt");
-    const meta = [(s.dir === "out" ? "this " + s.kind + " → it" : "it " + s.kind + " → this"), n.kind, n.status, n.review,
-      s.review === "proposed" && "edge proposed"].filter(Boolean).join(" · ");
-    txt.append(el("span", "crow-id", n.id), el("span", "crow-sub", n.missing ? "no entity with this id" : meta));
-    bar.appendChild(txt);
-    if (!n.missing) {
-      const open = el("button", "src-btn conn-open", "Open drawer"); open.type = "button";
-      open.addEventListener("click", () => openEntity(n.id, "Connections"));
-      bar.appendChild(open);
-    }
-  } else bar.appendChild(el("span", "muted", "Select a neighbor to see the edge and open its drawer."));
-  w.appendChild(bar);
-  return w;
-}
-
 // ---------- pop-out graph (task-ui-atom-neighborhood-graph, mockup G) ----------
 // The whole graph from /api/fullgraph in an overlay with zoom and pan, laid out
 // around one center entity: a radial tree over a breadth-first walk of all
@@ -867,7 +782,7 @@ function gpBuild() {
       <button type="button" class="gp-btn" id="gpClose" aria-label="Close the graph and return to the drawer">✕ Close</button>
     </header>
     <div class="gp-kinds"><span class="gp-lbl">Edge kinds</span><span id="gpChips" class="gp-chips"></span><span class="conn-fill"></span>
-      <span class="gp-lbl">Drag to pan · wheel or +/− to zoom · dashed = proposed</span></div>
+      <span class="gp-lbl">Drag a node to move it · drag the background to pan · wheel or +/− to zoom · dashed = proposed</span></div>
     <div class="gp-main">
       <div class="gp-canvas" id="gpCanvas">
         <div class="gp-legend">
@@ -1006,9 +921,13 @@ function gpRender() {
   const g = gp.g; g.innerHTML = "";
   const touch = (e) => e.from === gp.sel || e.to === gp.sel;
   const drawn = edges.filter((e) => !gp.off.has(e.kind) && gpShown(e.from) && gpShown(e.to));
+  // The line ends attached to each node, so dragging a node moves only its edges.
+  const ends = new Map();
+  const attach = (id, line, n) => { if (!ends.has(id)) ends.set(id, []); ends.get(id).push([line, n]); };
   for (const e of drawn) {
     const [x1, y1] = gp.pos.get(e.from), [x2, y2] = gp.pos.get(e.to);
     const line = svgEl("line", { x1, y1, x2, y2, stroke: kindColor(e.kind), "stroke-width": touch(e) ? 2.5 : 1.2, opacity: touch(e) ? 1 : 0.4 });
+    attach(e.from, line, "1"); attach(e.to, line, "2");
     if (e.review === "proposed") line.setAttribute("stroke-dasharray", "5 4");
     line.appendChild(svgEl("title")).textContent = e.from + " " + e.kind + " " + e.to + (e.review === "proposed" ? " (proposed)" : "");
     g.appendChild(line);
@@ -1028,8 +947,37 @@ function gpRender() {
       grp.append(rect, t);
     } else grp.appendChild(svgEl("circle", { r: 4.5, class: "gp-dot" }));
     grp.appendChild(svgEl("title")).textContent = tip;
-    grp.addEventListener("pointerdown", (ev) => ev.stopPropagation());
-    grp.addEventListener("click", () => { gp.sel = n.id; gpRender(); });
+    // Drag a node to move it; a press that does not move selects it. The new
+    // position stays in gp.pos until the layout is recomputed (Center on this
+    // entity, or reopening the pop-out). Movement is divided by the zoom scale
+    // so the node follows the pointer. The move and release listeners sit on
+    // window for the length of one drag, so the drag continues when the pointer
+    // leaves the node and does not depend on pointer capture.
+    grp.addEventListener("pointerdown", (ev) => {
+      ev.stopPropagation();
+      if (ev.button !== 0) return;
+      const [px, py] = gp.pos.get(n.id);
+      const d = { x: ev.clientX, y: ev.clientY, px, py, moved: false };
+      const move = (mv) => {
+        const dx = mv.clientX - d.x, dy = mv.clientY - d.y;
+        if (!d.moved && Math.hypot(dx, dy) < 4) return;
+        if (!d.moved) { d.moved = true; grp.classList.add("dragging"); }
+        const nx = d.px + dx / gp.s, ny = d.py + dy / gp.s;
+        gp.pos.set(n.id, [nx, ny]);
+        grp.setAttribute("transform", `translate(${nx},${ny})`);
+        for (const [line, k] of ends.get(n.id) || []) { line.setAttribute("x" + k, nx); line.setAttribute("y" + k, ny); }
+      };
+      const end = (up) => {
+        window.removeEventListener("pointermove", move);
+        window.removeEventListener("pointerup", end);
+        window.removeEventListener("pointercancel", end);
+        grp.classList.remove("dragging");
+        if (!d.moved && up.type === "pointerup") { gp.sel = n.id; gpRender(); }
+      };
+      window.addEventListener("pointermove", move);
+      window.addEventListener("pointerup", end);
+      window.addEventListener("pointercancel", end);
+    });
     grp.addEventListener("keydown", (ev) => { if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); gp.sel = n.id; gpRender(); } });
     g.appendChild(grp);
   }
