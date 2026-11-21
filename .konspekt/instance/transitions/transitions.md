@@ -1409,3 +1409,10 @@ proposing agent was not recorded.
 | edge:e-dec-curated-nwstatus | review |  | proposed | 2026-11-21T14:33:27Z |  | claude |
 | noteworthy:nw-connections-list-default-graph-toggle | review |  | proposed | 2026-11-21T14:46:38Z |  | claude |
 | edge:e-notes-neighborhood-listtoggle | review |  | proposed | 2026-11-21T14:46:38Z |  | claude |
+| noteworthy:nw-connections-list-popout-graph | review |  | proposed | 2026-11-21T15:19:49Z |  | claude |
+| edge:e-notes-neighborhood-listpopout | review |  | proposed | 2026-11-21T15:19:49Z |  | claude |
+| edge:e-sup-listpopout-listtoggle | review |  | proposed | 2026-11-21T15:19:49Z |  | claude |
+| noteworthy:nw-popout-overlay-browser-layout | review |  | proposed | 2026-11-21T15:19:49Z |  | claude |
+| noteworthy:nw-popout-overlay-browser-layout | review | proposed | accepted | 2026-11-21T15:19:49Z | ni:///sha-256;pWZuS224nZ9ay2z6P95IyHMA6k9_rLyUqfKnhq8b3R0 | denisurusov |
+| edge:e-notes-neighborhood-popoutlayout | review |  | proposed | 2026-11-21T15:19:49Z |  | claude |
+| edge:e-notes-neighborhood-popoutlayout | review | proposed | accepted | 2026-11-21T15:19:49Z | ni:///sha-256;pWZuS224nZ9ay2z6P95IyHMA6k9_rLyUqfKnhq8b3R0 | denisurusov |
