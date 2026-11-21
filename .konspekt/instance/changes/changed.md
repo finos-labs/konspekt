@@ -708,3 +708,5 @@ commit order; the channel was not live during that work.
 | task-ui-atom-neighborhood-graph | 3acb7a9229b75fd24fc14ccbf7ee4e45854db8e8 | implementations/intellij-plugin/app/src/main/kotlin/dev/konspekt/plugin/InstanceReader.kt | 2026-11-21T15:06:32Z |
 | task-ui-atom-neighborhood-graph | 3acb7a9229b75fd24fc14ccbf7ee4e45854db8e8 | implementations/intellij-plugin/app/src/main/kotlin/dev/konspekt/plugin/ViewServer.kt | 2026-11-21T15:06:32Z |
 | task-ui-atom-neighborhood-graph | 3acb7a9229b75fd24fc14ccbf7ee4e45854db8e8 | implementations/intellij-plugin/app/src/test/kotlin/dev/konspekt/plugin/InstanceReaderNeighborsTest.kt | 2026-11-21T15:06:32Z |
+| task-ui-atom-neighborhood-graph | 3353cfbb1ceb31915be7d4466ebdd843bb378a96 | implementations/implementation-zero/app/view/app.css | 2026-11-21T15:16:15Z |
+| task-ui-atom-neighborhood-graph | 3353cfbb1ceb31915be7d4466ebdd843bb378a96 | implementations/implementation-zero/app/view/app.js | 2026-11-21T15:16:15Z |
