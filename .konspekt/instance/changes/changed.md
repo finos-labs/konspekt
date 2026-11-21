@@ -684,3 +684,4 @@ commit order; the channel was not live during that work.
 | task-ni-references | c954da1 | test/migrate-ni.test.mjs | 2026-11-15T19:14:25Z |
 | task-ni-references | c954da1 | test/setup-init.test.mjs | 2026-11-15T19:14:25Z |
 | task-ni-references | c954da1 | tools/migrate-ni.mjs | 2026-11-15T19:14:25Z |
+| task-ui-clickable-source-refs | 015820a | ROADMAP.md | 2026-11-20T21:32:28Z |
