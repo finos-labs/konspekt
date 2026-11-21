@@ -3,7 +3,7 @@ platform: linkedin
 format: feed
 date: 2026-11-22
 url:
-announces: "clickable source references and a connections list with a pop-out graph in the konspekt view (IntelliJ plugin 0.0.18), shown on the konspekt repository and on finos-hack/cdm-collateral"
+announces: "clickable source references and a connections list with a pop-out graph in the konspekt view (IntelliJ plugin 0.0.18), shown on the konspekt repository and on finos-hack/cdm-collateral (CDM collateral workflows on Hyperledger Besu, with tokenized collateral)"
 carousel: carousel.pdf      # 7-page PDF uploaded to LinkedIn as a document; assembled from images/ by build_carousel.py
 assets:
   - file: carousel.pdf
@@ -26,6 +26,7 @@ assets:
 first_comment: |
   Plugin release: https://github.com/finos-labs/konspekt/releases/tag/intellij-plugin-v0.0.18
   CDM Collateral: https://github.com/finos-hack/cdm-collateral
+  Hyperledger Besu: https://github.com/besu-eth/besu
   Repo: https://github.com/finos-labs/konspekt
 ---
 
@@ -41,10 +42,10 @@ konspekt records a project's goals, tasks, decisions and notes as a graph of ato
 
 5. The whole konspekt graph: 337 atoms, 529 edges.
 
-6. The same view in CDM Collateral, a project we just made public in FINOS: https://github.com/finos-hack/cdm-collateral It is a prototype that uses the FINOS Common Domain Model as the data standard for collateral management workflows. Depth two around its development goal: 104 of 274 atoms.
+6. The same view in CDM Collateral (https://github.com/finos-hack/cdm-collateral), a project we just made public in FINOS. It is a prototype that uses the FINOS Common Domain Model as the data standard for collateral management workflows, with each of its 47 workflows settled on a private Hyperledger Besu network (https://github.com/besu-eth/besu). It also covers tokenized collateral: a CDM extension represents a tokenized asset as it exists on its ledger, with its security identifier (ISIN or CUSIP), its ISO 24165 DTI where one exists, its network, token contract and token standard, and which record is legally authoritative. Depth two around its development goal: 104 of 274 atoms.
 
 7. The whole CDM Collateral graph: 274 atoms, 442 edges.
 
-Links to the release, CDM Collateral and the konspekt repo in the comments.
+Links to the release, CDM Collateral, Besu and the konspekt repo in the comments.
 
-#AI #LLM #KnowledgeGraphs #OpenSource #FINOS #CDM #konspekt
+#AI #LLM #KnowledgeGraphs #OpenSource #FINOS #CDM #Tokenization #HyperledgerBesu #konspekt
