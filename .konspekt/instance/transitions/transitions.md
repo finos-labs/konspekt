@@ -1409,6 +1409,8 @@ proposing agent was not recorded.
 | edge:e-dec-curated-nwstatus | review |  | proposed | 2026-11-21T14:33:27Z |  | claude |
 | noteworthy:nw-connections-list-default-graph-toggle | review |  | proposed | 2026-11-21T14:46:38Z |  | claude |
 | edge:e-notes-neighborhood-listtoggle | review |  | proposed | 2026-11-21T14:46:38Z |  | claude |
+| noteworthy:nw-connections-list-default-graph-toggle | review | proposed | accepted | 2026-11-21T15:18:38Z |  | denisurusov |
+| edge:e-notes-neighborhood-listtoggle | review | proposed | accepted | 2026-11-21T15:18:38Z |  | denisurusov |
 | noteworthy:nw-connections-list-popout-graph | review |  | proposed | 2026-11-21T15:19:49Z |  | claude |
 | edge:e-notes-neighborhood-listpopout | review |  | proposed | 2026-11-21T15:19:49Z |  | claude |
 | edge:e-sup-listpopout-listtoggle | review |  | proposed | 2026-11-21T15:19:49Z |  | claude |
