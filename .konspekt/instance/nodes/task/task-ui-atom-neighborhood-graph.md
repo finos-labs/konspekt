@@ -2,7 +2,7 @@
 id: task-ui-atom-neighborhood-graph
 type: task
 title: Show an atom's immediate connections in the drawer, with a pop-out full-graph view
-status: open
+status: resolved
 review: accepted
 provenance:
   sourceRef: ni:///sha-256;msW1a0Wxsf9T3K6lDvGGsnJZzGRvIBk3bYmwXkevvRc

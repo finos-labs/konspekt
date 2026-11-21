@@ -1,7 +1,7 @@
 ```yaml
 id: nw-connections-list-popout-graph
 kind: decision
-review: proposed
+review: accepted
 provenance:
   sourceRef: ni:///sha-256;pWZuS224nZ9ay2z6P95IyHMA6k9_rLyUqfKnhq8b3R0
   conversationId: ui-atom-panel
