@@ -32,7 +32,7 @@
 
 import { createServer } from "node:http";
 import { readFileSync, writeFileSync, existsSync, watch } from "node:fs";
-import { join, resolve, dirname, extname } from "node:path";
+import { join, resolve, dirname, extname, relative, sep, basename } from "node:path";
 import { fileURLToPath } from "node:url";
 import { loadInstance, parseNiRef } from "../../../lib/conformance.mjs";
 import { loadActivePersonas } from "../../../lib/load-personas.mjs";
@@ -48,6 +48,30 @@ function contentRel(dir, ref) {
   if (ni) return `${dir}/sha-256/${ni.hex}.md`;
   if (/^[0-9a-f]{7,64}$/.test(ref)) return `${dir}/${ref}.md`;
   return null;
+}
+
+// Where a content-addressed file lives in the store, for the view's "location in
+// store" line (spec/architecture/SERIALIZATION.md § Store and locators). For an
+// `ni:` reference, `store.resolve.<kind>` from project.md is expanded with the
+// reference's {hex} and {b64} and with {ref} = `store.ref`. A legacy SHA-1
+// reference, an instance without the template, or a template naming {ref} with
+// no `store.ref` falls back to the layout path relative to the repository root
+// (the directory that holds `.konspekt/`), or to the instance-relative path when
+// the instance is not at `.konspekt/instance`. `link` is true only for an http(s) URI.
+function locationOf(kind, ref, rel) {
+  const ni = parseNiRef(ref);
+  const store = (graph && graph.project && graph.project.store) || {};
+  const tpl = store.resolve && typeof store.resolve[kind] === "string" ? store.resolve[kind] : null;
+  const storeRef = typeof store.ref === "string" ? store.ref : null;
+  if (ni && tpl && (storeRef || !tpl.includes("{ref}"))) {
+    const uri = tpl.replace(/\{(hex|b64|ref)\}/g, (_, k) => (k === "hex" ? ni.hex : k === "b64" ? ni.b64 : storeRef));
+    return { uri, link: /^https?:\/\//i.test(uri), from: `store.resolve.${kind}` };
+  }
+  // An instance at <repo>/.konspekt/instance gets the repository-root-relative
+  // path; one passed from elsewhere gets its instance-relative path.
+  const inRepo = basename(instanceDir) === "instance" && basename(dirname(instanceDir)) === ".konspekt";
+  const uri = inRepo ? relative(resolve(instanceDir, "..", ".."), join(instanceDir, rel)).split(sep).join("/") : rel;
+  return { uri, link: false, from: "layout" };
 }
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -351,23 +375,51 @@ const server = createServer((req, res) => {
     const abs = join(instanceDir, e._file);
     if (!abs.startsWith(instanceDir) || !existsSync(abs)) return sendJson(res, { error: "file missing" }, 404);
     const p = e.provenance || {};
+    // provenance.deprecated (SERIALIZATION.md § Migration): the legacy SHA-1
+    // sourceRef / contentHash kept after migration, which the view also links.
+    const dep = p.deprecated && typeof p.deprecated === "object" ? p.deprecated : null;
+    const str = (v) => (v === undefined || v === null || v === "" ? null : String(v));
     return sendJson(res, { id: e.id, file: e._file, markdown: readFileSync(abs, "utf8"),
       review: e.review || null, status: e.status || null, entityType: e.entityType || null,
       sourceRef: p.sourceRef || null, contentHash: p.contentHash || null,
+      provenance: { timestamp: str(p.timestamp), conversationId: str(p.conversationId), confidence: str(p.confidence) },
+      deprecated: dep ? { sourceRef: str(dep.sourceRef), contentHash: str(dep.contentHash), migratedAt: str(dep.migratedAt) } : null,
       locators: Array.isArray(p.locators) ? p.locators : [],
       acceptedBy: acceptedByOf(`${e.entityType}:${e.id}`) });
   }
   // One provenance source excerpt by its reference: an `ni:///sha-256` URI
   // (sources/sha-256/<hex>.md) or a legacy hex git blob SHA (sources/<sha>.md).
   // Confined to sources/ and gated on a parsed digest or a hex ref, so no path
-  // traversal. `path` is the file's path relative to the instance.
+  // traversal. `path` is the file's path relative to the instance; `location`
+  // is where it lives in the store (locationOf).
   if (path === "/api/source") {
     const ref = url.searchParams.get("ref") || "";
     const rel = contentRel("sources", ref);
     if (!rel) return sendJson(res, { error: "bad ref" }, 400);
     const abs = join(instanceDir, rel);
     if (!abs.startsWith(join(instanceDir, "sources")) || !existsSync(abs)) return sendJson(res, { error: "no such source" }, 404);
-    return sendJson(res, { ref, path: rel, markdown: readFileSync(abs, "utf8") });
+    return sendJson(res, { ref, path: rel, markdown: readFileSync(abs, "utf8"), location: locationOf("source", ref, rel) });
+  }
+  // One recorded command's verbatim text by its reference: `command:ni:///sha-256;…`
+  // (the provenance-ref form an edge or a body uses), a bare `ni:` URI, or a legacy
+  // hex SHA. Same confinement as /api/source, under commands/.
+  if (path === "/api/command") {
+    const ref = (url.searchParams.get("ref") || "").replace(/^command:/, "");
+    const rel = contentRel("commands", ref);
+    if (!rel) return sendJson(res, { error: "bad ref" }, 400);
+    const abs = join(instanceDir, rel);
+    if (!abs.startsWith(join(instanceDir, "commands")) || !existsSync(abs)) return sendJson(res, { error: "no such command" }, 404);
+    return sendJson(res, { ref, path: rel, markdown: readFileSync(abs, "utf8"), location: locationOf("command", ref, rel) });
+  }
+  // The transition-log rows for one ref (`type:id` or `edge:<id>`), in log order
+  // (SERIALIZATION.md § Transitions). Empty when the instance ships no log.
+  if (path === "/api/transitions") {
+    if (!graph) return sendJson(res, { error: snapshot.error || "not loaded" }, 503);
+    const ref = url.searchParams.get("ref") || "";
+    const rows = (Array.isArray(graph.transitions) ? graph.transitions : []).filter((t) => t.ref === ref)
+      .map((t) => ({ field: t.field, from: t.from || null, to: t.to, timestamp: t.timestamp || null,
+        source: t.source || null, by: t.by || null }));
+    return sendJson(res, { ref, transitions: rows });
   }
   // RFC 6920 well-known read path (docs/design/source-addressing.md): the raw
   // bytes of a stored source or command, by its base64url SHA-256 digest.

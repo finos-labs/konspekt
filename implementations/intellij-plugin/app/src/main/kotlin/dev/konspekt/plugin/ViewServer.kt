@@ -70,6 +70,8 @@ class ViewServer(private val project: Project) {
         path.startsWith("/api/entity")   -> InstanceReader.entityJson(g, dir, param(ex, "id") ?: "")
         path.startsWith("/api/source")   -> InstanceReader.sourceJson(dir, param(ex, "ref") ?: "")
         path.startsWith("/api/commands") -> InstanceReader.commandsJson(dir, param(ex, "entity") ?: "")
+        path.startsWith("/api/command")  -> InstanceReader.commandJson(dir, param(ex, "ref") ?: "")
+        path.startsWith("/api/transitions") -> InstanceReader.transitionsJson(dir, param(ex, "ref") ?: "")
         path.startsWith("/api/changes")  -> InstanceReader.changesJson(dir, param(ex, "entity") ?: "")
         path.startsWith("/api/asradr")   -> InstanceReader.asradrJson(g)
         else -> "{\"error\":\"not found\"}"

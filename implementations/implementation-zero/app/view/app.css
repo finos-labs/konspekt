@@ -176,6 +176,33 @@ svg.dag text{font-family:"IBM Plex Mono",monospace}
 .drawer-id{font-size:13px;font-weight:500;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .drawer-close{appearance:none;border:1px solid var(--line);background:var(--surface);color:var(--ink-2);cursor:pointer;font-size:13px;line-height:1;padding:6px 9px;border-radius:6px}
 .drawer-close:hover{border-color:var(--accent);color:var(--accent)}
+.drawer-titles{flex:1;min-width:0;display:flex;flex-direction:column}
+.drawer-crumb{font-size:11px;color:var(--ink-2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+/* ni references in drawer text: a button inside the pre, so it is keyboard-reachable */
+.ref{appearance:none;border:0;background:var(--accent-soft);color:var(--accent);font:inherit;padding:0 3px;border-radius:3px;cursor:pointer;text-decoration:underline;text-decoration-style:dotted;text-underline-offset:2px;overflow-wrap:anywhere;text-align:left;white-space:pre-wrap}
+.ref:hover{background:rgba(74,79,176,.22)}
+.ref:focus-visible{outline:2px solid var(--focus);outline-offset:1px}
+.drawer-view{flex:1;display:flex;flex-direction:column;min-height:0}
+.drawer-view[hidden]{display:none}
+.src-meta{font-size:12px;color:var(--ink-2)}
+.src-loc{display:flex;flex-direction:column;gap:4px;padding:9px 11px;background:var(--surface-2);border:1px solid var(--line);border-radius:8px}
+.src-loc .v{font-family:"IBM Plex Mono",monospace;font-size:11px;overflow-wrap:anywhere;color:var(--ink)}
+.src-loc .r{font-family:"IBM Plex Mono",monospace;font-size:11px;overflow-wrap:anywhere;color:var(--ink-2)}
+.src-loc a.v{color:var(--accent)}
+.src-actions{display:flex;gap:8px;flex-wrap:wrap}
+.src-btn{appearance:none;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;font-size:12px;padding:8px 12px;border-radius:7px;cursor:pointer;min-height:36px}
+.src-btn:hover{border-color:var(--accent);color:var(--accent)}
+.src-missing{margin:0;font-size:12.5px;color:var(--bad)}
+.pv-group{display:flex;flex-direction:column;gap:6px}
+.pv-group h3{margin:0;font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3);font-weight:600}
+.pv-item{appearance:none;text-align:left;font:inherit;display:flex;flex-direction:column;gap:3px;padding:9px 11px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink);min-height:44px}
+button.pv-item{cursor:pointer}
+button.pv-item:hover{border-color:var(--accent)}
+.pv-item.noref{border-style:dashed;background:var(--surface-2)}
+.pv-item .t{display:flex;justify-content:space-between;gap:8px;font-size:12.5px;font-weight:500}
+.pv-item .t .go{color:var(--accent)}
+.pv-item .m{font-size:11.5px;color:var(--ink-2)}
+.pv-item .r{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--accent);overflow-wrap:anywhere}
 .drawer-body{flex:1;display:flex;flex-direction:column;overflow:hidden}
 .drawer-tabs{display:flex;gap:2px;padding:0 8px;border-bottom:1px solid var(--line);background:var(--surface-2)}
 .dtab{appearance:none;border:0;background:none;cursor:pointer;font:inherit;font-size:12px;font-weight:500;color:var(--ink-2);padding:8px 12px 10px;border-bottom:2px solid transparent;border-radius:6px 6px 0 0}

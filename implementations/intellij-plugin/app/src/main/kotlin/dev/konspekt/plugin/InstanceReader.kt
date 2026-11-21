@@ -296,7 +296,39 @@ object InstanceReader {
     val locators = parseLocators(text).joinToString(",") { l ->
       "{" + l.entries.joinToString(",") { (k, v) -> "${q(k)}:${q(v)}" } + "}"
     }
-    return "{\"id\":${q(e.id)},\"file\":${q(e.file)},\"markdown\":${q(text)},\"review\":${q(e.review)},\"status\":${q(e.status)},\"entityType\":${q(e.entityType)},\"sourceRef\":${q(e.sourceRef)},\"contentHash\":${q(e.contentHash)},\"acceptedBy\":${q(acceptedBy)},\"locators\":[$locators]}"
+    // provenance.deprecated (SERIALIZATION.md § Migration): the legacy SHA-1
+    // sourceRef / contentHash kept after migration, which the view also links.
+    val fr = parseFront(text)
+    val nz = { k: String -> fr[k]?.takeIf { it.isNotEmpty() } }
+    val prov = "{\"timestamp\":${q(nz("provenance.timestamp"))},\"conversationId\":${q(nz("provenance.conversationId"))},\"confidence\":${q(nz("provenance.confidence"))}}"
+    val depKeys = listOf("sourceRef", "contentHash", "migratedAt")
+    val dep = if (depKeys.any { nz("provenance.deprecated.$it") != null })
+      "{" + depKeys.joinToString(",") { "${q(it)}:${q(nz("provenance.deprecated.$it"))}" } + "}" else "null"
+    return "{\"id\":${q(e.id)},\"file\":${q(e.file)},\"markdown\":${q(text)},\"review\":${q(e.review)},\"status\":${q(e.status)},\"entityType\":${q(e.entityType)},\"sourceRef\":${q(e.sourceRef)},\"contentHash\":${q(e.contentHash)},\"provenance\":$prov,\"deprecated\":$dep,\"acceptedBy\":${q(acceptedBy)},\"locators\":[$locators]}"
+  }
+
+  // Where a content-addressed file lives in the store, for the view's "location
+  // in store" line (spec/architecture/SERIALIZATION.md § Store and locators). For
+  // an `ni:` reference, project.md `store.resolve.<kind>` is expanded with the
+  // reference's {hex} and {b64} and with {ref} = `store.ref`. A legacy SHA-1
+  // reference, an instance without the template, or a template naming {ref} with
+  // no `store.ref` falls back to the layout path relative to the repository root.
+  // `link` is true only for an http(s) URI. Mirrors implementation-zero locationOf.
+  internal fun locationJson(instanceDir: File, kind: String, ref: String, rel: String): String {
+    val hex = niHex(ref)
+    val pf = File(instanceDir, "project.md")
+    val front = if (pf.isFile) parseFront(pf.readText()) else emptyMap()
+    val tpl = front["store.resolve.$kind"]?.takeIf { it.isNotEmpty() }
+    val storeRef = front["store.ref"]?.takeIf { it.isNotEmpty() }
+    if (hex != null && tpl != null && (storeRef != null || !tpl.contains("{ref}"))) {
+      val b64 = ref.substring("ni:///sha-256;".length)
+      val uri = tpl.replace("{hex}", hex).replace("{b64}", b64).replace("{ref}", storeRef ?: "")
+      val link = Regex("^https?://", RegexOption.IGNORE_CASE).containsMatchIn(uri)
+      return "{\"uri\":${q(uri)},\"link\":$link,\"from\":${q("store.resolve.$kind")}}"
+    }
+    // The plugin reads <project>/.konspekt/instance, so the repository-root-relative
+    // layout path is that prefix plus the instance-relative path.
+    return "{\"uri\":${q(".konspekt/instance/$rel")},\"link\":false,\"from\":\"layout\"}"
   }
 
   // One transition-log row to append: an assignment of `field` on `ref`.
@@ -489,7 +521,36 @@ object InstanceReader {
     val rel = contentRel("sources", ref) ?: return "{\"error\":\"bad ref\"}"
     val f = File(instanceDir, rel)
     if (!f.isFile) return "{\"error\":\"no such source\"}"
-    return "{\"ref\":${q(ref)},\"path\":${q(rel)},\"markdown\":${q(f.readText())}}"
+    return "{\"ref\":${q(ref)},\"path\":${q(rel)},\"markdown\":${q(f.readText())},\"location\":${locationJson(instanceDir, "source", ref, rel)}}"
+  }
+
+  // One recorded command's verbatim text by its reference: `command:ni:///sha-256;…`,
+  // a bare `ni:` URI, or a legacy hex SHA. Mirrors implementation-zero /api/command.
+  fun commandJson(instanceDir: File, rawRef: String): String {
+    val ref = rawRef.removePrefix("command:")
+    val rel = contentRel("commands", ref) ?: return "{\"error\":\"bad ref\"}"
+    val f = File(instanceDir, rel)
+    if (!f.isFile) return "{\"error\":\"no such command\"}"
+    return "{\"ref\":${q(ref)},\"path\":${q(rel)},\"markdown\":${q(f.readText())},\"location\":${locationJson(instanceDir, "command", ref, rel)}}"
+  }
+
+  // The transition-log rows for one ref (`type:id` or `edge:<id>`), in log order
+  // (SERIALIZATION.md § Transitions): | ref | field | from | to | timestamp | source | by |.
+  // Empty when the instance ships no log. Mirrors implementation-zero /api/transitions.
+  fun transitionsJson(instanceDir: File, ref: String): String {
+    val f = File(File(instanceDir, "transitions"), "transitions.md")
+    val rows = ArrayList<String>()
+    if (f.isFile) {
+      for (line in f.readText().replace("\r\n", "\n").split("\n")) {
+        val t = line.trim()
+        if (!t.startsWith("|")) continue
+        val cells = t.trim('|').split("|").map { it.trim() }
+        if (cells.size < 4 || cells[0] == "ref" || cells[0].startsWith("---") || cells[0] != ref) continue
+        val cell = { i: Int -> cells.getOrNull(i)?.takeIf { it.isNotEmpty() } }
+        rows.add("{\"field\":${q(cells[1])},\"from\":${q(cell(2))},\"to\":${q(cells[3])},\"timestamp\":${q(cell(4))},\"source\":${q(cell(5))},\"by\":${q(cell(6))}}")
+      }
+    }
+    return "{\"ref\":${q(ref)},\"transitions\":[${rows.joinToString(",")}]}"
   }
 
   // Related commands for an entity: the commands/executed.md rows whose entity is

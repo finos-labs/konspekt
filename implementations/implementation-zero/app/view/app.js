@@ -268,17 +268,166 @@ async function openDetail(id) {
   drawerBody.innerHTML = '<p class="drawer-loading">loading…</p>';
   backdrop.hidden = false; drawer.classList.add("open"); drawer.setAttribute("aria-hidden", "false");
   $("drawerClose").focus();
+  resetStack(id);
   try {
     const d = await (await fetch("/api/entity?id=" + encodeURIComponent(id), { cache: "no-store" })).json();
     if (d.error) { drawerBody.innerHTML = ""; const p = document.createElement("p"); p.className = "drawer-err"; p.textContent = d.error; drawerBody.appendChild(p); return; }
-    let source = null;
-    if (d.sourceRef) { try { source = await (await fetch("/api/source?ref=" + encodeURIComponent(d.sourceRef), { cache: "no-store" })).json(); } catch { source = { error: "unreachable" }; } }
     let cmds = [];
     try { cmds = (await (await fetch("/api/commands?entity=" + encodeURIComponent(id), { cache: "no-store" })).json()).commands || []; } catch { /* endpoint may be absent */ }
     let chgs = [];
     try { chgs = (await (await fetch("/api/changes?entity=" + encodeURIComponent(id), { cache: "no-store" })).json()).changes || []; } catch { /* endpoint may be absent */ }
-    renderDrawer(d, source, cmds, chgs);
+    let trans = [];
+    if (d.entityType) {
+      try { trans = (await (await fetch("/api/transitions?ref=" + encodeURIComponent(d.entityType + ":" + d.id), { cache: "no-store" })).json()).transitions || []; } catch { /* endpoint may be absent */ }
+    }
+    renderDrawer(d, cmds, chgs, trans);
   } catch { drawerBody.innerHTML = '<p class="drawer-err">server unreachable.</p>'; }
+}
+
+// ---------- drawer view stack (source views pushed over the entity) ----------
+// stack[0] is the entity view; each opened reference pushes a source view with a
+// back button and the path it was opened from (task-ui-clickable-source-refs,
+// mockup variant C). Every view is a .drawer-view element inside drawerBody; only
+// the top one is shown, so going back restores the entity view's tab and scroll.
+let stack = [];
+function resetStack(id) { stack = [{ el: null, title: id, crumb: id }]; syncHead(); }
+function syncHead() {
+  const top = stack[stack.length - 1];
+  $("drawerTitle").textContent = top.title;
+  const stacked = stack.length > 1;
+  $("drawerBack").hidden = !stacked;
+  $("drawerCrumb").hidden = !stacked;
+  $("drawerCrumb").textContent = stacked ? stack.slice(0, -1).map((v) => v.crumb).concat("").join("  ›  ").trim() : "";
+}
+function pushView(el, title, crumb) {
+  for (const v of stack) if (v.el) v.el.hidden = true;
+  el.classList.add("drawer-view"); drawerBody.appendChild(el);
+  stack.push({ el, title, crumb: crumb || title }); syncHead();
+}
+function popView() {
+  if (stack.length < 2) return;
+  const top = stack.pop(); top.el.remove();
+  const cur = stack[stack.length - 1]; if (cur.el) cur.el.hidden = false;
+  syncHead();
+}
+$("drawerBack").addEventListener("click", popView);
+
+// ---------- ni references in drawer text ----------
+// An `ni:///sha-256;<43 base64url>` reference, optionally `command:`-prefixed,
+// not followed by another base64url character; or a 40-hex SHA-1 (only those in
+// the entity's provenance.deprecated block are linked; see `legacy`).
+const REF_RE = /(command:)?ni:\/\/\/sha-256;[A-Za-z0-9_-]{43}(?![A-Za-z0-9_-])|\b[0-9a-f]{40}\b/g;
+// A <pre> of `text` in which each reference is a button that opens it in a
+// source view. `legacy` is the set of SHA-1 values to link; `ctx` carries the
+// entity (for origin locators) and the crumb the opened view records.
+function refPre(text, legacy, ctx) {
+  const p = document.createElement("pre"); p.className = "md";
+  const s = String(text == null ? "" : text);
+  let last = 0;
+  for (const m of s.matchAll(REF_RE)) {
+    const tok = m[0];
+    const isSha1 = !tok.startsWith("ni:") && !tok.startsWith("command:");
+    if (isSha1 && !(legacy && legacy.has(tok))) continue;
+    if (m.index > last) p.appendChild(document.createTextNode(s.slice(last, m.index)));
+    const b = document.createElement("button"); b.type = "button"; b.className = "ref"; b.textContent = tok;
+    b.title = "Open " + (tok.startsWith("command:") ? "this command" : "this source");
+    b.addEventListener("click", () => openRef(tok, ctx));
+    p.appendChild(b); last = m.index + tok.length;
+  }
+  if (last < s.length) p.appendChild(document.createTextNode(s.slice(last)));
+  return p;
+}
+
+async function copyText(text, btn) {
+  const label = btn.textContent;
+  let ok = false;
+  try { await navigator.clipboard.writeText(text); ok = true; } catch { /* no async clipboard */ }
+  if (!ok) {
+    // Fallback for a browser without the async clipboard (the plugin's JCEF).
+    const ta = document.createElement("textarea"); ta.value = text; ta.setAttribute("readonly", "");
+    ta.style.position = "fixed"; ta.style.opacity = "0"; document.body.appendChild(ta); ta.select();
+    try { ok = document.execCommand("copy"); } catch { ok = false; }
+    ta.remove();
+  }
+  btn.textContent = ok ? "Copied" : "Copy failed";
+  setTimeout(() => { btn.textContent = label; }, 1400);
+}
+
+// Open one reference in a source view pushed over the drawer. `info` optionally
+// carries a title and meta line (from a Provenance index entry). The content is
+// read through the server (/api/source, or /api/command for `command:`), so this
+// does not depend on the store kind; the server also returns the store location.
+async function openRef(ref, ctx, info) {
+  const isCmd = ref.startsWith("command:");
+  const el = document.createElement("div");
+  const body = document.createElement("div"); body.className = "drawer-panel"; el.appendChild(body);
+  body.innerHTML = '<p class="drawer-loading">loading…</p>';
+  pushView(el, "loading…", null);
+  const entry = stack[stack.length - 1];
+  let r;
+  try {
+    const url = (isCmd ? "/api/command?ref=" : "/api/source?ref=") + encodeURIComponent(ref);
+    r = await (await fetch(url, { cache: "no-store" })).json();
+  } catch { r = { error: "server unreachable" }; }
+  body.innerHTML = "";
+  const ok = r && !r.error && typeof r.markdown === "string";
+  entry.title = ok ? r.path : "unresolved reference";
+  entry.crumb = ok ? r.path.split("/").pop().slice(0, 12) + "…" : "unresolved";
+  if (stack[stack.length - 1] === entry) syncHead();
+
+  if (info && (info.title || info.meta)) {
+    const m = document.createElement("div"); m.className = "src-meta";
+    m.textContent = [info.title, info.meta].filter(Boolean).join(" · "); body.appendChild(m);
+  }
+  const box = document.createElement("div"); box.className = "src-loc";
+  const h = document.createElement("span"); h.className = "src-label";
+  h.textContent = ok && r.location ? "Location in store (" + r.location.from + ")" : "Reference";
+  box.appendChild(h);
+  if (ok && r.location && r.location.uri) {
+    let href = null;
+    if (r.location.link) { try { const u = new URL(r.location.uri); if (u.protocol === "http:" || u.protocol === "https:") href = u.href; } catch { /* not a URL */ } }
+    const v = document.createElement(href ? "a" : "span"); v.className = "v"; v.textContent = r.location.uri;
+    if (href) { v.href = href; v.target = "_blank"; v.rel = "noopener noreferrer"; }
+    box.appendChild(v);
+  }
+  const rv = document.createElement("span"); rv.className = "r"; rv.textContent = ref; box.appendChild(rv);
+  body.appendChild(box);
+
+  if (ok) body.appendChild(refPre(r.markdown, null, ctx));
+  else { const p = document.createElement("p"); p.className = "src-missing"; p.textContent = "No such content. The reference does not resolve in this instance."; body.appendChild(p); }
+
+  const acts = document.createElement("div"); acts.className = "src-actions";
+  const cRef = document.createElement("button"); cRef.type = "button"; cRef.className = "src-btn"; cRef.textContent = "Copy reference";
+  cRef.addEventListener("click", () => copyText(ref, cRef)); acts.appendChild(cRef);
+  if (ok && r.location && r.location.uri && !r.location.link) {
+    const cLoc = document.createElement("button"); cLoc.type = "button"; cLoc.className = "src-btn"; cLoc.textContent = "Copy location";
+    cLoc.addEventListener("click", () => copyText(r.location.uri, cLoc)); acts.appendChild(cLoc);
+  }
+  body.appendChild(acts);
+
+  // Origin locators describe the entity's extraction excerpt, so they show in
+  // that excerpt's source view too.
+  const d = ctx && ctx.entity;
+  if (ok && !isCmd && d && ref === d.sourceRef && Array.isArray(d.locators) && d.locators.length) {
+    const lh = document.createElement("div"); lh.className = "src-label"; lh.textContent = "Origin locators"; body.appendChild(lh);
+    body.appendChild(locatorList(d.locators));
+  }
+}
+
+// Origin locators (SERIALIZATION.md § Sources): where the excerpt was taken from.
+// Only an http(s) URI becomes a link; anything else is text.
+function locatorList(locs) {
+  const ul = document.createElement("ul"); ul.className = "loc-list";
+  for (const l of locs) {
+    const li = document.createElement("li");
+    let href = null; try { const u = new URL(String(l.uri)); if (u.protocol === "http:" || u.protocol === "https:") href = u.href; } catch { /* not a URL */ }
+    const name = document.createElement(href ? "a" : "span"); name.textContent = String(l.uri || "");
+    if (href) { name.href = href; name.target = "_blank"; name.rel = "noopener noreferrer"; }
+    li.appendChild(name);
+    const meta = document.createElement("span"); meta.className = "muted"; meta.textContent = "  " + [l.kind, l.retrievedAt].filter(Boolean).join(" · ");
+    li.appendChild(meta); ul.appendChild(li);
+  }
+  return ul;
 }
 
 // Disposition bar: the human write actions, offered by the entity's current state.
@@ -286,7 +435,7 @@ async function openDetail(id) {
 // shows for a work node that is open or active (the `resolve` authority verb ->
 // status: resolved). Each action edits the working tree only; the model never does
 // this. Renders for both shells from this one view.
-function renderDisposition(d) {
+function renderDisposition(d, parent) {
   const acts = [];
   if (d.review === "proposed")
     acts.push({ label: "Accept", busy: "Accepting…", url: "/api/accept",
@@ -302,7 +451,7 @@ function renderDisposition(d) {
     ? "Proposed — awaiting a human disposition."
     : "A human can dispose of this from here.";
   const actions = document.createElement("span"); actions.className = "accept-actions";
-  bar.appendChild(note); bar.appendChild(actions); drawerBody.appendChild(bar);
+  bar.appendChild(note); bar.appendChild(actions); parent.appendChild(bar);
 
   // Inline confirm — no native window.confirm/alert (the plugin's JCEF browser has
   // no JS-dialog handler, so those silently no-op). Click an action, then Confirm;
@@ -336,48 +485,85 @@ function renderDisposition(d) {
 // When an entity is already accepted, show who accepted it — the `by` of its
 // review -> accepted transition row, surfaced by the backend as acceptedBy.
 // Renders for both shells from this one view.
-function renderAcceptance(d) {
+function renderAcceptance(d, parent) {
   if (d.review !== "accepted") return;
   const bar = document.createElement("div"); bar.className = "accept-bar accepted";
   const note = document.createElement("span"); note.className = "accept-note";
   note.textContent = d.acceptedBy ? ("Accepted by " + d.acceptedBy + ".") : "Accepted.";
-  bar.appendChild(note); drawerBody.appendChild(bar);
+  bar.appendChild(note); parent.appendChild(bar);
 }
 
-// The detail drawer is a tab panel: Details (the file), Provenance (the source),
+// The detail drawer is a tab panel: Details (the file, with its references
+// linked), Provenance (an index of every reference that bears on the entity),
 // Commands, and Changes — the last two shown only when the entity has recorded
 // commands / code changes (surface follows data). Tabs render for both shells
 // from this one view.
 function pre(text) { const p = document.createElement("pre"); p.className = "md"; p.textContent = text; return p; }
-function renderDrawer(d, source, cmds, chgs) {
-  chgs = chgs || [];
+function shortTs(iso) { return iso ? String(iso).replace("T", " ").replace(/:\d{2}(\.\d+)?Z$/, "Z") : ""; }
+
+// The Provenance index (mockup variant D), grouped as: the extraction
+// (provenance.sourceRef plus any SHA-1 references in provenance.deprecated), the
+// entity's transition-log rows, and its origin locators. An entry with a source
+// is a button that opens it in the source view; a transition row without a
+// source is listed without a click target.
+function provenanceGroups(d, trans) {
+  const p = d.provenance || {};
+  const extraction = [];
+  if (d.sourceRef) extraction.push({ title: "provenance.sourceRef",
+    meta: [shortTs(p.timestamp), p.conversationId && "conversation " + p.conversationId, p.confidence && "confidence " + p.confidence].filter(Boolean).join(" · "),
+    ref: d.sourceRef });
+  const dep = d.deprecated;
+  if (dep && dep.sourceRef) extraction.push({ title: "provenance.deprecated.sourceRef (SHA-1)", meta: dep.migratedAt ? "migrated " + shortTs(dep.migratedAt) : "", ref: dep.sourceRef });
+  if (dep && dep.contentHash && dep.contentHash !== dep.sourceRef) extraction.push({ title: "provenance.deprecated.contentHash (SHA-1)", meta: dep.migratedAt ? "migrated " + shortTs(dep.migratedAt) : "", ref: dep.contentHash });
+  const transitions = (trans || []).map((t) => ({
+    title: t.field + ": " + (t.from || "(birth)") + " → " + t.to,
+    meta: [shortTs(t.timestamp), t.by && "by " + t.by].filter(Boolean).join(" · "),
+    ref: t.source || null,
+  }));
+  return { extraction, transitions };
+}
+function renderProvenance(d, trans, ctx) {
+  const w = document.createElement("div"); w.className = "cmd-list";
+  const { extraction, transitions } = provenanceGroups(d, trans);
+  const group = (name, items, empty) => {
+    const sec = document.createElement("section"); sec.className = "pv-group";
+    const h = document.createElement("h3"); h.textContent = name; sec.appendChild(h);
+    if (!items.length) { const p = document.createElement("p"); p.className = "muted"; p.textContent = empty; sec.appendChild(p); }
+    for (const it of items) {
+      const el = document.createElement(it.ref ? "button" : "div");
+      el.className = "pv-item" + (it.ref ? "" : " noref");
+      if (it.ref) { el.type = "button"; el.addEventListener("click", () => openRef(it.ref, ctx, it)); }
+      const t = document.createElement("span"); t.className = "t";
+      const tt = document.createElement("span"); tt.textContent = it.title; t.appendChild(tt);
+      if (it.ref) { const go = document.createElement("span"); go.className = "go"; go.setAttribute("aria-hidden", "true"); go.textContent = "›"; t.appendChild(go); }
+      el.appendChild(t);
+      const m = document.createElement("span"); m.className = "m"; m.textContent = it.ref ? it.meta : [it.meta, "no source recorded"].filter(Boolean).join(" · "); el.appendChild(m);
+      if (it.ref) { const r = document.createElement("span"); r.className = "r"; r.textContent = it.ref; el.appendChild(r); }
+      sec.appendChild(el);
+    }
+    w.appendChild(sec);
+  };
+  group("Extraction", extraction, "No content-addressed provenance for this entity.");
+  group("Transitions", transitions, "No transition-log rows for this entity.");
+  const sec = document.createElement("section"); sec.className = "pv-group";
+  const h = document.createElement("h3"); h.textContent = "Origin locators"; sec.appendChild(h);
+  const locs = Array.isArray(d.locators) ? d.locators : [];
+  if (locs.length) sec.appendChild(locatorList(locs));
+  else { const p = document.createElement("p"); p.className = "muted"; p.textContent = "None recorded for this entity."; sec.appendChild(p); }
+  w.appendChild(sec);
+  return w;
+}
+
+function renderDrawer(d, cmds, chgs, trans) {
+  chgs = chgs || []; trans = trans || [];
+  const dep = d.deprecated || {};
+  const legacy = new Set([dep.sourceRef, dep.contentHash].filter(Boolean));
+  const ctx = { entity: d };
+  const pg = provenanceGroups(d, trans);
+  const pvCount = pg.extraction.length + pg.transitions.length;
   const tabs = [
-    { label: "Details", build: () => pre(d.markdown) },
-    { label: "Provenance", build: () => {
-      const w = document.createElement("div");
-      if (d.sourceRef) {
-        const lbl = document.createElement("div"); lbl.className = "src-label"; lbl.textContent = (source && source.path) ? source.path + "  (" + d.sourceRef + ")" : "sources/" + d.sourceRef + ".md";
-        w.appendChild(lbl); w.appendChild(pre(source && !source.error ? source.markdown : (source && source.error ? "error: " + source.error : "(source unavailable)")));
-      } else { const p = document.createElement("p"); p.className = "muted"; p.textContent = "No content-addressed provenance for this entity."; w.appendChild(p); }
-      // Origin locators (SERIALIZATION.md § Sources): where the excerpt was
-      // taken from. Only an http(s) URI becomes a link; anything else is text.
-      const locs = Array.isArray(d.locators) ? d.locators : [];
-      if (locs.length) {
-        const h = document.createElement("div"); h.className = "src-label"; h.textContent = "Origin locators"; w.appendChild(h);
-        const ul = document.createElement("ul"); ul.className = "loc-list";
-        for (const l of locs) {
-          const li = document.createElement("li");
-          let href = null; try { const u = new URL(String(l.uri)); if (u.protocol === "http:" || u.protocol === "https:") href = u.href; } catch { /* not a URL */ }
-          const name = document.createElement(href ? "a" : "span"); name.textContent = String(l.uri || "");
-          if (href) { name.href = href; name.target = "_blank"; name.rel = "noopener noreferrer"; }
-          li.appendChild(name);
-          const meta = document.createElement("span"); meta.className = "muted"; meta.textContent = "  " + [l.kind, l.retrievedAt].filter(Boolean).join(" · ");
-          li.appendChild(meta); ul.appendChild(li);
-        }
-        w.appendChild(ul);
-      }
-      return w;
-    } },
+    { label: "Details", build: () => refPre(d.markdown, legacy, ctx) },
+    { label: pvCount ? "Provenance (" + pvCount + ")" : "Provenance", build: () => renderProvenance(d, trans, ctx) },
   ];
   if (cmds.length) tabs.push({ label: "Commands (" + cmds.length + ")", build: () => {
     const w = document.createElement("div"); w.className = "cmd-list";
@@ -403,17 +589,25 @@ function renderDrawer(d, source, cmds, chgs) {
   } });
 
   drawerBody.innerHTML = "";
-  renderDisposition(d);
-  renderAcceptance(d);
+  const root = document.createElement("div"); root.className = "drawer-view";
+  drawerBody.appendChild(root);
+  stack = [{ el: root, title: d.id, crumb: d.id }]; syncHead();
+  renderDisposition(d, root);
+  renderAcceptance(d, root);
   const strip = document.createElement("div"); strip.className = "drawer-tabs"; strip.setAttribute("role", "tablist");
   const panel = document.createElement("div"); panel.className = "drawer-panel";
-  const show = (t, btn) => { strip.querySelectorAll(".dtab").forEach((x) => x.setAttribute("aria-selected", "false")); btn.setAttribute("aria-selected", "true"); panel.innerHTML = ""; panel.appendChild(t.build()); };
+  // The crumb of a source view names the tab it was opened from.
+  const show = (t, btn) => {
+    strip.querySelectorAll(".dtab").forEach((x) => x.setAttribute("aria-selected", "false")); btn.setAttribute("aria-selected", "true");
+    panel.innerHTML = ""; panel.appendChild(t.build());
+    stack[0].crumb = t.label === tabs[0].label ? d.id : d.id + "  ›  " + t.label.replace(/ \(\d+\)$/, "");
+  };
   tabs.forEach((t, i) => {
     const b = document.createElement("button"); b.className = "dtab"; b.type = "button"; b.textContent = t.label; b.setAttribute("role", "tab"); b.setAttribute("aria-selected", i === 0 ? "true" : "false");
     b.addEventListener("click", () => show(t, b));
     strip.appendChild(b);
   });
-  drawerBody.appendChild(strip); drawerBody.appendChild(panel);
+  root.appendChild(strip); root.appendChild(panel);
   panel.appendChild(tabs[0].build());
 }
 

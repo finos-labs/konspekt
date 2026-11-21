@@ -149,6 +149,80 @@ test("GET /api/entity unknown id → 404; /api/source non-hex ref → 400", asyn
   assert.ok((await r.json()).error);
 });
 
+// task-ui-clickable-source-refs: every reference the drawer shows resolves
+// through the server, with its store location.
+
+test("GET /api/source returns the store location expanded from store.resolve.source", async () => {
+  const e = await (await get("/api/entity?id=task-ui-clickable-source-refs")).json();
+  const { hex } = parseNiRef(e.sourceRef);
+  const s = await (await get("/api/source?ref=" + encodeURIComponent(e.sourceRef))).json();
+  assert.deepEqual(s.location, {
+    uri: `https://github.com/finos-labs/konspekt/blob/main/.konspekt/instance/sources/sha-256/${hex}.md`,
+    link: true, from: "store.resolve.source",
+  });
+});
+
+test("GET /api/source for a legacy SHA-1 ref falls back to the layout path", async () => {
+  const e = await (await get("/api/entity?id=artifact-authority-spec")).json();
+  assert.ok(e.deprecated && /^[0-9a-f]{40}$/.test(e.deprecated.sourceRef), "migrated entity exposes provenance.deprecated");
+  assert.ok(e.deprecated.migratedAt);
+  const s = await (await get("/api/source?ref=" + e.deprecated.sourceRef)).json();
+  assert.equal(s.path, `sources/${e.deprecated.sourceRef}.md`);
+  assert.deepEqual(s.location, { uri: `.konspekt/instance/sources/${e.deprecated.sourceRef}.md`, link: false, from: "layout" });
+});
+
+test("GET /api/entity exposes provenance timestamp, conversation and confidence", async () => {
+  const d = await (await get("/api/entity?id=task-ui-clickable-source-refs")).json();
+  assert.deepEqual(d.provenance, { timestamp: "2026-11-21T02:25:00Z", conversationId: "ui-atom-panel", confidence: "0.8" });
+  assert.equal(d.deprecated, null);
+});
+
+test("GET /api/command resolves a command:ni: reference with its store location", async () => {
+  const log = readFileSync(join(repoRoot, ".konspekt", "instance", "commands", "executed.md"), "utf8");
+  const ref = /\| [^|]+ \| (ni:\/\/\/sha-256;[A-Za-z0-9_-]{43}) \|/.exec(log)[1];
+  const { hex } = parseNiRef(ref);
+  const c = await (await get("/api/command?ref=" + encodeURIComponent("command:" + ref))).json();
+  assert.equal(c.ref, ref);
+  assert.equal(c.path, `commands/sha-256/${hex}.md`);
+  assert.ok(c.markdown.length > 0);
+  assert.equal(c.location.uri, `https://github.com/finos-labs/konspekt/blob/main/.konspekt/instance/commands/sha-256/${hex}.md`);
+  assert.equal(c.location.link, true);
+  assert.equal((await get("/api/command?ref=" + encodeURIComponent("command:ni:///sha-256;short"))).status, 400);
+  assert.equal((await get("/api/command?ref=" + encodeURIComponent(niRef(Buffer.from("absent"))))).status, 404);
+});
+
+test("GET /api/transitions lists one ref's rows in log order, with source and by", async () => {
+  const t = await (await get("/api/transitions?ref=" + encodeURIComponent("node:task-ui-clickable-source-refs"))).json();
+  assert.equal(t.ref, "node:task-ui-clickable-source-refs");
+  const first3 = t.transitions.slice(0, 3);
+  assert.deepEqual(first3.map((r) => [r.field, r.from, r.to, r.by]), [
+    ["review", null, "proposed", "claude"], ["status", null, "open", "claude"], ["review", "proposed", "accepted", "denisurusov"],
+  ]);
+  assert.equal(first3[0].source, null);
+  assert.ok(parseNiRef(first3[2].source), "the acceptance row carries its source excerpt");
+  assert.deepEqual((await (await get("/api/transitions?ref=node:nope-nope")).json()).transitions, []);
+});
+
+test("GET /api/source without store.resolve falls back to the repository-relative layout path", async () => {
+  const repo = mkdtempSync(join(tmpdir(), "konspekt-noresolve-"));
+  const inst = join(repo, ".konspekt", "instance");
+  cpSync(join(repoRoot, ".konspekt", "instance"), inst, { recursive: true });
+  const pm = join(inst, "project.md");
+  writeFileSync(pm, readFileSync(pm, "utf8").replace(/^store:\n(?: {2}.*\n)+/m, ""));
+  const port = PORT + 4;
+  const c = spawn(process.execPath, [serverPath], { env: { ...process.env, KONSPEKT_PORT: String(port), KONSPEKT_INSTANCE: inst }, stdio: "ignore" });
+  try {
+    await waitUp(`http://127.0.0.1:${port}`);
+    const e = await (await fetch(`http://127.0.0.1:${port}/api/entity?id=task-ui-clickable-source-refs`)).json();
+    const { hex } = parseNiRef(e.sourceRef);
+    const s = await (await fetch(`http://127.0.0.1:${port}/api/source?ref=` + encodeURIComponent(e.sourceRef))).json();
+    assert.deepEqual(s.location, { uri: `.konspekt/instance/sources/sha-256/${hex}.md`, link: false, from: "layout" });
+  } finally {
+    c.kill();
+    rmSync(repo, { recursive: true, force: true });
+  }
+});
+
 test("GET /api/entity exposes status and entityType", async () => {
   const d = await (await get("/api/entity?id=task-implementation-zero")).json();
   assert.equal(d.entityType, "node");

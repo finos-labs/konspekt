@@ -122,7 +122,11 @@
 <div class="drawer-backdrop" id="drawerBackdrop" hidden></div>
 <aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="drawerTitle" aria-hidden="true">
   <header class="drawer-head">
-    <span class="drawer-id mono" id="drawerTitle">entity</span>
+    <button class="drawer-close" id="drawerBack" type="button" aria-label="Back to the previous view" hidden>←</button>
+    <span class="drawer-titles">
+      <span class="drawer-crumb mono" id="drawerCrumb" hidden></span>
+      <span class="drawer-id mono" id="drawerTitle">entity</span>
+    </span>
     <button class="drawer-close" id="drawerClose" type="button" aria-label="Close detail">✕</button>
   </header>
   <div class="drawer-body" id="drawerBody"></div>
