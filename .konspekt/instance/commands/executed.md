@@ -336,3 +336,4 @@ New rows below this backfill are recorded live.
 | task-adoption-path | ni:///sha-256;KLuEqhurOSj4Aq0b9RrxTs2tC1RondFs61-lpaMYLTM |
 | task-adoption-path | ni:///sha-256;pM98aWuCznzMml6NcbqHXh7zggHId787IDW5HGtClS0 |
 | task-adoption-path | ni:///sha-256;xsTx00NyGU4QDgaMldjZWCTPw11mN446hNA3tjne3Zw |
+| task-adoption-path | ni:///sha-256;vOQP1iL1gYVrxStVfu3nLrWFKU-d8edZY5O-ZbiaIpw |
