@@ -697,3 +697,14 @@ commit order; the channel was not live during that work.
 | task-ui-clickable-source-refs | 5accb4c40c0a18e4ce52a97104a12621669450cb | implementations/intellij-plugin/app/src/test/kotlin/dev/konspekt/plugin/InstanceReaderRefsTest.kt | 2026-11-21T14:21:53Z |
 | task-ui-clickable-source-refs | 17197b610eec5201ca117cb5628f37f2fbbac630 | implementations/intellij-plugin/app/README.md | 2026-11-21T14:26:53Z |
 | task-ui-clickable-source-refs | 8aca30e96a6e8ca28a49a76b5189029025606fba | ROADMAP.md | 2026-11-21T14:33:50Z |
+| task-ui-atom-neighborhood-graph | 3acb7a9229b75fd24fc14ccbf7ee4e45854db8e8 | implementations/implementation-zero/app/projections.mjs | 2026-11-21T15:06:32Z |
+| task-ui-atom-neighborhood-graph | 3acb7a9229b75fd24fc14ccbf7ee4e45854db8e8 | implementations/implementation-zero/app/server.mjs | 2026-11-21T15:06:32Z |
+| task-ui-atom-neighborhood-graph | 3acb7a9229b75fd24fc14ccbf7ee4e45854db8e8 | implementations/implementation-zero/app/test/projections.test.mjs | 2026-11-21T15:06:32Z |
+| task-ui-atom-neighborhood-graph | 3acb7a9229b75fd24fc14ccbf7ee4e45854db8e8 | implementations/implementation-zero/app/test/server.test.mjs | 2026-11-21T15:06:32Z |
+| task-ui-atom-neighborhood-graph | 3acb7a9229b75fd24fc14ccbf7ee4e45854db8e8 | implementations/implementation-zero/app/view/app.css | 2026-11-21T15:06:32Z |
+| task-ui-atom-neighborhood-graph | 3acb7a9229b75fd24fc14ccbf7ee4e45854db8e8 | implementations/implementation-zero/app/view/app.js | 2026-11-21T15:06:32Z |
+| task-ui-atom-neighborhood-graph | 3acb7a9229b75fd24fc14ccbf7ee4e45854db8e8 | implementations/intellij-plugin/app/README.md | 2026-11-21T15:06:32Z |
+| task-ui-atom-neighborhood-graph | 3acb7a9229b75fd24fc14ccbf7ee4e45854db8e8 | implementations/intellij-plugin/app/gradle.properties | 2026-11-21T15:06:32Z |
+| task-ui-atom-neighborhood-graph | 3acb7a9229b75fd24fc14ccbf7ee4e45854db8e8 | implementations/intellij-plugin/app/src/main/kotlin/dev/konspekt/plugin/InstanceReader.kt | 2026-11-21T15:06:32Z |
+| task-ui-atom-neighborhood-graph | 3acb7a9229b75fd24fc14ccbf7ee4e45854db8e8 | implementations/intellij-plugin/app/src/main/kotlin/dev/konspekt/plugin/ViewServer.kt | 2026-11-21T15:06:32Z |
+| task-ui-atom-neighborhood-graph | 3acb7a9229b75fd24fc14ccbf7ee4e45854db8e8 | implementations/intellij-plugin/app/src/test/kotlin/dev/konspekt/plugin/InstanceReaderNeighborsTest.kt | 2026-11-21T15:06:32Z |
