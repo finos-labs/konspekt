@@ -713,3 +713,14 @@ commit order; the channel was not live during that work.
 | task-ui-atom-neighborhood-graph | e0fba46273f8e9c78ddac305916d891210507aa3 | ROADMAP.md | 2026-11-21T15:24:53Z |
 | task-ui-clickable-source-refs | 4241d7f31bc4b20eda6f46c902cbb1d157e1ebea | implementations/intellij-plugin/app/gradle.properties | 2026-11-21T16:11:22Z |
 | task-ui-clickable-source-refs | 4241d7f31bc4b20eda6f46c902cbb1d157e1ebea | implementations/intellij-plugin/app/src/main/kotlin/dev/konspekt/plugin/KonspektToolWindowFactory.kt | 2026-11-21T16:11:22Z |
+| task-linkedin-announce-graph-view | e26c0e0e60574d7febe8308990bf14521b08c8bf | docs/announcements/linkedin/README.md | 2026-11-21T16:37:57Z |
+| task-linkedin-announce-graph-view | e26c0e0e60574d7febe8308990bf14521b08c8bf | docs/announcements/linkedin/post_2026-11-22/build_carousel.py | 2026-11-21T16:37:57Z |
+| task-linkedin-announce-graph-view | e26c0e0e60574d7febe8308990bf14521b08c8bf | docs/announcements/linkedin/post_2026-11-22/carousel.pdf | 2026-11-21T16:37:57Z |
+| task-linkedin-announce-graph-view | e26c0e0e60574d7febe8308990bf14521b08c8bf | docs/announcements/linkedin/post_2026-11-22/images/1_details_with_links.png | 2026-11-21T16:37:57Z |
+| task-linkedin-announce-graph-view | e26c0e0e60574d7febe8308990bf14521b08c8bf | docs/announcements/linkedin/post_2026-11-22/images/2_provenance_source_link.png | 2026-11-21T16:37:57Z |
+| task-linkedin-announce-graph-view | e26c0e0e60574d7febe8308990bf14521b08c8bf | docs/announcements/linkedin/post_2026-11-22/images/3_details_with_list_and_popup.png | 2026-11-21T16:37:57Z |
+| task-linkedin-announce-graph-view | e26c0e0e60574d7febe8308990bf14521b08c8bf | docs/announcements/linkedin/post_2026-11-22/images/4_graph_konspekt_depth2.png | 2026-11-21T16:37:57Z |
+| task-linkedin-announce-graph-view | e26c0e0e60574d7febe8308990bf14521b08c8bf | docs/announcements/linkedin/post_2026-11-22/images/5_graph_konspekt_full.png | 2026-11-21T16:37:57Z |
+| task-linkedin-announce-graph-view | e26c0e0e60574d7febe8308990bf14521b08c8bf | docs/announcements/linkedin/post_2026-11-22/images/6_graph_cdm_depth2.png | 2026-11-21T16:37:57Z |
+| task-linkedin-announce-graph-view | e26c0e0e60574d7febe8308990bf14521b08c8bf | docs/announcements/linkedin/post_2026-11-22/images/7_graph_cdm_full.png | 2026-11-21T16:37:57Z |
+| task-linkedin-announce-graph-view | e26c0e0e60574d7febe8308990bf14521b08c8bf | docs/announcements/linkedin/post_2026-11-22/post.md | 2026-11-21T16:37:57Z |
