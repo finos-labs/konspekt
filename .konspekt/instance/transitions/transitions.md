@@ -1434,3 +1434,7 @@ proposing agent was not recorded.
 | edge:e-dec-usability-linkedingraphview | review |  | proposed | 2026-11-21T16:31:48Z | ni:///sha-256;C1iTk57l0M2WmhFXAhVJvWdnu7zgiuxYlWgB1YdXP44 | claude |
 | edge:e-lnk-linkedingraphview-clickrefs | review |  | proposed | 2026-11-21T16:31:48Z | ni:///sha-256;C1iTk57l0M2WmhFXAhVJvWdnu7zgiuxYlWgB1YdXP44 | claude |
 | edge:e-lnk-linkedingraphview-neighborhood | review |  | proposed | 2026-11-21T16:31:48Z | ni:///sha-256;C1iTk57l0M2WmhFXAhVJvWdnu7zgiuxYlWgB1YdXP44 | claude |
+| node:task-linkedin-announce-graph-view | review | proposed | accepted | 2026-11-21T16:37:40Z | ni:///sha-256;yrFZ54TxGTxQjZbSxbTcjnv6TkUlQJ6E6grook_NO3o | denisurusov |
+| edge:e-dec-usability-linkedingraphview | review | proposed | accepted | 2026-11-21T16:37:40Z | ni:///sha-256;yrFZ54TxGTxQjZbSxbTcjnv6TkUlQJ6E6grook_NO3o | denisurusov |
+| edge:e-lnk-linkedingraphview-clickrefs | review | proposed | accepted | 2026-11-21T16:37:40Z | ni:///sha-256;yrFZ54TxGTxQjZbSxbTcjnv6TkUlQJ6E6grook_NO3o | denisurusov |
+| edge:e-lnk-linkedingraphview-neighborhood | review | proposed | accepted | 2026-11-21T16:37:40Z | ni:///sha-256;yrFZ54TxGTxQjZbSxbTcjnv6TkUlQJ6E6grook_NO3o | denisurusov |

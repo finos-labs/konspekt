@@ -3,14 +3,14 @@ id: task-linkedin-announce-graph-view
 type: task
 title: November 2026 LinkedIn post — clickable source references and the connections graph, on konspekt and cdm-collateral
 status: open
-review: proposed
+review: accepted
 provenance:
   sourceRef: ni:///sha-256;C1iTk57l0M2WmhFXAhVJvWdnu7zgiuxYlWgB1YdXP44
   conversationId: linkedin-graph-view
   timestamp: 2026-11-21T16:31:48Z
   confidence: 0.8
 createdAt: 2026-11-21T16:31:48Z
-updatedAt: 2026-11-21T16:31:48Z
+updatedAt: 2026-11-21T16:37:40Z
 ```
 # Task: November 2026 LinkedIn post — clickable source references and the connections graph, on konspekt and cdm-collateral
 

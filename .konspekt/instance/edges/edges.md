@@ -604,6 +604,6 @@ proposal.
 | e-mark-clickrefs-release017 | marks | waypoint:wp-plugin-release-0-0-17 | node:task-ui-clickable-source-refs |  | proposed |
 | e-mark-neighborhood-release017 | marks | waypoint:wp-plugin-release-0-0-17 | node:task-ui-atom-neighborhood-graph |  | proposed |
 | e-mark-clickrefs-release018 | marks | waypoint:wp-plugin-release-0-0-18 | node:task-ui-clickable-source-refs |  | accepted |
-| e-dec-usability-linkedingraphview | decomposes | node:goal-usability | node:task-linkedin-announce-graph-view |  | proposed |
-| e-lnk-linkedingraphview-clickrefs | links | node:task-linkedin-announce-graph-view | node:task-ui-clickable-source-refs |  | proposed |
-| e-lnk-linkedingraphview-neighborhood | links | node:task-linkedin-announce-graph-view | node:task-ui-atom-neighborhood-graph |  | proposed |
+| e-dec-usability-linkedingraphview | decomposes | node:goal-usability | node:task-linkedin-announce-graph-view |  | accepted |
+| e-lnk-linkedingraphview-clickrefs | links | node:task-linkedin-announce-graph-view | node:task-ui-clickable-source-refs |  | accepted |
+| e-lnk-linkedingraphview-neighborhood | links | node:task-linkedin-announce-graph-view | node:task-ui-atom-neighborhood-graph |  | accepted |
