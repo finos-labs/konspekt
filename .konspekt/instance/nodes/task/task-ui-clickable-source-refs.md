@@ -10,7 +10,7 @@ provenance:
   timestamp: 2026-11-21T02:25:00Z
   confidence: 0.8
 createdAt: 2026-11-21T02:25:00Z
-updatedAt: 2026-11-21T03:06:00Z
+updatedAt: 2026-11-21T14:33:08Z
 ```
 # Task: Make ni references in the atom drawer open their content
 
