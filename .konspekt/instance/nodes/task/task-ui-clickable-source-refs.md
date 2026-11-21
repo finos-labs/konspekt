@@ -10,7 +10,7 @@ provenance:
   timestamp: 2026-11-21T02:25:00Z
   confidence: 0.8
 createdAt: 2026-11-21T02:25:00Z
-updatedAt: 2026-11-21T02:57:00Z
+updatedAt: 2026-11-21T03:06:00Z
 ```
 # Task: Make ni references in the atom drawer open their content
 
@@ -36,6 +36,17 @@ without `store.resolve` falls back to the layout path relative to the
 repository root (`.konspekt/instance/sources/sha-256/<hex>.md`). Opening the
 content in the drawer goes through the server's read and does not depend on
 the store kind.
+
+Opening a reference pushes a source view onto the drawer, with a back button
+and the path it was opened from (mockup variant C). The Provenance tab becomes
+an index of every reference that bears on the entity, grouped as: the
+extraction (`provenance.sourceRef`, plus any SHA-1 references in a
+`deprecated` block), the entity's rows in `transitions/transitions.md` (field,
+from, to, timestamp, `by`, and `source` when present), and its origin
+locators. Each entry with a source opens it in the source view; a transition
+row without a source is listed without a click target, so the record of who
+proposed the entity and when stays visible. Origin locators also appear in
+the source view of the excerpt they describe. The Commands tab is unchanged.
 
 The IntelliJ plugin copies this view at build time, so the plugin needs a
 version bump to ship the change.
