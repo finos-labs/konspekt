@@ -726,3 +726,14 @@ commit order; the channel was not live during that work.
 | task-linkedin-announce-graph-view | e26c0e0e60574d7febe8308990bf14521b08c8bf | docs/announcements/linkedin/post_2026-11-22/post.md | 2026-11-21T16:37:57Z |
 | task-linkedin-announce-graph-view | 62d0a382e82c062913b7c0d039f9cb8d52611705 | docs/announcements/linkedin/README.md | 2026-11-21T16:39:37Z |
 | task-linkedin-announce-graph-view | 62d0a382e82c062913b7c0d039f9cb8d52611705 | docs/announcements/linkedin/post_2026-11-22/post.md | 2026-11-21T16:39:37Z |
+| task-linkedin-announce-graph-view | 3ee76ff6c5d01a3fc67482bb5bc0e62c1ac10dfe | docs/announcements/linkedin/README.md | 2026-11-21T16:49:18Z |
+| task-linkedin-announce-graph-view | 3ee76ff6c5d01a3fc67482bb5bc0e62c1ac10dfe | docs/announcements/linkedin/post_2026-11-21/build_carousel.py | 2026-11-21T16:49:18Z |
+| task-linkedin-announce-graph-view | 3ee76ff6c5d01a3fc67482bb5bc0e62c1ac10dfe | docs/announcements/linkedin/post_2026-11-21/carousel.pdf | 2026-11-21T16:49:18Z |
+| task-linkedin-announce-graph-view | 3ee76ff6c5d01a3fc67482bb5bc0e62c1ac10dfe | docs/announcements/linkedin/post_2026-11-21/images/1_details_with_links.png | 2026-11-21T16:49:18Z |
+| task-linkedin-announce-graph-view | 3ee76ff6c5d01a3fc67482bb5bc0e62c1ac10dfe | docs/announcements/linkedin/post_2026-11-21/images/2_provenance_source_link.png | 2026-11-21T16:49:18Z |
+| task-linkedin-announce-graph-view | 3ee76ff6c5d01a3fc67482bb5bc0e62c1ac10dfe | docs/announcements/linkedin/post_2026-11-21/images/3_details_with_list_and_popup.png | 2026-11-21T16:49:18Z |
+| task-linkedin-announce-graph-view | 3ee76ff6c5d01a3fc67482bb5bc0e62c1ac10dfe | docs/announcements/linkedin/post_2026-11-21/images/4_graph_konspekt_depth2.png | 2026-11-21T16:49:18Z |
+| task-linkedin-announce-graph-view | 3ee76ff6c5d01a3fc67482bb5bc0e62c1ac10dfe | docs/announcements/linkedin/post_2026-11-21/images/5_graph_konspekt_full.png | 2026-11-21T16:49:18Z |
+| task-linkedin-announce-graph-view | 3ee76ff6c5d01a3fc67482bb5bc0e62c1ac10dfe | docs/announcements/linkedin/post_2026-11-21/images/6_graph_cdm_depth2.png | 2026-11-21T16:49:18Z |
+| task-linkedin-announce-graph-view | 3ee76ff6c5d01a3fc67482bb5bc0e62c1ac10dfe | docs/announcements/linkedin/post_2026-11-21/images/7_graph_cdm_full.png | 2026-11-21T16:49:18Z |
+| task-linkedin-announce-graph-view | 3ee76ff6c5d01a3fc67482bb5bc0e62c1ac10dfe | docs/announcements/linkedin/post_2026-11-21/post.md | 2026-11-21T16:49:18Z |
