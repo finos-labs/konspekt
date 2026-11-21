@@ -1396,3 +1396,10 @@ proposing agent was not recorded.
 | edge:e-dec-usability-clickrefs | review |  | proposed | 2026-11-21T02:25:00Z |  | claude |
 | node:task-ui-clickable-source-refs | review | proposed | accepted | 2026-11-21T02:31:00Z | ni:///sha-256;cImnk8NHWfIwRNG4Y2bOXs2_IniSWe_7gUFmUjjAnvQ | denisurusov |
 | edge:e-dec-usability-clickrefs | review | proposed | accepted | 2026-11-21T02:31:00Z | ni:///sha-256;cImnk8NHWfIwRNG4Y2bOXs2_IniSWe_7gUFmUjjAnvQ | denisurusov |
+| node:task-ui-atom-neighborhood-graph | review |  | proposed | 2026-11-21T02:25:00Z |  | claude |
+| node:task-ui-atom-neighborhood-graph | status |  | open | 2026-11-21T02:25:00Z |  | claude |
+| edge:e-dec-usability-neighborhood | review |  | proposed | 2026-11-21T02:25:00Z |  | claude |
+| edge:e-links-neighborhood-edgetraversal | review |  | proposed | 2026-11-21T02:25:00Z |  | claude |
+| node:task-ui-atom-neighborhood-graph | review | proposed | accepted | 2026-11-21T02:57:00Z | ni:///sha-256;a9D63AMCkBPwE8dPGvprK_zjcx2Y56o9XmcLCAlJ7wE | denisurusov |
+| edge:e-dec-usability-neighborhood | review | proposed | accepted | 2026-11-21T02:57:00Z | ni:///sha-256;a9D63AMCkBPwE8dPGvprK_zjcx2Y56o9XmcLCAlJ7wE | denisurusov |
+| edge:e-links-neighborhood-edgetraversal | review | proposed | accepted | 2026-11-21T02:57:00Z | ni:///sha-256;a9D63AMCkBPwE8dPGvprK_zjcx2Y56o9XmcLCAlJ7wE | denisurusov |

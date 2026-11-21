@@ -594,3 +594,5 @@ proposal.
 | e-dec-nirefs-wrappaths | decomposes | node:task-ni-references | node:task-view-wrap-long-paths |  | accepted |
 | e-not-nirefs-legacyreferror | notes | node:task-ni-references | noteworthy:nw-legacy-ref-error-in-ni-instances |  | accepted |
 | e-dec-usability-clickrefs | decomposes | node:goal-usability | node:task-ui-clickable-source-refs |  | accepted |
+| e-dec-usability-neighborhood | decomposes | node:goal-usability | node:task-ui-atom-neighborhood-graph |  | accepted |
+| e-links-neighborhood-edgetraversal | links | node:task-ui-atom-neighborhood-graph | node:task-edge-traversal-layout |  | accepted |
