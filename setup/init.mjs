@@ -453,6 +453,12 @@ function printOperatingGaps(gaps) {
 // --check
 // ---------------------------------------------------------------------------
 
+// A projected file and its template are the same when they differ only in line
+// endings. A checkout with core.autocrlf=true has CRLF working files while the
+// templates are read as committed, so a byte comparison reported drift for
+// files whose content matched (task-init-check-line-endings).
+const sameText = (a, b) => a.replace(/\r\n/g, "\n") === b.replace(/\r\n/g, "\n");
+
 if (has("--check")) {
   const only = opt("--check", null);
   const ids = only ? [only] : listComponents();
@@ -490,9 +496,7 @@ if (has("--check")) {
         continue;
       }
       checked++;
-      const want = readFileSync(join(m.dir, f.from), "utf8");
-      const got = readFileSync(target, "utf8");
-      if (want !== got) {
+      if (!sameText(readFileSync(join(m.dir, f.from), "utf8"), readFileSync(target, "utf8"))) {
         console.log(`DRIFT  ${f.to}`);
         console.log(`       differs from ${relative(root, join(m.dir, f.from)) || f.from}`);
         drifted++;
@@ -522,7 +526,7 @@ if (has("--check")) {
           drifted++;
           continue;
         }
-        if (readFileSync(sp, "utf8") !== readFileSync(tp, "utf8")) {
+        if (!sameText(readFileSync(sp, "utf8"), readFileSync(tp, "utf8"))) {
           console.log(`DRIFT  ${rel}`);
           console.log(`       differs from the standard's spec/personas/${layer}/${name}`);
           drifted++;

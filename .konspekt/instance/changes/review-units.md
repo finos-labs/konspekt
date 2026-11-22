@@ -233,4 +233,5 @@ yet. `landed` is the default-branch commit that carries the change; `match` is
 |  | direct |  | c67a78ff453efe728400f99dfa439058554e2318 | 2026-11-22T20:52:00Z | c67a78ff453efe728400f99dfa439058554e2318 | same |
 |  | direct |  | d4dca7d08c81223f0d38b9d9b67e29525ae14f36 | 2026-11-22T20:55:06Z | d4dca7d08c81223f0d38b9d9b67e29525ae14f36 | same |
 |  | direct |  | 830cd5cf8b7998c622714906eab661fddf145902 | 2026-11-22T21:01:29Z | 830cd5cf8b7998c622714906eab661fddf145902 | same |
+| https://github.com/finos-labs/konspekt/pull/123 | open |  | 70263403406e9f7d4ec32190f1d5772ba3cffdc3 | 2026-11-22T21:04:08Z |  |  |
 |  | direct |  | 24c52b4714f3c15e63e466532e2f970a23115a56 | 2026-11-22T21:04:40Z | 24c52b4714f3c15e63e466532e2f970a23115a56 | same |
