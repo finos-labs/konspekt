@@ -1498,3 +1498,9 @@ proposing agent was not recorded.
 | edge:e-dec-adoption-deckrefresh | review | proposed | accepted | 2026-11-22T20:42:29Z | ni:///sha-256;aLddcpZlOgCsqnO_1WfiSum0hA4yZAWpSEsXLxOvaOQ | denisurusov |
 | node:task-deck-refresh-ni-review-units | status | open | active | 2026-11-22T20:42:29Z | ni:///sha-256;aLddcpZlOgCsqnO_1WfiSum0hA4yZAWpSEsXLxOvaOQ | denisurusov |
 | node:task-deck-refresh-ni-review-units | status | active | resolved | 2026-11-22T20:51:38Z | ni:///sha-256;5m5bdLjvXgBpqthirGoU1r-ExFO8pAku0dSfE58YdFU | denisurusov |
+| node:task-review-units-rest-fallback | review |  | proposed | 2026-11-22T21:00:39Z | ni:///sha-256;7fDk8KRnrurwcVIAX4yj0zd3K7wkWqIOae7DthaIgLM | claude |
+| node:task-review-units-rest-fallback | status |  | open | 2026-11-22T21:00:39Z | ni:///sha-256;7fDk8KRnrurwcVIAX4yj0zd3K7wkWqIOae7DthaIgLM | claude |
+| edge:e-dec-taskprmap-restfallback | review |  | proposed | 2026-11-22T21:00:39Z | ni:///sha-256;7fDk8KRnrurwcVIAX4yj0zd3K7wkWqIOae7DthaIgLM | claude |
+| node:task-review-units-rest-fallback | review | proposed | accepted | 2026-11-22T21:00:39Z | ni:///sha-256;7fDk8KRnrurwcVIAX4yj0zd3K7wkWqIOae7DthaIgLM | denisurusov |
+| edge:e-dec-taskprmap-restfallback | review | proposed | accepted | 2026-11-22T21:00:39Z | ni:///sha-256;7fDk8KRnrurwcVIAX4yj0zd3K7wkWqIOae7DthaIgLM | denisurusov |
+| node:task-review-units-rest-fallback | status | open | active | 2026-11-22T21:00:39Z | ni:///sha-256;7fDk8KRnrurwcVIAX4yj0zd3K7wkWqIOae7DthaIgLM | denisurusov |
