@@ -51,6 +51,16 @@ Committed code changes are recorded the same way as commands, but the change its
 - Rows are written **push-based at commit time**, so a row trails its commit by one. Deriving the log by walking `git log` and parsing `<entity-id>:` subject prefixes is deliberately **not** done, because it would make generation git-specific.
 - **Scope:** bookkeeping commits — those touching only `.konspekt/instance/**` or this log — are excluded; commits with no `<entity-id>:` subject prefix are dropped. As with commands, this answers *what changed for entity X*, a filter over the `entity` column.
 
+## Review units — derived from the changed-code log
+
+A **review unit** is a forge's unit of review and merge; on GitHub, the reference binding, it is a pull request. The layer links bound commits to the review units that contain them, so *which review units delivered entity X* is a join, not a hand-kept map (`nw-task-pr-map-derivable`):
+
+- `changes/review-units.md` is an optional table `| review unit | state | merge commit | commit | timestamp |`, one row per (review unit, commit). `review unit` is the unit's URL; `state` is `open`, `merged`, or `closed`; `merge commit` is the revision the merge produced (empty unless merged); `commit` is a token copied exactly from the changed-code log; `timestamp` is the unit's merge time, else its close time, else its creation time.
+- The entity is **not** stored: it is reached through the changed-code log's `commit` column. A commit in several units (stacked units) has a row per unit; a commit made outside any unit has none.
+- Rows are **derived, not typed**. A forge adapter outside the core (`tools/review-units.mjs`, GitHub through `gh`) reads the forge's record and rewrites the file whole, so a unit's row follows it from `open` to `merged` or `closed`. Any unit counts, opened by a human, an agent, or a bot, once it contains a bound commit. This is the one log in the layer that is pull-based; it may be, because the forge query lives in a tool, not in the format or the checker, which stay forge- and VCS-neutral.
+- Units of code work only. The reference transport writes instance state to `main` without pull requests (`../../architecture/TRANSPORT.md`); that rule is unchanged.
+- Squash and rebase merges are out of scope: they replace the bound commits on the default branch, which the changed-code log already assumes reach it.
+
 ## Edges this layer adds
 
 | kind | from | to | meaning |
@@ -68,4 +78,5 @@ When `engineer` is active, the checker (via `registry.mjs`) additionally:
 - reports an ADR that no ASR drives, since with no inbound `drives` edge the ADR has no recorded context: an error (`subtype-missing-inbound-proposed`) when the ADR is `proposed`, because a proposal lands wired, and a warning (`subtype-missing-inbound`) when it is `accepted`. A rejected ADR and an ADR that is the `to` of a `supersedes` edge are exempt;
 - resolves a `command:<reference>` against `commands/sha-256/<hex>.md` (or, for a legacy SHA-1, `commands/<sha1>.md`) — missing file is `dangling-provenance-ref` (error), and a hash that does not match the file is `provenance-ref-hash-mismatch` (warning);
 - validates `commands/executed.md`: each row's `entity` must resolve to an entity file (`dangling-executed` error) and be an allowed subject type, and its `command` hash must resolve and verify like any provenance-ref;
+- validates `changes/review-units.md` when present: a row whose `commit` is not, as a string, a `commit` of the changed-code log is `dangling-review-unit-commit` (error); an empty review unit or commit, a `state` outside `open | merged | closed`, a `merged` row with no merge commit, or an unparseable timestamp is `review-unit-incomplete` (error); a repeated (review unit, commit) pair is `duplicate-review-unit-row` (warning). The checker resolves nothing against the forge;
 - leaves every core rule untouched, so an instance without `engineer` sees none of the above.

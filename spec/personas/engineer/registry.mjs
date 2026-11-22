@@ -68,4 +68,20 @@ export const changeLog = {
   from: ["node", "concept", "noteworthy", "artifact", "waypoint"],
 };
 
-export default { persona, subtypes, edges, provenanceRefs, commandLog, changeLog };
+// Review-unit log (not edges). changes/review-units.md is a table
+// `| review unit | state | merge commit | commit | timestamp |` linking each commit
+// already bound in the changed-code log to the review unit (on GitHub, a pull
+// request) that contains it — one row per (review unit, commit). The entity is
+// reached through the changed-code log, never stored twice. `state` is open,
+// merged, or closed. Unlike the changed-code log, rows are DERIVED: a forge
+// adapter (tools/review-units.mjs) writes them from the forge's record, and
+// rewrites a row when its state changes; nobody types them
+// (nw-task-pr-map-derivable). The core stays forge- and VCS-neutral: the checker
+// compares `commit` with the changed-code log's tokens as strings and resolves
+// nothing.
+export const reviewUnitLog = {
+  file: "changes/review-units.md",
+  states: ["open", "merged", "closed"],
+};
+
+export default { persona, subtypes, edges, provenanceRefs, commandLog, changeLog, reviewUnitLog };

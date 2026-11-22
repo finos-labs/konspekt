@@ -86,6 +86,11 @@ After each non-bookkeeping commit, append one row per changed file to
 `changes/changed.md`: `| <entity-id> | <commit> | <file> | <timestamp> |`, where
 `timestamp` is the ISO 8601 time you write the row.
 
+Do not write rows to `changes/review-units.md` by hand. That table links bound
+commits to pull requests and is derived by `tools/review-units.mjs` from the
+forge (`SPEC.md` § Review units); run the tool where the host's operating policy
+says to.
+
 Read the `basis` field of `.konspekt/instance/project.md`. When it is
 `accepted` (`spec/architecture/REVIEW.md` § Acceptance before work):
 

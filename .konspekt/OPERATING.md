@@ -187,6 +187,33 @@ given a row.
 Recorded in the instance as `task-binding-gap-audit` and
 `nw-binding-enforcement-gap`.
 
+## Review units
+
+`.konspekt/instance/changes/review-units.md` links the commits bound in the
+changed-code log to the pull requests that contain them
+(`spec/personas/engineer/SPEC.md` § Review units). It is written by
+`tools/review-units.mjs`, never by hand; the tool reads GitHub through the `gh`
+CLI.
+
+**When to run.** After a pull request with bound commits is opened, merged, or
+closed, and before `push` when the changed-code log gained rows that may sit in
+a pull request. Work pushed straight to `main` has no pull request and adds no
+row, so a direct-to-main session needs no run. The output touches only
+`.konspekt/instance/**`, so it is bookkeeping and needs no changed-code row.
+
+```
+node tools/review-units.mjs           # rewrite changes/review-units.md
+node tools/review-units.mjs --check   # exit 1 if the file is stale
+node tools/review-units.mjs --report  # print entity -> pull requests
+```
+
+`--check` reads the forge as well, so unlike the roadmap check it is not a pure
+function of the repository: it reports stale when a pull request changed state
+since the last run. It is run by hand; no workflow invokes it.
+
+Recorded in the instance as `task-review-unit-log` and
+`nw-task-pr-map-derivable`.
+
 ## Human vocabulary
 
 Not duplicated here — single source of truth:

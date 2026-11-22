@@ -3,7 +3,7 @@
      Check freshness with: node tools/roadmap.mjs --check
      This file is a pure function of .konspekt/instance/ (no timestamps baked in).
      Goals and tasks are graph nodes; the horizon is derived from node status/review.
-     contentHash: sha256:91878660d378d723 -->
+     contentHash: sha256:24fdd8879a5e2149 -->
 
 # konspekt roadmap
 
@@ -19,6 +19,7 @@ Make the facts a responsibility question needs answerable with evidence. The law
 
 - Design a richer accept-authority mechanism
 - Protect changes to who carries legal weight
+- Record review units (pull requests) against bound commits
 
 **Later** — _proposed, not yet committed_
 
@@ -240,4 +241,4 @@ Let several participants — people and agents — propose into and review one s
 
 ---
 
-Generated from 9 goal(s) and 107 task-listing(s) over the instance graph.
+Generated from 9 goal(s) and 108 task-listing(s) over the instance graph.
