@@ -210,6 +210,23 @@ ${opOut}`);
       env: { ...process.env, GIT_AUTHOR_NAME: "t", GIT_AUTHOR_EMAIL: "t@t", GIT_COMMITTER_NAME: "t", GIT_COMMITTER_EMAIL: "t@t" } });
     execFileSync("node", [INIT, "--name", "Audit", "--goal", "g", "--persona", "engineer"], { cwd: tmp3, stdio: "pipe" });
     execFileSync("node", [INIT, "--add", "conformance"], { cwd: tmp3, stdio: "pipe" });
+
+    // --check ignores line endings: a projected file whose line endings differ
+    // from its template's (CRLF under core.autocrlf=true, or LF where the
+    // template checkout is CRLF) matches; a content edit still drifts
+    // (task-init-check-line-endings).
+    const projected = join(tmp3, ".konspekt", "lib", "validate.mjs");
+    const orig = readFileSync(projected, "utf8");
+    const flipped = orig.includes("\r\n") ? orig.replace(/\r\n/g, "\n") : orig.replace(/\n/g, "\r\n");
+    const runCheck = () => {
+      try { execFileSync("node", [INIT, "--check", "conformance"], { cwd: tmp3, stdio: "pipe" }); return 0; }
+      catch (e) { return e.status; }
+    };
+    writeFileSync(projected, flipped);
+    if (runCheck() !== 0) failures.push("--check reported drift for a projected file that differs only in line endings");
+    writeFileSync(projected, flipped + "// local edit");
+    if (runCheck() !== 1) failures.push("--check did not report drift for an edited projected file");
+    writeFileSync(projected, orig);
     const audit = join(tmp3, ".konspekt", "lib", "binding-audit.mjs");
     if (!existsSync(audit)) throw new Error("conformance did not install .konspekt/lib/binding-audit.mjs");
     if (!existsSync(join(tmp3, ".konspekt", "lib", "review-units.mjs"))) {
