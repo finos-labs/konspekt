@@ -225,3 +225,4 @@ yet. `landed` is the default-branch commit that carries the change; `match` is
 | https://github.com/finos-labs/konspekt/pull/122 | merged | 5ee18d1c3f0d02302305e239003f338b4048e599 | 61936de1ce80893620d04017b0ec0132bb138841 | 2026-11-22T19:08:17Z | 61936de1ce80893620d04017b0ec0132bb138841 | same |
 | https://github.com/finos-labs/konspekt/pull/122 | merged | 5ee18d1c3f0d02302305e239003f338b4048e599 | c2ad2e0c410b6372b7024d0bc8898ac49e827103 | 2026-11-22T19:08:17Z | c2ad2e0c410b6372b7024d0bc8898ac49e827103 | same |
 |  | direct |  | 45b70c14bc4309dcb46de89cb7a6517521f31b4e | 2026-11-22T19:09:18Z | 45b70c14bc4309dcb46de89cb7a6517521f31b4e | same |
+|  | direct |  | 77887e327e388e8acc1e999e205d397f12acac69 | 2026-11-22T19:12:21Z | 77887e327e388e8acc1e999e205d397f12acac69 | same |

@@ -783,3 +783,5 @@ commit order; the channel was not live during that work.
 | task-review-unit-landed-commits | 61936de1ce80893620d04017b0ec0132bb138841 | tools/review-units.mjs | 2026-11-22T19:04:19Z |
 | task-review-unit-direct-rows | c2ad2e0c410b6372b7024d0bc8898ac49e827103 | ROADMAP.md | 2026-11-22T19:04:19Z |
 | task-review-unit-direct-rows | 45b70c14bc4309dcb46de89cb7a6517521f31b4e | ROADMAP.md | 2026-11-22T19:09:18Z |
+| task-review-unit-landed-commits | 77887e327e388e8acc1e999e205d397f12acac69 | implementations/intellij-plugin/app/src/main/kotlin/dev/konspekt/plugin/InstanceReader.kt | 2026-11-22T19:12:21Z |
+| task-review-unit-landed-commits | 77887e327e388e8acc1e999e205d397f12acac69 | implementations/intellij-plugin/app/src/test/kotlin/dev/konspekt/plugin/InstanceReaderChangesTest.kt | 2026-11-22T19:12:21Z |
