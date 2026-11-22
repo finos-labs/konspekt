@@ -788,3 +788,4 @@ commit order; the channel was not live during that work.
 | task-conformance-ships-review-units | 5b478603a916f625c78b72ac0da238c863e54ef3 | setup/README.md | 2026-11-22T20:04:39Z |
 | task-conformance-ships-review-units | 5b478603a916f625c78b72ac0da238c863e54ef3 | setup/components/conformance/manifest.yml | 2026-11-22T20:04:39Z |
 | task-conformance-ships-review-units | 5b478603a916f625c78b72ac0da238c863e54ef3 | test/setup-init.test.mjs | 2026-11-22T20:04:39Z |
+| task-conformance-ships-review-units | b5467f6892e19f98406c0ab362bb810a5f15f82e | ROADMAP.md | 2026-11-22T20:07:45Z |
