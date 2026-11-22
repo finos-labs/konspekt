@@ -614,3 +614,4 @@ proposal.
 | e-dec-taskprmap-directrows | decomposes | node:investigation-task-pr-map | node:task-review-unit-direct-rows |  | accepted |
 | e-not-taskprmap-landedcommit | notes | node:investigation-task-pr-map | noteworthy:nw-landed-commit-recorded |  | accepted |
 | e-dec-taskprmap-landedcommits | decomposes | node:investigation-task-pr-map | node:task-review-unit-landed-commits |  | accepted |
+| e-dec-adoption-conformancereviewunits | decomposes | node:goal-adoption | node:task-conformance-ships-review-units |  | accepted |

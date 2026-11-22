@@ -1484,3 +1484,9 @@ proposing agent was not recorded.
 | node:task-review-unit-direct-rows | status | active | resolved | 2026-11-22T19:09:07Z | ni:///sha-256;OPWGouAQ4vRkGxZj9n5yO78W7-pQzmz39avYHf3VzMo | denisurusov |
 | node:task-review-unit-landed-commits | status | active | resolved | 2026-11-22T19:09:07Z | ni:///sha-256;OPWGouAQ4vRkGxZj9n5yO78W7-pQzmz39avYHf3VzMo | denisurusov |
 | node:investigation-task-pr-map | status | active | resolved | 2026-11-22T19:54:22Z | ni:///sha-256;Grv0d6JphVeoGcG0x0mrLAtGhqHY73f-Y2U9cJAnfJs | denisurusov |
+| node:task-conformance-ships-review-units | review |  | proposed | 2026-11-22T20:03:58Z | ni:///sha-256;A2lm119EuIdXNXYc9d_y3_QFMo0mByp2aPx3WJrMYj0 | claude |
+| node:task-conformance-ships-review-units | status |  | open | 2026-11-22T20:03:58Z | ni:///sha-256;A2lm119EuIdXNXYc9d_y3_QFMo0mByp2aPx3WJrMYj0 | claude |
+| edge:e-dec-adoption-conformancereviewunits | review |  | proposed | 2026-11-22T20:03:58Z | ni:///sha-256;A2lm119EuIdXNXYc9d_y3_QFMo0mByp2aPx3WJrMYj0 | claude |
+| node:task-conformance-ships-review-units | review | proposed | accepted | 2026-11-22T20:03:58Z | ni:///sha-256;A2lm119EuIdXNXYc9d_y3_QFMo0mByp2aPx3WJrMYj0 | denisurusov |
+| edge:e-dec-adoption-conformancereviewunits | review | proposed | accepted | 2026-11-22T20:03:58Z | ni:///sha-256;A2lm119EuIdXNXYc9d_y3_QFMo0mByp2aPx3WJrMYj0 | denisurusov |
+| node:task-conformance-ships-review-units | status | open | active | 2026-11-22T20:03:58Z | ni:///sha-256;A2lm119EuIdXNXYc9d_y3_QFMo0mByp2aPx3WJrMYj0 | denisurusov |
