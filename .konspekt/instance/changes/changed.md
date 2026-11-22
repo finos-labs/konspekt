@@ -803,3 +803,4 @@ commit order; the channel was not live during that work.
 | task-review-units-rest-fallback | 24c52b4714f3c15e63e466532e2f970a23115a56 | test/review-units.test.mjs | 2026-11-22T21:04:40Z |
 | task-review-units-rest-fallback | 24c52b4714f3c15e63e466532e2f970a23115a56 | tools/review-units.mjs | 2026-11-22T21:04:40Z |
 | task-init-check-line-endings | fff6c9a21ebfab15830643c3fd22f4ef5d224608 | ROADMAP.md | 2026-11-22T21:08:21Z |
+| task-review-units-rest-fallback | a4e85ab6419924867cf66e6b09fa8fbc839e516b | ROADMAP.md | 2026-11-22T21:11:23Z |
