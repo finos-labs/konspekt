@@ -591,22 +591,25 @@ object InstanceReader {
       }
     }
     // Review units (pull requests) containing each commit, from the derived
-    // changes/review-units.md, joined by the commit token as a string.
-    // Mirrors implementation-zero's /api/changes.
-    val units = LinkedHashMap<String, LinkedHashMap<String, String>>()
+    // changes/review-units.md, joined by the commit token as a string. A `direct`
+    // row has an empty unit; `landed` and `match` (optional columns 6 and 7) say
+    // where the change reached the default branch. Mirrors implementation-zero's
+    // /api/changes.
+    val units = LinkedHashMap<String, LinkedHashMap<String, List<String>>>()
     val ru = File(File(instanceDir, "changes"), "review-units.md")
     if (byCommit.isNotEmpty() && ru.isFile) {
       for (line in ru.readText().replace("\r\n", "\n").split("\n")) {
         val t = line.trim()
         if (!t.startsWith("|")) continue
-        val cells = t.trim('|').split("|").map { it.trim() }
+        val cells = t.removePrefix("|").removeSuffix("|").split("|").map { it.trim() }
         if (cells.size < 4 || cells[0] == "review unit" || cells[0].startsWith("---") || cells[3] !in byCommit) continue
-        units.getOrPut(cells[3]) { LinkedHashMap() }.putIfAbsent(cells[0], cells[1])
+        units.getOrPut(cells[3]) { LinkedHashMap() }.putIfAbsent(cells[0] + "\u0000" + cells[1],
+          listOf(cells[0], cells[1], cells.getOrElse(5) { "" }, cells.getOrElse(6) { "" }))
       }
     }
     val groups = byCommit.entries.map { (commit, files) ->
-      val ruJson = (units[commit] ?: emptyMap<String, String>()).entries
-        .joinToString(",") { (u, s) -> "{\"unit\":${q(u)},\"state\":${q(s)}}" }
+      val ruJson = (units[commit] ?: emptyMap<String, List<String>>()).values
+        .joinToString(",") { (u, s, l, m) -> "{\"unit\":${q(u)},\"state\":${q(s)},\"landed\":${q(l)},\"match\":${q(m)}}" }
       "{\"commit\":${q(commit)},\"files\":[${files.joinToString(",") { q(it) }}],\"reviewUnits\":[$ruJson]}"
     }
     return "{\"entity\":${q(entity)},\"changes\":[${groups.joinToString(",")}]}"
