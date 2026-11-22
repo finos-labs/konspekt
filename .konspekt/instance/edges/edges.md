@@ -610,3 +610,4 @@ proposal.
 | e-dec-accountability-taskprmap | decomposes | node:goal-accountability | node:investigation-task-pr-map |  | accepted |
 | e-dec-taskprmap-reviewunitlog | decomposes | node:investigation-task-pr-map | node:task-review-unit-log |  | accepted |
 | e-not-taskprmap-derivable | notes | node:investigation-task-pr-map | noteworthy:nw-task-pr-map-derivable |  | accepted |
+| e-not-taskprmap-directcommits | notes | node:investigation-task-pr-map | noteworthy:nw-direct-commits-recorded |  | accepted |

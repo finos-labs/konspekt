@@ -1461,3 +1461,7 @@ proposing agent was not recorded.
 | edge:e-not-taskprmap-derivable | review | proposed | accepted | 2026-11-22T16:45:43Z | ni:///sha-256;K0uxvR9QCLUcCHINGqgi7hm_G-gynvyUZPPT7wNKl7U | denisurusov |
 | node:investigation-task-pr-map | status | open | active | 2026-11-22T16:45:43Z | ni:///sha-256;K0uxvR9QCLUcCHINGqgi7hm_G-gynvyUZPPT7wNKl7U | denisurusov |
 | node:task-review-unit-log | status | open | resolved | 2026-11-22T16:55:37Z | ni:///sha-256;rc4agXli4Z9005KNuIvrWZuc0jCX7tiysh1cTDLvYME | denisurusov |
+| noteworthy:nw-direct-commits-recorded | review |  | proposed | 2026-11-22T18:21:29Z | ni:///sha-256;2xV_ye3RaBbCbZwO8SC4IrFAK5qeUEHfvKZhIXrSFaM | claude |
+| edge:e-not-taskprmap-directcommits | review |  | proposed | 2026-11-22T18:21:29Z | ni:///sha-256;2xV_ye3RaBbCbZwO8SC4IrFAK5qeUEHfvKZhIXrSFaM | claude |
+| noteworthy:nw-direct-commits-recorded | review | proposed | accepted | 2026-11-22T18:21:29Z | ni:///sha-256;2xV_ye3RaBbCbZwO8SC4IrFAK5qeUEHfvKZhIXrSFaM | denisurusov |
+| edge:e-not-taskprmap-directcommits | review | proposed | accepted | 2026-11-22T18:21:29Z | ni:///sha-256;2xV_ye3RaBbCbZwO8SC4IrFAK5qeUEHfvKZhIXrSFaM | denisurusov |
