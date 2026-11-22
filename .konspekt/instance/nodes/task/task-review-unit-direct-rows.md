@@ -2,7 +2,7 @@
 id: task-review-unit-direct-rows
 type: task
 title: Record direct-to-default-branch commits in the review-unit log
-status: active
+status: resolved
 summary:
   origin: machine
   pinned: false
@@ -14,7 +14,7 @@ provenance:
   timestamp: 2026-11-22T18:49:13Z
   confidence: 0.8
 createdAt: 2026-11-22T18:49:13Z
-updatedAt: 2026-11-22T18:50:42Z
+updatedAt: 2026-11-22T19:09:07Z
 ```
 # Task: Record direct-to-default-branch commits in the review-unit log
 

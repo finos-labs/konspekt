@@ -1481,3 +1481,5 @@ proposing agent was not recorded.
 | edge:e-not-taskprmap-landedcommit | review | proposed | accepted | 2026-11-22T18:57:09Z | ni:///sha-256;P9MeQFLRAKNLz0vbvCXoQRFjgQCl9pWeVVqHNdaAsZk | denisurusov |
 | edge:e-dec-taskprmap-landedcommits | review | proposed | accepted | 2026-11-22T18:57:09Z | ni:///sha-256;P9MeQFLRAKNLz0vbvCXoQRFjgQCl9pWeVVqHNdaAsZk | denisurusov |
 | node:task-review-unit-landed-commits | status | open | active | 2026-11-22T18:57:09Z | ni:///sha-256;P9MeQFLRAKNLz0vbvCXoQRFjgQCl9pWeVVqHNdaAsZk | denisurusov |
+| node:task-review-unit-direct-rows | status | active | resolved | 2026-11-22T19:09:07Z | ni:///sha-256;OPWGouAQ4vRkGxZj9n5yO78W7-pQzmz39avYHf3VzMo | denisurusov |
+| node:task-review-unit-landed-commits | status | active | resolved | 2026-11-22T19:09:07Z | ni:///sha-256;OPWGouAQ4vRkGxZj9n5yO78W7-pQzmz39avYHf3VzMo | denisurusov |

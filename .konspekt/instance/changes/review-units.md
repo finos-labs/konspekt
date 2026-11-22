@@ -222,5 +222,5 @@ yet. `landed` is the default-branch commit that carries the change; `match` is
 |  | direct |  | d4abd99cd2d021a0989a4ef8bab587620a790d20 | 2026-11-22T16:55:23Z | d4abd99cd2d021a0989a4ef8bab587620a790d20 | same |
 |  | direct |  | a86a142904f311e9a18e395e402032d28b62632e | 2026-11-22T16:55:50Z | a86a142904f311e9a18e395e402032d28b62632e | same |
 |  | direct |  | 8870976d0989b193dbe919cb8fa8ab35c1ab8f7f | 2026-11-22T17:14:10Z | 8870976d0989b193dbe919cb8fa8ab35c1ab8f7f | same |
-| https://github.com/finos-labs/konspekt/pull/122 | open |  | 61936de1ce80893620d04017b0ec0132bb138841 | 2026-11-22T19:04:31Z |  |  |
-| https://github.com/finos-labs/konspekt/pull/122 | open |  | c2ad2e0c410b6372b7024d0bc8898ac49e827103 | 2026-11-22T19:04:31Z |  |  |
+| https://github.com/finos-labs/konspekt/pull/122 | merged | 5ee18d1c3f0d02302305e239003f338b4048e599 | 61936de1ce80893620d04017b0ec0132bb138841 | 2026-11-22T19:08:17Z | 61936de1ce80893620d04017b0ec0132bb138841 | same |
+| https://github.com/finos-labs/konspekt/pull/122 | merged | 5ee18d1c3f0d02302305e239003f338b4048e599 | c2ad2e0c410b6372b7024d0bc8898ac49e827103 | 2026-11-22T19:08:17Z | c2ad2e0c410b6372b7024d0bc8898ac49e827103 | same |

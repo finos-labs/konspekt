@@ -2,7 +2,7 @@
 id: task-review-unit-landed-commits
 type: task
 title: Record the landed commit for squash and rebase merges; bind it in the audit
-status: active
+status: resolved
 summary:
   origin: machine
   pinned: false
@@ -14,7 +14,7 @@ provenance:
   timestamp: 2026-11-22T18:57:09Z
   confidence: 0.75
 createdAt: 2026-11-22T18:57:09Z
-updatedAt: 2026-11-22T18:57:09Z
+updatedAt: 2026-11-22T19:09:07Z
 ```
 # Task: Record the landed commit for squash and rebase merges; bind it in the audit
 
