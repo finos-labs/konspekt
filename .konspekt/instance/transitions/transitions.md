@@ -1465,3 +1465,6 @@ proposing agent was not recorded.
 | edge:e-not-taskprmap-directcommits | review |  | proposed | 2026-11-22T18:21:29Z | ni:///sha-256;2xV_ye3RaBbCbZwO8SC4IrFAK5qeUEHfvKZhIXrSFaM | claude |
 | noteworthy:nw-direct-commits-recorded | review | proposed | accepted | 2026-11-22T18:21:29Z | ni:///sha-256;2xV_ye3RaBbCbZwO8SC4IrFAK5qeUEHfvKZhIXrSFaM | denisurusov |
 | edge:e-not-taskprmap-directcommits | review | proposed | accepted | 2026-11-22T18:21:29Z | ni:///sha-256;2xV_ye3RaBbCbZwO8SC4IrFAK5qeUEHfvKZhIXrSFaM | denisurusov |
+| node:task-review-unit-direct-rows | review |  | proposed | 2026-11-22T18:49:13Z | ni:///sha-256;wFlEqUaI0PGZ1CcxBpuUt0QNJX63-6ZfT5doBMllDM4 | claude |
+| node:task-review-unit-direct-rows | status |  | open | 2026-11-22T18:49:13Z | ni:///sha-256;wFlEqUaI0PGZ1CcxBpuUt0QNJX63-6ZfT5doBMllDM4 | claude |
+| edge:e-dec-taskprmap-directrows | review |  | proposed | 2026-11-22T18:49:13Z | ni:///sha-256;wFlEqUaI0PGZ1CcxBpuUt0QNJX63-6ZfT5doBMllDM4 | claude |

@@ -14,7 +14,7 @@ provenance:
   timestamp: 2026-11-22T15:44:03Z
   confidence: 0.7
 createdAt: 2026-11-22T15:44:03Z
-updatedAt: 2026-11-22T16:45:43Z
+updatedAt: 2026-11-22T18:49:13Z
 ```
 # Investigation: Task-to-pull-request traceability as a general konspekt practice
 
@@ -48,5 +48,16 @@ by hand outside the instance.
   request.
 - Whether the CDM map's other columns (workflow, CDM status, live spec) are
   project-specific and stay out of the general form.
+
+**Settled: placement** (2026-11-22). The practice is split across three
+layers. The standard (`spec/personas/engineer/SPEC.md` § Review units and
+`registry.mjs`) defines the log format and the checker rules; it stays
+forge-neutral because the checker never contacts the forge. An adapter tool
+(`tools/review-units.mjs`, GitHub through `gh`) does the forge query. Host
+policy (`OPERATING.md` § Review units) says when to run it and how CI checks
+it. No skill: it would repeat `OPERATING.md`.
+
+**Settled: direct-to-main** — [[nw-direct-commits-recorded]], implemented by
+[[task-review-unit-direct-rows]].
 
 Decomposes [[goal-accountability]].
