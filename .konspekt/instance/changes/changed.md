@@ -790,3 +790,5 @@ commit order; the channel was not live during that work.
 | task-conformance-ships-review-units | 5b478603a916f625c78b72ac0da238c863e54ef3 | test/setup-init.test.mjs | 2026-11-22T20:04:39Z |
 | task-conformance-ships-review-units | b5467f6892e19f98406c0ab362bb810a5f15f82e | ROADMAP.md | 2026-11-22T20:07:45Z |
 | task-deck-refresh-ni-review-units | e1031e38d01adbd52940369acfaa89c858094ad9 | docs/index.html | 2026-11-22T20:47:57Z |
+| task-conformance-ships-review-units | a605d7d5588e0f6605aee60459d0792c1fe88141 | setup/templates/OPERATING.md | 2026-11-22T20:50:50Z |
+| task-conformance-ships-review-units | a605d7d5588e0f6605aee60459d0792c1fe88141 | test/setup-init.test.mjs | 2026-11-22T20:50:50Z |
