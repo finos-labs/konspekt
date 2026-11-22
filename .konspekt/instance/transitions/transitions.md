@@ -1497,3 +1497,4 @@ proposing agent was not recorded.
 | node:task-deck-refresh-ni-review-units | review | proposed | accepted | 2026-11-22T20:42:29Z | ni:///sha-256;aLddcpZlOgCsqnO_1WfiSum0hA4yZAWpSEsXLxOvaOQ | denisurusov |
 | edge:e-dec-adoption-deckrefresh | review | proposed | accepted | 2026-11-22T20:42:29Z | ni:///sha-256;aLddcpZlOgCsqnO_1WfiSum0hA4yZAWpSEsXLxOvaOQ | denisurusov |
 | node:task-deck-refresh-ni-review-units | status | open | active | 2026-11-22T20:42:29Z | ni:///sha-256;aLddcpZlOgCsqnO_1WfiSum0hA4yZAWpSEsXLxOvaOQ | denisurusov |
+| node:task-deck-refresh-ni-review-units | status | active | resolved | 2026-11-22T20:51:38Z | ni:///sha-256;5m5bdLjvXgBpqthirGoU1r-ExFO8pAku0dSfE58YdFU | denisurusov |

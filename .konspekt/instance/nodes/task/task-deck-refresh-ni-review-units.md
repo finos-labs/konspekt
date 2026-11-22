@@ -2,7 +2,7 @@
 id: task-deck-refresh-ni-review-units
 type: task
 title: Bring docs/index.html up to date with ni references, review units, and the November drawer and checkpoint work
-status: active
+status: resolved
 summary:
   origin: machine
   pinned: false
@@ -14,7 +14,7 @@ provenance:
   timestamp: 2026-11-22T20:42:29Z
   confidence: 0.85
 createdAt: 2026-11-22T20:42:29Z
-updatedAt: 2026-11-22T20:42:29Z
+updatedAt: 2026-11-22T20:51:38Z
 ```
 # Task: Bring docs/index.html up to date with ni references, review units, and the November drawer and checkpoint work
 
