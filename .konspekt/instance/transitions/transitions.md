@@ -1511,3 +1511,6 @@ proposing agent was not recorded.
 | edge:e-dec-adoption-initchecklineendings | review | proposed | accepted | 2026-11-22T21:00:34Z | ni:///sha-256;EQs9660ddc3yPRim-Bbln4eQroqre0tsoLwctqt1uUI | denisurusov |
 | node:task-init-check-line-endings | status | open | resolved | 2026-11-22T21:08:12Z | ni:///sha-256;v6eLNWWVzYJQ5S1UO-IsB4rStwGZiv128s2SFmZv6sA | denisurusov |
 | node:task-review-units-rest-fallback | status | active | resolved | 2026-11-22T21:11:22Z | ni:///sha-256;VT0l_uN0rl0Z15o7FXTLRYfv-qSTOSqgaFLkoQRt5k0 | denisurusov |
+| node:task-review-units-graphql-error | review |  | proposed | 2026-11-22T21:52:22Z | ni:///sha-256;xR2twISr5zepWtPHieE0dfYF_YP_RtzRFbnzuA28gWo | claude |
+| node:task-review-units-graphql-error | status |  | open | 2026-11-22T21:52:22Z | ni:///sha-256;xR2twISr5zepWtPHieE0dfYF_YP_RtzRFbnzuA28gWo | claude |
+| edge:e-dec-taskprmap-graphqlerror | review |  | proposed | 2026-11-22T21:52:22Z | ni:///sha-256;xR2twISr5zepWtPHieE0dfYF_YP_RtzRFbnzuA28gWo | claude |

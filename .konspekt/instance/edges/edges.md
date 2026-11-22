@@ -618,3 +618,4 @@ proposal.
 | e-dec-adoption-deckrefresh | decomposes | node:goal-adoption | node:task-deck-refresh-ni-review-units |  | accepted |
 | e-dec-taskprmap-restfallback | decomposes | node:investigation-task-pr-map | node:task-review-units-rest-fallback |  | accepted |
 | e-dec-adoption-initchecklineendings | decomposes | node:goal-adoption | node:task-init-check-line-endings |  | accepted |
+| e-dec-taskprmap-graphqlerror | decomposes | node:investigation-task-pr-map | node:task-review-units-graphql-error |  | proposed |
