@@ -740,3 +740,11 @@ commit order; the channel was not live during that work.
 | task-linkedin-announce-graph-view | 4280d2bdcb8821bc45b5cd668ee9153d8ba1504a | ROADMAP.md | 2026-11-22T15:31:25Z |
 | task-ui-footer-write-actions | 2dc2e1d5b4e3f17106ee793db701c5a71d2f285d | implementations/implementation-zero/app/view/index.html | 2026-11-22T15:51:26Z |
 | task-ui-footer-write-actions | 35240ef4ecce4a855c9b1d5103771f7c98463f20 | ROADMAP.md | 2026-11-22T15:51:34Z |
+| task-review-unit-log | e2d91c37caed7d2477d426918b4af6086388923d | .konspekt/OPERATING.md | 2026-11-22T16:49:22Z |
+| task-review-unit-log | e2d91c37caed7d2477d426918b4af6086388923d | ROADMAP.md | 2026-11-22T16:49:22Z |
+| task-review-unit-log | e2d91c37caed7d2477d426918b4af6086388923d | lib/conformance.mjs | 2026-11-22T16:49:22Z |
+| task-review-unit-log | e2d91c37caed7d2477d426918b4af6086388923d | spec/personas/engineer/AGENTS.md | 2026-11-22T16:49:22Z |
+| task-review-unit-log | e2d91c37caed7d2477d426918b4af6086388923d | spec/personas/engineer/SPEC.md | 2026-11-22T16:49:22Z |
+| task-review-unit-log | e2d91c37caed7d2477d426918b4af6086388923d | spec/personas/engineer/registry.mjs | 2026-11-22T16:49:22Z |
+| task-review-unit-log | e2d91c37caed7d2477d426918b4af6086388923d | test/review-units.test.mjs | 2026-11-22T16:49:22Z |
+| task-review-unit-log | e2d91c37caed7d2477d426918b4af6086388923d | tools/review-units.mjs | 2026-11-22T16:49:22Z |
