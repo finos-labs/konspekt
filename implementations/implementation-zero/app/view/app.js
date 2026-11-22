@@ -645,16 +645,24 @@ function fillEntityView(root, d, cmds, chgs, trans, conns, entry) {
     chgs.forEach((g, i) => {
       const lbl = document.createElement("div"); lbl.className = "src-label";
       lbl.textContent = (i + 1) + " · commit " + String(g.commit);
-      // Review units (pull requests) containing the commit, from the derived log.
-      // A commit with no row in changes/review-units.md is in no pull request:
-      // work pushed straight to main (OPERATING.md § Review units).
-      if (!(g.reviewUnits || []).length) lbl.appendChild(document.createTextNode(" — no pull request (direct to main)"));
-      (g.reviewUnits || []).forEach((u) => {
+      // Review units (pull requests) containing the commit, from the derived log
+      // changes/review-units.md. A `direct` row marks a commit pushed straight to
+      // the default branch (nw-direct-commits-recorded); a commit with no row is
+      // not on it yet, or the log has not been regenerated since it was bound.
+      // A commit that landed under another SHA (squash or rebase merge) shows it
+      // (nw-landed-commit-recorded).
+      const units = g.reviewUnits || [];
+      if (!units.length) lbl.appendChild(document.createTextNode(" — no review unit yet"));
+      units.forEach((u) => {
+        if (u.state === "direct") { lbl.appendChild(document.createTextNode(" — direct to main")); return; }
         const m = /\/pull\/(\d+)$/.exec(u.unit);
         const a = document.createElement("a"); a.className = "chg-unit";
         a.textContent = (m ? "PR #" + m[1] : u.unit) + " · " + u.state;
         if (/^https?:\/\//.test(u.unit)) { a.href = u.unit; a.target = "_blank"; a.rel = "noopener noreferrer"; }
         lbl.appendChild(document.createTextNode(" — ")); lbl.appendChild(a);
+        if (u.landed && u.match && u.match !== "same") {
+          lbl.appendChild(document.createTextNode(" · landed as " + u.landed + " (" + u.match + ")"));
+        }
       });
       w.appendChild(lbl);
       const ul = document.createElement("ul"); ul.className = "chg-files";

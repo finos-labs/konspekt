@@ -491,7 +491,8 @@ const server = createServer((req, res) => {
     }
     // Review units (pull requests) containing each commit, from the derived
     // changes/review-units.md (spec/personas/engineer/SPEC.md § Review units),
-    // joined by the commit token as a string.
+    // joined by the commit token as a string. A `direct` row has no unit; each
+    // entry carries the landed commit and how it was matched, when given.
     const ruPath = join(instanceDir, "changes", "review-units.md");
     for (const g of groups) g.reviewUnits = [];
     if (groups.length && existsSync(ruPath)) {
@@ -501,7 +502,9 @@ const server = createServer((req, res) => {
         const cells = t.split("|").slice(1, -1).map((c) => c.trim());
         if (cells.length < 4 || cells[0] === "review unit" || /^-+$/.test(cells[0])) continue;
         const g = byCommit.get(cells[3]);
-        if (g && !g.reviewUnits.some((u) => u.unit === cells[0])) g.reviewUnits.push({ unit: cells[0], state: cells[1] });
+        if (g && !g.reviewUnits.some((u) => u.unit === cells[0] && u.state === cells[1])) {
+          g.reviewUnits.push({ unit: cells[0], state: cells[1], landed: cells[5] || "", match: cells[6] || "" });
+        }
       }
     }
     return sendJson(res, { entity: id, changes: groups });

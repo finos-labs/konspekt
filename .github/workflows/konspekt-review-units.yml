@@ -14,7 +14,9 @@ name: konspekt review units
 #
 # Runs on pushes to main that touch the changes logs, daily (a pull request can
 # change state with no push to main), and on demand. Needs `gh`, which the
-# runner provides, and read access to pull requests.
+# runner provides, read access to pull requests, and full history: `direct`
+# rows and `landed` commits are read from main with git, and a squashed or
+# rebased pull request's original commits are fetched from refs/pull/<n>/head.
 
 on:
   push:
@@ -38,6 +40,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # direct rows and landed commits read main's full history
 
       - uses: actions/setup-node@v4
         with:
