@@ -2,7 +2,7 @@
 id: task-conformance-ships-review-units
 type: task
 title: Ship tools/review-units.mjs in the conformance component
-status: active
+status: resolved
 summary:
   origin: machine
   pinned: false
@@ -14,7 +14,7 @@ provenance:
   timestamp: 2026-11-22T20:03:58Z
   confidence: 0.85
 createdAt: 2026-11-22T20:03:58Z
-updatedAt: 2026-11-22T20:03:58Z
+updatedAt: 2026-11-22T20:07:33Z
 ```
 # Task: Ship tools/review-units.mjs in the conformance component
 

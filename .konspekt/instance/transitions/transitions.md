@@ -1490,3 +1490,4 @@ proposing agent was not recorded.
 | node:task-conformance-ships-review-units | review | proposed | accepted | 2026-11-22T20:03:58Z | ni:///sha-256;A2lm119EuIdXNXYc9d_y3_QFMo0mByp2aPx3WJrMYj0 | denisurusov |
 | edge:e-dec-adoption-conformancereviewunits | review | proposed | accepted | 2026-11-22T20:03:58Z | ni:///sha-256;A2lm119EuIdXNXYc9d_y3_QFMo0mByp2aPx3WJrMYj0 | denisurusov |
 | node:task-conformance-ships-review-units | status | open | active | 2026-11-22T20:03:58Z | ni:///sha-256;A2lm119EuIdXNXYc9d_y3_QFMo0mByp2aPx3WJrMYj0 | denisurusov |
+| node:task-conformance-ships-review-units | status | active | resolved | 2026-11-22T20:07:33Z | ni:///sha-256;hIfiO1jOjDwcnE3CKKemGs8L45Ec-Mkyrg1qrKDQuvo | denisurusov |
