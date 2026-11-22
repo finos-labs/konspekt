@@ -1504,3 +1504,8 @@ proposing agent was not recorded.
 | node:task-review-units-rest-fallback | review | proposed | accepted | 2026-11-22T21:00:39Z | ni:///sha-256;7fDk8KRnrurwcVIAX4yj0zd3K7wkWqIOae7DthaIgLM | denisurusov |
 | edge:e-dec-taskprmap-restfallback | review | proposed | accepted | 2026-11-22T21:00:39Z | ni:///sha-256;7fDk8KRnrurwcVIAX4yj0zd3K7wkWqIOae7DthaIgLM | denisurusov |
 | node:task-review-units-rest-fallback | status | open | active | 2026-11-22T21:00:39Z | ni:///sha-256;7fDk8KRnrurwcVIAX4yj0zd3K7wkWqIOae7DthaIgLM | denisurusov |
+| node:task-init-check-line-endings | review |  | proposed | 2026-11-22T21:00:34Z | ni:///sha-256;EQs9660ddc3yPRim-Bbln4eQroqre0tsoLwctqt1uUI | claude |
+| node:task-init-check-line-endings | status |  | open | 2026-11-22T21:00:34Z | ni:///sha-256;EQs9660ddc3yPRim-Bbln4eQroqre0tsoLwctqt1uUI | claude |
+| edge:e-dec-adoption-initchecklineendings | review |  | proposed | 2026-11-22T21:00:34Z | ni:///sha-256;EQs9660ddc3yPRim-Bbln4eQroqre0tsoLwctqt1uUI | claude |
+| node:task-init-check-line-endings | review | proposed | accepted | 2026-11-22T21:00:34Z | ni:///sha-256;EQs9660ddc3yPRim-Bbln4eQroqre0tsoLwctqt1uUI | denisurusov |
+| edge:e-dec-adoption-initchecklineendings | review | proposed | accepted | 2026-11-22T21:00:34Z | ni:///sha-256;EQs9660ddc3yPRim-Bbln4eQroqre0tsoLwctqt1uUI | denisurusov |
