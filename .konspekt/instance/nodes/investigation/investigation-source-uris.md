@@ -2,7 +2,7 @@
 id: investigation-source-uris
 type: investigation
 title: Source URIs alongside content hashes
-status: active
+status: resolved
 summary:
   origin: machine
   pinned: false
@@ -18,7 +18,7 @@ provenance:
     sourceRef: 79351f57f62b5883e4590949d7c1a1061dde8bd8
     contentHash: 79351f57f62b5883e4590949d7c1a1061dde8bd8
 createdAt: 2026-11-14T00:08:05Z
-updatedAt: 2026-11-14T00:08:05Z
+updatedAt: 2026-11-22T15:33:19Z
 ```
 # Investigation: Source URIs alongside content hashes
 
@@ -61,3 +61,5 @@ MongoDB or Postgres store it would be undocumented knowledge.
 
 SWHID was considered for interoperability and dropped: SWHID v1 is SHA-1 only,
 v2 is not final, and no existing reference uses it.
+
+Resolved 2026-11-22 on the human's `resolve`, after [[task-ni-references]] was resolved; ni:///sha-256;PzosYcK5gnWxBKjK5V-Clu57r9oB6VIkVKRuX6re6Z8.

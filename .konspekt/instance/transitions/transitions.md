@@ -1443,3 +1443,4 @@ proposing agent was not recorded.
 | node:task-ni-references | status | open | resolved | 2026-11-22T15:31:00Z | ni:///sha-256;pTmcp6qNLK_BjliyphVhxkEG0QYVqVsAfYb9bp2FCoU | denisurusov |
 | node:task-setup-init-check-policy-fields | status | open | resolved | 2026-11-22T15:31:00Z | ni:///sha-256;pTmcp6qNLK_BjliyphVhxkEG0QYVqVsAfYb9bp2FCoU | denisurusov |
 | node:task-binding-gap-audit | status | open | resolved | 2026-11-22T15:31:00Z | ni:///sha-256;pTmcp6qNLK_BjliyphVhxkEG0QYVqVsAfYb9bp2FCoU | denisurusov |
+| node:investigation-source-uris | status | active | resolved | 2026-11-22T15:33:19Z | ni:///sha-256;PzosYcK5gnWxBKjK5V-Clu57r9oB6VIkVKRuX6re6Z8 | denisurusov |
