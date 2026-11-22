@@ -226,6 +226,13 @@
   .chan-file{font-family:var(--mono);font-size:15px;color:var(--ochre);letter-spacing:.01em}
   .chan-h{font-family:var(--disp);font-size:27px;color:var(--ink);margin:12px 0 14px}
   .chan-b{font-size:17.5px;line-height:1.5;color:var(--ink-soft)}
+  .chan.four{grid-template-columns:repeat(4,1fr);gap:30px;margin-top:22px}
+  .chan.four .chan-col{padding-top:16px}
+  .chan.four .chan-file{font-size:13px}
+  .chan.four .chan-h{font-size:22px;margin:10px 0 10px}
+  .chan.four .chan-b{font-size:14.5px;line-height:1.48}
+  .ni-line{font-size:15.5px;line-height:1.5;color:var(--ink-soft);margin:12px 0 0;max-width:110ch}
+  .ni-line code{font-family:var(--mono);font-size:14px;color:var(--ochre)}
 
   /* ---- authority verbs (slide 11) ---- */
   .vgroup-h{display:flex;align-items:baseline;gap:12px;margin:0 0 2px;flex-wrap:wrap}
@@ -234,6 +241,7 @@
   .vrow{display:grid;gap:0 32px}
   .vrow.six{grid-template-columns:repeat(6,1fr)}
   .vrow.three{grid-template-columns:repeat(3,1fr);max-width:72%}
+  .vrow.five{grid-template-columns:repeat(5,1fr)}
   .verb{border-top:1px solid var(--rule);padding:15px 0 13px}
   .verb-w{font-family:var(--disp);font-size:30px;line-height:1;color:var(--ink);font-weight:400}
   .verb.cmd .verb-w{font-family:var(--mono);font-size:21px;color:var(--ochre);font-weight:500}
@@ -377,6 +385,30 @@
            border:1px solid var(--ui-line);border-radius:7px;padding:9px 14px;margin-bottom:10px}
   .chg{font-family:var(--mono);font-size:12.5px;color:#c7cddb;line-height:1.7}
   .chg .ar{color:var(--ochre-bright)}
+  /* entity detail redraw: provenance index, source view, connections */
+  .acc-line{display:flex;align-items:center;gap:10px;margin:8px 16px;padding:7px 12px;border-radius:7px;
+            background:rgba(111,197,138,.1);border:1px solid rgba(111,197,138,.3);color:#bfe9cd;font-size:12.5px}
+  .pv-h{font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--ui-faint);margin:8px 16px 4px}
+  .pv-i{display:grid;grid-template-columns:1fr auto;gap:1px 10px;margin:0 16px 4px;padding:5px 10px;
+        border:1px solid var(--ui-line);border-radius:6px;background:var(--ui-panel-2);font-size:12px;color:var(--ui-text)}
+  .pv-i .m{color:var(--ui-faint);font-size:11px}
+  .pv-i .go{color:var(--ui-blue);grid-row:span 2;align-self:center}
+  .ni{font-family:var(--mono);font-size:10.5px;color:var(--ui-blue);text-decoration:underline;text-decoration-color:rgba(138,160,255,.4)}
+  .conn{border-top:1px solid var(--ui-line);margin-top:6px;padding:7px 16px 9px}
+  .conn-head{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--ui-soft)}
+  .conn-head .pop{margin-left:auto;font-size:11.5px;color:var(--ui-blue);border:1px solid rgba(138,160,255,.4);border-radius:5px;padding:2px 8px}
+  .conn-kind{font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:var(--ui-faint);margin:6px 0 3px}
+  .crow{display:grid;grid-template-columns:44px 1fr auto;gap:8px;align-items:center;font-size:12px;padding:4px 8px;
+        border:1px solid var(--ui-line);border-radius:6px}
+  .crow .dir{font-family:var(--mono);font-size:10.5px;color:var(--ui-faint)}
+  .crow .id{font-family:var(--mono);font-size:11.5px;color:var(--ui-text)}
+  .crow .sub{display:block;font-size:10.5px;color:var(--ui-faint)}
+  .src-head{font-family:var(--mono);font-size:10.5px;color:var(--ui-faint);padding:8px 14px;border-bottom:1px solid var(--ui-line)}
+  .src-loc{margin:8px 14px 6px;padding:7px 10px;border:1px solid var(--ui-line);border-radius:6px;font-size:11px;line-height:1.5}
+  .src-loc .l{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;color:var(--ui-faint);display:block}
+  .src-loc .u{font-family:var(--mono);font-size:10.5px;color:var(--ui-blue);text-decoration:underline;word-break:break-all}
+  .code.sm{font-size:11px;line-height:1.5;padding:8px 12px;margin:0 14px 10px}
+  .unit{color:var(--ui-blue);text-decoration:underline;text-decoration-color:rgba(138,160,255,.4)}
 
   .cap{font-size:15px;color:var(--muted);line-height:1.4;margin-top:auto;padding-top:12px;max-width:none;text-wrap:pretty}
 
@@ -640,11 +672,13 @@
             </div>
           </div>
           <div class="vgroup" style="margin-top:24px">
-            <div class="vgroup-h"><b>Checkpoint</b><span>move atoms between the working copy and the store</span></div>
-            <div class="vrow three">
+            <div class="vgroup-h"><b>Orchestration</b><span>move atoms between the working copy and the store, and carry a conversation across sessions</span></div>
+            <div class="vrow five">
               <div class="verb cmd"><div class="verb-w">sync</div><div class="verb-c">reconcile incoming atoms into the working copy</div></div>
               <div class="verb cmd"><div class="verb-w">persist</div><div class="verb-c">flush the working copy to the store</div></div>
               <div class="verb cmd"><div class="verb-w">sync_persist</div><div class="verb-c">both, in one durable step</div></div>
+              <div class="verb cmd"><div class="verb-w">checkpoint</div><div class="verb-c">record the binding and the open items</div></div>
+              <div class="verb cmd"><div class="verb-w">resume</div><div class="verb-c">pick up from the last checkpoint</div></div>
             </div>
           </div>
           <p class="verb-note">You never have to remember the vocabulary: as you work, the assistant proposes the fitting verb and the interface surfaces it for a one&#8209;click disposition &mdash; accept a proposal, resolve a node. It runs on <b>recognition, not recall</b>.</p>
@@ -685,7 +719,7 @@
                 <text x="39" y="48" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="26" fill="currentColor" stroke="none">#</text>
               </svg>
               <div class="stagex-t">Content hash</div>
-              <div class="stagex-c">sources/&lt;sha&gt;</div>
+              <div class="stagex-c">ni:///sha-256;&hellip;</div>
             </div>
             <svg class="fl-arrow" viewBox="0 0 46 26"><path d="M2 13h38m0 0-8-7m8 7-8 7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
             <div class="stagex">
@@ -719,7 +753,7 @@
           <div class="flow-notes">
             <p>Binding comes first: at the open the conversation is attached to an entity, so every entry has a home before any is proposed &mdash; provenance completeness (invariant&nbsp;V).</p>
             <p>The source is stored as direct quotes, both sides of the exchange word for word, rather than a summary of it.</p>
-            <p>Each source is addressed by a hash of its bytes, and every entity carries that hash, so an altered quote no longer resolves.</p>
+            <p>Each source is stored under the SHA-256 hash of its bytes, and every entity cites it by an <code>ni:</code> name built from that hash, so an altered quote no longer resolves.</p>
           </div>
         </div>
       </section>
@@ -893,18 +927,19 @@
         <div class="wrap">
           <div class="head-row">
             <h2 class="s-head">Provenance</h2>
-            <div class="eyebrow">Three content&#8209;addressed channels</div>
+            <div class="eyebrow">Four channels · ni: references</div>
           </div>
           <p style="font-family:var(--disp);font-weight:400;font-size:26px;line-height:1.22;color:var(--ink);text-wrap:balance;margin:16px 0 0;max-width:58ch">An action journal and decision-making trail: who did what, when and how — and who accepted each proposal.</p>
-          <p class="lede" style="margin-top:10px;max-width:96ch;font-size:19px;color:var(--muted)">Each channel stores its text under a filename that is the hash of that text. An entry verifies when hashing the file again returns the hash it was stored under, so an altered record stops resolving.</p>
-          <div class="chan">
+          <p class="lede" style="margin-top:10px;max-width:96ch;font-size:18px;color:var(--muted)">Sources and commands are stored under the SHA-256 hash of their text. An entry verifies when hashing the file again returns the hash it was stored under, so an altered record stops resolving.</p>
+          <p class="ni-line">Entities cite them as RFC&nbsp;6920 names, <code>ni:///sha-256;&lt;base64url&gt;</code>, which carry the hash algorithm in the name. Each instance declares one rule in <code>project.md</code> for resolving a name to its store, so the same reference opens in git or in a database. Earlier SHA&#8209;1 references were migrated in place and kept in a <code>deprecated</code> block, with no provenance lost.</p>
+          <div class="chan four">
             <div class="chan-col">
-              <div class="chan-file">sources/&lt;hash&gt;.md</div>
+              <div class="chan-file">sources/sha-256/&lt;hex&gt;.md</div>
               <h4 class="chan-h">Verbatim excerpts</h4>
               <p class="chan-b">The text an entry was drawn from, covering every participating turn — human prompts and assistant responses, copied as written. Selecting which spans to include is allowed; rewriting or summarizing a span is not.</p>
             </div>
             <div class="chan-col">
-              <div class="chan-file">commands/&lt;hash&gt;.md</div>
+              <div class="chan-file">commands/sha-256/&lt;hex&gt;.md</div>
               <h4 class="chan-h">Executed commands</h4>
               <p class="chan-b">The verbatim text of each command run while building, one file per command. A separate log binds each run to the entity it was about, in execution order. Output is not stored: the record answers what was run.</p>
             </div>
@@ -912,6 +947,11 @@
               <div class="chan-file">changes/changed.md</div>
               <h4 class="chan-h">Changed code</h4>
               <p class="chan-b">A row per entity, commit, and file, in commit order. The change itself stays in version control and is reached through the commit token, so only which files changed, and for which entity, is kept here.</p>
+            </div>
+            <div class="chan-col">
+              <div class="chan-file">changes/review-units.md</div>
+              <h4 class="chan-h">Review units</h4>
+              <p class="chan-b">Which pull requests contain each bound commit, and whether each is open, merged, or closed. A commit pushed straight to main gets a direct row; a squash or rebase merge records the commit that landed. <code style="font-family:var(--mono);font-size:13px">tools/review-units.mjs</code> derives it from the forge, and CI checks it.</p>
             </div>
           </div>
         </div>
@@ -959,49 +999,49 @@
         <div class="wrap">
           <div class="head-row">
             <h2 class="s-head" style="font-size:46px">Every atom opens onto its record</h2>
-            <div class="eyebrow">Entity detail · provenance tabs</div>
+            <div class="eyebrow">Entity detail · references you can open</div>
           </div>
-          <hr class="rule" style="margin:12px 0 14px">
+          <hr class="rule" style="margin:12px 0 12px">
           <div class="detail">
             <div class="panel">
-              <div class="p-head"><div class="p-title"><b>task-second-implementer</b><span>proposed by claude</span></div><span style="color:var(--ui-faint);font-size:18px">&times;</span></div>
-              <div class="banner"><span>Proposed — awaiting a human disposition.</span><span style="display:flex;gap:8px"><button class="btn-acc" style="background:transparent;color:#8fe0a6;border:1px solid rgba(135,215,163,.5)">Resolve</button><button class="btn-acc">Accept</button></span></div>
-              <div class="tabs" style="padding:0 20px 12px;border-bottom:1px solid var(--ui-line)"><span>Details</span><span class="on">Provenance</span><span>Commands (2)</span><span>Changes (1)</span><span>History</span></div>
-              <div class="src-lbl">SOURCES/4F1C9E27B3A8_.MD</div>
-              <pre class="code">### human
-Two options for the tool window: have JCEF load the local Node
-server, or read the instance in-process.
-
-### assistant
-In-process needs no Node runtime in the IDE session and gives a
-VFS-native change source, so the reader ships with the plugin …</pre>
-              <p class="cap-in">Stored word for word, both sides of the exchange. Spans may be elided, never rewritten.</p>
+              <div class="p-head" style="padding:10px 16px"><div class="p-title"><b>task-review-unit-direct-rows</b><span>task · resolved</span></div><span style="color:var(--ui-faint);font-size:18px">&times;</span></div>
+              <div class="acc-line"><span class="dot d-green"></span>Accepted by <b style="font-weight:600">denisurusov</b> · 2026-11-22 18:50</div>
+              <div class="tabs" style="padding:0 16px 10px;border-bottom:1px solid var(--ui-line);font-size:13.5px"><span>Details</span><span class="on">Provenance (6)</span><span>Changes (3)</span></div>
+              <div class="pv-h">EXTRACTION</div>
+              <div class="pv-i"><span>provenance.sourceRef</span><span class="go">&rsaquo;</span><span class="ni">ni:///sha-256;wFlEqUaI0PGZ1CcxBpuUt0QN&hellip;</span></div>
+              <div class="pv-h">TRANSITIONS</div>
+              <div class="pv-i"><span>review proposed &rarr; accepted <span class="m">· denisurusov · 18:50</span></span><span class="go">&rsaquo;</span><span class="ni">ni:///sha-256;NRiciRH9GlX7vzHVSSkF6Oo-&hellip;</span></div>
+              <div class="pv-i"><span>status active &rarr; resolved <span class="m">· denisurusov · 19:09</span></span><span class="go">&rsaquo;</span><span class="ni">ni:///sha-256;OPWGouAQ4vRkGxZj9n5yO78W&hellip;</span></div>
+              <div class="conn">
+                <div class="conn-head"><span>&#9662; Connections · 1</span><span class="pop">&#8599; Pop out graph</span></div>
+                <div class="conn-kind">DECOMPOSES · 1</div>
+                <div class="crow"><span class="dir">&larr; in</span><span><span class="id">investigation-task-pr-map</span><span class="sub">Task-to-pull-request traceability as a general konspekt practice</span></span><span class="kind-tag">investigation</span></div>
+              </div>
             </div>
-            <div style="display:flex;flex-direction:column;gap:20px">
-              <div class="panel" style="flex:1">
-                <div class="p-head"><div class="p-title"><b style="color:var(--ui-blue)">Commands (2)</b></div></div>
-                <div style="padding:16px 20px">
-                  <p class="cmd-n">1 · COMMANDS/9F2A1C4B8D_</p>
-                  <div class="cmd-box">./gradlew buildPlugin</div>
-                  <p class="cmd-n">2 · COMMANDS/41C7E0AA2F_</p>
-                  <div class="cmd-box" style="margin-bottom:0">./gradlew runIde</div>
-                </div>
+            <div style="display:flex;flex-direction:column;gap:14px">
+              <div class="panel">
+                <div class="src-head">task-review-unit-direct-rows &rsaquo; Provenance &rsaquo; c05944a94688&hellip;</div>
+                <div class="src-loc"><span class="l">LOCATION IN STORE (store.resolve.source)</span><span class="u">github.com/finos-labs/konspekt/blob/main/.konspekt/instance/sources/sha-256/c05944a9&hellip;.md</span></div>
+                <pre class="code sm">**User:**
+
+1. new task, direct to main 2. a PR 3. yes
+4. remind me what these are</pre>
               </div>
               <div class="panel" style="flex:1">
-                <div class="p-head"><div class="p-title"><b style="color:var(--ui-blue)">Changes (1)</b></div></div>
-                <div style="padding:16px 20px">
-                  <p class="cmd-n">1 · COMMIT 7D1E93AC52_</p>
-                  <div class="chg">
-                    <span class="ar">&rsaquo;</span> intellij-plugin/app/src/main/kotlin/InstanceReader.kt<br>
-                    <span class="ar">&rsaquo;</span> intellij-plugin/app/src/main/kotlin/ViewServer.kt<br>
-                    <span class="ar">&rsaquo;</span> intellij-plugin/app/build.gradle.kts
+                <div class="p-head" style="padding:9px 16px"><div class="p-title"><b style="color:var(--ui-blue)">Changes (3)</b></div></div>
+                <div style="padding:10px 16px">
+                  <p class="cmd-n">1 · commit 61936de1ce80&hellip; &mdash; <span class="unit">PR #122 · merged</span></p>
+                  <div class="chg" style="font-size:11.5px;line-height:1.55;margin-bottom:8px">
+                    <span class="ar">&rsaquo;</span> tools/review-units.mjs<br>
+                    <span class="ar">&rsaquo;</span> spec/personas/engineer/SPEC.md &nbsp;<span style="color:var(--ui-faint)">+10 files</span>
                   </div>
-                  <p class="cap-in" style="margin:12px 0 0">The commit token points at version control; only the changed files are kept here.</p>
+                  <p class="cmd-n">2 · commit c2ad2e0c410b&hellip; &mdash; <span class="unit">PR #122 · merged</span></p>
+                  <p class="cmd-n" style="margin:0">3 · commit 45b70c14bc43&hellip; &mdash; direct to main</p>
                 </div>
               </div>
             </div>
           </div>
-          <p class="cap" style="padding-top:16px">The Commands and Changes tabs appear only when the entity has them recorded. The <b>History</b> tab lists every transition in order; once this atom is accepted, its details read <b>Accepted&nbsp;by&nbsp;&mdash;</b> its maintainer, straight from the log. Sample instance, recreated from the view source.</p>
+          <p class="cap" style="padding-top:12px">Every <code style="font-family:var(--mono);font-size:13px">ni:</code> reference opens a source view stacked over the drawer, with its location in the store; the location is a link only when the store is browsable over http(s). Provenance indexes every reference that bears on the atom, its transitions included. Changes shows the pull request behind each commit. Connections lists the atom&rsquo;s edges and pops out to the whole graph. Data from konspekt&rsquo;s own instance.</p>
         </div>
       </section>
 
@@ -1022,12 +1062,12 @@ VFS-native change source, so the reader ships with the plugin …</pre>
             <div class="pay">
               <div class="pay-m">Switch models</div>
               <div class="pay-h">It comes with you</div>
-              <div class="pay-b">Move to another LLM mid-project and the context travels — nothing re-explained.</div>
+              <div class="pay-b">Type <b>checkpoint</b>, move to another LLM, and <b>resume</b>. The binding and the open items travel; nothing is re-explained.</div>
             </div>
             <div class="pay">
               <div class="pay-m">Next week</div>
               <div class="pay-h">It&rsquo;s still there</div>
-              <div class="pay-b">Reopen after days away; the open questions and the reason behind each decision are right where you left them.</div>
+              <div class="pay-b">Reopen after days away and <b>resume</b> from the last checkpoint; the open questions and the reason behind each decision are right where you left them.</div>
             </div>
             <div class="pay">
               <div class="pay-m">A teammate joins</div>
@@ -1162,7 +1202,8 @@ VFS-native change source, so the reader ships with the plugin …</pre>
                 <line x1="360" y1="96" x2="238" y2="74"/><line x1="360" y1="96" x2="266" y2="128"/>
                 <line x1="700" y1="96" x2="828" y2="80"/><line x1="700" y1="96" x2="822" y2="128"/>
                 <line x1="380" y1="262" x2="252" y2="238"/><line x1="380" y1="262" x2="270" y2="278"/><line x1="380" y1="262" x2="236" y2="312"/>
-                <line x1="700" y1="264" x2="828" y2="272"/>
+                <line x1="700" y1="264" x2="828" y2="272"/><line x1="700" y1="264" x2="822" y2="312"/>
+                <line x1="380" y1="262" x2="262" y2="196"/>
               </g>
               <!-- leaf dots -->
               <g fill="#F1EDE6" stroke="#A9742A" stroke-width="1.2">
@@ -1173,6 +1214,8 @@ VFS-native change source, so the reader ships with the plugin …</pre>
               </g>
               <!-- delivered leaf: filled -->
               <circle cx="262" cy="128" r="4" fill="#A9742A" stroke="#A9742A" stroke-width="1.2"/>
+              <circle cx="826" cy="312" r="4" fill="#A9742A" stroke="#A9742A" stroke-width="1.2"/>
+              <circle cx="258" cy="196" r="4" fill="#A9742A" stroke="#A9742A" stroke-width="1.2"/>
               <!-- cluster nodes -->
               <g fill="#A9742A"><circle cx="360" cy="96" r="8"/><circle cx="700" cy="96" r="8"/><circle cx="380" cy="262" r="8"/><circle cx="700" cy="264" r="8"/></g>
               <!-- centre -->
@@ -1194,6 +1237,8 @@ VFS-native change source, so the reader ships with the plugin …</pre>
                 <text x="258" y="283" text-anchor="end">Signed accepts</text>
                 <text x="224" y="317" text-anchor="end">Protected role change</text>
                 <text x="844" y="277">Enterprise persistence</text>
+                <text x="838" y="317">ni: references <tspan fill="#A9742A" font-style="italic">· delivered</tspan></text>
+                <text x="250" y="201" text-anchor="end">Review units <tspan fill="#A9742A" font-style="italic">· delivered</tspan></text>
               </g>
               <g font-family="IBM Plex Mono, monospace" fill="#8C8377">
                 <text x="560" y="210" text-anchor="middle" font-size="15" fill="#211D18">pointer-swap</text>
@@ -1204,8 +1249,8 @@ VFS-native change source, so the reader ships with the plugin …</pre>
           <div class="rmcols">
             <div><h4>Collaboration</h4><p>Several people and agents work one project while acceptance stays with the named maintainers.</p></div>
             <div><h4>Observability</h4><p>Read the state and history of a project through queries.</p></div>
-            <div><h4>Portability</h4><p>Run on enterprise persistence — a database or object store — behind one storage interface.</p></div>
-            <div><h4>Accountability</h4><p>Report the chain behind an accepted decision: what was proposed, by which model, and who accepted it.</p></div>
+            <div><h4>Portability</h4><p>Run on enterprise persistence — a database or object store — behind one storage interface. References are already store-neutral <code style="font-family:var(--mono);font-size:14px">ni:</code> names.</p></div>
+            <div><h4>Accountability</h4><p>Report the chain behind an accepted decision: what was proposed, by which model, who accepted it, and which pull requests delivered it.</p></div>
           </div>
         </div>
       </section>
@@ -1251,7 +1296,7 @@ VFS-native change source, so the reader ships with the plugin …</pre>
             </div>
             <div class="faq-item">
               <div class="faq-q">Does it lock me in?</div>
-              <div class="faq-a">No. An instance is plain files with a neutral, non-API read path, Apache-2.0 on GitHub. git is the reference store; MongoDB and Postgres sit behind the same interface.</div>
+              <div class="faq-a">No. An instance is plain files with a neutral, non-API read path, Apache-2.0 on GitHub. git is the reference store; MongoDB and Postgres sit behind the same interface. References are <code>ni:</code> names, and each instance declares how they resolve in its store, so a record moves between stores without rewriting its citations.</div>
             </div>
           </div>
         </div>
