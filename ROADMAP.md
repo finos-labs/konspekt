@@ -3,7 +3,7 @@
      Check freshness with: node tools/roadmap.mjs --check
      This file is a pure function of .konspekt/instance/ (no timestamps baked in).
      Goals and tasks are graph nodes; the horizon is derived from node status/review.
-     contentHash: sha256:24fdd8879a5e2149 -->
+     contentHash: sha256:8f9f062e1e97d1e4 -->
 
 # konspekt roadmap
 
@@ -19,7 +19,6 @@ Make the facts a responsibility question needs answerable with evidence. The law
 
 - Design a richer accept-authority mechanism
 - Protect changes to who carries legal weight
-- Record review units (pull requests) against bound commits
 
 **Later** — _proposed, not yet committed_
 
@@ -36,6 +35,7 @@ Make the facts a responsibility question needs answerable with evidence. The law
 - Ask-at-open binding behavior in the operating loop
 - Serialize executed-command provenance as an ordered log
 - Record the source and config changes associated with a task
+- Record review units (pull requests) against bound commits
 
 ## Get konspekt adopted by technical teams
 
