@@ -2,7 +2,7 @@
 id: task-review-units-rest-fallback
 type: task
 title: Let tools/review-units.mjs read pull requests over REST when GraphQL is unavailable
-status: active
+status: resolved
 summary:
   origin: machine
   pinned: false
@@ -14,7 +14,7 @@ provenance:
   timestamp: 2026-11-22T21:00:39Z
   confidence: 0.85
 createdAt: 2026-11-22T21:00:39Z
-updatedAt: 2026-11-22T21:00:39Z
+updatedAt: 2026-11-22T21:11:22Z
 ```
 # Task: Let tools/review-units.mjs read pull requests over REST when GraphQL is unavailable
 
