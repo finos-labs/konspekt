@@ -3,7 +3,7 @@
      Check freshness with: node tools/roadmap.mjs --check
      This file is a pure function of .konspekt/instance/ (no timestamps baked in).
      Goals and tasks are graph nodes; the horizon is derived from node status/review.
-     contentHash: sha256:5e46507af445c981 -->
+     contentHash: sha256:b2d61c9d15efa0f5 -->
 
 # konspekt roadmap
 
@@ -54,6 +54,7 @@ Bring technical adopters from first contact to a running instance in their own r
 
 **Shipped** — _resolved_
 
+- Ship tools/review-units.mjs in the conformance component
 - Produce a hands-on promo video for technical adopters
 - Make setup/init.mjs --check report missing binding and basis fields
 
@@ -243,4 +244,4 @@ Let several participants — people and agents — propose into and review one s
 
 ---
 
-Generated from 9 goal(s) and 110 task-listing(s) over the instance graph.
+Generated from 9 goal(s) and 111 task-listing(s) over the instance graph.
