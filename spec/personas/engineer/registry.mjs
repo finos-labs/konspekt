@@ -69,11 +69,15 @@ export const changeLog = {
 };
 
 // Review-unit log (not edges). changes/review-units.md is a table
-// `| review unit | state | merge commit | commit | timestamp |` linking each commit
-// already bound in the changed-code log to the review unit (on GitHub, a pull
-// request) that contains it — one row per (review unit, commit). The entity is
-// reached through the changed-code log, never stored twice. `state` is open,
-// merged, or closed. Unlike the changed-code log, rows are DERIVED: a forge
+// `| review unit | state | merge commit | commit | timestamp | landed | match |`
+// linking each commit already bound in the changed-code log to the review unit
+// (on GitHub, a pull request) that contains it — one row per (review unit,
+// commit). The entity is reached through the changed-code log, never stored
+// twice. `state` is open, merged, or closed, or `direct` for a commit on the
+// default branch that no unit contains (empty review unit and merge commit;
+// nw-direct-commits-recorded). `landed` is the default-branch commit that carries
+// the change and `match` how it was found (nw-landed-commit-recorded); both are
+// optional columns, given together, on merged and direct rows only. Unlike the changed-code log, rows are DERIVED: a forge
 // adapter (tools/review-units.mjs) writes them from the forge's record, and
 // rewrites a row when its state changes; nobody types them
 // (nw-task-pr-map-derivable). The core stays forge- and VCS-neutral: the checker
@@ -81,7 +85,8 @@ export const changeLog = {
 // nothing.
 export const reviewUnitLog = {
   file: "changes/review-units.md",
-  states: ["open", "merged", "closed"],
+  states: ["open", "merged", "closed", "direct"],
+  matches: ["same", "squash", "patch-id", "position"],
 };
 
 export default { persona, subtypes, edges, provenanceRefs, commandLog, changeLog, reviewUnitLog };

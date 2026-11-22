@@ -196,10 +196,20 @@ changed-code log to the pull requests that contain them
 CLI.
 
 **When to run.** After a pull request with bound commits is opened, merged, or
-closed, and before `push` when the changed-code log gained rows that may sit in
-a pull request. Work pushed straight to `main` has no pull request and adds no
-row, so a direct-to-main session needs no run. The output touches only
+closed, and after bound work is pushed straight to `main`, which adds a
+`direct` row per commit (`nw-direct-commits-recorded`). Run it after the push,
+so the commits are on `origin/main`. The output touches only
 `.konspekt/instance/**`, so it is bookkeeping and needs no changed-code row.
+`node lib/validate.mjs` warns `review-unit-missing` for each bound commit the log
+does not list yet.
+
+**Squash and rebase merges.** Each row records the `landed` commit on `main`
+that carries the bound commit's change (`nw-landed-commit-recorded`), and
+`tools/binding-audit.mjs` counts it as bound. After a squash or rebase merge the
+audit reports the new commit as unbound until the log is regenerated and
+committed; regenerate right after the merge. The tool reads `git` history and
+patch-ids, fetching `refs/pull/<n>/head` when a merged pull request's original
+commits are missing, so run it from a full clone.
 
 ```
 node tools/review-units.mjs           # rewrite changes/review-units.md

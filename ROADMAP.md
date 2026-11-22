@@ -3,7 +3,7 @@
      Check freshness with: node tools/roadmap.mjs --check
      This file is a pure function of .konspekt/instance/ (no timestamps baked in).
      Goals and tasks are graph nodes; the horizon is derived from node status/review.
-     contentHash: sha256:8f9f062e1e97d1e4 -->
+     contentHash: sha256:764d002a510e373b -->
 
 # konspekt roadmap
 
@@ -14,6 +14,11 @@ Horizon: **Now** — in progress · **Next** — accepted and planned · **Later
 ## Answer who is responsible
 
 Make the facts a responsibility question needs answerable with evidence. The law decides who is responsible; konspekt records, verbatim and unaltered, what an AI proposed and which named human accepted it, so the underlying account is not in dispute. Responsibility attaches to a human by construction: an AI proposes, and only a named maintainer accepts.
+
+**Now** — _in progress_
+
+- Record direct-to-default-branch commits in the review-unit log
+- Record the landed commit for squash and rebase merges; bind it in the audit
 
 **Next** — _accepted and planned_
 
@@ -241,4 +246,4 @@ Let several participants — people and agents — propose into and review one s
 
 ---
 
-Generated from 9 goal(s) and 108 task-listing(s) over the instance graph.
+Generated from 9 goal(s) and 110 task-listing(s) over the instance graph.

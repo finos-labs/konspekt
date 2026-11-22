@@ -56,6 +56,45 @@ eq("entity -> review units projection",
   ["task-x=u/1", "task-y=u/1,u/3,u/2"]);
 eq("rendering is deterministic", ru.renderLog(rows) === ru.renderLog(ru.buildRows(changed, units)), true);
 
+// direct rows and landed commits (nw-direct-commits-recorded, nw-landed-commit-recorded)
+const mainline = new Map([[A, "2026-01-01T00:00:00Z"], [D, "2026-01-09T00:00:00Z"]]);
+const S = "5".repeat(40);
+const land = (u, sha) => (u.url === "u/3" ? { landed: S, match: "squash" } : null);
+const rows2 = ru.buildRows(changed, units, mainline, land);
+const dRow = rows2.find((r) => r.commit === D);
+eq("a bound commit on the default branch in no unit gets one direct row",
+  [rows2.filter((r) => r.commit === D).length, dRow.unit, dRow.state, dRow.mergeCommit, dRow.timestamp, dRow.landed, dRow.match],
+  [1, "", "direct", "", "2026-01-09T00:00:00Z", D, "same"]);
+eq("a merged commit on the default branch lands as itself",
+  [rows2[0].landed, rows2[0].match], [A, "same"]);
+eq("a merged commit off the default branch takes the lander's answer",
+  rows2.filter((r) => r.unit === "u/3").map((r) => `${r.landed.slice(0, 1)}:${r.match}`), ["5:squash", "5:squash"]);
+eq("open units carry no landed commit", [rows2[3].unit, rows2[3].landed, rows2[3].match], ["u/2", "", ""]);
+eq("a commit in a unit gets no direct row even when on the default branch",
+  rows2.filter((r) => r.commit === A).map((r) => r.state), ["merged"]);
+eq("a direct row renders with an empty review unit",
+  ru.renderLog(rows2).split("\n").find((l) => l.includes(D)), `|  | direct |  | ${D} | 2026-01-09T00:00:00Z | ${D} | same |`);
+eq("the report counts direct commits",
+  [...ru.byEntity(changed, rows2).get("task-z")], [["direct", 1]]);
+
+// landedCommit: chain is oldest first and ends at the merge commit.
+const P = (x) => x.repeat(40);
+const pidOf = { [P("1")]: "p1", [P("2")]: "p2", [P("3")]: "p3", [P("r")]: "p1", [P("s")]: "p2", [P("t")]: "px", [P("m")]: "pm" };
+const pid = (c) => pidOf[c] || "";
+const at = (t) => () => t;
+const unitRb = { mergeCommit: P("t"), commits: [P("1"), P("2"), P("3")] };
+eq("rebase: a patch-id match lands on the rebased commit",
+  ru.landedCommit(unitRb, P("2"), [P("r"), P("s"), P("t")], pid, at(100)), { landed: P("s"), match: "patch-id" });
+eq("rebase: no patch-id match falls back to position",
+  ru.landedCommit(unitRb, P("3"), [P("r"), P("s"), P("t")], pid, at(100)), { landed: P("t"), match: "position" });
+const ctimes = { [P("r")]: 10, [P("s")]: 20, [P("t")]: 5000 };
+eq("squash: earlier commits from other work make the merge commit a squash",
+  ru.landedCommit(unitRb, P("2"), [P("r"), P("s"), P("t")], pid, (c) => ctimes[c]), { landed: P("t"), match: "squash" });
+eq("one-commit unit lands on the merge commit",
+  ru.landedCommit({ mergeCommit: P("m"), commits: [P("1")] }, P("1"), [P("m")], pid, at(1)), { landed: P("m"), match: "squash" });
+eq("no merge commit on the chain end lands nowhere",
+  ru.landedCommit(unitRb, P("2"), [P("r"), P("s")], pid, at(1)), null);
+
 // ---------- conformance ----------
 const TS = "2026-01-01T00:00:00Z";
 const entity = (fields, body) => "```yaml\n" + fields + "\n```\n" + body + "\n";
@@ -85,14 +124,26 @@ function codesFor(reviewRows) {
 eq("no review-unit log is conformant", codesFor(null), []);
 eq("a well-formed log passes", codesFor([`| u/1 | merged | m1 | ${A} | ${TS} |`, `| u/2 | open |  | ${A} | ${TS} |`]), []);
 eq("a commit not in the changed-code log is an error",
-  codesFor([`| u/1 | merged | m1 | ${B} | ${TS} |`]), ["error:dangling-review-unit-commit"]);
+  codesFor([`| u/1 | merged | m1 | ${B} | ${TS} |`]), ["error:dangling-review-unit-commit", "warning:review-unit-missing"]);
 eq("an abbreviation of a bound commit is not a match (string compare)",
-  codesFor([`| u/1 | merged | m1 | ${A.slice(0, 7)} | ${TS} |`]), ["error:dangling-review-unit-commit"]);
+  codesFor([`| u/1 | merged | m1 | ${A.slice(0, 7)} | ${TS} |`]), ["error:dangling-review-unit-commit", "warning:review-unit-missing"]);
 eq("an unknown state is an error", codesFor([`| u/1 | approved | m1 | ${A} | ${TS} |`]), ["error:review-unit-incomplete"]);
 eq("merged without a merge commit is an error", codesFor([`| u/1 | merged |  | ${A} | ${TS} |`]), ["error:review-unit-incomplete"]);
 eq("an unparseable timestamp is an error", codesFor([`| u/1 | open |  | ${A} | soon |`]), ["error:review-unit-incomplete"]);
 eq("a repeated (unit, commit) warns",
   codesFor([`| u/1 | open |  | ${A} | ${TS} |`, `| u/1 | open |  | ${A} | ${TS} |`]), ["warning:duplicate-review-unit-row"]);
+eq("a direct row passes", codesFor([`|  | direct |  | ${A} | ${TS} | ${A} | same |`]), []);
+eq("a direct row naming a review unit is an error",
+  codesFor([`| u/1 | direct |  | ${A} | ${TS} | ${A} | same |`]), ["error:review-unit-incomplete"]);
+eq("an empty review unit outside a direct row is an error",
+  codesFor([`|  | merged | m1 | ${A} | ${TS} |`]), ["error:review-unit-incomplete"]);
+eq("landed squash and rebase rows pass",
+  codesFor([`| u/1 | merged | m1 | ${A} | ${TS} | m1 | squash |`, `| u/2 | merged | m2 | ${A} | ${TS} | r2 | position |`]), []);
+eq("landed without match is an error", codesFor([`| u/1 | merged | m1 | ${A} | ${TS} | m1 |  |`]), ["error:review-unit-incomplete"]);
+eq("an unknown match is an error", codesFor([`| u/1 | merged | m1 | ${A} | ${TS} | m1 | guess |`]), ["error:review-unit-incomplete"]);
+eq("an open row with a landed commit is an error",
+  codesFor([`| u/1 | open |  | ${A} | ${TS} | m1 | squash |`]), ["error:review-unit-incomplete"]);
+eq("a bound commit with no row warns", codesFor([]), ["warning:review-unit-missing"]);
 
 console.log(failed ? `\n${failed} failed` : "\nall passed");
 process.exit(failed ? 1 : 0);

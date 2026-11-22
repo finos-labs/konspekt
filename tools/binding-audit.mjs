@@ -22,8 +22,18 @@
 // .claude/skills/, .claude/settings.json, .github/workflows/konspekt-* — so a
 // commit that only installs or updates the kit is not reported as unbound work.
 // The "bookkeeping" array of .konspekt/binding-audit.json adds path prefixes.
-// Everything else is product/standard work that must bind. Merge commits are skipped; the merged branch commits carry the
-// binding. This assumes a merge-commit workflow, not squash-merge.
+// Everything else is product/standard work that must bind. Merge commits are
+// skipped; the merged branch commits carry the binding.
+//
+// Squash and rebase merges (nw-landed-commit-recorded). Those put commits on the
+// default branch that the changed-code log never named: a squash commit, or the
+// replayed commits of a rebase. The derived review-unit log
+// (changes/review-units.md) records, per bound commit, the `landed` commit that
+// carries its change, so a commit that is the landed commit of a row whose
+// commit is bound counts as bound, to that commit's entities. The acceptance
+// check uses the bound commit's author time when the clone has it, else the
+// landed commit's own. Until the review-unit log is regenerated after such a
+// merge, its commit is reported as unbound: the same staleness the log has.
 //
 // Acceptance before work (spec/architecture/REVIEW.md § Acceptance before work):
 // when the instance sets `basis: accepted`, a second check runs over the same
@@ -74,6 +84,7 @@ const CONFIG = join(REPO_ROOT, ".konspekt", "binding-audit.json");
 const CHANGED_LOG = join(REPO_ROOT, ".konspekt", "instance", "changes", "changed.md");
 const PROJECT_FILE = join(REPO_ROOT, ".konspekt", "instance", "project.md");
 const TRANSITION_LOG = join(REPO_ROOT, ".konspekt", "instance", "transitions", "transitions.md");
+const REVIEW_UNIT_LOG = join(REPO_ROOT, ".konspekt", "instance", "changes", "review-units.md");
 const INSTANCE_PREFIX = ".konspekt/instance/";
 // Adopter mode: this script was installed into the adopter's .konspekt/lib/.
 const ADOPTER = relative(REPO_ROOT, dirname(fileURLToPath(import.meta.url))).split(sep).join("/") === ".konspekt/lib";
@@ -81,6 +92,7 @@ const KIT_PREFIXES = [".konspekt/", ".claude/hooks/", ".claude/skills/", ".claud
 const bookkeeping = ADOPTER ? [...KIT_PREFIXES] : [INSTANCE_PREFIX];
 
 function git(args) { return execFileSync("git", args, { cwd: REPO_ROOT, encoding: "utf8" }); }
+function gitQuiet(args) { return execFileSync("git", args, { cwd: REPO_ROOT, encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] }); }
 function arg(name) { const i = process.argv.indexOf(name); return i >= 0 ? process.argv[i + 1] : null; }
 
 // ----- baseline + allowlist -----
@@ -140,8 +152,27 @@ if (existsSync(CHANGED_LOG)) {
     }
   }
 }
-const isBound = (sha) =>
-  boundCommits.has(sha) || [...boundCommits].some((c) => c && (sha.startsWith(c) || c.startsWith(sha)));
+// landed commit -> Set of bound tokens it carries, from the review-unit log.
+const landedFrom = new Map();
+if (existsSync(REVIEW_UNIT_LOG)) {
+  for (const line of readFileSync(REVIEW_UNIT_LOG, "utf8").split("\n")) {
+    const t = line.trim();
+    if (!t.startsWith("|")) continue;
+    const cells = t.split("|").slice(1, -1).map((c) => c.trim());
+    if (cells.length < 6 || cells[0] === "review unit" || /^-+$/.test(cells[0])) continue;
+    const [, , , token, , landed] = cells;
+    if (!landed || !token || !boundCommits.has(token)) continue;
+    if (!landedFrom.has(landed)) landedFrom.set(landed, new Set());
+    landedFrom.get(landed).add(token);
+  }
+}
+const matchesToken = (sha, c) => c && (sha.startsWith(c) || c.startsWith(sha));
+const tokensFor = (sha) => {
+  const out = new Set([...boundCommits].filter((c) => matchesToken(sha, c)));
+  for (const [landed, toks] of landedFrom) if (matchesToken(sha, landed)) for (const tk of toks) out.add(tk);
+  return out;
+};
+const isBound = (sha) => tokensFor(sha).size > 0;
 const isAllowed = (sha) => allow.has(sha) || [...allow].some((a) => a && sha.startsWith(a));
 
 // ----- walk baseline..head -----
@@ -215,16 +246,17 @@ if (basis === "accepted") {
   const early = [];
   for (const sha of list ? list.split("\n") : []) {
     if (isAllowed(sha)) continue;
-    const entities = new Set();
-    for (const [token, ids] of boundEntities) {
-      if (token && (sha.startsWith(token) || token.startsWith(sha))) for (const id of ids) entities.add(id);
-    }
-    if (!entities.size) continue;
-    const when = git(["log", "-1", "--format=%aI", sha]).trim();
-    const ms = Date.parse(when);
-    for (const id of entities) {
-      const state = reviewAt(id, ms);
-      if (state !== "accepted") early.push({ sha: sha.slice(0, 10), id, when, state: state || "not recorded" });
+    for (const token of tokensFor(sha)) {
+      // The bound commit's author time; a landed commit stands in when the clone
+      // no longer holds the bound one (a squashed or rebased branch).
+      let when;
+      try { when = gitQuiet(["log", "-1", "--format=%aI", token]).trim(); }
+      catch { when = git(["log", "-1", "--format=%aI", sha]).trim(); }
+      const ms = Date.parse(when);
+      for (const id of boundEntities.get(token) || []) {
+        const state = reviewAt(id, ms);
+        if (state !== "accepted") early.push({ sha: sha.slice(0, 10), id, when, state: state || "not recorded" });
+      }
     }
   }
   if (early.length) {
