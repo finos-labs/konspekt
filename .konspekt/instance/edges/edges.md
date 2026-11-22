@@ -612,3 +612,5 @@ proposal.
 | e-not-taskprmap-derivable | notes | node:investigation-task-pr-map | noteworthy:nw-task-pr-map-derivable |  | accepted |
 | e-not-taskprmap-directcommits | notes | node:investigation-task-pr-map | noteworthy:nw-direct-commits-recorded |  | accepted |
 | e-dec-taskprmap-directrows | decomposes | node:investigation-task-pr-map | node:task-review-unit-direct-rows |  | accepted |
+| e-not-taskprmap-landedcommit | notes | node:investigation-task-pr-map | noteworthy:nw-landed-commit-recorded |  | accepted |
+| e-dec-taskprmap-landedcommits | decomposes | node:investigation-task-pr-map | node:task-review-unit-landed-commits |  | accepted |

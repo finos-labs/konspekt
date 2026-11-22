@@ -1471,3 +1471,13 @@ proposing agent was not recorded.
 | node:task-review-unit-direct-rows | review | proposed | accepted | 2026-11-22T18:50:42Z | ni:///sha-256;NRiciRH9GlX7vzHVSSkF6Oo-UlVEM9_jAuvzcWgCeHw | denisurusov |
 | edge:e-dec-taskprmap-directrows | review | proposed | accepted | 2026-11-22T18:50:42Z | ni:///sha-256;NRiciRH9GlX7vzHVSSkF6Oo-UlVEM9_jAuvzcWgCeHw | denisurusov |
 | node:task-review-unit-direct-rows | status | open | active | 2026-11-22T18:50:42Z | ni:///sha-256;NRiciRH9GlX7vzHVSSkF6Oo-UlVEM9_jAuvzcWgCeHw | denisurusov |
+| noteworthy:nw-landed-commit-recorded | review |  | proposed | 2026-11-22T18:57:09Z | ni:///sha-256;P9MeQFLRAKNLz0vbvCXoQRFjgQCl9pWeVVqHNdaAsZk | claude |
+| node:task-review-unit-landed-commits | review |  | proposed | 2026-11-22T18:57:09Z | ni:///sha-256;P9MeQFLRAKNLz0vbvCXoQRFjgQCl9pWeVVqHNdaAsZk | claude |
+| node:task-review-unit-landed-commits | status |  | open | 2026-11-22T18:57:09Z | ni:///sha-256;P9MeQFLRAKNLz0vbvCXoQRFjgQCl9pWeVVqHNdaAsZk | claude |
+| edge:e-not-taskprmap-landedcommit | review |  | proposed | 2026-11-22T18:57:09Z | ni:///sha-256;P9MeQFLRAKNLz0vbvCXoQRFjgQCl9pWeVVqHNdaAsZk | claude |
+| edge:e-dec-taskprmap-landedcommits | review |  | proposed | 2026-11-22T18:57:09Z | ni:///sha-256;P9MeQFLRAKNLz0vbvCXoQRFjgQCl9pWeVVqHNdaAsZk | claude |
+| noteworthy:nw-landed-commit-recorded | review | proposed | accepted | 2026-11-22T18:57:09Z | ni:///sha-256;P9MeQFLRAKNLz0vbvCXoQRFjgQCl9pWeVVqHNdaAsZk | denisurusov |
+| node:task-review-unit-landed-commits | review | proposed | accepted | 2026-11-22T18:57:09Z | ni:///sha-256;P9MeQFLRAKNLz0vbvCXoQRFjgQCl9pWeVVqHNdaAsZk | denisurusov |
+| edge:e-not-taskprmap-landedcommit | review | proposed | accepted | 2026-11-22T18:57:09Z | ni:///sha-256;P9MeQFLRAKNLz0vbvCXoQRFjgQCl9pWeVVqHNdaAsZk | denisurusov |
+| edge:e-dec-taskprmap-landedcommits | review | proposed | accepted | 2026-11-22T18:57:09Z | ni:///sha-256;P9MeQFLRAKNLz0vbvCXoQRFjgQCl9pWeVVqHNdaAsZk | denisurusov |
+| node:task-review-unit-landed-commits | status | open | active | 2026-11-22T18:57:09Z | ni:///sha-256;P9MeQFLRAKNLz0vbvCXoQRFjgQCl9pWeVVqHNdaAsZk | denisurusov |
