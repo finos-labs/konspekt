@@ -782,3 +782,4 @@ commit order; the channel was not live during that work.
 | task-review-unit-direct-rows | 61936de1ce80893620d04017b0ec0132bb138841 | tools/review-units.mjs | 2026-11-22T19:04:19Z |
 | task-review-unit-landed-commits | 61936de1ce80893620d04017b0ec0132bb138841 | tools/review-units.mjs | 2026-11-22T19:04:19Z |
 | task-review-unit-direct-rows | c2ad2e0c410b6372b7024d0bc8898ac49e827103 | ROADMAP.md | 2026-11-22T19:04:19Z |
+| task-review-unit-direct-rows | 45b70c14bc4309dcb46de89cb7a6517521f31b4e | ROADMAP.md | 2026-11-22T19:09:18Z |
