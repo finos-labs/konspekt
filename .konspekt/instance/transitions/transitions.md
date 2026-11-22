@@ -1439,3 +1439,7 @@ proposing agent was not recorded.
 | edge:e-lnk-linkedingraphview-clickrefs | review | proposed | accepted | 2026-11-21T16:37:40Z | ni:///sha-256;yrFZ54TxGTxQjZbSxbTcjnv6TkUlQJ6E6grook_NO3o | denisurusov |
 | edge:e-lnk-linkedingraphview-neighborhood | review | proposed | accepted | 2026-11-21T16:37:40Z | ni:///sha-256;yrFZ54TxGTxQjZbSxbTcjnv6TkUlQJ6E6grook_NO3o | denisurusov |
 | node:task-linkedin-announce-graph-view | status | open | resolved | 2026-11-21T16:49:31Z | ni:///sha-256;XN4hU8lerFXpfuGTC7dsygA_1s42XVdhhx-3u5SCWL8 | denisurusov |
+| node:task-fleet-design-docs-placement | status | active | resolved | 2026-11-22T15:31:00Z | ni:///sha-256;pTmcp6qNLK_BjliyphVhxkEG0QYVqVsAfYb9bp2FCoU | denisurusov |
+| node:task-ni-references | status | open | resolved | 2026-11-22T15:31:00Z | ni:///sha-256;pTmcp6qNLK_BjliyphVhxkEG0QYVqVsAfYb9bp2FCoU | denisurusov |
+| node:task-setup-init-check-policy-fields | status | open | resolved | 2026-11-22T15:31:00Z | ni:///sha-256;pTmcp6qNLK_BjliyphVhxkEG0QYVqVsAfYb9bp2FCoU | denisurusov |
+| node:task-binding-gap-audit | status | open | resolved | 2026-11-22T15:31:00Z | ni:///sha-256;pTmcp6qNLK_BjliyphVhxkEG0QYVqVsAfYb9bp2FCoU | denisurusov |

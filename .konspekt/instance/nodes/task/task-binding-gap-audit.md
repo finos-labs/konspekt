@@ -2,7 +2,7 @@
 id: task-binding-gap-audit
 type: task
 title: Detect unbound work — reconcile commits against the graph
-status: open
+status: resolved
 summary:
   origin: machine
   pinned: false
@@ -18,7 +18,7 @@ provenance:
     sourceRef: 4395f3ccb8e1747ca13f2869046c1cc71972422a
     contentHash: 4395f3ccb8e1747ca13f2869046c1cc71972422a
 createdAt: 2026-09-26T17:00:00Z
-updatedAt: 2026-09-26T17:00:00Z
+updatedAt: 2026-11-22T15:31:00Z
 ```
 # Task: Detect unbound work — reconcile commits against the graph
 
@@ -37,3 +37,5 @@ boundary is the enforceable proxy for "a conversation happened"; a session-level
 prompt is a possible complement, not a replacement.
 
 Decomposes [[goal-accountability]]; addresses [[nw-binding-enforcement-gap]].
+
+Resolved 2026-11-22 on the human's `resolve`; evidence in ni:///sha-256;pTmcp6qNLK_BjliyphVhxkEG0QYVqVsAfYb9bp2FCoU.

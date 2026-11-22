@@ -2,7 +2,7 @@
 id: task-ni-references
 type: task
 title: Migrate references to ni:///sha-256 with store resolution
-status: open
+status: resolved
 summary:
   origin: machine
   pinned: false
@@ -18,7 +18,7 @@ provenance:
     sourceRef: f61e6d61d0bd51214259cc517ffc43dc4a2f763a
     contentHash: f61e6d61d0bd51214259cc517ffc43dc4a2f763a
 createdAt: 2026-11-14T04:51:00Z
-updatedAt: 2026-11-14T04:51:00Z
+updatedAt: 2026-11-22T15:31:00Z
 ```
 # Task: Migrate references to ni:///sha-256 with store resolution
 
@@ -47,3 +47,5 @@ rewrite table cells, write `deprecated.md`, run conformance.
 kept under `deprecated:` or in a `deprecated.md` map, and every old SHA-1 file
 is kept. Existing tooling (conformance, validate, views, roadmap, binding audit,
 the fleet, the UI clients) runs on a migrated instance without breaking.
+
+Resolved 2026-11-22 on the human's `resolve`; evidence in ni:///sha-256;pTmcp6qNLK_BjliyphVhxkEG0QYVqVsAfYb9bp2FCoU.

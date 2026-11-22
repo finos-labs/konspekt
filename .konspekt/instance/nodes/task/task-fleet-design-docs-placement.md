@@ -2,7 +2,7 @@
 id: task-fleet-design-docs-placement
 type: task
 title: Place the fleet design docs with the fleet implementation
-status: active
+status: resolved
 review: accepted
 provenance:
   sourceRef: ni:///sha-256;bw8zhKzH9ljIkKlyMRxjQsu-ZbDfVgCtm_qvtDIoayo
@@ -14,7 +14,7 @@ provenance:
     sourceRef: c5b67de2993cffaa775c1393b3d2466c0baa3a0e
     contentHash: c5b67de2993cffaa775c1393b3d2466c0baa3a0e
 createdAt: 2026-11-13T00:55:48Z
-updatedAt: 2026-11-13T00:55:48Z
+updatedAt: 2026-11-22T15:31:00Z
 ```
 # Task: Place the fleet design docs with the fleet implementation
 
@@ -45,3 +45,5 @@ Scope, as accepted by the human on 2026-11-12:
 - Leave `sources/` excerpts unedited.
 
 Re-vendoring `cdm-collateral` onto the new layout is out of scope for this task.
+
+Resolved 2026-11-22 on the human's `resolve`; evidence in ni:///sha-256;pTmcp6qNLK_BjliyphVhxkEG0QYVqVsAfYb9bp2FCoU.
