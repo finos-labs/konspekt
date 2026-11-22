@@ -14,7 +14,7 @@ provenance:
   timestamp: 2026-11-22T15:44:03Z
   confidence: 0.7
 createdAt: 2026-11-22T15:44:03Z
-updatedAt: 2026-11-22T18:49:13Z
+updatedAt: 2026-11-22T18:50:42Z
 ```
 # Investigation: Task-to-pull-request traceability as a general konspekt practice
 
@@ -59,5 +59,12 @@ it. No skill: it would repeat `OPERATING.md`.
 
 **Settled: direct-to-main** — [[nw-direct-commits-recorded]], implemented by
 [[task-review-unit-direct-rows]].
+
+**Deferred: squash and rebase merges** (2026-11-22). Out of scope for now, as
+the engineer spec states: both replace the bound commits on the default
+branch, and this instance merges by merge commit.
+
+**Deferred: project-specific columns.** The CDM map's other columns are left
+out of this investigation for now.
 
 Decomposes [[goal-accountability]].

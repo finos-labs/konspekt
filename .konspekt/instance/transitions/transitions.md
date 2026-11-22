@@ -1468,3 +1468,6 @@ proposing agent was not recorded.
 | node:task-review-unit-direct-rows | review |  | proposed | 2026-11-22T18:49:13Z | ni:///sha-256;wFlEqUaI0PGZ1CcxBpuUt0QNJX63-6ZfT5doBMllDM4 | claude |
 | node:task-review-unit-direct-rows | status |  | open | 2026-11-22T18:49:13Z | ni:///sha-256;wFlEqUaI0PGZ1CcxBpuUt0QNJX63-6ZfT5doBMllDM4 | claude |
 | edge:e-dec-taskprmap-directrows | review |  | proposed | 2026-11-22T18:49:13Z | ni:///sha-256;wFlEqUaI0PGZ1CcxBpuUt0QNJX63-6ZfT5doBMllDM4 | claude |
+| node:task-review-unit-direct-rows | review | proposed | accepted | 2026-11-22T18:50:42Z | ni:///sha-256;NRiciRH9GlX7vzHVSSkF6Oo-UlVEM9_jAuvzcWgCeHw | denisurusov |
+| edge:e-dec-taskprmap-directrows | review | proposed | accepted | 2026-11-22T18:50:42Z | ni:///sha-256;NRiciRH9GlX7vzHVSSkF6Oo-UlVEM9_jAuvzcWgCeHw | denisurusov |
+| node:task-review-unit-direct-rows | status | open | active | 2026-11-22T18:50:42Z | ni:///sha-256;NRiciRH9GlX7vzHVSSkF6Oo-UlVEM9_jAuvzcWgCeHw | denisurusov |
