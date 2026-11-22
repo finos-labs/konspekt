@@ -7,14 +7,14 @@ summary:
   origin: machine
   pinned: false
   updatedAt: 2026-11-22T15:44:03Z
-review: proposed
+review: accepted
 provenance:
   sourceRef: ni:///sha-256;V4ue5VrR-HzhOFhkTtP6xvzqKqDGszyxRwY0MkHjWII
   conversationId: task-pr-map
   timestamp: 2026-11-22T15:44:03Z
   confidence: 0.7
 createdAt: 2026-11-22T15:44:03Z
-updatedAt: 2026-11-22T15:44:03Z
+updatedAt: 2026-11-22T15:51:12Z
 ```
 # Investigation: Task-to-pull-request traceability as a general konspekt practice
 

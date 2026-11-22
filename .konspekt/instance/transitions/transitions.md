@@ -1447,3 +1447,5 @@ proposing agent was not recorded.
 | node:investigation-task-pr-map | review |  | proposed | 2026-11-22T15:44:03Z | ni:///sha-256;V4ue5VrR-HzhOFhkTtP6xvzqKqDGszyxRwY0MkHjWII | claude |
 | node:investigation-task-pr-map | status |  | open | 2026-11-22T15:44:03Z | ni:///sha-256;V4ue5VrR-HzhOFhkTtP6xvzqKqDGszyxRwY0MkHjWII | claude |
 | edge:e-dec-accountability-taskprmap | review |  | proposed | 2026-11-22T15:44:03Z | ni:///sha-256;V4ue5VrR-HzhOFhkTtP6xvzqKqDGszyxRwY0MkHjWII | claude |
+| node:investigation-task-pr-map | review | proposed | accepted | 2026-11-22T15:51:12Z | ni:///sha-256;wMWFdRbYyppZe5_yoQo672I1SWR61l9FjfdsCnufdc8 | denisurusov |
+| edge:e-dec-accountability-taskprmap | review | proposed | accepted | 2026-11-22T15:51:12Z | ni:///sha-256;wMWFdRbYyppZe5_yoQo672I1SWR61l9FjfdsCnufdc8 | denisurusov |

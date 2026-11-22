@@ -607,4 +607,4 @@ proposal.
 | e-dec-usability-linkedingraphview | decomposes | node:goal-usability | node:task-linkedin-announce-graph-view |  | accepted |
 | e-lnk-linkedingraphview-clickrefs | links | node:task-linkedin-announce-graph-view | node:task-ui-clickable-source-refs |  | accepted |
 | e-lnk-linkedingraphview-neighborhood | links | node:task-linkedin-announce-graph-view | node:task-ui-atom-neighborhood-graph |  | accepted |
-| e-dec-accountability-taskprmap | decomposes | node:goal-accountability | node:investigation-task-pr-map |  | proposed |
+| e-dec-accountability-taskprmap | decomposes | node:goal-accountability | node:investigation-task-pr-map |  | accepted |
