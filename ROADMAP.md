@@ -3,7 +3,7 @@
      Check freshness with: node tools/roadmap.mjs --check
      This file is a pure function of .konspekt/instance/ (no timestamps baked in).
      Goals and tasks are graph nodes; the horizon is derived from node status/review.
-     contentHash: sha256:764d002a510e373b -->
+     contentHash: sha256:5e46507af445c981 -->
 
 # konspekt roadmap
 
@@ -14,11 +14,6 @@ Horizon: **Now** — in progress · **Next** — accepted and planned · **Later
 ## Answer who is responsible
 
 Make the facts a responsibility question needs answerable with evidence. The law decides who is responsible; konspekt records, verbatim and unaltered, what an AI proposed and which named human accepted it, so the underlying account is not in dispute. Responsibility attaches to a human by construction: an AI proposes, and only a named maintainer accepts.
-
-**Now** — _in progress_
-
-- Record direct-to-default-branch commits in the review-unit log
-- Record the landed commit for squash and rebase merges; bind it in the audit
 
 **Next** — _accepted and planned_
 
@@ -40,6 +35,8 @@ Make the facts a responsibility question needs answerable with evidence. The law
 - Ask-at-open binding behavior in the operating loop
 - Serialize executed-command provenance as an ordered log
 - Record the source and config changes associated with a task
+- Record direct-to-default-branch commits in the review-unit log
+- Record the landed commit for squash and rebase merges; bind it in the audit
 - Record review units (pull requests) against bound commits
 
 ## Get konspekt adopted by technical teams
