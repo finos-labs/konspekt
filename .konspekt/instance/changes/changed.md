@@ -755,3 +755,5 @@ commit order; the channel was not live during that work.
 | task-review-unit-log | d4abd99cd2d021a0989a4ef8bab587620a790d20 | implementations/intellij-plugin/app/src/main/kotlin/dev/konspekt/plugin/InstanceReader.kt | 2026-11-22T16:55:23Z |
 | task-review-unit-log | d4abd99cd2d021a0989a4ef8bab587620a790d20 | implementations/intellij-plugin/app/gradle.properties | 2026-11-22T16:55:23Z |
 | task-review-unit-log | a86a142904f311e9a18e395e402032d28b62632e | ROADMAP.md | 2026-11-22T16:55:50Z |
+| investigation-task-pr-map | 8870976d0989b193dbe919cb8fa8ab35c1ab8f7f | implementations/implementation-zero/app/view/app.js | 2026-11-22T17:14:10Z |
+| investigation-task-pr-map | 8870976d0989b193dbe919cb8fa8ab35c1ab8f7f | implementations/intellij-plugin/app/gradle.properties | 2026-11-22T17:14:10Z |
