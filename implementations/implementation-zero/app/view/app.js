@@ -639,13 +639,16 @@ function fillEntityView(root, d, cmds, chgs, trans, conns, entry) {
     return w;
   } });
   // Changes: the changed-code log grouped by commit. `commit` is an opaque
-  // revision token shown as a short label; the files are the change's projection.
+  // revision token shown in full; the files are the change's projection.
   if (chgs.length) tabs.push({ label: "Changes (" + chgs.length + ")", build: () => {
     const w = document.createElement("div"); w.className = "cmd-list";
     chgs.forEach((g, i) => {
       const lbl = document.createElement("div"); lbl.className = "src-label";
-      lbl.textContent = (i + 1) + " · commit " + String(g.commit).slice(0, 10) + "…";
+      lbl.textContent = (i + 1) + " · commit " + String(g.commit);
       // Review units (pull requests) containing the commit, from the derived log.
+      // A commit with no row in changes/review-units.md is in no pull request:
+      // work pushed straight to main (OPERATING.md § Review units).
+      if (!(g.reviewUnits || []).length) lbl.appendChild(document.createTextNode(" — no pull request (direct to main)"));
       (g.reviewUnits || []).forEach((u) => {
         const m = /\/pull\/(\d+)$/.exec(u.unit);
         const a = document.createElement("a"); a.className = "chg-unit";
