@@ -56,6 +56,27 @@ eq("entity -> review units projection",
   ["task-x=u/1", "task-y=u/1,u/3,u/2"]);
 eq("rendering is deterministic", ru.renderLog(rows) === ru.renderLog(ru.buildRows(changed, units)), true);
 
+// ---------- REST adapter (task-review-units-rest-fallback) ----------
+const pr = (o) => ({ html_url: "https://github.com/o/r/pull/" + o.number, created_at: "2026-01-01T00:00:00Z",
+  closed_at: null, merged_at: null, merge_commit_sha: "t".repeat(40), ...o });
+eq("REST: a merged pull request maps to the GraphQL unit shape",
+  ru.restUnit(pr({ number: 7, state: "closed", closed_at: "2026-01-03T00:00:00Z", merged_at: "2026-01-03T00:00:00Z", merge_commit_sha: "m7" }), [A]),
+  { url: "https://github.com/o/r/pull/7", number: 7, state: "merged", mergeCommit: "m7", timestamp: "2026-01-03T00:00:00Z", commits: [A] });
+eq("REST: an open pull request has no merge commit and its creation time",
+  ru.restUnit(pr({ number: 8, state: "open" }), [B]),
+  { url: "https://github.com/o/r/pull/8", number: 8, state: "open", mergeCommit: "", timestamp: "2026-01-01T00:00:00Z", commits: [B] });
+eq("REST: a closed unmerged pull request drops its test-merge SHA",
+  ru.restUnit(pr({ number: 9, state: "closed", closed_at: "2026-01-02T00:00:00Z" }), [C]),
+  { url: "https://github.com/o/r/pull/9", number: 9, state: "closed", mergeCommit: "", timestamp: "2026-01-02T00:00:00Z", commits: [C] });
+eq("REST and GraphQL units derive the same rows",
+  ru.renderLog(ru.buildRows(changed, [ru.restUnit(pr({ number: 1, state: "closed", merged_at: "2026-01-04T00:00:00Z", closed_at: "2026-01-04T00:00:00Z", merge_commit_sha: "m1", html_url: "u/1" }), [A, B])])),
+  ru.renderLog(ru.buildRows(changed, [units[1]])));
+eq("repository from remote URLs",
+  ["https://github.com/finos-labs/konspekt.git", "https://github.com/finos-labs/konspekt", "git@github.com:finos-labs/konspekt.git",
+   "ssh://git@github.com/finos-labs/konspekt.git", "http://127.0.0.1:8080/git/finos-labs/konspekt\n", "konspekt"].map(ru.repoFromRemote),
+  ["finos-labs/konspekt", "finos-labs/konspekt", "finos-labs/konspekt", "finos-labs/konspekt", "finos-labs/konspekt", null]);
+eq("api modes", ru.API_MODES, ["auto", "graphql", "rest"]);
+
 // direct rows and landed commits (nw-direct-commits-recorded, nw-landed-commit-recorded)
 const mainline = new Map([[A, "2026-01-01T00:00:00Z"], [D, "2026-01-09T00:00:00Z"]]);
 const S = "5".repeat(40);

@@ -31,7 +31,12 @@
 // counts a landed commit as bound.
 //
 // The core checker stays forge-neutral; only this tool talks to a forge. The
-// GitHub adapter uses the `gh` CLI; the default branch's history and patch-ids
+// GitHub adapter uses the `gh` CLI, through GraphQL by default and through the
+// REST API when GraphQL is unavailable (--api, task-review-units-rest-fallback):
+// a session whose GitHub access is REST-only can still derive the log. Both
+// paths yield the same units, so the log does not depend on which one ran. REST
+// costs one extra call per pull request for its commits, so `auto` says on
+// stderr when it falls back. The default branch's history and patch-ids
 // are read with `git`, so the clone must hold that branch in full, and the tool
 // fetches refs/pull/<n>/head when a merged unit's original commits are missing.
 // Precondition: commits are bound in the changed-code log.
@@ -45,8 +50,9 @@
 //   node tools/review-units.mjs                 # rewrite changes/review-units.md
 //   node tools/review-units.mjs --check         # exit 1 if the file is stale
 //   node tools/review-units.mjs --report        # print entity -> review units
-//   options: --repo <owner/name> (default: gh's repository for the cwd)
+//   options: --repo <owner/name> (default: parsed from the `origin` remote URL)
 //            --branch <ref>      (default: origin/<default branch>, else <default branch>)
+//            --api <mode>        auto (default: GraphQL, REST if it fails), graphql, rest
 //            --instance <dir>    (default: .konspekt/instance)
 
 import { execFileSync } from "node:child_process";
@@ -187,14 +193,17 @@ export function byEntity(changed, rows) {
 
 // ---------- GitHub adapter ----------
 
-const gh = (args) => execFileSync("gh", args, { encoding: "utf8", maxBuffer: 1 << 28, windowsHide: true });
+// stderr is captured, so a failed call reports through the thrown error (and
+// `auto`'s one-line notice) instead of printing gh's own message as well.
+const gh = (args) => execFileSync("gh", args, { encoding: "utf8", maxBuffer: 1 << 28, windowsHide: true, stdio: ["ignore", "pipe", "pipe"] });
 
 const Q = `query($owner:String!,$name:String!,$after:String){repository(owner:$owner,name:$name){
 pullRequests(first:50,after:$after,orderBy:{field:CREATED_AT,direction:ASC}){pageInfo{hasNextPage endCursor}
 nodes{number url state createdAt closedAt mergedAt mergeCommit{oid}
 commits(first:100){totalCount nodes{commit{oid}}}}}}}`;
 
-export function githubUnits(repo) {
+// GraphQL path: pull requests with their first 100 commits in one query per page.
+export function graphqlUnits(repo) {
   const [owner, name] = repo.split("/");
   const units = [];
   let after = null;
@@ -221,6 +230,52 @@ export function githubUnits(repo) {
     after = page.pageInfo.endCursor;
   }
   return units;
+}
+
+// One REST pull request (GET repos/{repo}/pulls item) and its commit SHAs, as the
+// unit graphqlUnits() returns. REST has no MERGED state: a closed pull request
+// with merged_at is merged. merge_commit_sha is also set on unmerged pull
+// requests (a test merge), so it is kept only when merged.
+export function restUnit(pr, commits) {
+  const merged = !!pr.merged_at;
+  return {
+    url: pr.html_url,
+    number: pr.number,
+    state: merged ? "merged" : pr.state === "open" ? "open" : "closed",
+    mergeCommit: merged ? (pr.merge_commit_sha || "") : "",
+    timestamp: pr.merged_at || pr.closed_at || pr.created_at,
+    commits,
+  };
+}
+
+// REST path: the pull-request list in creation order, then each one's commits.
+export function restUnits(repo) {
+  const prs = JSON.parse(gh(["api", `repos/${repo}/pulls?state=all&sort=created&direction=asc&per_page=100`, "--paginate", "--slurp"])).flat();
+  return prs.map((pr) => restUnit(pr,
+    gh(["api", `repos/${repo}/pulls/${pr.number}/commits?per_page=100`, "--paginate", "-q", ".[].sha"])
+      .trim().split(/\s+/).filter(Boolean)));
+}
+
+export const API_MODES = ["auto", "graphql", "rest"];
+// `auto` tries GraphQL and falls back to REST on any GraphQL failure, with a
+// one-line notice on stderr; `graphql` and `rest` use that path only.
+export function githubUnits(repo, api = "auto", notify = (m) => console.error(m)) {
+  if (api === "rest") return restUnits(repo);
+  try { return graphqlUnits(repo); }
+  catch (e) {
+    if (api === "graphql") throw e;
+    const why = String((e && (e.stderr || e.message)) || e).trim().split("\n")[0].split(/[.;] /)[0].slice(0, 120);
+    notify(`review-units: GitHub GraphQL unavailable (${why}); reading pull requests over REST, one call per pull request.`);
+    return restUnits(repo);
+  }
+}
+
+// owner/name from a git remote URL: https://host/owner/name(.git),
+// git@host:owner/name(.git), ssh://git@host/owner/name(.git). Null when the URL
+// has no owner/name path.
+export function repoFromRemote(url) {
+  const m = /[/:]([^/:]+)\/([^/]+?)(?:\.git)?\/?$/.exec(String(url).trim());
+  return m ? `${m[1]}/${m[2]}` : null;
 }
 
 // ---------- git adapter ----------
@@ -273,7 +328,7 @@ export function gitLander(remote = "origin") {
 }
 
 function defaultRef(repo) {
-  const name = gh(["repo", "view", repo, "--json", "defaultBranchRef", "-q", ".defaultBranchRef.name"]).trim();
+  const name = gh(["api", `repos/${repo}`, "-q", ".default_branch"]).trim();
   try { git(["rev-parse", "--verify", "--quiet", `refs/remotes/origin/${name}`]); return `origin/${name}`; }
   catch { return name; }
 }
@@ -283,7 +338,16 @@ function defaultRef(repo) {
 function main(argv) {
   const opt = (k) => { const i = argv.indexOf(k); return i === -1 ? null : argv[i + 1]; };
   const instanceDir = opt("--instance") || join(".konspekt", "instance");
-  const repo = opt("--repo") || gh(["repo", "view", "--json", "nameWithOwner", "-q", ".nameWithOwner"]).trim();
+  const api = opt("--api") || "auto";
+  if (!API_MODES.includes(api)) {
+    console.error(`review-units: --api must be one of ${API_MODES.join(", ")}; got "${api}".`);
+    return 1;
+  }
+  let repo = opt("--repo");
+  if (!repo) {
+    try { repo = repoFromRemote(git(["remote", "get-url", "origin"])); } catch { repo = null; }
+    if (!repo) { console.error("review-units: no --repo given and no owner/name in the origin remote URL."); return 1; }
+  }
   const changedPath = join(instanceDir, CHANGED_FILE);
   if (!existsSync(changedPath)) {
     console.error(`review-units: ${changedPath} not found; nothing to link.`);
@@ -291,7 +355,7 @@ function main(argv) {
   }
   const changed = parseChanged(readFileSync(changedPath, "utf8"));
   const branch = opt("--branch") || defaultRef(repo);
-  const rows = buildRows(changed, githubUnits(repo), mainlineCommits(branch), gitLander());
+  const rows = buildRows(changed, githubUnits(repo, api), mainlineCommits(branch), gitLander());
   const outPath = join(instanceDir, LOG_FILE);
 
   if (argv.includes("--report")) {

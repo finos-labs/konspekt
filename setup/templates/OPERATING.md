@@ -127,7 +127,9 @@ bound commit to the pull requests that contain it
 (`spec/personas/engineer/SPEC.md` § Review units). It is written by
 `.konspekt/lib/review-units.mjs`, never by hand. The tool reads the forge
 through the `gh` CLI and reads git history, so run it from the repository root
-of a full clone with `gh` signed in.
+of a full clone with `gh` signed in. It uses GitHub's GraphQL API and falls
+back, with a notice, to the REST API where GraphQL is unavailable; `--api rest`
+or `--api graphql` forces one path.
 
 ```
 node .konspekt/lib/review-units.mjs           # rewrite changes/review-units.md
