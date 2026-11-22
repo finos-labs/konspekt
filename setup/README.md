@@ -37,6 +37,7 @@ sit outside it.
     ├─ lib/                          # installed tooling: every script the adopter runs
     │  ├─ conformance.mjs validate.mjs load-personas.mjs authority.mjs  # the checker closure
     │  ├─ binding-audit.mjs                                             # flags commits bound to no entity
+    │  ├─ review-units.mjs                                              # derives changes/review-units.md from the forge
     │  └─ konspekt-notify.mjs                                           # the change notifier
     └─ spec/personas/<layer>/        # where the checker looks for a persona registry (optional; vendor with --vendor-persona)
     .claude/                         # Claude Code operating layer (paths fixed by Claude Code)
@@ -54,7 +55,8 @@ sit outside it.
 **Installed tooling lives under `.konspekt/lib/`.** Every script the adopter
 executes — the conformance checker's full import closure
 (`conformance.mjs`, `validate.mjs`, `load-personas.mjs`, `authority.mjs`), the
-binding audit (`binding-audit.mjs`), and the change notifier
+binding audit (`binding-audit.mjs`), the review-unit tool (`review-units.mjs`),
+and the change notifier
 (`konspekt-notify.mjs`) — is installed there, so nothing an
 adopter runs sits at the repo root or under `.github/`. `.github/` holds CI
 workflows only, because GitHub fixes that path; the workflows invoke the scripts
@@ -304,6 +306,16 @@ installing into another project looks like:
   has a changed-code log (seeded by `--persona engineer`). To start it later or
   exempt a commit, write `.konspekt/binding-audit.json`
   (`{"baseline": "<sha>", "allow": ["<sha>"]}`).
+
+  It also ships the **review-unit tool** (`.konspekt/lib/review-units.mjs`),
+  which writes `changes/review-units.md`: each bound commit's pull requests, a
+  `direct` row for a commit pushed straight to the default branch, and the
+  commit each one `landed` as after a squash or rebase merge
+  (`spec/personas/engineer/SPEC.md` § Review units). The checker validates that
+  log and the binding audit reads its landed commits. Run it from the
+  repository root of a full clone, with the `gh` CLI signed in, after a pull
+  request with bound commits opens, merges or closes and after bound work is
+  pushed directly; commit its output. It is not run in CI by the component.
 
   `--check` also reports a `project.md` without `binding:` or `basis:` (an
   instance scaffolded before those fields were seeded) and fails; `--add`

@@ -187,6 +187,9 @@ try {
     execFileSync("node", [INIT, "--add", "conformance"], { cwd: tmp3, stdio: "pipe" });
     const audit = join(tmp3, ".konspekt", "lib", "binding-audit.mjs");
     if (!existsSync(audit)) throw new Error("conformance did not install .konspekt/lib/binding-audit.mjs");
+    if (!existsSync(join(tmp3, ".konspekt", "lib", "review-units.mjs"))) {
+      throw new Error("conformance did not install .konspekt/lib/review-units.mjs");
+    }
     const runAudit = () => {
       try { execFileSync("node", [audit], { cwd: tmp3, stdio: "pipe" }); return 0; }
       catch (e) { return e.status; }

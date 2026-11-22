@@ -65,6 +65,13 @@ files:
   # the same file runs from konspekt's tools/ and an adopter's .konspekt/lib/.
   - from: ../../../tools/binding-audit.mjs
     to: .konspekt/lib/binding-audit.mjs
+  # The review-unit tool derives changes/review-units.md (engineer SPEC.md §
+  # Review units) from the forge and git; the checker validates that log and the
+  # binding audit reads its landed commits, so the writer ships with them
+  # (task-conformance-ships-review-units). Node built-ins only; it needs `gh`
+  # and a full clone at run time, not at install.
+  - from: ../../../tools/review-units.mjs
+    to: .konspekt/lib/review-units.mjs
   - from: binding-audit-workflow.yml
     to: .github/workflows/konspekt-binding-audit.yml
     # konspekt's own audit workflow runs tools/binding-audit.mjs directly.
@@ -87,6 +94,10 @@ next: |
      It needs no configuration: it starts after the commit that added
      .konspekt/instance/project.md, and it skips unless project.md is
      `binding: required` and the instance has changes/changed.md.
-  4. The conformance check fails on errors only. To gate on warnings too, add --strict to the
+  4. If the instance binds commits (engineer layer) and the repository uses
+     pull requests, derive the review-unit log from the forge with the `gh`
+     CLI, after a pull request opens, merges or closes and after direct pushes:
+       node .konspekt/lib/review-units.mjs
+  5. The conformance check fails on errors only. To gate on warnings too, add --strict to the
      workflow's validate step — expect that to be red until the schema
      reconciliation is closed.
