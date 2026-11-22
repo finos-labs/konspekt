@@ -798,3 +798,7 @@ commit order; the channel was not live during that work.
 | task-init-check-line-endings | 830cd5cf8b7998c622714906eab661fddf145902 | ROADMAP.md | 2026-11-22T21:01:29Z |
 | task-init-check-line-endings | 70263403406e9f7d4ec32190f1d5772ba3cffdc3 | setup/init.mjs | 2026-11-22T21:03:40Z |
 | task-init-check-line-endings | 70263403406e9f7d4ec32190f1d5772ba3cffdc3 | test/setup-init.test.mjs | 2026-11-22T21:03:40Z |
+| task-review-units-rest-fallback | 24c52b4714f3c15e63e466532e2f970a23115a56 | .konspekt/OPERATING.md | 2026-11-22T21:04:40Z |
+| task-review-units-rest-fallback | 24c52b4714f3c15e63e466532e2f970a23115a56 | setup/templates/OPERATING.md | 2026-11-22T21:04:40Z |
+| task-review-units-rest-fallback | 24c52b4714f3c15e63e466532e2f970a23115a56 | test/review-units.test.mjs | 2026-11-22T21:04:40Z |
+| task-review-units-rest-fallback | 24c52b4714f3c15e63e466532e2f970a23115a56 | tools/review-units.mjs | 2026-11-22T21:04:40Z |

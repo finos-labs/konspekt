@@ -193,7 +193,9 @@ Recorded in the instance as `task-binding-gap-audit` and
 changed-code log to the pull requests that contain them
 (`spec/personas/engineer/SPEC.md` § Review units). It is written by
 `tools/review-units.mjs`, never by hand; the tool reads GitHub through the `gh`
-CLI.
+CLI, over GraphQL, falling back with a notice to the REST API where GraphQL is
+unavailable (as in a Claude Code cloud session). `--api rest` or `--api graphql`
+forces one path.
 
 **When to run.** After a pull request with bound commits is opened, merged, or
 closed, and after bound work is pushed straight to `main`, which adds a
