@@ -2,7 +2,7 @@
 id: task-init-check-line-endings
 type: task
 title: Ignore line-ending differences in init.mjs --check
-status: open
+status: resolved
 summary:
   origin: machine
   pinned: false
@@ -14,7 +14,7 @@ provenance:
   timestamp: 2026-11-22T21:00:34Z
   confidence: 0.85
 createdAt: 2026-11-22T21:00:34Z
-updatedAt: 2026-11-22T21:00:34Z
+updatedAt: 2026-11-22T21:08:12Z
 ```
 # Task: Ignore line-ending differences in init.mjs --check
 

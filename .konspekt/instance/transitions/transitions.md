@@ -1509,3 +1509,4 @@ proposing agent was not recorded.
 | edge:e-dec-adoption-initchecklineendings | review |  | proposed | 2026-11-22T21:00:34Z | ni:///sha-256;EQs9660ddc3yPRim-Bbln4eQroqre0tsoLwctqt1uUI | claude |
 | node:task-init-check-line-endings | review | proposed | accepted | 2026-11-22T21:00:34Z | ni:///sha-256;EQs9660ddc3yPRim-Bbln4eQroqre0tsoLwctqt1uUI | denisurusov |
 | edge:e-dec-adoption-initchecklineendings | review | proposed | accepted | 2026-11-22T21:00:34Z | ni:///sha-256;EQs9660ddc3yPRim-Bbln4eQroqre0tsoLwctqt1uUI | denisurusov |
+| node:task-init-check-line-endings | status | open | resolved | 2026-11-22T21:08:12Z | ni:///sha-256;v6eLNWWVzYJQ5S1UO-IsB4rStwGZiv128s2SFmZv6sA | denisurusov |
