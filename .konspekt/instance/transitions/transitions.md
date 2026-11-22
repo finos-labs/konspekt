@@ -1450,3 +1450,8 @@ proposing agent was not recorded.
 | node:investigation-task-pr-map | review | proposed | accepted | 2026-11-22T15:51:12Z | ni:///sha-256;wMWFdRbYyppZe5_yoQo672I1SWR61l9FjfdsCnufdc8 | denisurusov |
 | edge:e-dec-accountability-taskprmap | review | proposed | accepted | 2026-11-22T15:51:12Z | ni:///sha-256;wMWFdRbYyppZe5_yoQo672I1SWR61l9FjfdsCnufdc8 | denisurusov |
 | node:task-ui-footer-write-actions | status | open | resolved | 2026-11-22T15:51:26Z | ni:///sha-256;wMWFdRbYyppZe5_yoQo672I1SWR61l9FjfdsCnufdc8 | denisurusov |
+| node:task-review-unit-log | review |  | proposed | 2026-11-22T16:44:55Z | ni:///sha-256;9T50L83o1_4jb1fTgumyngCBEDVpGnCuM1i5kzBikkY | claude |
+| node:task-review-unit-log | status |  | open | 2026-11-22T16:44:55Z | ni:///sha-256;9T50L83o1_4jb1fTgumyngCBEDVpGnCuM1i5kzBikkY | claude |
+| noteworthy:nw-task-pr-map-derivable | review |  | proposed | 2026-11-22T16:44:55Z | ni:///sha-256;9T50L83o1_4jb1fTgumyngCBEDVpGnCuM1i5kzBikkY | claude |
+| edge:e-dec-taskprmap-reviewunitlog | review |  | proposed | 2026-11-22T16:44:55Z | ni:///sha-256;9T50L83o1_4jb1fTgumyngCBEDVpGnCuM1i5kzBikkY | claude |
+| edge:e-not-taskprmap-derivable | review |  | proposed | 2026-11-22T16:44:55Z | ni:///sha-256;9T50L83o1_4jb1fTgumyngCBEDVpGnCuM1i5kzBikkY | claude |
