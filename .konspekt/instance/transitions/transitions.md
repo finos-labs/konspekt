@@ -1483,3 +1483,4 @@ proposing agent was not recorded.
 | node:task-review-unit-landed-commits | status | open | active | 2026-11-22T18:57:09Z | ni:///sha-256;P9MeQFLRAKNLz0vbvCXoQRFjgQCl9pWeVVqHNdaAsZk | denisurusov |
 | node:task-review-unit-direct-rows | status | active | resolved | 2026-11-22T19:09:07Z | ni:///sha-256;OPWGouAQ4vRkGxZj9n5yO78W7-pQzmz39avYHf3VzMo | denisurusov |
 | node:task-review-unit-landed-commits | status | active | resolved | 2026-11-22T19:09:07Z | ni:///sha-256;OPWGouAQ4vRkGxZj9n5yO78W7-pQzmz39avYHf3VzMo | denisurusov |
+| node:investigation-task-pr-map | status | active | resolved | 2026-11-22T19:54:22Z | ni:///sha-256;Grv0d6JphVeoGcG0x0mrLAtGhqHY73f-Y2U9cJAnfJs | denisurusov |
