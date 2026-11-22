@@ -3,7 +3,7 @@
      Check freshness with: node tools/roadmap.mjs --check
      This file is a pure function of .konspekt/instance/ (no timestamps baked in).
      Goals and tasks are graph nodes; the horizon is derived from node status/review.
-     contentHash: sha256:91aaf8af76ce9b2e -->
+     contentHash: sha256:4f068c7c63d2efce -->
 
 # konspekt roadmap
 
@@ -18,7 +18,6 @@ Make the facts a responsibility question needs answerable with evidence. The law
 **Next** — _accepted and planned_
 
 - Design a richer accept-authority mechanism
-- Detect unbound work — reconcile commits against the graph
 - Protect changes to who carries legal weight
 
 **Later** — _proposed, not yet committed_
@@ -32,6 +31,7 @@ Make the facts a responsibility question needs answerable with evidence. The law
 
 - Require acceptance before work is bound
 - Accept authority in the IntelliJ plugin
+- Detect unbound work — reconcile commits against the graph
 - Ask-at-open binding behavior in the operating loop
 - Serialize executed-command provenance as an ordered log
 - Record the source and config changes associated with a task
@@ -48,11 +48,11 @@ Bring technical adopters from first contact to a running instance in their own r
 
 - init.mjs does not scaffold instance/authority/ tables
 - Make notifications portable
-- Make setup/init.mjs --check report missing binding and basis fields
 
 **Shipped** — _resolved_
 
 - Produce a hands-on promo video for technical adopters
+- Make setup/init.mjs --check report missing binding and basis fields
 
 ## Restore cost stays bounded as the graph grows
 
@@ -149,7 +149,6 @@ Keep a project's working context — its instructions, accumulated decisions, an
 - init.mjs does not scaffold instance/authority/ tables
 - A durable store other than git
 - Decide whether instance/ directory layout should be regularized
-- Migrate references to ni:///sha-256 with store resolution
 - Consider an "outcome" node type for testable controls
 - Make notifications portable
 - Find the second implementer
@@ -158,6 +157,7 @@ Keep a project's working context — its instructions, accumulated decisions, an
 
 - Choose a license
 - Verify the impact of ni: source addressing, file by file
+- Migrate references to ni:///sha-256 with store resolution
 - Test the ni: migration on the task-ni-references branch
 - Re-capture the walkthrough frames after cdm-collateral migrates to ni: references
 - Re-serialize the instance to the reconciled spec
@@ -194,6 +194,7 @@ Make a konspekt instance operable by a human through a visual interface, not onl
 - October 2026 LinkedIn announcement — acceptance & authority
 - November 2026 LinkedIn post — checkpoint and resume
 - LinkedIn announcement — the agent fleet
+- November 2026 LinkedIn post — clickable source references and the connections graph, on konspekt and cdm-collateral
 - November 2026 LinkedIn post — content addressing upgraded from git SHA-1 to SHA-256 and ni: references
 - Configurable popup mode for the IntelliJ plugin
 - Refresh presentation materials for the plugin, UI writes, and binding
@@ -214,7 +215,6 @@ Let several participants — people and agents — propose into and review one s
 **Now** — _in progress_
 
 - Fleet adjustments (ongoing)
-- Place the fleet design docs with the fleet implementation
 
 **Next** — _accepted and planned_
 
@@ -233,10 +233,11 @@ Let several participants — people and agents — propose into and review one s
 - Idempotent fold — stop re-fold clobbering blessed atoms
 - Committer scans existing outboxes on start, not only on a manual pass
 - Config-driven fleet setup from the canonical fleet.json
+- Place the fleet design docs with the fleet implementation
 - Implement idempotent fold in fold.mjs
 - Let a fleet proposal land repository files, not only graph atoms
 - Worktree-outbox fleet committer implementation
 
 ---
 
-Generated from 9 goal(s) and 106 task-listing(s) over the instance graph.
+Generated from 9 goal(s) and 107 task-listing(s) over the instance graph.
