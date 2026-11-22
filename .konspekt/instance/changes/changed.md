@@ -737,3 +737,4 @@ commit order; the channel was not live during that work.
 | task-linkedin-announce-graph-view | 3ee76ff6c5d01a3fc67482bb5bc0e62c1ac10dfe | docs/announcements/linkedin/post_2026-11-21/images/6_graph_cdm_depth2.png | 2026-11-21T16:49:18Z |
 | task-linkedin-announce-graph-view | 3ee76ff6c5d01a3fc67482bb5bc0e62c1ac10dfe | docs/announcements/linkedin/post_2026-11-21/images/7_graph_cdm_full.png | 2026-11-21T16:49:18Z |
 | task-linkedin-announce-graph-view | 3ee76ff6c5d01a3fc67482bb5bc0e62c1ac10dfe | docs/announcements/linkedin/post_2026-11-21/post.md | 2026-11-21T16:49:18Z |
+| task-linkedin-announce-graph-view | 4280d2bdcb8821bc45b5cd668ee9153d8ba1504a | ROADMAP.md | 2026-11-22T15:31:25Z |
