@@ -645,6 +645,14 @@ function fillEntityView(root, d, cmds, chgs, trans, conns, entry) {
     chgs.forEach((g, i) => {
       const lbl = document.createElement("div"); lbl.className = "src-label";
       lbl.textContent = (i + 1) + " · commit " + String(g.commit).slice(0, 10) + "…";
+      // Review units (pull requests) containing the commit, from the derived log.
+      (g.reviewUnits || []).forEach((u) => {
+        const m = /\/pull\/(\d+)$/.exec(u.unit);
+        const a = document.createElement("a"); a.className = "chg-unit";
+        a.textContent = (m ? "PR #" + m[1] : u.unit) + " · " + u.state;
+        if (/^https?:\/\//.test(u.unit)) { a.href = u.unit; a.target = "_blank"; a.rel = "noopener noreferrer"; }
+        lbl.appendChild(document.createTextNode(" — ")); lbl.appendChild(a);
+      });
       w.appendChild(lbl);
       const ul = document.createElement("ul"); ul.className = "chg-files";
       (g.files || []).forEach((f) => { const li = document.createElement("li"); li.textContent = f; ul.appendChild(li); });

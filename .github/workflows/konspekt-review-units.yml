@@ -1,0 +1,60 @@
+name: konspekt review units
+
+# Reports whether the derived review-unit log
+# (.konspekt/instance/changes/review-units.md) still matches GitHub: every commit
+# bound in the changed-code log, linked to the pull requests that contain it, with
+# each pull request's current state (spec/personas/engineer/SPEC.md § Review
+# units; task-review-unit-log).
+#
+# The check reads the forge, so its result depends on GitHub's state as well as
+# the repository: it goes stale when a pull request with bound commits is opened,
+# merged, or closed, until someone runs `node tools/review-units.mjs` and commits
+# the result. It reports and never writes; a failing run means "regenerate the
+# log", not broken work.
+#
+# Runs on pushes to main that touch the changes logs, daily (a pull request can
+# change state with no push to main), and on demand. Needs `gh`, which the
+# runner provides, and read access to pull requests.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".konspekt/instance/changes/**"
+  schedule:
+    - cron: "17 6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: read
+
+concurrency:
+  group: konspekt-review-units-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Review-unit log check
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -o pipefail
+          node tools/review-units.mjs --check --repo "${{ github.repository }}" | tee "$RUNNER_TEMP/review-units.txt"
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "### konspekt review units" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          cat "$RUNNER_TEMP/review-units.txt" >> "$GITHUB_STEP_SUMMARY" 2>/dev/null || echo "(no output)" >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"

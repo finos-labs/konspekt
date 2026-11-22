@@ -209,7 +209,9 @@ node tools/review-units.mjs --report  # print entity -> pull requests
 
 `--check` reads the forge as well, so unlike the roadmap check it is not a pure
 function of the repository: it reports stale when a pull request changed state
-since the last run. It is run by hand; no workflow invokes it.
+since the last run. `.github/workflows/konspekt-review-units.yml` runs it on
+pushes to `main` that touch `changes/`, daily, and on demand; it reports and
+never writes, so a failure means "regenerate and commit the log".
 
 Recorded in the instance as `task-review-unit-log` and
 `nw-task-pr-map-derivable`.

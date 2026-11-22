@@ -489,6 +489,21 @@ const server = createServer((req, res) => {
         g.files.push(file);
       }
     }
+    // Review units (pull requests) containing each commit, from the derived
+    // changes/review-units.md (spec/personas/engineer/SPEC.md § Review units),
+    // joined by the commit token as a string.
+    const ruPath = join(instanceDir, "changes", "review-units.md");
+    for (const g of groups) g.reviewUnits = [];
+    if (groups.length && existsSync(ruPath)) {
+      for (const line of readFileSync(ruPath, "utf8").split("\n")) {
+        const t = line.trim();
+        if (!t.startsWith("|")) continue;
+        const cells = t.split("|").slice(1, -1).map((c) => c.trim());
+        if (cells.length < 4 || cells[0] === "review unit" || /^-+$/.test(cells[0])) continue;
+        const g = byCommit.get(cells[3]);
+        if (g && !g.reviewUnits.some((u) => u.unit === cells[0])) g.reviewUnits.push({ unit: cells[0], state: cells[1] });
+      }
+    }
     return sendJson(res, { entity: id, changes: groups });
   }
   // ASRs (concepts subtype asr) with the ADRs each drives (waypoints subtype adr,
