@@ -1,14 +1,14 @@
 ```yaml
 id: nw-task-pr-map-derivable
 kind: fact
-review: proposed
+review: accepted
 provenance:
   sourceRef: ni:///sha-256;9T50L83o1_4jb1fTgumyngCBEDVpGnCuM1i5kzBikkY
   conversationId: task-pr-map
   timestamp: 2026-11-22T16:44:55Z
   confidence: 0.85
 createdAt: 2026-11-22T16:44:55Z
-updatedAt: 2026-11-22T16:44:55Z
+updatedAt: 2026-11-22T16:45:43Z
 ```
 # A task-to-pull-request map is derivable from the changed-code log
 

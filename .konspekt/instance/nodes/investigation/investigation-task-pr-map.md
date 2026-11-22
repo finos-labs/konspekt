@@ -2,7 +2,7 @@
 id: investigation-task-pr-map
 type: investigation
 title: Task-to-pull-request traceability as a general konspekt practice
-status: open
+status: active
 summary:
   origin: machine
   pinned: false
@@ -14,7 +14,7 @@ provenance:
   timestamp: 2026-11-22T15:44:03Z
   confidence: 0.7
 createdAt: 2026-11-22T15:44:03Z
-updatedAt: 2026-11-22T15:51:12Z
+updatedAt: 2026-11-22T16:45:43Z
 ```
 # Investigation: Task-to-pull-request traceability as a general konspekt practice
 

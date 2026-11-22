@@ -1455,3 +1455,8 @@ proposing agent was not recorded.
 | noteworthy:nw-task-pr-map-derivable | review |  | proposed | 2026-11-22T16:44:55Z | ni:///sha-256;9T50L83o1_4jb1fTgumyngCBEDVpGnCuM1i5kzBikkY | claude |
 | edge:e-dec-taskprmap-reviewunitlog | review |  | proposed | 2026-11-22T16:44:55Z | ni:///sha-256;9T50L83o1_4jb1fTgumyngCBEDVpGnCuM1i5kzBikkY | claude |
 | edge:e-not-taskprmap-derivable | review |  | proposed | 2026-11-22T16:44:55Z | ni:///sha-256;9T50L83o1_4jb1fTgumyngCBEDVpGnCuM1i5kzBikkY | claude |
+| node:task-review-unit-log | review | proposed | accepted | 2026-11-22T16:45:43Z | ni:///sha-256;K0uxvR9QCLUcCHINGqgi7hm_G-gynvyUZPPT7wNKl7U | denisurusov |
+| noteworthy:nw-task-pr-map-derivable | review | proposed | accepted | 2026-11-22T16:45:43Z | ni:///sha-256;K0uxvR9QCLUcCHINGqgi7hm_G-gynvyUZPPT7wNKl7U | denisurusov |
+| edge:e-dec-taskprmap-reviewunitlog | review | proposed | accepted | 2026-11-22T16:45:43Z | ni:///sha-256;K0uxvR9QCLUcCHINGqgi7hm_G-gynvyUZPPT7wNKl7U | denisurusov |
+| edge:e-not-taskprmap-derivable | review | proposed | accepted | 2026-11-22T16:45:43Z | ni:///sha-256;K0uxvR9QCLUcCHINGqgi7hm_G-gynvyUZPPT7wNKl7U | denisurusov |
+| node:investigation-task-pr-map | status | open | active | 2026-11-22T16:45:43Z | ni:///sha-256;K0uxvR9QCLUcCHINGqgi7hm_G-gynvyUZPPT7wNKl7U | denisurusov |

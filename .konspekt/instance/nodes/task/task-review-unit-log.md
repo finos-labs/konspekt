@@ -7,14 +7,14 @@ summary:
   origin: machine
   pinned: false
   updatedAt: 2026-11-22T16:44:55Z
-review: proposed
+review: accepted
 provenance:
   sourceRef: ni:///sha-256;9T50L83o1_4jb1fTgumyngCBEDVpGnCuM1i5kzBikkY
   conversationId: task-pr-map
   timestamp: 2026-11-22T16:44:55Z
   confidence: 0.75
 createdAt: 2026-11-22T16:44:55Z
-updatedAt: 2026-11-22T16:44:55Z
+updatedAt: 2026-11-22T16:45:43Z
 ```
 # Task: Record review units (pull requests) against bound commits
 

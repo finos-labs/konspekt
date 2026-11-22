@@ -608,5 +608,5 @@ proposal.
 | e-lnk-linkedingraphview-clickrefs | links | node:task-linkedin-announce-graph-view | node:task-ui-clickable-source-refs |  | accepted |
 | e-lnk-linkedingraphview-neighborhood | links | node:task-linkedin-announce-graph-view | node:task-ui-atom-neighborhood-graph |  | accepted |
 | e-dec-accountability-taskprmap | decomposes | node:goal-accountability | node:investigation-task-pr-map |  | accepted |
-| e-dec-taskprmap-reviewunitlog | decomposes | node:investigation-task-pr-map | node:task-review-unit-log |  | proposed |
-| e-not-taskprmap-derivable | notes | node:investigation-task-pr-map | noteworthy:nw-task-pr-map-derivable |  | proposed |
+| e-dec-taskprmap-reviewunitlog | decomposes | node:investigation-task-pr-map | node:task-review-unit-log |  | accepted |
+| e-not-taskprmap-derivable | notes | node:investigation-task-pr-map | noteworthy:nw-task-pr-map-derivable |  | accepted |
