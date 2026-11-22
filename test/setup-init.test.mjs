@@ -84,6 +84,12 @@ try {
   if ((projectMd.match(/^locators:/gm) || []).length !== 1) failures.push("project.md seed lacks one `locators:` key");
   const operatingMd = readFileSync(join(tmp, ".konspekt", "OPERATING.md"), "utf8");
   if (!operatingMd.includes("## Conversation binding")) failures.push("OPERATING.md seed lacks § Conversation binding");
+  // The conformance component ships the binding audit and the review-unit tool;
+  // the seed says when to run each (task-conformance-ships-review-units).
+  for (const h of ["## Binding commits to the graph", "## Review units"]) {
+    if (!operatingMd.includes(h)) failures.push(`OPERATING.md seed lacks § ${h.slice(3)}`);
+  }
+  if (!operatingMd.includes("When to regenerate")) failures.push("OPERATING.md seed does not say when to regenerate the review-unit log");
   // No persona layer, no persona logs.
   if (existsSync(join(tmp, ".konspekt", "instance", "changes"))) failures.push("changes/ seeded without a persona layer");
 

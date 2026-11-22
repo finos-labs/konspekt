@@ -87,6 +87,71 @@ an entity before that entity is accepted (`spec/architecture/REVIEW.md`
   bound to it. Edits outside `.konspekt/instance/` wait until the bound entity
   is `review: accepted`. An instruction to start work is not an acceptance.
 
+## Binding commits to the graph
+
+This section applies when `instance/project.md` is `binding: required` and the
+instance has a changed-code log, `instance/changes/changed.md` (seeded by
+`--persona engineer`). The tools it names are installed under `.konspekt/lib/`
+by the `conformance` component.
+
+- **What needs a row.** Every commit that changes a file outside
+  `.konspekt/instance/` is work and binds to the active entity through a row in
+  `changes/changed.md` (`| entity | commit | file | timestamp |`), one row per
+  changed file. A commit that touches only `.konspekt/instance/**`, or only files
+  the kit installs (`.konspekt/`, `.claude/hooks/`, `.claude/skills/`,
+  `.claude/settings.json`, `.github/workflows/konspekt-*`), is bookkeeping and
+  needs no row.
+- **When to write it.** At commit time: in the same commit as the work, or in
+  the commit immediately after it, so the log trails the work by at most one
+  commit.
+- **Before every push**, run the binding audit:
+
+  ```
+  node .konspekt/lib/binding-audit.mjs
+  ```
+
+  It exits non-zero on a commit with no row. Under `basis: accepted` it also
+  reports a commit bound to an entity that is not accepted, or authored before
+  that entity was accepted. The `konspekt-binding-audit` workflow runs the same
+  check in CI.
+- **Exemptions.** A commit that is not graph-bound work is listed by SHA in the
+  `allow` array of `.konspekt/binding-audit.json`
+  (`{"baseline": "<sha>", "allow": ["<sha>"]}`); `baseline` moves the start of
+  the audit to a later commit. Use both rarely.
+
+## Review units
+
+This section applies when commits are bound (the section above) and the
+repository uses pull requests. `instance/changes/review-units.md` links each
+bound commit to the pull requests that contain it
+(`spec/personas/engineer/SPEC.md` § Review units). It is written by
+`.konspekt/lib/review-units.mjs`, never by hand. The tool reads the forge
+through the `gh` CLI and reads git history, so run it from the repository root
+of a full clone with `gh` signed in.
+
+```
+node .konspekt/lib/review-units.mjs           # rewrite changes/review-units.md
+node .konspekt/lib/review-units.mjs --check   # exit 1 if the file is stale
+node .konspekt/lib/review-units.mjs --report  # print entity -> pull requests
+```
+
+- **When to regenerate.** After a pull request with bound commits is opened,
+  merged, or closed, and after bound work is pushed straight to the default
+  branch (each such commit gets a `direct` row). Run it after the push or merge,
+  so the commits are on the remote default branch, and commit the result. The
+  output touches only `.konspekt/instance/**`, so that commit is bookkeeping and
+  needs no changed-code row.
+- **Squash and rebase merges.** The merge writes new commits to the default
+  branch. Each row records the `landed` commit that carries the bound commit's
+  change, and the binding audit counts a `landed` commit as bound. Until the log
+  is regenerated and committed, the audit reports the new commits as unbound, so
+  regenerate right after the merge.
+- **Freshness check.** The `conformance` component installs no workflow for
+  this log. Run `--check` before a push, alongside the binding audit. `--check`
+  reads the forge, so it also reports stale when a pull request changed state
+  since the last run. `node .konspekt/lib/validate.mjs .konspekt/instance` warns
+  `review-unit-missing` for each bound commit the log does not list yet.
+
 ## Triggers — how the loop fires
 
 Two events, not a cadence (no clock or session rhythm):
