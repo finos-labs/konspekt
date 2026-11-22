@@ -748,3 +748,9 @@ commit order; the channel was not live during that work.
 | task-review-unit-log | e2d91c37caed7d2477d426918b4af6086388923d | spec/personas/engineer/registry.mjs | 2026-11-22T16:49:22Z |
 | task-review-unit-log | e2d91c37caed7d2477d426918b4af6086388923d | test/review-units.test.mjs | 2026-11-22T16:49:22Z |
 | task-review-unit-log | e2d91c37caed7d2477d426918b4af6086388923d | tools/review-units.mjs | 2026-11-22T16:49:22Z |
+| task-review-unit-log | d4abd99cd2d021a0989a4ef8bab587620a790d20 | .github/workflows/konspekt-review-units.yml | 2026-11-22T16:55:23Z |
+| task-review-unit-log | d4abd99cd2d021a0989a4ef8bab587620a790d20 | .konspekt/OPERATING.md | 2026-11-22T16:55:23Z |
+| task-review-unit-log | d4abd99cd2d021a0989a4ef8bab587620a790d20 | implementations/implementation-zero/app/server.mjs | 2026-11-22T16:55:23Z |
+| task-review-unit-log | d4abd99cd2d021a0989a4ef8bab587620a790d20 | implementations/implementation-zero/app/view/app.js | 2026-11-22T16:55:23Z |
+| task-review-unit-log | d4abd99cd2d021a0989a4ef8bab587620a790d20 | implementations/intellij-plugin/app/src/main/kotlin/dev/konspekt/plugin/InstanceReader.kt | 2026-11-22T16:55:23Z |
+| task-review-unit-log | d4abd99cd2d021a0989a4ef8bab587620a790d20 | implementations/intellij-plugin/app/gradle.properties | 2026-11-22T16:55:23Z |

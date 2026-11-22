@@ -2,7 +2,7 @@
 id: task-review-unit-log
 type: task
 title: Record review units (pull requests) against bound commits
-status: open
+status: resolved
 summary:
   origin: machine
   pinned: false
@@ -14,7 +14,7 @@ provenance:
   timestamp: 2026-11-22T16:44:55Z
   confidence: 0.75
 createdAt: 2026-11-22T16:44:55Z
-updatedAt: 2026-11-22T16:45:43Z
+updatedAt: 2026-11-22T16:55:37Z
 ```
 # Task: Record review units (pull requests) against bound commits
 
@@ -48,3 +48,5 @@ Out of scope: `TRANSPORT.md`'s rule that instance persistence uses no pull
 requests is unchanged; review units here are units of code work.
 
 Decomposes [[investigation-task-pr-map]].
+
+Resolved 2026-11-22 on the human's `resolve`. Built in a564af7 (log, tool, checker, SPEC, policy) and d4abd99 (drawer, plugin 0.0.19, CI check). Shipping the tool to adopters through the setup kit is deferred.

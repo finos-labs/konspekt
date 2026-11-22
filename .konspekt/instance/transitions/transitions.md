@@ -1460,3 +1460,4 @@ proposing agent was not recorded.
 | edge:e-dec-taskprmap-reviewunitlog | review | proposed | accepted | 2026-11-22T16:45:43Z | ni:///sha-256;K0uxvR9QCLUcCHINGqgi7hm_G-gynvyUZPPT7wNKl7U | denisurusov |
 | edge:e-not-taskprmap-derivable | review | proposed | accepted | 2026-11-22T16:45:43Z | ni:///sha-256;K0uxvR9QCLUcCHINGqgi7hm_G-gynvyUZPPT7wNKl7U | denisurusov |
 | node:investigation-task-pr-map | status | open | active | 2026-11-22T16:45:43Z | ni:///sha-256;K0uxvR9QCLUcCHINGqgi7hm_G-gynvyUZPPT7wNKl7U | denisurusov |
+| node:task-review-unit-log | status | open | resolved | 2026-11-22T16:55:37Z | ni:///sha-256;rc4agXli4Z9005KNuIvrWZuc0jCX7tiysh1cTDLvYME | denisurusov |
