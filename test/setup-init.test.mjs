@@ -166,6 +166,25 @@ try {
     failures.push(`vendor-persona block threw: ${e.message}\n${e.stderr || e.stdout || ""}`);
   }
 
+  // --check notes an OPERATING.md seeded before a section was added, without
+  // failing on it (OPERATING.md is host policy the adopter owns).
+  const om = join(tmp, ".konspekt", "OPERATING.md");
+  const omText = readFileSync(om, "utf8");
+  writeFileSync(om, omText.replace(/^## Review units$/m, "## Pull requests"));
+  let opOut = "";
+  try {
+    opOut = execFileSync("node", [INIT, "--check"], { cwd: tmp, encoding: "utf8", stdio: "pipe" });
+  } catch (e) {
+    failures.push(`--check failed on an OPERATING.md missing a section:
+${e.stdout || ""}`);
+  }
+  if (!/NOTE {3}\.konspekt\/OPERATING\.md/.test(opOut) || !/§ Review units/.test(opOut)) {
+    failures.push(`--check did not note the missing § Review units:
+${opOut}`);
+  }
+  if (/§ Binding commits to the graph/.test(opOut)) failures.push("--check noted a section OPERATING.md has");
+  writeFileSync(om, omText);
+
   // --check reports a project.md that predates the seeded policy fields (an
   // instance scaffolded before binding/basis were written) and fails.
   const pm = join(tmp, ".konspekt", "instance", "project.md");

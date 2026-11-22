@@ -427,6 +427,28 @@ function projectPolicyGaps() {
   return gaps;
 }
 
+// Sections of the OPERATING.md seed that an adopter's .konspekt/OPERATING.md
+// lacks. The scaffolder writes OPERATING.md once and never rewrites it, so an
+// adopter seeded before a section was added (for example § Binding commits to
+// the graph and § Review units, which say when to run the conformance tools)
+// never receives it. Compared by `## ` heading text. Returns the missing
+// headings; empty when there is no OPERATING.md. This is a note, not a failure:
+// OPERATING.md is host policy, and an adopter may drop a section on purpose.
+function operatingGaps() {
+  const p = join(root, ".konspekt", "OPERATING.md");
+  if (!existsSync(p)) return [];
+  const headings = (t) => new Set(t.split(/\r?\n/).filter((l) => /^## \S/.test(l)).map((l) => l.trim()));
+  const have = headings(readFileSync(p, "utf8"));
+  return [...headings(readFileSync(join(TPL, "OPERATING.md"), "utf8"))].filter((h) => !have.has(h));
+}
+
+function printOperatingGaps(gaps) {
+  if (!gaps.length) return;
+  console.log("NOTE   .konspekt/OPERATING.md");
+  console.log(`       lacks ${gaps.length} section(s) of the current seed: ${gaps.map((h) => "§ " + h.slice(3)).join(", ")}`);
+  console.log("       The scaffolder never rewrites OPERATING.md; copy the sections from konspekt's setup/templates/OPERATING.md.");
+}
+
 // ---------------------------------------------------------------------------
 // --check
 // ---------------------------------------------------------------------------
@@ -516,6 +538,7 @@ if (has("--check")) {
     console.log(`POLICY ${INSTANCE}/project.md`);
     console.log(`       ${g}`);
   }
+  if (!only) printOperatingGaps(operatingGaps());
 
   if (!checked && !missing) {
     console.log("Nothing installed to check.");
@@ -559,6 +582,11 @@ if (has("--add")) {
     console.log(`\nNote: ${INSTANCE}/project.md predates the seeded policy fields:`);
     for (const g of gaps) console.log(`  - ${g}`);
     console.log("  konspekt's setup/templates/OPERATING.md § Conversation binding and § Acceptance before work describe them.");
+  }
+  const opGaps = operatingGaps();
+  if (opGaps.length) {
+    console.log("");
+    printOperatingGaps(opGaps);
   }
   if (!wrote) process.exit(0);
 
