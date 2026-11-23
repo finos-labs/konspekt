@@ -257,16 +257,30 @@ export function restUnits(repo) {
 }
 
 export const API_MODES = ["auto", "graphql", "rest"];
+
+// A forge failure that main() reports as its one-line message, with no stack trace.
+export class ForgeError extends Error {}
+
+// The first clause of a failed gh call's stderr (or message), at most 120 chars.
+export function failureReason(e) {
+  return String((e && (e.stderr || e.message)) || e).trim().split("\n")[0].split(/[.;] /)[0].slice(0, 120);
+}
+
 // `auto` tries GraphQL and falls back to REST on any GraphQL failure, with a
-// one-line notice on stderr; `graphql` and `rest` use that path only.
-export function githubUnits(repo, api = "auto", notify = (m) => console.error(m)) {
-  if (api === "rest") return restUnits(repo);
-  try { return graphqlUnits(repo); }
+// one-line notice on stderr; `graphql` and `rest` use that path only. Under
+// `graphql`, a GraphQL failure throws ForgeError naming the mode and the reason.
+// The last argument replaces the forge calls in tests.
+export function githubUnits(repo, api = "auto", notify = (m) => console.error(m),
+  { graphql = graphqlUnits, rest = restUnits } = {}) {
+  if (api === "rest") return rest(repo);
+  try { return graphql(repo); }
   catch (e) {
-    if (api === "graphql") throw e;
-    const why = String((e && (e.stderr || e.message)) || e).trim().split("\n")[0].split(/[.;] /)[0].slice(0, 120);
+    const why = failureReason(e);
+    if (api === "graphql") {
+      throw new ForgeError(`review-units: GitHub GraphQL unavailable (${why}); --api graphql forces GraphQL; use --api auto or --api rest.`);
+    }
     notify(`review-units: GitHub GraphQL unavailable (${why}); reading pull requests over REST, one call per pull request.`);
-    return restUnits(repo);
+    return rest(repo);
   }
 }
 
@@ -355,7 +369,14 @@ function main(argv) {
   }
   const changed = parseChanged(readFileSync(changedPath, "utf8"));
   const branch = opt("--branch") || defaultRef(repo);
-  const rows = buildRows(changed, githubUnits(repo, api), mainlineCommits(branch), gitLander());
+  let prs;
+  try { prs = githubUnits(repo, api); }
+  catch (e) {
+    if (!(e instanceof ForgeError)) throw e;
+    console.error(e.message);
+    return 1;
+  }
+  const rows = buildRows(changed, prs, mainlineCommits(branch), gitLander());
   const outPath = join(instanceDir, LOG_FILE);
 
   if (argv.includes("--report")) {

@@ -77,6 +77,19 @@ eq("repository from remote URLs",
   ["finos-labs/konspekt", "finos-labs/konspekt", "finos-labs/konspekt", "finos-labs/konspekt", "finos-labs/konspekt", null]);
 eq("api modes", ru.API_MODES, ["auto", "graphql", "rest"]);
 
+// ---------- GraphQL failure (task-review-units-graphql-error) ----------
+const ghFail = () => { const e = new Error("Command failed: gh api graphql -f query=..."); e.stderr = "GraphQL: Resource not accessible by integration (repository)\nmore"; throw e; };
+const restStub = () => [units[0]];
+const caught = (fn) => { try { fn(); return null; } catch (e) { return e; } };
+const forced = caught(() => ru.githubUnits("o/r", "graphql", () => {}, { graphql: ghFail, rest: restStub }));
+eq("forced GraphQL failure throws ForgeError", forced instanceof ru.ForgeError, true);
+eq("forced GraphQL failure is one line naming the mode and gh's reason", forced && forced.message,
+  "review-units: GitHub GraphQL unavailable (GraphQL: Resource not accessible by integration (repository)); --api graphql forces GraphQL; use --api auto or --api rest.");
+const notices = [];
+eq("auto falls back to REST on the same failure",
+  ru.githubUnits("o/r", "auto", (m) => notices.push(m), { graphql: ghFail, rest: restStub }), [units[0]]);
+eq("auto prints one notice", notices.length, 1);
+
 // direct rows and landed commits (nw-direct-commits-recorded, nw-landed-commit-recorded)
 const mainline = new Map([[A, "2026-01-01T00:00:00Z"], [D, "2026-01-09T00:00:00Z"]]);
 const S = "5".repeat(40);
