@@ -804,3 +804,6 @@ commit order; the channel was not live during that work.
 | task-review-units-rest-fallback | 24c52b4714f3c15e63e466532e2f970a23115a56 | tools/review-units.mjs | 2026-11-22T21:04:40Z |
 | task-init-check-line-endings | fff6c9a21ebfab15830643c3fd22f4ef5d224608 | ROADMAP.md | 2026-11-22T21:08:21Z |
 | task-review-units-rest-fallback | a4e85ab6419924867cf66e6b09fa8fbc839e516b | ROADMAP.md | 2026-11-22T21:11:23Z |
+| task-review-units-graphql-error | c50ac8a9cbecb497f22a380f3d6029bf437efab5 | tools/review-units.mjs | 2026-11-23T01:25:52Z |
+| task-review-units-graphql-error | c50ac8a9cbecb497f22a380f3d6029bf437efab5 | test/review-units.test.mjs | 2026-11-23T01:25:52Z |
+| task-review-units-graphql-error | 9dd49cf222615e1a27f128f543dfde2db0f9b549 | ROADMAP.md | 2026-11-23T01:25:52Z |
