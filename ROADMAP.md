@@ -3,7 +3,7 @@
      Check freshness with: node tools/roadmap.mjs --check
      This file is a pure function of .konspekt/instance/ (no timestamps baked in).
      Goals and tasks are graph nodes; the horizon is derived from node status/review.
-     contentHash: sha256:3dd1481f0b15fb48 -->
+     contentHash: sha256:ec512affc9c92e35 -->
 
 # konspekt roadmap
 
@@ -19,13 +19,13 @@ Make the facts a responsibility question needs answerable with evidence. The law
 
 - Design a richer accept-authority mechanism
 - Protect changes to who carries legal weight
+- Report a one-line error, not a stack trace, when tools/review-units.mjs cannot read pull requests over REST
 
 **Later** — _proposed, not yet committed_
 
 - The responsibility report
 - Add the provenance-completeness invariant to the spec
 - Bind every conversation to a graph entity
-- Report a one-line error, not a stack trace, when tools/review-units.mjs cannot read pull requests over REST
 - Signed accepts via a legally-bound persona
 
 **Shipped** — _resolved_
@@ -182,13 +182,13 @@ Make a konspekt instance operable by a human through a visual interface, not onl
 **Next** — _accepted and planned_
 
 - Navigate from a goal to its open tasks
+- Make the session-start hook report a checkpoint that is on origin/main but not in the local checkout
 - Work through and disposition tasks in the interface
 
 **Later** — _proposed, not yet committed_
 
 - Serve the konspekt view as an MCP Apps ui:// resource
 - Filter review rejected tombstones in the shipped readers
-- Make the session-start hook report a checkpoint that is on origin/main but not in the local checkout
 
 **Shipped** — _resolved_
 
