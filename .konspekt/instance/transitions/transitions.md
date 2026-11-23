@@ -1517,3 +1517,10 @@ proposing agent was not recorded.
 | node:task-review-units-graphql-error | review | proposed | accepted | 2026-11-23T01:23:52Z | ni:///sha-256;jmECamA7bhNzx-NdizY2mmoy6C7N_l22Uf1UgjEcz5k | denisurusov |
 | edge:e-dec-taskprmap-graphqlerror | review | proposed | accepted | 2026-11-23T01:23:52Z | ni:///sha-256;jmECamA7bhNzx-NdizY2mmoy6C7N_l22Uf1UgjEcz5k | denisurusov |
 | node:task-review-units-graphql-error | status | open | active | 2026-11-23T01:23:52Z | ni:///sha-256;jmECamA7bhNzx-NdizY2mmoy6C7N_l22Uf1UgjEcz5k | denisurusov |
+| node:task-review-units-graphql-error | status | active | resolved | 2026-11-23T01:29:20Z | ni:///sha-256;-JF9esqLGGVGyn6ZnbAh6K4Hd6AW0ux8MFTMoqYR3Vs | denisurusov |
+| node:task-review-units-rest-error | review |  | proposed | 2026-11-23T01:29:20Z | ni:///sha-256;-JF9esqLGGVGyn6ZnbAh6K4Hd6AW0ux8MFTMoqYR3Vs | claude |
+| node:task-review-units-rest-error | status |  | open | 2026-11-23T01:29:20Z | ni:///sha-256;-JF9esqLGGVGyn6ZnbAh6K4Hd6AW0ux8MFTMoqYR3Vs | claude |
+| edge:e-dec-taskprmap-resterror | review |  | proposed | 2026-11-23T01:29:20Z | ni:///sha-256;-JF9esqLGGVGyn6ZnbAh6K4Hd6AW0ux8MFTMoqYR3Vs | claude |
+| node:task-session-hook-last-checkpoint | review |  | proposed | 2026-11-23T01:29:20Z | ni:///sha-256;-JF9esqLGGVGyn6ZnbAh6K4Hd6AW0ux8MFTMoqYR3Vs | claude |
+| node:task-session-hook-last-checkpoint | status |  | open | 2026-11-23T01:29:20Z | ni:///sha-256;-JF9esqLGGVGyn6ZnbAh6K4Hd6AW0ux8MFTMoqYR3Vs | claude |
+| edge:e-dec-usability-hooklastcheckpoint | review |  | proposed | 2026-11-23T01:29:20Z | ni:///sha-256;-JF9esqLGGVGyn6ZnbAh6K4Hd6AW0ux8MFTMoqYR3Vs | claude |

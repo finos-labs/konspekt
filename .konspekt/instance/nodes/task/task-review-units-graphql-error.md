@@ -2,7 +2,7 @@
 id: task-review-units-graphql-error
 type: task
 title: Report a one-line error, not a stack trace, when tools/review-units.mjs --api graphql cannot reach GraphQL
-status: active
+status: resolved
 summary:
   origin: machine
   pinned: false
@@ -14,7 +14,7 @@ provenance:
   timestamp: 2026-11-22T21:52:22Z
   confidence: 0.8
 createdAt: 2026-11-22T21:52:22Z
-updatedAt: 2026-11-23T01:23:52Z
+updatedAt: 2026-11-23T01:29:20Z
 ```
 # Task: Report a one-line error, not a stack trace, when tools/review-units.mjs --api graphql cannot reach GraphQL
 
