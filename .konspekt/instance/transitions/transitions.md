@@ -1514,3 +1514,6 @@ proposing agent was not recorded.
 | node:task-review-units-graphql-error | review |  | proposed | 2026-11-22T21:52:22Z | ni:///sha-256;xR2twISr5zepWtPHieE0dfYF_YP_RtzRFbnzuA28gWo | claude |
 | node:task-review-units-graphql-error | status |  | open | 2026-11-22T21:52:22Z | ni:///sha-256;xR2twISr5zepWtPHieE0dfYF_YP_RtzRFbnzuA28gWo | claude |
 | edge:e-dec-taskprmap-graphqlerror | review |  | proposed | 2026-11-22T21:52:22Z | ni:///sha-256;xR2twISr5zepWtPHieE0dfYF_YP_RtzRFbnzuA28gWo | claude |
+| node:task-review-units-graphql-error | review | proposed | accepted | 2026-11-23T01:23:52Z | ni:///sha-256;jmECamA7bhNzx-NdizY2mmoy6C7N_l22Uf1UgjEcz5k | denisurusov |
+| edge:e-dec-taskprmap-graphqlerror | review | proposed | accepted | 2026-11-23T01:23:52Z | ni:///sha-256;jmECamA7bhNzx-NdizY2mmoy6C7N_l22Uf1UgjEcz5k | denisurusov |
+| node:task-review-units-graphql-error | status | open | active | 2026-11-23T01:23:52Z | ni:///sha-256;jmECamA7bhNzx-NdizY2mmoy6C7N_l22Uf1UgjEcz5k | denisurusov |
