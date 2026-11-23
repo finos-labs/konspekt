@@ -7,14 +7,14 @@ summary:
   origin: machine
   pinned: false
   updatedAt: 2026-11-23T01:29:20Z
-review: proposed
+review: accepted
 provenance:
   sourceRef: ni:///sha-256;-JF9esqLGGVGyn6ZnbAh6K4Hd6AW0ux8MFTMoqYR3Vs
   conversationId: review-units-graphql-error
   timestamp: 2026-11-23T01:29:20Z
   confidence: 0.7
 createdAt: 2026-11-23T01:29:20Z
-updatedAt: 2026-11-23T01:29:20Z
+updatedAt: 2026-11-23T01:41:44Z
 ```
 # Task: Report a one-line error, not a stack trace, when tools/review-units.mjs cannot read pull requests over REST
 

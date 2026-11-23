@@ -619,5 +619,5 @@ proposal.
 | e-dec-taskprmap-restfallback | decomposes | node:investigation-task-pr-map | node:task-review-units-rest-fallback |  | accepted |
 | e-dec-adoption-initchecklineendings | decomposes | node:goal-adoption | node:task-init-check-line-endings |  | accepted |
 | e-dec-taskprmap-graphqlerror | decomposes | node:investigation-task-pr-map | node:task-review-units-graphql-error |  | accepted |
-| e-dec-taskprmap-resterror | decomposes | node:investigation-task-pr-map | node:task-review-units-rest-error |  | proposed |
-| e-dec-usability-hooklastcheckpoint | decomposes | node:goal-usability | node:task-session-hook-last-checkpoint |  | proposed |
+| e-dec-taskprmap-resterror | decomposes | node:investigation-task-pr-map | node:task-review-units-rest-error |  | accepted |
+| e-dec-usability-hooklastcheckpoint | decomposes | node:goal-usability | node:task-session-hook-last-checkpoint |  | accepted |

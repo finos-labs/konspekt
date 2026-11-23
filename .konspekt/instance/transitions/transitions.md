@@ -1524,3 +1524,7 @@ proposing agent was not recorded.
 | node:task-session-hook-last-checkpoint | review |  | proposed | 2026-11-23T01:29:20Z | ni:///sha-256;-JF9esqLGGVGyn6ZnbAh6K4Hd6AW0ux8MFTMoqYR3Vs | claude |
 | node:task-session-hook-last-checkpoint | status |  | open | 2026-11-23T01:29:20Z | ni:///sha-256;-JF9esqLGGVGyn6ZnbAh6K4Hd6AW0ux8MFTMoqYR3Vs | claude |
 | edge:e-dec-usability-hooklastcheckpoint | review |  | proposed | 2026-11-23T01:29:20Z | ni:///sha-256;-JF9esqLGGVGyn6ZnbAh6K4Hd6AW0ux8MFTMoqYR3Vs | claude |
+| node:task-review-units-rest-error | review | proposed | accepted | 2026-11-23T01:41:44Z | ni:///sha-256;pnf3FAgXTyZY0foaQsl4_7xf5UjLmm1Tn5LuSXwJkdo | denisurusov |
+| edge:e-dec-taskprmap-resterror | review | proposed | accepted | 2026-11-23T01:41:44Z | ni:///sha-256;pnf3FAgXTyZY0foaQsl4_7xf5UjLmm1Tn5LuSXwJkdo | denisurusov |
+| node:task-session-hook-last-checkpoint | review | proposed | accepted | 2026-11-23T01:41:44Z | ni:///sha-256;pnf3FAgXTyZY0foaQsl4_7xf5UjLmm1Tn5LuSXwJkdo | denisurusov |
+| edge:e-dec-usability-hooklastcheckpoint | review | proposed | accepted | 2026-11-23T01:41:44Z | ni:///sha-256;pnf3FAgXTyZY0foaQsl4_7xf5UjLmm1Tn5LuSXwJkdo | denisurusov |
