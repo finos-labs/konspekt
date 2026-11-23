@@ -14,3 +14,4 @@ open, `resume` reads the last row.
 | 2026-11-14T19:59:20Z | task-ni-references | ni:///sha-256;IFQtEzY7_YOT4d9vmohmgwK6E1K3oCld1AHrPCzzxYg | claude-code-cli | claude-opus-5-5 | denisurusov |
 | 2026-11-21T03:09:21Z | task-ui-clickable-source-refs | ni:///sha-256;xHkGyH1eS25d7mR29PL_DdvyNcA-JW1TQU6iiUrk4aY | claude.ai-web | claude-opus-5-5 | denisurusov |
 | 2026-11-22T21:53:28Z | task-review-units-graphql-error | ni:///sha-256;uHKv-53WZHHsJtKFy2lXAqD6gqhl8A4yk4WFVMOLYAc | claude.ai-web | claude-opus-5-5 | denisurusov |
+| 2026-11-23T01:43:52Z | task-review-units-graphql-error | ni:///sha-256;Qlk4PKv0qlx--tSNgC6aYgUknUNRY360UMb5QC-k868 | claude-code-cli | claude-opus-5-5 | denisurusov |
