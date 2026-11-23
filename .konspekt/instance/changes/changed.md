@@ -808,3 +808,4 @@ commit order; the channel was not live during that work.
 | task-review-units-graphql-error | c50ac8a9cbecb497f22a380f3d6029bf437efab5 | test/review-units.test.mjs | 2026-11-23T01:25:52Z |
 | task-review-units-graphql-error | 9dd49cf222615e1a27f128f543dfde2db0f9b549 | ROADMAP.md | 2026-11-23T01:25:52Z |
 | task-review-units-graphql-error | 549cf61db38670c329ae1aa15376cece272bab49 | ROADMAP.md | 2026-11-23T01:29:52Z |
+| task-review-units-rest-error | 5a85cd0bd328f1ec3aa8975c816fb1b82f90e4e6 | ROADMAP.md | 2026-11-23T01:41:53Z |
