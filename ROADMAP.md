@@ -3,7 +3,7 @@
      Check freshness with: node tools/roadmap.mjs --check
      This file is a pure function of .konspekt/instance/ (no timestamps baked in).
      Goals and tasks are graph nodes; the horizon is derived from node status/review.
-     contentHash: sha256:d2ab1fa25175f2fd -->
+     contentHash: sha256:3dd1481f0b15fb48 -->
 
 # konspekt roadmap
 
@@ -15,10 +15,6 @@ Horizon: **Now** — in progress · **Next** — accepted and planned · **Later
 
 Make the facts a responsibility question needs answerable with evidence. The law decides who is responsible; konspekt records, verbatim and unaltered, what an AI proposed and which named human accepted it, so the underlying account is not in dispute. Responsibility attaches to a human by construction: an AI proposes, and only a named maintainer accepts.
 
-**Now** — _in progress_
-
-- Report a one-line error, not a stack trace, when tools/review-units.mjs --api graphql cannot reach GraphQL
-
 **Next** — _accepted and planned_
 
 - Design a richer accept-authority mechanism
@@ -29,6 +25,7 @@ Make the facts a responsibility question needs answerable with evidence. The law
 - The responsibility report
 - Add the provenance-completeness invariant to the spec
 - Bind every conversation to a graph entity
+- Report a one-line error, not a stack trace, when tools/review-units.mjs cannot read pull requests over REST
 - Signed accepts via a legally-bound persona
 
 **Shipped** — _resolved_
@@ -42,6 +39,7 @@ Make the facts a responsibility question needs answerable with evidence. The law
 - Record direct-to-default-branch commits in the review-unit log
 - Record the landed commit for squash and rebase merges; bind it in the audit
 - Record review units (pull requests) against bound commits
+- Report a one-line error, not a stack trace, when tools/review-units.mjs --api graphql cannot reach GraphQL
 - Let tools/review-units.mjs read pull requests over REST when GraphQL is unavailable
 
 ## Get konspekt adopted by technical teams
@@ -190,6 +188,7 @@ Make a konspekt instance operable by a human through a visual interface, not onl
 
 - Serve the konspekt view as an MCP Apps ui:// resource
 - Filter review rejected tombstones in the shipped readers
+- Make the session-start hook report a checkpoint that is on origin/main but not in the local checkout
 
 **Shipped** — _resolved_
 
@@ -251,4 +250,4 @@ Let several participants — people and agents — propose into and review one s
 
 ---
 
-Generated from 9 goal(s) and 115 task-listing(s) over the instance graph.
+Generated from 9 goal(s) and 117 task-listing(s) over the instance graph.
